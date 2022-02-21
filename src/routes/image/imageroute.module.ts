@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { SafeImagesModule } from 'src/lib/safeimages/safeimages.module';
+import { ImageManagerModule } from 'src/managers/imagemanager/imagemanager.module';
+
 import { ImageController } from './imageroute.controller';
 
 @Module({
-  imports: [SafeImagesModule],
+  imports: [ImageManagerModule],
   controllers: [ImageController],
 })
 export class ImageModule {}

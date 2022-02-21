@@ -6,7 +6,7 @@ import { FullMime, MimesService } from 'src/collections/imagedb/mimes.service';
 import { AsyncFailable, Fail, HasFailed } from 'src/types/failable';
 
 @Injectable()
-export class SafeImagesService {
+export class ImageManagerService {
   constructor(
     private readonly imagesService: ImageDBService,
     private readonly mimesService: MimesService,
