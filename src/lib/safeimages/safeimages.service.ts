@@ -1,20 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { fileTypeFromBuffer } from 'file-type';
-import { ImageEntity } from 'src/images/image.entity';
-import { ImagesService } from 'src/images/images.service';
-import { FullMime, MimesService } from 'src/images/mimes.service';
-import { AsyncFailable, Fail, HasFailed } from 'src/lib/maybe';
+import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
+import { ImageEntity } from 'src/collections/imagedb/image.entity';
+import { ImageDBService } from 'src/collections/imagedb/imagedb.service';
+import { FullMime, MimesService } from 'src/collections/imagedb/mimes.service';
+import { AsyncFailable, Fail, HasFailed } from 'src/types/failable';
 
 @Injectable()
 export class SafeImagesService {
   constructor(
-    private readonly imagesService: ImagesService,
+    private readonly imagesService: ImageDBService,
     private readonly mimesService: MimesService,
   ) {}
 
   async uploadImage(image: Buffer): AsyncFailable<string> {
-    const { mime } = await fileTypeFromBuffer(image);
-    const fullMime = await this.mimesService.getFullMime(mime);
+    const mime: FileTypeResult = await fileTypeFromBuffer(image);
+    const fullMime = await this.mimesService.getFullMime(
+      mime?.mime ?? 'extra/discard',
+    );
     if (HasFailed(fullMime)) return fullMime;
 
     const processedImage: Buffer = await this.processImage(image, fullMime);

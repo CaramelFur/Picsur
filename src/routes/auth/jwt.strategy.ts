@@ -5,7 +5,7 @@ import Config from 'src/env';
 import { validate } from 'class-validator';
 import { JwtDataDto } from './auth.dto';
 import { plainToClass } from 'class-transformer';
-import { User } from 'src/users/user.dto';
+import { User } from 'src/collections/userdb/user.dto';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

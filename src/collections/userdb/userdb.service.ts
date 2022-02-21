@@ -1,12 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  AsyncFailable,
-  Fail,
-  Failure,
-  HasFailed,
-  HasSuccess,
-} from 'src/lib/maybe';
+import { AsyncFailable, Fail, HasFailed, HasSuccess } from 'src/types/failable';
 import { Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 

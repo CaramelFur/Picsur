@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ImageEntity } from './image.entity';
 import Crypto from 'crypto';
-import { AsyncFailable, Fail, HasFailed, HasSuccess } from 'src/lib/maybe';
+import { AsyncFailable, Fail, HasFailed, HasSuccess } from 'src/types/failable';
 import { SupportedMime } from './mimes.service';
 
 @Injectable()
-export class ImagesService {
+export class ImageDBService {
   constructor(
     @InjectRepository(ImageEntity)
     private imageRepository: Repository<ImageEntity>,

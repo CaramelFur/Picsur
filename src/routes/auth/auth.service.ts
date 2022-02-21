@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { AsyncFailable, Fail, HasFailed } from 'src/lib/maybe';
-import { User } from 'src/users/user.dto';
-import { UserEntity } from 'src/users/user.entity';
-import { UsersService } from 'src/users/users.service';
+import { AsyncFailable, Fail, HasFailed } from 'src/types/failable';
+import { User } from 'src/collections/userdb/user.dto';
+import { UserEntity } from 'src/collections/userdb/user.entity';
+import { UsersService } from 'src/collections/userdb/userdb.service';
 import { JwtDataDto } from './auth.dto';
 
 @Injectable()

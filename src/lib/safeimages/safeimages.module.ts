@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ImagesModule } from 'src/images/images.module';
+import { ImageDBModule } from 'src/collections/imagedb/imagedb.module';
 import { SafeImagesService } from './safeimages.service';
 
 @Module({
-  imports: [ImagesModule],
+  imports: [ImageDBModule],
   providers: [SafeImagesService],
   exports: [SafeImagesService],
 })

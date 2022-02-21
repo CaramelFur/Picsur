@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  Body,
   Controller,
   Get,
   InternalServerErrorException,
@@ -9,17 +8,14 @@ import {
   Post,
   Req,
   Res,
-  UploadedFile,
-  UseInterceptors,
 } from '@nestjs/common';
-import { isArray } from 'class-validator';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { Multipart, MultipartFields, MultipartFile } from 'fastify-multipart';
-import { HasFailed } from 'src/lib/maybe';
-import { SafeImagesService } from 'src/safeimages/safeimages.service';
+import { Multipart } from 'fastify-multipart';
+import { HasFailed } from 'src/types/failable';
+import { SafeImagesService } from 'src/lib/safeimages/safeimages.service';
 
 @Controller()
-export class RootController {
+export class ImageController {
   constructor(private readonly imagesService: SafeImagesService) {}
 
   @Get('i/:hash')

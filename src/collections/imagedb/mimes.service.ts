@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Fail, Failable } from 'src/lib/maybe';
+import { Fail, Failable } from 'src/types/failable';
 
 const tuple = <T extends string[]>(...args: T): T => args;
 

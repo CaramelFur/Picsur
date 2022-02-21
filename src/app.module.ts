@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
-import { UserEntity } from './users/user.entity';
-import { UsersModule } from './users/users.module';
-import { RootModule } from './root/root.module';
+import { AuthModule } from './routes/auth/auth.module';
+import { UserEntity } from './collections/userdb/user.entity';
+import { UsersModule } from './collections/userdb/userdb.module';
+import { ImageModule } from './routes/image/imageroute.module';
 import Config from './env';
-import { ImageEntity } from './images/image.entity';
-import { SafeImagesModule } from './safeimages/safeimages.module';
+import { ImageEntity } from './collections/imagedb/image.entity';
+import { SafeImagesModule } from './lib/safeimages/safeimages.module';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { SafeImagesModule } from './safeimages/safeimages.module';
     }),
     AuthModule,
     UsersModule,
-    RootModule,
+    ImageModule,
     SafeImagesModule,
   ],
 })

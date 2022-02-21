@@ -18,7 +18,7 @@ import {
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.guard';
 import { AdminGuard } from './admin.guard';
-import { HasFailed } from 'src/lib/maybe';
+import { HasFailed } from 'src/types/failable';
 
 @Controller('auth')
 export class AuthController {
