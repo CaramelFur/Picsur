@@ -5,6 +5,9 @@ import {
   Request,
   Body,
   Get,
+  ConflictException,
+  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { LocalAuthGuard } from './local-auth.guard';
 import {
@@ -15,8 +18,7 @@ import {
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.guard';
 import { AdminGuard } from './admin.guard';
-import { Nothing, AsyncMaybe, Maybe } from 'src/lib/maybe';
-import { User } from 'src/users/user.dto';
+import { HasFailed } from 'src/lib/maybe';
 
 @Controller('auth')
 export class AuthController {
@@ -40,9 +42,7 @@ export class AuthController {
       register.password,
     );
 
-    if (user === Nothing) {
-      throw new Error('User already exists');
-    }
+    if (HasFailed(user)) throw new ConflictException('User already exists');
 
     if (register.isAdmin) {
       await this.authService.makeAdmin(user);
@@ -55,10 +55,7 @@ export class AuthController {
   @Post('delete')
   async delete(@Request() req, @Body() deleteData: DeleteRequestDto) {
     const user = await this.authService.deleteUser(deleteData.username);
-
-    if (user === Nothing) {
-      throw new Error('User does not exist');
-    }
+    if (HasFailed(user)) throw new NotFoundException('User does not exist');
 
     return this.authService.userEntityToUser(user);
   }
@@ -66,6 +63,11 @@ export class AuthController {
   @UseGuards(JwtAuthGuard, AdminGuard)
   @Get('list')
   async listUsers(@Request() req) {
-    return this.authService.listUsers();
+    const users = this.authService.listUsers();
+
+    if (HasFailed(users))
+      throw new InternalServerErrorException('Could not list users');
+
+    return users;
   }
 }

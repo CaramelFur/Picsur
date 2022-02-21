@@ -6,10 +6,15 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 
+import * as multipart from 'fastify-multipart';
+
 async function bootstrap() {
+  const fastifyAdapter = new FastifyAdapter();
+  fastifyAdapter.register(multipart as any);
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    fastifyAdapter,
   );
   app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: true }));
   await app.listen(3000);

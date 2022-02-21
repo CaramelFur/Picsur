@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AsyncMaybe, Nothing } from 'src/lib/maybe';
-import { Not, Repository } from 'typeorm';
+import {
+  AsyncFailable,
+  Fail,
+  Failure,
+  HasFailed,
+  HasSuccess,
+} from 'src/lib/maybe';
+import { Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 
 @Injectable()
@@ -14,46 +20,65 @@ export class UsersService {
   async createUser(
     username: string,
     hashedPassword: string,
-  ): AsyncMaybe<UserEntity> {
-    if (await this.exists(username)) return Nothing;
+  ): AsyncFailable<UserEntity> {
+    if (await this.exists(username)) return Fail('User already exists');
 
     const user = new UserEntity();
     user.username = username;
     user.password = hashedPassword;
-    await this.usersRepository.save(user);
+
+    try {
+      await this.usersRepository.save(user);
+    } catch (e) {
+      return Fail(e.message);
+    }
 
     return user;
   }
 
-  async removeUser(user: string | UserEntity): AsyncMaybe<UserEntity> {
+  async removeUser(user: string | UserEntity): AsyncFailable<UserEntity> {
     const userToModify = await this.resolveUser(user);
 
-    if (user === Nothing) return Nothing;
+    if (HasFailed(userToModify)) return userToModify;
 
-    await this.usersRepository.remove(userToModify);
+    try {
+      await this.usersRepository.remove(userToModify);
+    } catch (e) {
+      return Fail(e.message);
+    }
 
     return userToModify;
   }
 
-  async findOne(username: string): AsyncMaybe<UserEntity> {
-    return await this.usersRepository.findOne({ where: { username } });
+  async findOne(username: string): AsyncFailable<UserEntity> {
+    try {
+      const found = await this.usersRepository.findOne({ where: { username } });
+      if (!found) return Fail('User not found');
+      return found;
+    } catch (e) {
+      return Fail(e.message);
+    }
   }
 
-  async findAll(): Promise<UserEntity[]> {
-    return await this.usersRepository.find();
+  async findAll(): AsyncFailable<UserEntity[]> {
+    try {
+      return await this.usersRepository.find();
+    } catch (e) {
+      return Fail(e.message);
+    }
   }
 
   async exists(username: string): Promise<boolean> {
-    return (await this.findOne(username)) !== Nothing;
+    return HasSuccess(await this.findOne(username));
   }
 
   async modifyAdmin(
     user: string | UserEntity,
     admin: boolean,
-  ): Promise<boolean> {
+  ): AsyncFailable<true> {
     const userToModify = await this.resolveUser(user);
 
-    if (userToModify === Nothing) return false;
+    if (HasFailed(userToModify)) return userToModify;
 
     userToModify.isAdmin = admin;
     await this.usersRepository.save(userToModify);
@@ -61,7 +86,9 @@ export class UsersService {
     return true;
   }
 
-  private async resolveUser(user: string | UserEntity): Promise<UserEntity> {
+  private async resolveUser(
+    user: string | UserEntity,
+  ): AsyncFailable<UserEntity> {
     if (typeof user === 'string') {
       return await this.findOne(user);
     } else {

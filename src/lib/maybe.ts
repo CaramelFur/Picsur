@@ -1,5 +1,23 @@
-export const Nothing = undefined;
-export type Nothing = undefined;
-export type Maybe<T> = T | Nothing;
+export class Failure {
+  constructor(private readonly reason?: string) {}
 
-export type AsyncMaybe<T> = Promise<Maybe<T>>;
+  getReason(): string {
+    return this.reason ?? 'Unknown';
+  }
+}
+
+export function Fail(reason?: string): Failure {
+  return new Failure(reason);
+}
+
+export type Failable<T> = T | Failure;
+
+export type AsyncFailable<T> = Promise<Failable<T>>;
+
+export function HasFailed<T>(failable: Failable<T>): failable is Failure {
+  return failable instanceof Failure;
+}
+
+export function HasSuccess<T>(failable: Failable<T>): failable is T {
+  return !(failable instanceof Failure);
+}

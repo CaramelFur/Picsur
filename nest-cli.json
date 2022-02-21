@@ -1,4 +1,9 @@
 {
+  "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "src",
+  "generateOptions": {
+    "spec": false
+  },
+  "exec": "pog"
 }
