@@ -1,0 +1,18 @@
+version: "3"
+services:
+  devdb:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_DB: imagur
+      POSTGRES_PASSWORD: imagur
+      POSTGRES_USER: imagur
+    logging:
+      driver: "none"
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
