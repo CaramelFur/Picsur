@@ -1,0 +1,42 @@
+{
+  "private": true,
+  "name": "imagur-frontend",
+  "version": "1.0.0",
+  "license": "GPL-3.0",
+  "scripts": {
+    "build": "preact build",
+    "serve": "sirv build --port 8080 --cors --single",
+    "dev": "preact watch",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "preact",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "ignorePatterns": [
+      "build/"
+    ]
+  },
+  "dependencies": {
+    "preact": "^10.6.6",
+    "preact-render-to-string": "^5.1.20",
+    "preact-router": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/enzyme": "^3.10.11",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-preact-pure": "^3.3.0",
+    "eslint": "^8.9.0",
+    "eslint-config-preact": "^1.3.0",
+    "preact-cli": "^3.3.5",
+    "sass": "^1.49.8",
+    "sass-loader": "10",
+    "sirv-cli": "^2.0.2",
+    "typescript": "^4.5.5",
+    "webpack": "5"
+  }
+}
