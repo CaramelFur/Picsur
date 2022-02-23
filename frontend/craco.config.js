@@ -3,5 +3,6 @@ module.exports = {
     writeToDisk: true,
     port: 3300,
     liveReload: true,
+    open: false
   },
 };

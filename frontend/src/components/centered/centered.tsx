@@ -1,26 +1,26 @@
-import React from 'react';
+import React, { ForwardedRef } from 'react';
+import { forwardRef } from 'react';
 import './centered.css';
 
-class Centered extends React.Component<
-  React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  > & { fullScreen?: boolean },
-  any
-> {
-  render() {
+type PropsType = React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> & { fullScreen?: boolean };
+
+const Centered = forwardRef(
+  (props: PropsType, ref: ForwardedRef<HTMLDivElement>) => {
     let clss = 'centered';
-    if (this.props.fullScreen) {
+    if (props.fullScreen) {
       clss += ' centered-screen';
     } else {
       clss += ' centered-normal';
     }
 
-    let filteredProps = { ...this.props };
+    let filteredProps = { ...props };
     delete filteredProps.fullScreen;
 
-    return <div className={clss} {...filteredProps} />;
-  }
-}
+    return <div className={clss} ref={ref} {...filteredProps} />;
+  },
+);
 
 export default Centered;
