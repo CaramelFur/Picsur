@@ -1,3 +1,0 @@
-# Imagur-Backend
-
-Just testing

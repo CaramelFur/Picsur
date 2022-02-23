@@ -1,19 +1,26 @@
+import React from 'react';
 import './centered.css';
 
-function Centered(
-  props: React.DetailedHTMLProps<
+class Centered extends React.Component<
+  React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
-  > & { screen?: boolean },
-) {
-  let clss = 'centered';
-  if (props.screen) {
-    clss += ' centered-screen';
-  } else {
-    clss += ' centered-normal';
-  }
+  > & { fullScreen?: boolean },
+  any
+> {
+  render() {
+    let clss = 'centered';
+    if (this.props.fullScreen) {
+      clss += ' centered-screen';
+    } else {
+      clss += ' centered-normal';
+    }
 
-  return <div className={clss} {...props} />;
+    let filteredProps = { ...this.props };
+    delete filteredProps.fullScreen;
+
+    return <div className={clss} {...filteredProps} />;
+  }
 }
 
 export default Centered;

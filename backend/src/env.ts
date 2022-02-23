@@ -24,9 +24,11 @@ const Config = {
       : 128000000,
   },
   static: {
-    packageRoot,
+    packageRoot: packageRoot,
     frontendRoot:
-      process.env.STATIC_FRONTEND_ROOT ?? join(packageRoot, '../frontend/build'),
+      process.env.STATIC_FRONTEND_ROOT ??
+      join(packageRoot, '../frontend/dist'),
+    backendRoutes: ['i', 'api'],
   },
 };
 

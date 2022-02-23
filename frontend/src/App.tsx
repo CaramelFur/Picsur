@@ -19,7 +19,7 @@ function App() {
     },
   });
 
-  const baseURL = location.protocol + '//' + location.host;
+  const baseURL = window.location.protocol + '//' + window.location.host;
 
   let [state, setState] = useState(States.Selecting);
   let [imageURL, setImageURL] = useState('');
@@ -63,7 +63,7 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Centered screen={true}>{getView()}</Centered>
+      <Centered fullScreen={true}>{getView()}</Centered>
     </ThemeProvider>
   );
 }

@@ -20,7 +20,7 @@ import { JwtAuthGuard } from './jwt.guard';
 import { AdminGuard } from './admin.guard';
 import { HasFailed } from 'src/types/failable';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 

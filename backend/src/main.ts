@@ -11,6 +11,7 @@ import {
 import { AppModule } from './app.module';
 
 import * as multipart from 'fastify-multipart';
+import { FrontendMiddleware } from './middleware/frontend.middleware';
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
@@ -20,10 +21,6 @@ async function bootstrap() {
     AppModule,
     fastifyAdapter,
   );
-  // app.useStaticAssets({
-  //   root: join(__dirname, '..', 'public'),
-  //   prefix: '/public',
-  // });
   app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: true }));
   await app.listen(3000);
 }
