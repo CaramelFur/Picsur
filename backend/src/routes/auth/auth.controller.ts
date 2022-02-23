@@ -70,4 +70,12 @@ export class AuthController {
 
     return users;
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async me(@Request() req) {
+    return req.user;
+  }
 }
+
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiYWRtaW4iLCJpc0FkbWluIjp0cnVlfSwiaWF0IjoxNjQ1NDUxMzg1LCJleHAiOjE2NDU1Mzc3ODV9.Uf6JmygblXgBS4ztTcfZl6m579YjH2R0uD0QyNCfQNs

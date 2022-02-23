@@ -16,16 +16,18 @@ const SupportedImageMimesTuple = tuple(
 
 const SupportedAnimMimesTuple = tuple('image/apng', 'image/gif');
 
+const SupportedMimesTuple = [
+  ...SupportedImageMimesTuple,
+  ...SupportedAnimMimesTuple,
+];
+
 // Derivatives
 
 export const SupportedImageMimes: string[] = SupportedImageMimesTuple;
 export const SupportedAnimMimes: string[] = SupportedAnimMimesTuple;
 
-export const SupportedMimes: string[] = [
-  ...SupportedImageMimes,
-  ...SupportedAnimMimes,
-];
-export type SupportedMime = typeof SupportedMimes[number];
+export const SupportedMimes: string[] = SupportedMimesTuple;
+export type SupportedMime = typeof SupportedMimesTuple[number];
 export type SupportedMimeCategory = 'image' | 'anim';
 
 export interface FullMime {
@@ -37,10 +39,10 @@ export interface FullMime {
 export class MimesService {
   public getFullMime(mime: string): Failable<FullMime> {
     if (SupportedImageMimes.includes(mime)) {
-      return { mime, type: 'image' };
+      return { mime: mime as SupportedMime, type: 'image' };
     }
     if (SupportedAnimMimes.includes(mime)) {
-      return { mime, type: 'anim' };
+      return { mime: mime as SupportedMime, type: 'anim' };
     }
     return Fail('Unsupported mime type');
   }

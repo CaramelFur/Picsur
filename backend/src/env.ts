@@ -1,3 +1,7 @@
+import { dirname, resolve, join } from 'path';
+import { fileURLToPath } from 'url';
+const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../');
+
 const Config = {
   database: {
     host: process.env.DB_HOST ?? 'localhost',
@@ -18,6 +22,11 @@ const Config = {
     maxFileSize: process.env.MAX_FILE_SIZE
       ? parseInt(process.env.MAX_FILE_SIZE)
       : 128000000,
+  },
+  static: {
+    packageRoot,
+    frontendRoot:
+      process.env.STATIC_FRONTEND_ROOT ?? join(packageRoot, '../frontend/build'),
   },
 };
 
