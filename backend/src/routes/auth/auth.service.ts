@@ -19,11 +19,11 @@ export class AuthService {
     password: string,
   ): AsyncFailable<UserEntity> {
     const hashedPassword = await bcrypt.hash(password, 12);
-    return this.usersService.createUser(username, hashedPassword);
+    return this.usersService.create(username, hashedPassword);
   }
 
   async deleteUser(user: string | UserEntity): AsyncFailable<UserEntity> {
-    return this.usersService.removeUser(user);
+    return this.usersService.delete(user);
   }
 
   async listUsers(): AsyncFailable<User[]> {

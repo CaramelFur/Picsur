@@ -6,7 +6,7 @@ import { AsyncFailable, HasFailed } from 'src/types/failable';
 import { UserEntity } from 'src/collections/userdb/user.entity';
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy) {
+export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(private authService: AuthService) {
     super();
   }

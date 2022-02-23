@@ -11,7 +11,7 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
   ) {}
 
-  async createUser(
+  public async create(
     username: string,
     hashedPassword: string,
   ): AsyncFailable<UserEntity> {
@@ -30,8 +30,8 @@ export class UsersService {
     return user;
   }
 
-  async removeUser(user: string | UserEntity): AsyncFailable<UserEntity> {
-    const userToModify = await this.resolveUser(user);
+  public async delete(user: string | UserEntity): AsyncFailable<UserEntity> {
+    const userToModify = await this.resolve(user);
 
     if (HasFailed(userToModify)) return userToModify;
 
@@ -44,7 +44,7 @@ export class UsersService {
     return userToModify;
   }
 
-  async findOne(username: string): AsyncFailable<UserEntity> {
+  public async findOne(username: string): AsyncFailable<UserEntity> {
     try {
       const found = await this.usersRepository.findOne({ where: { username } });
       if (!found) return Fail('User not found');
@@ -54,7 +54,7 @@ export class UsersService {
     }
   }
 
-  async findAll(): AsyncFailable<UserEntity[]> {
+  public async findAll(): AsyncFailable<UserEntity[]> {
     try {
       return await this.usersRepository.find();
     } catch (e) {
@@ -62,15 +62,15 @@ export class UsersService {
     }
   }
 
-  async exists(username: string): Promise<boolean> {
+  public async exists(username: string): Promise<boolean> {
     return HasSuccess(await this.findOne(username));
   }
 
-  async modifyAdmin(
+  public async modifyAdmin(
     user: string | UserEntity,
     admin: boolean,
   ): AsyncFailable<true> {
-    const userToModify = await this.resolveUser(user);
+    const userToModify = await this.resolve(user);
 
     if (HasFailed(userToModify)) return userToModify;
 
@@ -80,7 +80,7 @@ export class UsersService {
     return true;
   }
 
-  private async resolveUser(
+  private async resolve(
     user: string | UserEntity,
   ): AsyncFailable<UserEntity> {
     if (typeof user === 'string') {

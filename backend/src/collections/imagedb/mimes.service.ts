@@ -35,7 +35,7 @@ export interface FullMime {
 
 @Injectable()
 export class MimesService {
-  getFullMime(mime: string): Failable<FullMime> {
+  public getFullMime(mime: string): Failable<FullMime> {
     if (SupportedImageMimes.includes(mime)) {
       return { mime, type: 'image' };
     }

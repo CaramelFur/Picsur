@@ -8,7 +8,7 @@ import { plainToClass } from 'class-transformer';
 import { User } from 'src/collections/userdb/user.dto';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   private readonly logger = new Logger('JwtStrategy');
 
   constructor() {

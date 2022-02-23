@@ -26,7 +26,7 @@ export class ImageController {
     if (!this.imagesService.validateHash(hash))
       throw new BadRequestException('Invalid hash');
 
-    const image = await this.imagesService.retrieveImage(hash);
+    const image = await this.imagesService.retrieve(hash);
     if (HasFailed(image))
       throw new NotFoundException('Failed to retrieve image');
 
@@ -36,7 +36,7 @@ export class ImageController {
 
   @Post('i')
   async uploadImage(@Req() req: FastifyRequest, @PostFile() file: Buffer) {
-    const hash = await this.imagesService.uploadImage(file);
+    const hash = await this.imagesService.upload(file);
     if (HasFailed(hash)) {
       throw new InternalServerErrorException('Failed to upload image');
     }

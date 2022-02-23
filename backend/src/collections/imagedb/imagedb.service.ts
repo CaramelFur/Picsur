@@ -13,7 +13,10 @@ export class ImageDBService {
     private imageRepository: Repository<ImageEntity>,
   ) {}
 
-  async create(image: Buffer, type: SupportedMime): AsyncFailable<ImageEntity> {
+  public async create(
+    image: Buffer,
+    type: SupportedMime,
+  ): AsyncFailable<ImageEntity> {
     const hash = this.hash(image);
     const find = await this.findOne(hash);
     if (HasSuccess(find)) return find;
@@ -31,13 +34,33 @@ export class ImageDBService {
     return imageEntity;
   }
 
-  async findOne(hash: string): AsyncFailable<ImageEntity> {
-    const found = await this.imageRepository.findOne({ where: { hash } });
-    if (found === undefined) return Fail('Image not found');
-    return found;
+  public async findOne(hash: string): AsyncFailable<ImageEntity> {
+    try {
+      const found = await this.imageRepository.findOne({ where: { hash } });
+      if (found === undefined) return Fail('Image not found');
+      return found;
+    } catch (e) {
+      return Fail(e.message);
+    }
   }
 
-  async delete(hash: string): AsyncFailable<true> {
+  public async findMany(
+    startId: number,
+    limit: number,
+  ): AsyncFailable<ImageEntity[]> {
+    try {
+      const found = await this.imageRepository.find({
+        where: { id: { gte: startId } },
+        take: limit,
+      });
+      if (found === undefined) return Fail('Images not found');
+      return found;
+    } catch (e) {
+      return Fail(e.message);
+    }
+  }
+
+  public async delete(hash: string): AsyncFailable<true> {
     const image = await this.findOne(hash);
 
     if (HasFailed(image)) return image;
@@ -50,7 +73,7 @@ export class ImageDBService {
     return true;
   }
 
-  hash(image: Buffer): string {
+  private hash(image: Buffer): string {
     return Crypto.createHash('sha256').update(image).digest('hex');
   }
 }
