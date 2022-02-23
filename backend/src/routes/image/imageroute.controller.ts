@@ -14,11 +14,11 @@ import { PostFile } from 'src/decorators/multipart.decorator';
 import { ImageManagerService } from 'src/managers/imagemanager/imagemanager.service';
 import { HasFailed } from 'src/types/failable';
 
-@Controller()
+@Controller('i')
 export class ImageController {
   constructor(private readonly imagesService: ImageManagerService) {}
 
-  @Get('i/:hash')
+  @Get(':hash')
   async getImage(
     @Res({ passthrough: true }) res: FastifyReply,
     @Param('hash') hash: string,
@@ -34,7 +34,7 @@ export class ImageController {
     return image.data;
   }
 
-  @Post('i')
+  @Post()
   async uploadImage(@Req() req: FastifyRequest, @PostFile() file: Buffer) {
     const hash = await this.imagesService.upload(file);
     if (HasFailed(hash)) {
