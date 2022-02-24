@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ImageEntity } from './image.entity';
 import Crypto from 'crypto';
-import { AsyncFailable, Fail, HasFailed, HasSuccess } from 'src/types/failable';
 import { SupportedMime } from './mimes.service';
+import { AsyncFailable, Fail, HasFailed, HasSuccess } from 'imagur-shared/dist/types';
 
 @Injectable()
 export class ImageDBService {
@@ -27,8 +27,8 @@ export class ImageDBService {
     imageEntity.hash = hash;
     try {
       await this.imageRepository.save(imageEntity);
-    } catch (e) {
-      return Fail(e.message);
+    } catch (e: any) {
+      return Fail(e?.message);
     }
 
     return imageEntity;
@@ -39,8 +39,8 @@ export class ImageDBService {
       const found = await this.imageRepository.findOne({ where: { hash } });
       if (found === undefined) return Fail('Image not found');
       return found;
-    } catch (e) {
-      return Fail(e.message);
+    } catch (e: any) {
+      return Fail(e?.message);
     }
   }
 
@@ -55,8 +55,8 @@ export class ImageDBService {
       });
       if (found === undefined) return Fail('Images not found');
       return found;
-    } catch (e) {
-      return Fail(e.message);
+    } catch (e: any) {
+      return Fail(e?.message);
     }
   }
 
@@ -67,8 +67,8 @@ export class ImageDBService {
 
     try {
       await this.imageRepository.delete(image);
-    } catch (e) {
-      return Fail(e.message);
+    } catch (e: any) {
+      return Fail(e?.message);
     }
     return true;
   }

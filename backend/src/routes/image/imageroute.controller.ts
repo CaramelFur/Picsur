@@ -9,18 +9,10 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import {
-  IsBoolean,
-  IsDefined,
-  Validate,
-  ValidateNested,
-} from 'class-validator';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { User } from 'src/collections/userdb/user.dto';
-import { MultiPart, MultiPartDto } from 'src/decorators/multipart.decorator';
-import { MultiPartFileDto } from 'src/decorators/multipart.dto';
-import { ImageManagerService } from 'src/managers/imagemanager/imagemanager.service';
-import { HasFailed } from 'src/types/failable';
+import { HasFailed } from 'imagur-shared/dist/types';
+import { MultiPart } from '../../decorators/multipart.decorator';
+import { ImageManagerService } from '../../managers/imagemanager/imagemanager.service';
 import { ImageUploadDto } from './imageroute.dto';
 @Controller('i')
 export class ImageController {

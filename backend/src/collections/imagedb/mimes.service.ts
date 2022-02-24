@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Fail, Failable } from 'src/types/failable';
+import { Fail, Failable } from 'imagur-shared/dist/types';
 
 const tuple = <T extends string[]>(...args: T): T => args;
 

@@ -8,8 +8,8 @@ import {
 import { validate } from 'class-validator';
 import { FastifyRequest } from 'fastify';
 import { Multipart, MultipartFields, MultipartFile } from 'fastify-multipart';
-import Config from 'src/env';
-import { Newable } from 'src/types/newable';
+import { Newable } from 'imagur-shared/dist/types';
+import Config from '../env';
 import { MultiPartFieldDto, MultiPartFileDto } from './multipart.dto';
 
 const logger = new Logger('MultiPart');
@@ -56,7 +56,7 @@ export const MultiPart = createParamDecorator(
 
     if (!req.isMultipart()) throw new BadRequestException('Invalid file');
 
-    let fields: MultipartFields;
+    let fields: MultipartFields | null = null;
     try {
       fields = (
         await req.file({
@@ -74,9 +74,9 @@ export const MultiPart = createParamDecorator(
       }
 
       if ((fields[key] as any).value) {
-        dtoClass[key] = new MultiPartFieldDto(fields[key] as MultipartFile);
+        (dtoClass as any)[key] = new MultiPartFieldDto(fields[key] as MultipartFile);
       } else {
-        dtoClass[key] = new MultiPartFileDto(
+        (dtoClass as any)[key] = new MultiPartFileDto(
           fields[key] as MultipartFile,
           new BadRequestException('Invalid file'),
         );

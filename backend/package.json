@@ -7,6 +7,7 @@
   "repository": "https://github.com/rubikscraft/Imagur",
   "author": "Rubikscraft <contact@rubikscraft.nl>",
   "type": "module",
+  "main": "dist/main.js",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -41,7 +42,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.4",
-    "typeorm": "^0.2.43"
+    "typeorm": "^0.2.43",
+    "imagur-shared": "*"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.1",

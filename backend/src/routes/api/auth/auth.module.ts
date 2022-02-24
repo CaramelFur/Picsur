@@ -1,12 +1,12 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { UsersModule } from 'src/collections/userdb/userdb.module';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
-import Config from 'src/env';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { UsersModule } from '../../../collections/userdb/userdb.module';
+import Config from '../../../env';
 
 @Module({
   imports: [

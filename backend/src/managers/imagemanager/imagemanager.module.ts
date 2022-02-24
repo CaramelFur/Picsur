@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ImageDBModule } from 'src/collections/imagedb/imagedb.module';
+import { ImageDBModule } from '../../collections/imagedb/imagedb.module';
 import { ImageManagerService } from './imagemanager.service';
 
 @Module({

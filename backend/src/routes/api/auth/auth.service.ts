@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { AsyncFailable, Fail, HasFailed } from 'src/types/failable';
-import { User } from 'src/collections/userdb/user.dto';
-import { UserEntity } from 'src/collections/userdb/user.entity';
-import { UsersService } from 'src/collections/userdb/userdb.service';
+import { AsyncFailable, HasFailed, Fail } from 'imagur-shared/dist/types';
+import { User } from '../../../collections/userdb/user.dto';
+import { UserEntity } from '../../../collections/userdb/user.entity';
+import { UsersService } from '../../../collections/userdb/userdb.service';
 import { JwtDataDto } from './auth.dto';
 
 @Injectable()
@@ -47,7 +47,7 @@ export class AuthService {
     return user;
   }
 
-  async createToken(user: UserEntity): Promise<string> {
+  async createToken(user: User): Promise<string> {
     const jwtData: JwtDataDto = {
       user: {
         username: user.username,

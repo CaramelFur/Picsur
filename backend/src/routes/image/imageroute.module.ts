@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ImageManagerModule } from 'src/managers/imagemanager/imagemanager.module';
-
+import { ImageManagerModule } from '../../managers/imagemanager/imagemanager.module';
 import { ImageController } from './imageroute.controller';
 
 @Module({

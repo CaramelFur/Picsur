@@ -3,7 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { UploadImage } from '../../api/images';
-import { HasFailed } from '../../types/failable';
+import { HasFailed } from 'imagur-shared/dist/types';
 
 export interface ProcessingViewMetadata {
   imageFile: File;

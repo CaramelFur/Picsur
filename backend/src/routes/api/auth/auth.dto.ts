@@ -6,7 +6,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { User } from 'src/collections/userdb/user.dto';
+import { User } from '../../../collections/userdb/user.dto';
 
 export class LoginResponseDto {
   @IsString()

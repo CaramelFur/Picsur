@@ -1,4 +1,4 @@
-import { AsyncFailable, Fail } from '../types/failable';
+import { AsyncFailable, Fail } from 'imagur-shared/dist/types'
 
 export function GetImageURL(image: string): string {
   const baseURL = window.location.protocol + '//' + window.location.host;

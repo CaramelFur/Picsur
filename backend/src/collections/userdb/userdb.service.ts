@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AsyncFailable, Fail, HasFailed, HasSuccess } from 'src/types/failable';
+import { AsyncFailable, Fail, HasFailed, HasSuccess } from 'imagur-shared/dist/types';
 import { Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 
@@ -23,8 +23,8 @@ export class UsersService {
 
     try {
       await this.usersRepository.save(user);
-    } catch (e) {
-      return Fail(e.message);
+    } catch (e: any) {
+      return Fail(e?.message);
     }
 
     return user;
@@ -37,8 +37,8 @@ export class UsersService {
 
     try {
       await this.usersRepository.remove(userToModify);
-    } catch (e) {
-      return Fail(e.message);
+    } catch (e: any) {
+      return Fail(e?.message);
     }
 
     return userToModify;
@@ -49,16 +49,16 @@ export class UsersService {
       const found = await this.usersRepository.findOne({ where: { username } });
       if (!found) return Fail('User not found');
       return found;
-    } catch (e) {
-      return Fail(e.message);
+    } catch (e: any) {
+      return Fail(e?.message);
     }
   }
 
   public async findAll(): AsyncFailable<UserEntity[]> {
     try {
       return await this.usersRepository.find();
-    } catch (e) {
-      return Fail(e.message);
+    } catch (e: any) {
+      return Fail(e?.message);
     }
   }
 

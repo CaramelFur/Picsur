@@ -18,7 +18,8 @@ import {
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.guard';
 import { AdminGuard } from './admin.guard';
-import { HasFailed } from 'src/types/failable';
+import { HasFailed } from 'imagur-shared/dist/types';
+import AuthFasityRequest from './authrequest';
 
 @Controller('api/auth')
 export class AuthController {
@@ -26,7 +27,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
+  async login(@Request() req: AuthFasityRequest) {
     const response: LoginResponseDto = {
       access_token: await this.authService.createToken(req.user),
     };
@@ -36,7 +37,10 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard, AdminGuard)
   @Post('create')
-  async register(@Request() req, @Body() register: RegisterRequestDto) {
+  async register(
+    @Request() req: AuthFasityRequest,
+    @Body() register: RegisterRequestDto,
+  ) {
     const user = await this.authService.createUser(
       register.username,
       register.password,
@@ -53,7 +57,10 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard, AdminGuard)
   @Post('delete')
-  async delete(@Request() req, @Body() deleteData: DeleteRequestDto) {
+  async delete(
+    @Request() req: AuthFasityRequest,
+    @Body() deleteData: DeleteRequestDto,
+  ) {
     const user = await this.authService.deleteUser(deleteData.username);
     if (HasFailed(user)) throw new NotFoundException('User does not exist');
 
@@ -62,7 +69,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard, AdminGuard)
   @Get('list')
-  async listUsers(@Request() req) {
+  async listUsers(@Request() req: AuthFasityRequest) {
     const users = this.authService.listUsers();
 
     if (HasFailed(users))
@@ -73,9 +80,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  async me(@Request() req) {
+  async me(@Request() req: AuthFasityRequest) {
     return req.user;
   }
 }
-
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiYWRtaW4iLCJpc0FkbWluIjp0cnVlfSwiaWF0IjoxNjQ1NDUxMzg1LCJleHAiOjE2NDU1Mzc3ODV9.Uf6JmygblXgBS4ztTcfZl6m579YjH2R0uD0QyNCfQNs

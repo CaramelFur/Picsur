@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
-import { ImageEntity } from 'src/collections/imagedb/image.entity';
-import { ImageDBService } from 'src/collections/imagedb/imagedb.service';
-import { FullMime, MimesService } from 'src/collections/imagedb/mimes.service';
-import { AsyncFailable, Fail, HasFailed } from 'src/types/failable';
+import { AsyncFailable, Fail, HasFailed } from 'imagur-shared/dist/types';
+import { ImageEntity } from '../../collections/imagedb/image.entity';
+import { ImageDBService } from '../../collections/imagedb/imagedb.service';
+import { MimesService, FullMime } from '../../collections/imagedb/mimes.service';
 
 @Injectable()
 export class ImageManagerService {
@@ -38,7 +38,7 @@ export class ImageManagerService {
   }
 
   private async getFullMimeFromBuffer(image: Buffer): AsyncFailable<FullMime> {
-    const mime: FileTypeResult = await fileTypeFromBuffer(image);
+    const mime: FileTypeResult | undefined = await fileTypeFromBuffer(image);
     const fullMime = await this.mimesService.getFullMime(
       mime?.mime ?? 'extra/discard',
     );

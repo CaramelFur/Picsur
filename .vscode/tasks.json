@@ -10,11 +10,21 @@
     },
     {
       "type": "shell",
+      "label": "Start shared",
+      "command": "yarn start",
+      "options": {
+        "cwd": "./shared"
+      },
+      "group": "build"
+    },
+    {
+      "type": "shell",
       "label": "Start backend",
       "command": "yarn start:dev",
       "options": {
         "cwd": "./backend"
       },
+      "dependsOn": ["Start shared"],
       "group": "build"
     },
     {
@@ -24,6 +34,7 @@
       "options": {
         "cwd": "./frontend"
       },
+      "dependsOn": ["Start shared"],
       "group": "build"
     },
     {

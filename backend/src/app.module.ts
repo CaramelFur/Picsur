@@ -7,8 +7,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import Config from './env';
 import { ImageEntity } from './collections/imagedb/image.entity';
 
-const backendRoutes = ['i', 'api'];
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
