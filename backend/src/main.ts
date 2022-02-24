@@ -7,27 +7,21 @@ import {
 import { AppModule } from './app.module';
 
 import * as multipart from 'fastify-multipart';
-import Config from './env';
+import { MainExceptionFilter } from './layers/http-exception/http-exception.filter';
+import { SuccessInterceptor } from './layers/success/success.interceptor';
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
-  
+
   // Todo: generic error messages
-  fastifyAdapter.register(multipart as any, {
-    limits: {
-      fieldNameSize: 128,
-      fieldSize: 1024,
-      fields: 16,
-      fileSize: Config.limits.maxFileSize,
-      files: 16,
-    },
-    logLevel: 'error',
-  });
+  fastifyAdapter.register(multipart as any);
 
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    fastifyAdapter,
+    fastifyAdapter
   );
+  app.useGlobalFilters(new MainExceptionFilter());
+  app.useGlobalInterceptors(new SuccessInterceptor());
   app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: true }));
   await app.listen(3000);
 }

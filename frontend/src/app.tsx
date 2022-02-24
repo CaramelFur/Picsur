@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Centered from './components/centered/centered';

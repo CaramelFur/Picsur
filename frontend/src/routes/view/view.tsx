@@ -37,7 +37,7 @@ export default function ViewView() {
     const resizeImageDebounced = Debounce(resizeImage, 100);
     window.addEventListener('resize', resizeImageDebounced);
     return () => window.removeEventListener('resize', resizeImageDebounced);
-  }, []);
+  });
 
   const imageURL = GetImageURL(hash);
   const imageLinks = CreateImageLinks(imageURL);

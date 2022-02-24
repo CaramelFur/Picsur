@@ -8,10 +8,8 @@ import {
 import { validate } from 'class-validator';
 import { FastifyRequest } from 'fastify';
 import { Multipart, MultipartFields, MultipartFile } from 'fastify-multipart';
-import { request } from 'http';
 import Config from 'src/env';
 import { Newable } from 'src/types/newable';
-import { isArray } from 'util';
 import { MultiPartFieldDto, MultiPartFileDto } from './multipart.dto';
 
 const logger = new Logger('MultiPart');
@@ -25,7 +23,12 @@ export const PostFile = createParamDecorator(
 
     if (!req.isMultipart()) throw new BadRequestException('Invalid file');
 
-    const file = await req.file();
+    const file = await req.file({
+      limits: {
+        ...Config.uploadLimits,
+        files: 1,
+      },
+    });
     if (file === undefined) throw new BadRequestException('Invalid file');
 
     const allFields: Multipart[] = Object.values(file.fields).filter(
@@ -36,17 +39,18 @@ export const PostFile = createParamDecorator(
 
     if (files.length !== 1) throw new BadRequestException('Invalid file');
 
-    return await files[0].toBuffer();
+    try {
+      return await files[0].toBuffer();
+    } catch (e) {
+      throw new BadRequestException('Invalid file');
+    }
   },
 );
 
 export class MultiPartDto {}
 
 export const MultiPart = createParamDecorator(
-  async <T extends MultiPartDto>(
-    data: Newable<T>,
-    ctx: ExecutionContext,
-  ) => {
+  async <T extends MultiPartDto>(data: Newable<T>, ctx: ExecutionContext) => {
     const req: FastifyRequest = ctx.switchToHttp().getRequest();
     const dtoClass = new data();
 
@@ -54,9 +58,13 @@ export const MultiPart = createParamDecorator(
 
     let fields: MultipartFields;
     try {
-      fields = (await req.file()).fields;
+      fields = (
+        await req.file({
+          limits: Config.uploadLimits,
+        })
+      ).fields;
     } catch (e) {
-      console.warn(e);
+      logger.warn(e);
     }
     if (!fields) throw new BadRequestException('Invalid file');
 
@@ -68,7 +76,10 @@ export const MultiPart = createParamDecorator(
       if ((fields[key] as any).value) {
         dtoClass[key] = new MultiPartFieldDto(fields[key] as MultipartFile);
       } else {
-        dtoClass[key] = new MultiPartFileDto(fields[key] as MultipartFile);
+        dtoClass[key] = new MultiPartFileDto(
+          fields[key] as MultipartFile,
+          new BadRequestException('Invalid file'),
+        );
       }
     }
 
@@ -81,5 +92,3 @@ export const MultiPart = createParamDecorator(
     return dtoClass;
   },
 );
-
-// TODO: Make better multipart decoder

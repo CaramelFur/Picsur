@@ -8,7 +8,7 @@ import { FastifyRequest } from 'fastify';
 import { FastifyReply } from 'fastify';
 
 @Catch(HttpException)
-export class HttpExceptionFilter implements ExceptionFilter {
+export class MainExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
@@ -16,9 +16,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
 
     response.status(status).send({
+      success: status < 400,
       statusCode: status,
       timestamp: new Date().toISOString(),
-      path: request.url,
+
+      data: {
+        message: exception.message,
+      },
     });
   }
 }

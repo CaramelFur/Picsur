@@ -18,16 +18,19 @@ const Config = {
     secret: process.env.JWT_SECRET ?? 'CHANGE_ME',
     expiresIn: process.env.JWT_EXPIRES_IN ?? '1d',
   },
-  limits: {
-    maxFileSize: process.env.MAX_FILE_SIZE
+  uploadLimits: {
+    fieldNameSize: 128,
+    fieldSize: 1024,
+    fields: 16,
+    files: 16,
+    fileSize: process.env.MAX_FILE_SIZE
       ? parseInt(process.env.MAX_FILE_SIZE)
       : 128000000,
   },
   static: {
     packageRoot: packageRoot,
     frontendRoot:
-      process.env.STATIC_FRONTEND_ROOT ??
-      join(packageRoot, '../frontend/dist'),
+      process.env.STATIC_FRONTEND_ROOT ?? join(packageRoot, '../frontend/dist'),
     backendRoutes: ['i', 'api'],
   },
 };

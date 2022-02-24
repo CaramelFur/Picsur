@@ -25,7 +25,7 @@ function ProcessingView(props: any) {
   // Run when rendered
   useEffect(() => {
     onRendered().catch(console.error);
-  }, []);
+  });
 
   return (
     <section className="contentwindow">

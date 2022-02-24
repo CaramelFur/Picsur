@@ -1,6 +1,8 @@
 import { MultipartFile } from 'fastify-multipart';
 import { BusboyFileStream } from '@fastify/busboy';
 import { IsDefined, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { AsyncFailable, Fail } from 'src/types/failable';
+import { HttpException } from '@nestjs/common';
 
 export class MultiPartFileDto {
   @IsString()
@@ -25,12 +27,19 @@ export class MultiPartFileDto {
   @IsDefined()
   file: BusboyFileStream;
 
-  constructor(file: MultipartFile) {
+  constructor(file: MultipartFile, exceptionOnFail: HttpException) {
     this.fieldname = file.fieldname;
     this.encoding = file.encoding;
     this.filename = file.filename;
     this.mimetype = file.mimetype;
-    this.toBuffer = file.toBuffer;
+    this.toBuffer = async () => {
+      try {
+        return await file.toBuffer();
+      } catch (e) {
+        throw exceptionOnFail;
+      }
+    };
+
     this.file = file.file;
   }
 }
