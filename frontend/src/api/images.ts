@@ -19,6 +19,8 @@ export async function UploadImage(image: File): AsyncFailable<string> {
     body: formData,
   }).then((res) => res.json());
 
+  console.log(result);
+
   if (!result.hash) return Fail(result.error);
 
   return result.hash;

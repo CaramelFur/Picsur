@@ -1,8 +1,4 @@
-import { dirname, resolve, join } from 'path';
-import { fileURLToPath } from 'url';
-const __dirname = resolve(dirname(fileURLToPath(import.meta.url)));
-
-import { ValidationPipe } from '@nestjs/common';
+import { Res, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -11,11 +7,22 @@ import {
 import { AppModule } from './app.module';
 
 import * as multipart from 'fastify-multipart';
-import { FrontendMiddleware } from './middleware/frontend.middleware';
+import Config from './env';
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
-  fastifyAdapter.register(multipart as any);
+  
+  // Todo: generic error messages
+  fastifyAdapter.register(multipart as any, {
+    limits: {
+      fieldNameSize: 128,
+      fieldSize: 1024,
+      fields: 16,
+      fileSize: Config.limits.maxFileSize,
+      files: 16,
+    },
+    logLevel: 'error',
+  });
 
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,

@@ -16,9 +16,9 @@ export class AdminGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     const user = plainToClass(User, request.user);
-    const errors = await validate(user);
+    const errors = await validate(user, {forbidUnknownValues: true});
     if (errors.length > 0) {
-      this.logger.warn(`Invalid user payload: ${JSON.stringify(request.user)}`);
+      this.logger.warn(errors);
       return false;
     }
 

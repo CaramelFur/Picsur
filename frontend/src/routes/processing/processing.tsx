@@ -16,8 +16,6 @@ function ProcessingView(props: any) {
   async function onRendered() {
     if (!state) navigate('/');
 
-    console.log(state.imageFile);
-
     const hash = await UploadImage(state.imageFile);
     if (HasFailed(hash)) navigate('/'); // TODO: handle error
 

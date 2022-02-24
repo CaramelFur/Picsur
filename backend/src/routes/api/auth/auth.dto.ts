@@ -1,5 +1,6 @@
 import {
   IsBoolean,
+  IsDefined,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -9,6 +10,7 @@ import { User } from 'src/collections/userdb/user.dto';
 
 export class LoginResponseDto {
   @IsString()
+  @IsDefined()
   access_token: string;
 }
 
@@ -34,5 +36,6 @@ export class DeleteRequestDto {
 
 export class JwtDataDto {
   @ValidateNested()
+  @IsDefined()
   user: User;
 }

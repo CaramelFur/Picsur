@@ -22,9 +22,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   async validate(payload: any): Promise<User> {
     const jwt = plainToClass(JwtDataDto, payload);
 
-    const errors = await validate(jwt);
+    const errors = await validate(jwt, {forbidUnknownValues: true});
     if (errors.length > 0) {
-      this.logger.warn(`Invalid JWT payload: ${JSON.stringify(payload)}`);
+      this.logger.warn(errors);
       throw new UnauthorizedException();
     }
 

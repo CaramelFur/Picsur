@@ -9,11 +9,19 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
+import {
+  IsBoolean,
+  IsDefined,
+  Validate,
+  ValidateNested,
+} from 'class-validator';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { PostFile } from 'src/decorators/multipart.decorator';
+import { User } from 'src/collections/userdb/user.dto';
+import { MultiPart, MultiPartDto } from 'src/decorators/multipart.decorator';
+import { MultiPartFileDto } from 'src/decorators/multipart.dto';
 import { ImageManagerService } from 'src/managers/imagemanager/imagemanager.service';
 import { HasFailed } from 'src/types/failable';
-
+import { ImageUploadDto } from './imageroute.dto';
 @Controller('i')
 export class ImageController {
   constructor(private readonly imagesService: ImageManagerService) {}
@@ -35,8 +43,12 @@ export class ImageController {
   }
 
   @Post()
-  async uploadImage(@Req() req: FastifyRequest, @PostFile() file: Buffer) {
-    const hash = await this.imagesService.upload(file);
+  async uploadImage(
+    @Req() req: FastifyRequest,
+    @MultiPart(ImageUploadDto) multipart: ImageUploadDto,
+  ) {
+    const fileBuffer = await multipart.image.toBuffer();
+    const hash = await this.imagesService.upload(fileBuffer);
     if (HasFailed(hash)) {
       throw new InternalServerErrorException('Failed to upload image');
     }
