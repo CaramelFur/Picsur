@@ -3,8 +3,10 @@ import { fileURLToPath } from 'url';
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../');
 
 const Config = {
-  host: process.env.IMAGUR_HOST || '0.0.0.0',
-  port: process.env.IMAGUR_PORT || 8080,
+  main: {
+    host: process.env.IMAGUR_HOST || '0.0.0.0',
+    port: process.env.IMAGUR_PORT || 8080,
+  },
   database: {
     host: process.env.IMAGUR_DB_HOST ?? 'localhost',
     port: process.env.IMAGUR_DB_PORT
@@ -37,6 +39,12 @@ const Config = {
       process.env.IMAGUR_STATIC_FRONTEND_ROOT ??
       join(packageRoot, '../frontend/dist'),
     backendRoutes: ['i', 'api'],
+  },
+  demo: {
+    enabled: process.env.IMAGUR_DEMO?.toLowerCase() === 'true',
+    interval: process.env.IMAGUR_DEMO_INTERVAL
+      ? parseInt(process.env.IMAGUR_DEMO_INTERVAL)
+      : 1000 * 60 * 5,
   },
 };
 

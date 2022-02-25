@@ -6,6 +6,7 @@ import { ImageModule } from './routes/image/imageroute.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import Config from './env';
 import { ImageEntity } from './collections/imagedb/image.entity';
+import { DemoManagerModule } from './managers/demo/demomanager.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ImageEntity } from './collections/imagedb/image.entity';
     }),
     AuthModule,
     ImageModule,
+    DemoManagerModule,
   ],
 })
 export class AppModule {}

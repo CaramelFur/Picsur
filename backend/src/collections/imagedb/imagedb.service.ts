@@ -4,7 +4,12 @@ import { Repository } from 'typeorm';
 import { ImageEntity } from './image.entity';
 import Crypto from 'crypto';
 import { SupportedMime } from './mimes.service';
-import { AsyncFailable, Fail, HasFailed, HasSuccess } from 'imagur-shared/dist/types';
+import {
+  AsyncFailable,
+  Fail,
+  HasFailed,
+  HasSuccess,
+} from 'imagur-shared/dist/types';
 
 @Injectable()
 export class ImageDBService {
@@ -67,6 +72,15 @@ export class ImageDBService {
 
     try {
       await this.imageRepository.delete(image);
+    } catch (e: any) {
+      return Fail(e?.message);
+    }
+    return true;
+  }
+
+  public async deleteAll(): AsyncFailable<true> {
+    try {
+      await this.imageRepository.delete({});
     } catch (e: any) {
       return Fail(e?.message);
     }

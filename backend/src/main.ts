@@ -24,7 +24,7 @@ async function bootstrap() {
   app.useGlobalFilters(new MainExceptionFilter());
   app.useGlobalInterceptors(new SuccessInterceptor());
   app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: true }));
-  await app.listen(Config.port, Config.host);
+  await app.listen(Config.main.port, Config.main.host);
 }
 
 bootstrap().catch(console.error);
