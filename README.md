@@ -1,7 +1,7 @@
 <img align="left" width="100" height="100" src="branding/logo/imagur.svg"/>
 
-
 # Imagur
+
 <br>
 
 > Totally not an imgur clone
@@ -20,6 +20,10 @@ But it does function, so feel free to give it a try.
 You can view a live demo here: <https://imagur.rubikscraft.nl>
 
 The images are deleted every five minutes, and the max filesize is 16MB. But it should give you an indication of how it works.
+
+## Bugs
+
+If you encounter any bugs or oddities, please open an issue [here](https://github.com/rubikscraft/Imagur/issues). Cause without feedback I'll never know they exists.
 
 ## Running
 
