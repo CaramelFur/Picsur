@@ -4,17 +4,30 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsInt,
   ValidateNested,
 } from 'class-validator';
-import { User } from '../../../collections/userdb/user.dto';
+import { User } from './user.dto';
 
-export class LoginResponseDto {
+// Api
+
+export class AuthLoginRequest {
+  @IsNotEmpty()
+  @IsString()
+  username: string;
+
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+}
+
+export class AuthLoginResponse {
   @IsString()
   @IsDefined()
   access_token: string;
 }
 
-export class RegisterRequestDto {
+export class AuthRegisterRequest {
   @IsString()
   @IsNotEmpty()
   username: string;
@@ -28,14 +41,26 @@ export class RegisterRequestDto {
   isAdmin?: boolean;
 }
 
-export class DeleteRequestDto {
+export class AuthDeleteRequest {
   @IsString()
   @IsNotEmpty()
   username: string;
 }
 
+export class AuthDeleteResponse extends User {}
+
+// Extra
+
 export class JwtDataDto {
   @ValidateNested()
   @IsDefined()
   user: User;
+
+  @IsOptional()
+  @IsInt()
+  iat?: number;
+
+  @IsOptional()
+  @IsInt()
+  exp?: number;
 }

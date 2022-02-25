@@ -4,7 +4,7 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
-import { FastifyReply } from 'fastify';
+import { ApiResponse } from 'imagur-shared/dist/dto/api.dto';
 import { Observable, map } from 'rxjs';
 
 @Injectable()
@@ -16,13 +16,15 @@ export class SuccessInterceptor<T> implements NestInterceptor {
           return data;
         } else if (typeof data === 'object') {
           const status = context.switchToHttp().getResponse().statusCode;
-          return {
-            success: status < 400,
+          const response: ApiResponse<any> = {
+            success: true,
             statusCode: status,
             timestamp: new Date().toISOString(),
 
             data,
           };
+
+          return response;
         } else {
           return data;
         }

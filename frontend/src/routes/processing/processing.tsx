@@ -2,8 +2,8 @@ import Centered from '../../components/centered/centered';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { UploadImage } from '../../api/images';
 import { HasFailed } from 'imagur-shared/dist/types';
+import ImagesApi from '../../api/images';
 
 export interface ProcessingViewMetadata {
   imageFile: File;
@@ -16,7 +16,7 @@ function ProcessingView(props: any) {
   async function onRendered() {
     if (!state) navigate('/');
 
-    const hash = await UploadImage(state.imageFile);
+    const hash = await ImagesApi.I.UploadImage(state.imageFile);
     if (HasFailed(hash)) navigate('/'); // TODO: handle error
 
     navigate('/view/' + hash);

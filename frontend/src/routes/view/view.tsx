@@ -1,13 +1,14 @@
 import { Button, Grid, IconButton, TextField } from '@mui/material';
 import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { GetImageURL, ValidateImageHash } from '../../api/images';
-import { CreateImageLinks, Debounce } from '../../api/util';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Centered from '../../components/centered/centered';
 
 import './view.css';
 import { useSnackbar } from 'notistack';
+import Debounce from '../../lib/debounce';
+import { isHash } from 'class-validator';
+import ImagesApi from '../../api/images';
 
 // Stupid names go brrr
 export default function ViewView() {
@@ -30,7 +31,7 @@ export default function ViewView() {
   };
 
   useEffect(() => {
-    if (!ValidateImageHash(hash)) navigate('/');
+    if (!isHash(hash, 'sha256')) navigate('/');
 
     resizeImage();
 
@@ -39,8 +40,8 @@ export default function ViewView() {
     return () => window.removeEventListener('resize', resizeImageDebounced);
   });
 
-  const imageURL = GetImageURL(hash);
-  const imageLinks = CreateImageLinks(imageURL);
+  const imageURL = ImagesApi.GetImageURL(hash);
+  const imageLinks = ImagesApi.CreateImageLinks(imageURL);
 
   function createCopyField(label: string, value: string) {
     const copy = () => {

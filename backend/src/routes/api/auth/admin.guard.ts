@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
-import { User } from '../../../collections/userdb/user.dto';
+import { User } from 'imagur-shared/dist/dto/user.dto';
 
 @Injectable()
 export class AdminGuard implements CanActivate {

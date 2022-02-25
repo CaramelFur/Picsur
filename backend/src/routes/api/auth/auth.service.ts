@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { JwtDataDto } from 'imagur-shared/dist/dto/auth.dto';
+import { User } from 'imagur-shared/dist/dto/user.dto';
 import { AsyncFailable, HasFailed, Fail } from 'imagur-shared/dist/types';
-import { User } from '../../../collections/userdb/user.dto';
 import { UserEntity } from '../../../collections/userdb/user.entity';
 import { UsersService } from '../../../collections/userdb/userdb.service';
-import { JwtDataDto } from './auth.dto';
 
 @Injectable()
 export class AuthService {

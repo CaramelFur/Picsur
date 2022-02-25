@@ -13,12 +13,14 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.4.2",
     "@mui/material": "^5.4.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
+    "imagur-shared": "*",
     "notistack": "^2.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-dropzone": "^12.0.4",
-    "react-router-dom": "^6.2.1",
-    "imagur-shared": "*"
+    "react-router-dom": "^6.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",

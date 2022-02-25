@@ -13,7 +13,8 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { HasFailed } from 'imagur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart.decorator';
 import { ImageManagerService } from '../../managers/imagemanager/imagemanager.service';
-import { ImageUploadDto } from './imageroute.dto';
+import { ImageUploadDto } from '../../backenddto/imageroute.dto';
+import { isHash } from 'class-validator';
 @Controller('i')
 export class ImageController {
   constructor(private readonly imagesService: ImageManagerService) {}
@@ -23,8 +24,7 @@ export class ImageController {
     @Res({ passthrough: true }) res: FastifyReply,
     @Param('hash') hash: string,
   ) {
-    if (!this.imagesService.validateHash(hash))
-      throw new BadRequestException('Invalid hash');
+    if (!isHash(hash, 'sha256')) throw new BadRequestException('Invalid hash');
 
     const image = await this.imagesService.retrieve(hash);
     if (HasFailed(image))

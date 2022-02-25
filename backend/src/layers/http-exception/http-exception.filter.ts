@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { FastifyReply } from 'fastify';
+import { ApiErrorResponse, ApiResponse } from 'imagur-shared/dist/dto/api.dto';
 
 @Catch(HttpException)
 export class MainExceptionFilter implements ExceptionFilter {
@@ -15,14 +16,16 @@ export class MainExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<FastifyRequest>();
     const status = exception.getStatus();
 
-    response.status(status).send({
-      success: status < 400,
+    const toSend: ApiErrorResponse = {
+      success: false,
       statusCode: status,
       timestamp: new Date().toISOString(),
 
       data: {
         message: exception.message,
       },
-    });
+    };
+
+    response.status(status).send(toSend);
   }
 }

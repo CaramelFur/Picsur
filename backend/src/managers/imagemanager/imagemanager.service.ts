@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { isHash } from 'class-validator';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { AsyncFailable, Fail, HasFailed } from 'imagur-shared/dist/types';
 import { ImageEntity } from '../../collections/imagedb/image.entity';
 import { ImageDBService } from '../../collections/imagedb/imagedb.service';
-import { MimesService, FullMime } from '../../collections/imagedb/mimes.service';
+import {
+  MimesService,
+  FullMime,
+} from '../../collections/imagedb/mimes.service';
 
 @Injectable()
 export class ImageManagerService {
@@ -13,7 +17,7 @@ export class ImageManagerService {
   ) {}
 
   public async retrieve(hash: string): AsyncFailable<ImageEntity> {
-    if (!this.validateHash(hash)) return Fail('Invalid hash');
+    if (!isHash(hash, 'sha256')) return Fail('Invalid hash');
 
     return await this.imagesService.findOne(hash);
   }
@@ -43,9 +47,5 @@ export class ImageManagerService {
       mime?.mime ?? 'extra/discard',
     );
     return fullMime;
-  }
-
-  public validateHash(hash: string): boolean {
-    return /^[a-f0-9]{64}$/.test(hash);
   }
 }

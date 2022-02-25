@@ -9,5 +9,5 @@
     "emitDecoratorMetadata": true,
     "sourceMap": true
   },
-  "include": ["src"]
+  "include": ["src", "../backend/src/decorators/multipart.dto.ts"]
 }

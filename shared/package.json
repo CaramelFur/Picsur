@@ -6,9 +6,10 @@
   "license": "GPL-3.0",
   "repository": "https://github.com/rubikscraft/Imagur",
   "author": "Rubikscraft <contact@rubikscraft.nl>",
-  "type": "commonjs",
+  "type": "module",
   "main": "./dist/index.js",
   "dependencies": {
+    "class-validator": "^0.13.2",
     "tsc-watch": "^4.6.0"
   },
   "devDependencies": {

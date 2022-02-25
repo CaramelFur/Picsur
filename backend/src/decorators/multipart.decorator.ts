@@ -10,7 +10,7 @@ import { FastifyRequest } from 'fastify';
 import { Multipart, MultipartFields, MultipartFile } from 'fastify-multipart';
 import { Newable } from 'imagur-shared/dist/types';
 import Config from '../env';
-import { MultiPartFieldDto, MultiPartFileDto } from './multipart.dto';
+import { MultiPartFieldDto, MultiPartFileDto } from '../backenddto/multipart.dto';
 
 const logger = new Logger('MultiPart');
 export interface MPFile {
@@ -47,10 +47,8 @@ export const PostFile = createParamDecorator(
   },
 );
 
-export class MultiPartDto {}
-
 export const MultiPart = createParamDecorator(
-  async <T extends MultiPartDto>(data: Newable<T>, ctx: ExecutionContext) => {
+  async <T extends Object>(data: Newable<T>, ctx: ExecutionContext) => {
     const req: FastifyRequest = ctx.switchToHttp().getRequest();
     const dtoClass = new data();
 

@@ -1,27 +1,47 @@
-import { AsyncFailable, Fail } from 'imagur-shared/dist/types'
+import { AsyncFailable, HasFailed } from 'imagur-shared/dist/types';
+import { ImageUploadResponse } from 'imagur-shared/dist/dto/images.dto';
+import { ImageUploadRequest } from '../frontenddto/imageroute.dto';
+import ImagurApi from './api';
 
-export function GetImageURL(image: string): string {
-  const baseURL = window.location.protocol + '//' + window.location.host;
-
-  return `${baseURL}/i/${image}`;
+export interface ImageLinks {
+  source: string;
+  markdown: string;
+  html: string;
+  rst: string;
+  bbcode: string;
 }
+export default class ImagesApi extends ImagurApi {
+  public static readonly I = new ImagesApi();
 
-export function ValidateImageHash(hash: string): boolean {
-  return /^[a-f0-9]{64}$/.test(hash);
-}
+  protected constructor() {
+    super();
+  }
 
-export async function UploadImage(image: File): AsyncFailable<string> {
-  const formData = new FormData();
-  formData.append('image', image);
+  public async UploadImage(image: File): AsyncFailable<string> {
+    const result = await this.api.postForm(
+      ImageUploadResponse,
+      '/i',
+      new ImageUploadRequest(image),
+    );
 
-  let result = await fetch('/i', {
-    method: 'POST',
-    body: formData,
-  }).then((res) => res.json());
+    if (HasFailed(result)) return result;
 
-  console.log(result);
+    return result.hash;
+  }
 
-  if (!result.hash) return Fail(result.error);
+  public static GetImageURL(image: string): string {
+    const baseURL = window.location.protocol + '//' + window.location.host;
 
-  return result.hash;
+    return `${baseURL}/i/${image}`;
+  }
+
+  public static CreateImageLinks(imageURL: string) {
+    return {
+      source: imageURL,
+      markdown: `![image](${imageURL})`,
+      html: `<img src="${imageURL}" alt="image">`,
+      rst: `.. image:: ${imageURL}`,
+      bbcode: `[img]${imageURL}[/img]`,
+    };
+  }
 }

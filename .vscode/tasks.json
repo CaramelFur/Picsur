@@ -3,7 +3,12 @@
   "tasks": [
     {
       "label": "Start full",
-      "dependsOn": ["Start backend", "Start frontend", "Start postgres"],
+      "dependsOn": [
+        "Start backend",
+        "Start frontend",
+        "Start postgres",
+        "Start shared"
+      ],
       "dependsOrder": "parallel",
       "isBackground": true,
       "group": "build"
@@ -24,7 +29,6 @@
       "options": {
         "cwd": "./backend"
       },
-      "dependsOn": ["Start shared"],
       "group": "build"
     },
     {
@@ -34,13 +38,12 @@
       "options": {
         "cwd": "./frontend"
       },
-      "dependsOn": ["Start shared"],
       "group": "build"
     },
     {
       "type": "shell",
       "label": "Start postgres",
-      "command": "podman-compose up",
+      "command": "podman-compose stop; podman-compose up",
       "options": {
         "cwd": "./support"
       },

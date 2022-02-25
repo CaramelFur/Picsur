@@ -2,10 +2,10 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { validate } from 'class-validator';
-import { JwtDataDto } from './auth.dto';
 import { plainToClass } from 'class-transformer';
-import { User } from '../../../collections/userdb/user.dto';
 import Config from '../../../env';
+import { JwtDataDto } from 'imagur-shared/dist/dto/auth.dto';
+import { User } from 'imagur-shared/dist/dto/user.dto';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {

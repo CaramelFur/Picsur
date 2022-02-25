@@ -10,16 +10,12 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { LocalAuthGuard } from './local-auth.guard';
-import {
-  RegisterRequestDto,
-  LoginResponseDto,
-  DeleteRequestDto,
-} from './auth.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.guard';
 import { AdminGuard } from './admin.guard';
 import { HasFailed } from 'imagur-shared/dist/types';
 import AuthFasityRequest from './authrequest';
+import { AuthDeleteRequest, AuthLoginResponse, AuthRegisterRequest } from 'imagur-shared/dist/dto/auth.dto';
 
 @Controller('api/auth')
 export class AuthController {
@@ -28,7 +24,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req: AuthFasityRequest) {
-    const response: LoginResponseDto = {
+    const response: AuthLoginResponse = {
       access_token: await this.authService.createToken(req.user),
     };
 
@@ -39,7 +35,7 @@ export class AuthController {
   @Post('create')
   async register(
     @Request() req: AuthFasityRequest,
-    @Body() register: RegisterRequestDto,
+    @Body() register: AuthRegisterRequest,
   ) {
     const user = await this.authService.createUser(
       register.username,
@@ -59,7 +55,7 @@ export class AuthController {
   @Post('delete')
   async delete(
     @Request() req: AuthFasityRequest,
-    @Body() deleteData: DeleteRequestDto,
+    @Body() deleteData: AuthDeleteRequest,
   ) {
     const user = await this.authService.deleteUser(deleteData.username);
     if (HasFailed(user)) throw new NotFoundException('User does not exist');
