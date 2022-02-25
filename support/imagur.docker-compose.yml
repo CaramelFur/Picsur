@@ -1,7 +1,7 @@
 version: "3"
 services:
   imagur:
-    build: .
+    image: test #ghcr.io/rubikscraft/imagur:latest
     container_name: imagur
     ports:
       - "8080:8080"

@@ -1,8 +1,14 @@
 {
   "private": true,
+  "version": "0.1.0",
   "workspaces": [
     "shared",
     "backend",
     "frontend"
-  ]
+  ],
+  "scripts": {
+    "devdb:start": "podman-compose -f ./dev/docker-compose.yml up -d",
+    "devdb:stop": "podman-compose -f ./dev/docker-compose.yml down",
+    "build": "./support/build.sh"
+  }
 }

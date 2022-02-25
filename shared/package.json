@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "imagur-shared",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Shared libraries for Imagur",
   "license": "GPL-3.0",
   "repository": "https://github.com/rubikscraft/Imagur",

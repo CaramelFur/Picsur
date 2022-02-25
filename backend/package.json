@@ -1,7 +1,7 @@
 {
   "name": "imagur-backend",
   "private": false,
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Backend for Imagur",
   "license": "GPL-3.0",
   "repository": "https://github.com/rubikscraft/Imagur",
@@ -15,8 +15,6 @@
     "start:dev": "nest start --watch --exec \"node --experimental-specifier-resolution=node\"",
     "start:debug": "nest start --debug --watch --exec \"node --experimental-specifier-resolution=node\"",
     "start:prod": "node --experimental-specifier-resolution=node dist/main",
-    "devdb:start": "podman-compose -f ./dev/docker-compose.yml up -d",
-    "devdb:stop": "podman-compose -f ./dev/docker-compose.yml down",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },

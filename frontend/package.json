@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "imagur-frontend",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Frontend for Imagur",
   "license": "GPL-3.0",
   "repository": "https://github.com/rubikscraft/Imagur",
