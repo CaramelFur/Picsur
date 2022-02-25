@@ -1,6 +1,8 @@
 <img align="left" width="100" height="100" src="branding/logo/imagur.svg"/>
 
+
 # Imagur
+<br>
 
 > Totally not an imgur clone
 
