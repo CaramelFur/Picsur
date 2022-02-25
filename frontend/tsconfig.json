@@ -1,12 +1,11 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es2015",
-    "module": "esnext",
+    "target": "ES6",
+    "module": "CommonJS",
     "lib": [
       "dom",
-      "dom.iterable",
-      "esnext"
+      "dom.iterable"
     ],
     "jsx": "react-jsx",
     "noEmit": true,
