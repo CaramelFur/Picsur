@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"name": "shared",
+			"path": "shared"
+		},
+		{
+			"name": "backend",
+			"path": "backend"
+		},
+		{
+			"name": "frontend",
+			"path": "frontend"
+		},
+		{
+			"name": "Imagur-Monorepo",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
