@@ -1,4 +1,4 @@
-const path = require('path');
+const scopedcss = require('craco-plugin-scoped-css');
 
 module.exports = {
   devServer: {
@@ -6,5 +6,10 @@ module.exports = {
     port: 3300,
     liveReload: true,
     open: false,
-  }
+  },
+  plugins: [
+    {
+      plugin: scopedcss,
+    },
+  ],
 };

@@ -2,13 +2,13 @@ import { Button, Grid, IconButton, TextField } from '@mui/material';
 import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import Centered from '../../components/centered/centered';
-
-import './view.css';
 import { useSnackbar } from 'notistack';
-import Debounce from '../../lib/debounce';
 import { isHash } from 'class-validator';
 import ImagesApi from '../../api/images';
+import Debounce from '../../lib/debounce';
+import Centered from '../../components/centered/centered';
+
+import './view.scoped.scss';
 
 // Stupid names go brrr
 export default function ViewView() {

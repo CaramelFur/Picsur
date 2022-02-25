@@ -19,7 +19,7 @@ function ProcessingView(props: any) {
     const hash = await ImagesApi.I.UploadImage(state.imageFile);
     if (HasFailed(hash)) navigate('/'); // TODO: handle error
 
-    navigate('/view/' + hash);
+    navigate('/view/' + hash, { replace: true });
   }
 
   // Run when rendered

@@ -1,7 +1,7 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Centered from './components/centered/centered';
-import './app.css';
+import './app.scss';
 import AppRouter from './routes/router';
 import { SnackbarProvider } from 'notistack';
 

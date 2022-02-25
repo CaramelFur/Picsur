@@ -1,6 +1,6 @@
 import React, { ForwardedRef } from 'react';
 import { forwardRef } from 'react';
-import './centered.css';
+import './centered.scoped.scss';
 
 type PropsType = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
