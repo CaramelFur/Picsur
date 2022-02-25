@@ -17,7 +17,7 @@ But it does function, so feel free to give it a try.
 
 ## Demo
 
-You can view a live demo here: <https://imagur.rubikscraft.nl>
+You can view a live demo here: <https://imagur-demo.rubikscraft.nl/>
 
 The images are deleted every five minutes, and the max filesize is 16MB. But it should give you an indication of how it works.
 
