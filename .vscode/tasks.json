@@ -43,7 +43,7 @@
     {
       "type": "shell",
       "label": "Start postgres",
-      "command": "podman-compose stop; podman-compose up",
+      "command": "podman-compose -f ./dev.docker-compose.yml stop; podman-compose -f ./dev.docker-compose.yml up",
       "options": {
         "cwd": "./support"
       },

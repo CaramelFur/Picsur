@@ -1,5 +1,8 @@
 FROM node:16-alpine
 
+# Sorry for the humongous docker container this generates
+# Maybe I'll trim it down some day
+
 ADD . /imagur
 WORKDIR /imagur
 
