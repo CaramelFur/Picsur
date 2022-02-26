@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { JwtDataDto } from 'imagur-shared/dist/dto/auth.dto';
-import { User } from 'imagur-shared/dist/dto/user.dto';
+import { EUser } from 'imagur-shared/dist/entities/user.entity';
 import { AsyncFailable, HasFailed, Fail } from 'imagur-shared/dist/types';
-import { UserEntity } from '../../../collections/userdb/user.entity';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 
 @Injectable()
@@ -14,62 +13,42 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async createUser(
-    username: string,
-    password: string,
-  ): AsyncFailable<UserEntity> {
+  async createUser(username: string, password: string): AsyncFailable<EUser> {
     const hashedPassword = await bcrypt.hash(password, 12);
     return this.usersService.create(username, hashedPassword);
   }
 
-  async deleteUser(user: string | UserEntity): AsyncFailable<UserEntity> {
+  async deleteUser(user: string | EUser): AsyncFailable<EUser> {
     return this.usersService.delete(user);
   }
 
-  async listUsers(): AsyncFailable<User[]> {
-    const users = await this.usersService.findAll();
-    if (HasFailed(users)) return users;
-
-    return users.map((user) => this.userEntityToUser(user));
+  async listUsers(): AsyncFailable<EUser[]> {
+    return this.usersService.findAll();
   }
 
-  async authenticate(
-    username: string,
-    password: string,
-  ): AsyncFailable<UserEntity> {
-    const user = await this.usersService.findOne(username);
-
+  async authenticate(username: string, password: string): AsyncFailable<EUser> {
+    const user = await this.usersService.findOne(username, true);
     if (HasFailed(user)) return user;
 
     if (!(await bcrypt.compare(password, user.password)))
       return Fail('Wrong password');
 
-    return user;
+    return await this.usersService.findOne(username);
   }
 
-  async createToken(user: User): Promise<string> {
+  async createToken(user: EUser): Promise<string> {
     const jwtData: JwtDataDto = {
-      user: {
-        username: user.username,
-        isAdmin: user.isAdmin,
-      },
+      user,
     };
 
     return this.jwtService.signAsync(jwtData);
   }
 
-  async makeAdmin(user: string | UserEntity): AsyncFailable<true> {
+  async makeAdmin(user: string | EUser): AsyncFailable<true> {
     return this.usersService.modifyAdmin(user, true);
   }
 
-  async revokeAdmin(user: string | UserEntity): AsyncFailable<true> {
+  async revokeAdmin(user: string | EUser): AsyncFailable<true> {
     return this.usersService.modifyAdmin(user, false);
-  }
-
-  userEntityToUser(user: UserEntity): User {
-    return {
-      username: user.username,
-      isAdmin: user.isAdmin,
-    };
   }
 }

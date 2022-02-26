@@ -48,7 +48,7 @@ export class AuthController {
       await this.authService.makeAdmin(user);
     }
 
-    return this.authService.userEntityToUser(user);
+    return user;
   }
 
   @UseGuards(JwtAuthGuard, AdminGuard)
@@ -60,7 +60,7 @@ export class AuthController {
     const user = await this.authService.deleteUser(deleteData.username);
     if (HasFailed(user)) throw new NotFoundException('User does not exist');
 
-    return this.authService.userEntityToUser(user);
+    return user;
   }
 
   @UseGuards(JwtAuthGuard, AdminGuard)

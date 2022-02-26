@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './routes/api/auth/auth.module';
-import { UserEntity } from './collections/userdb/user.entity';
 import { ImageModule } from './routes/image/imageroute.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import Config from './env';
-import { ImageEntity } from './collections/imagedb/image.entity';
 import { DemoManagerModule } from './managers/demo/demomanager.module';
+import { EUser } from 'imagur-shared/dist/entities/user.entity';
+import { EImage } from 'imagur-shared/dist/entities/image.entity';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { DemoManagerModule } from './managers/demo/demomanager.module';
       database: Config.database.database,
       synchronize: true,
 
-      entities: [UserEntity, ImageEntity],
+      entities: [EUser, EImage],
     }),
     ServeStaticModule.forRoot({
       rootPath: Config.static.frontendRoot,

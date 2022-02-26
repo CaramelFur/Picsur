@@ -5,7 +5,7 @@ import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import Config from '../../../env';
 import { JwtDataDto } from 'imagur-shared/dist/dto/auth.dto';
-import { User } from 'imagur-shared/dist/dto/user.dto';
+import { EUser } from 'imagur-shared/dist/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -19,10 +19,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(payload: any): Promise<User> {
+  async validate(payload: any): Promise<EUser> {
     const jwt = plainToClass(JwtDataDto, payload);
 
-    const errors = await validate(jwt);
+    const errors = await validate(jwt, { forbidUnknownValues: true });
     if (errors.length > 0) {
       this.logger.warn(errors);
       throw new UnauthorizedException();

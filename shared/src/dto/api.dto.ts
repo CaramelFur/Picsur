@@ -1,5 +1,4 @@
 import {
-  Equals,
   IsBoolean,
   IsDefined,
   IsInt,

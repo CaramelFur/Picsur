@@ -1,6 +1,6 @@
 import { FastifyRequest } from 'fastify';
-import { User } from 'imagur-shared/dist/dto/user.dto';
+import { EUser } from 'imagur-shared/dist/entities/user.entity';
 
 export default interface AuthFasityRequest extends FastifyRequest {
-  user: User;
+  user: EUser;
 }

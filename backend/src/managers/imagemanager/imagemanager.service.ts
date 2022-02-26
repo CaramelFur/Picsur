@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { isHash } from 'class-validator';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
+import { FullMime } from 'imagur-shared/dist/dto/mimes.dto';
+import { EImage } from 'imagur-shared/dist/entities/image.entity';
 import { AsyncFailable, Fail, HasFailed } from 'imagur-shared/dist/types';
-import { ImageEntity } from '../../collections/imagedb/image.entity';
 import { ImageDBService } from '../../collections/imagedb/imagedb.service';
-import {
-  MimesService,
-  FullMime,
-} from '../../collections/imagedb/mimes.service';
+import { MimesService } from '../../collections/imagedb/mimes.service';
 
 @Injectable()
 export class ImageManagerService {
@@ -16,13 +14,16 @@ export class ImageManagerService {
     private readonly mimesService: MimesService,
   ) {}
 
-  public async retrieve(hash: string): AsyncFailable<ImageEntity> {
-    if (!isHash(hash, 'sha256')) return Fail('Invalid hash');
-
+  public async retrieveInfo(hash: string): AsyncFailable<EImage> {
     return await this.imagesService.findOne(hash);
   }
 
-  public async upload(image: Buffer): AsyncFailable<string> {
+  // Image data buffer is not included by default, this also returns that buffer
+  public async retrieveComplete(hash: string): AsyncFailable<Required<EImage>> {
+    return await this.imagesService.findOne(hash, true);
+  }
+
+  public async upload(image: Buffer): AsyncFailable<EImage> {
     const fullMime = await this.getFullMimeFromBuffer(image);
     if (HasFailed(fullMime)) return fullMime;
 
@@ -34,7 +35,7 @@ export class ImageManagerService {
     );
     if (HasFailed(imageEntity)) return imageEntity;
 
-    return imageEntity.hash;
+    return imageEntity;
   }
 
   private async process(image: Buffer, mime: FullMime): Promise<Buffer> {

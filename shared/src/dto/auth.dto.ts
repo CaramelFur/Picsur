@@ -7,7 +7,8 @@ import {
   IsInt,
   ValidateNested,
 } from 'class-validator';
-import { User } from './user.dto';
+import { EUser } from '../entities/user.entity';
+import { Type } from 'class-transformer';
 
 // Api
 
@@ -47,14 +48,15 @@ export class AuthDeleteRequest {
   username: string;
 }
 
-export class AuthDeleteResponse extends User {}
+export class AuthDeleteResponse extends EUser {}
 
 // Extra
 
 export class JwtDataDto {
-  @ValidateNested()
   @IsDefined()
-  user: User;
+  @ValidateNested()
+  @Type(() => EUser)
+  user: EUser;
 
   @IsOptional()
   @IsInt()

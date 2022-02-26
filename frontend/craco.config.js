@@ -1,7 +1,15 @@
 const scopedcss = require('craco-plugin-scoped-css');
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
+  webpack: {
+    plugins: {
+      add: [
+        new webpack.IgnorePlugin({resourceRegExp: /react-native-sqlite-storage/}),
+      ]
+    }
+  },
   devServer: {
     devMiddleware: {
       writeToDisk: true,

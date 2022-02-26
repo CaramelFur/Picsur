@@ -26,12 +26,23 @@ export class ImageController {
   ) {
     if (!isHash(hash, 'sha256')) throw new BadRequestException('Invalid hash');
 
-    const image = await this.imagesService.retrieve(hash);
+    const image = await this.imagesService.retrieveComplete(hash);
     if (HasFailed(image))
       throw new NotFoundException('Failed to retrieve image');
 
     res.type(image.mime);
     return image.data;
+  }
+
+  @Get('meta/:hash')
+  async getImageMeta(@Param('hash') hash: string) {
+    if (!isHash(hash, 'sha256')) throw new BadRequestException('Invalid hash');
+
+    const image = await this.imagesService.retrieveInfo(hash);
+    if (HasFailed(image))
+      throw new NotFoundException('Failed to retrieve image');
+
+    return image;
   }
 
   @Post()
@@ -40,11 +51,11 @@ export class ImageController {
     @MultiPart(ImageUploadDto) multipart: ImageUploadDto,
   ) {
     const fileBuffer = await multipart.image.toBuffer();
-    const hash = await this.imagesService.upload(fileBuffer);
-    if (HasFailed(hash)) {
+    const image = await this.imagesService.upload(fileBuffer);
+    if (HasFailed(image)) {
       throw new InternalServerErrorException('Failed to upload image');
     }
 
-    return { hash };
+    return image;
   }
 }

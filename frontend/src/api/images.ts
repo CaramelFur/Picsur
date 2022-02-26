@@ -1,7 +1,7 @@
-import { AsyncFailable, HasFailed } from 'imagur-shared/dist/types';
-import { ImageUploadResponse } from 'imagur-shared/dist/dto/images.dto';
 import { ImageUploadRequest } from '../frontenddto/imageroute.dto';
 import ImagurApi from './api';
+import { EImage } from 'imagur-shared/dist/entities/image.entity';
+import { AsyncFailable, HasFailed } from 'imagur-shared/dist/types';
 
 export interface ImageLinks {
   source: string;
@@ -19,7 +19,7 @@ export default class ImagesApi extends ImagurApi {
 
   public async UploadImage(image: File): AsyncFailable<string> {
     const result = await this.api.postForm(
-      ImageUploadResponse,
+      EImage,
       '/i',
       new ImageUploadRequest(image),
     );
