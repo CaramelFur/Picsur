@@ -9,9 +9,12 @@ import Debounce from '../../lib/debounce';
 import Centered from '../../components/centered/centered';
 
 import './view.scoped.scss';
+import { HasFailed } from 'imagur-shared/dist/types';
+import useError from '../../lib/useerror';
 
 // Stupid names go brrr
 export default function ViewView() {
+  const exitError = useError();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const hash = useParams().hash ?? '';
@@ -30,14 +33,21 @@ export default function ViewView() {
     if (imgRef.current) imgRef.current.style.height = newImgHeight + 'px';
   };
 
-  useEffect(() => {
-    if (!isHash(hash, 'sha256')) navigate('/');
+  const effectHandler = async () => {
+    if (!isHash(hash, 'sha256')) return exitError('Invalid image link');
+
+    const imageMeta = await ImagesApi.I.GetImageMeta(hash);
+    if (HasFailed(imageMeta)) return exitError(imageMeta.getReason());
 
     resizeImage();
-
     const resizeImageDebounced = Debounce(resizeImage, 100);
     window.addEventListener('resize', resizeImageDebounced);
+
     return () => window.removeEventListener('resize', resizeImageDebounced);
+  };
+
+  useEffect(() => {
+    effectHandler();
   });
 
   const imageURL = ImagesApi.GetImageURL(hash);

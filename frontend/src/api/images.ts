@@ -29,6 +29,10 @@ export default class ImagesApi extends ImagurApi {
     return result.hash;
   }
 
+  public async GetImageMeta(image: string): AsyncFailable<EImage> {
+    return await this.api.get(EImage, `/i/meta/${image}`);
+  }
+
   public static GetImageURL(image: string): string {
     const baseURL = window.location.protocol + '//' + window.location.host;
 

@@ -28,7 +28,7 @@ export class ImageController {
 
     const image = await this.imagesService.retrieveComplete(hash);
     if (HasFailed(image))
-      throw new NotFoundException('Failed to retrieve image');
+      throw new NotFoundException('Image not found');
 
     res.type(image.mime);
     return image.data;
@@ -40,7 +40,7 @@ export class ImageController {
 
     const image = await this.imagesService.retrieveInfo(hash);
     if (HasFailed(image))
-      throw new NotFoundException('Failed to retrieve image');
+      throw new NotFoundException('Image not found');
 
     return image;
   }

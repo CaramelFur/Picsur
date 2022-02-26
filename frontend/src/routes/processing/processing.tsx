@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { HasFailed } from 'imagur-shared/dist/types';
 import ImagesApi from '../../api/images';
+import useError from '../../lib/useerror';
 
 export interface ProcessingViewMetadata {
   imageFile: File;
@@ -12,12 +13,13 @@ export interface ProcessingViewMetadata {
 function ProcessingView(props: any) {
   const state: ProcessingViewMetadata = useLocation().state as any;
   const navigate = useNavigate();
+  const exitError = useError();
 
   async function onRendered() {
-    if (!state) navigate('/');
+    if (!state) return exitError('Error');
 
     const hash = await ImagesApi.I.UploadImage(state.imageFile);
-    if (HasFailed(hash)) navigate('/'); // TODO: handle error
+    if (HasFailed(hash)) return exitError(hash.getReason());
 
     navigate('/view/' + hash, { replace: true });
   }
