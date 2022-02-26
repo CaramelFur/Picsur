@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { plainToClass } from 'class-transformer';
+import { validate } from 'class-validator';
 import { JwtDataDto } from 'imagur-shared/dist/dto/auth.dto';
 import { EUser } from 'imagur-shared/dist/entities/user.entity';
 import { AsyncFailable, HasFailed, Fail } from 'imagur-shared/dist/types';
@@ -8,6 +10,8 @@ import { UsersService } from '../../../collections/userdb/userdb.service';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger('AuthService');
+
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
@@ -37,9 +41,15 @@ export class AuthService {
   }
 
   async createToken(user: EUser): Promise<string> {
-    const jwtData: JwtDataDto = {
+    const jwtData: JwtDataDto = plainToClass(JwtDataDto, {
       user,
-    };
+    });
+
+    const errors = await validate(jwtData, { forbidUnknownValues: true });
+    if (errors.length > 0) {
+      this.logger.warn(errors);
+      throw new Error('Invalid jwt token generated');
+    }
 
     return this.jwtService.signAsync(jwtData);
   }

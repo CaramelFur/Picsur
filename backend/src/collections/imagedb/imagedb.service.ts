@@ -11,6 +11,7 @@ import {
 import { SupportedMime } from 'imagur-shared/dist/dto/mimes.dto';
 import { GetCols } from '../collectionutils';
 import { EImage } from 'imagur-shared/dist/entities/image.entity';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class ImageDBService {
@@ -27,15 +28,19 @@ export class ImageDBService {
     const find = await this.findOne(hash);
     if (HasSuccess(find)) return find;
 
-    const imageEntity = new EImage();
+    let imageEntity = new EImage();
     imageEntity.data = image;
     imageEntity.mime = type;
     imageEntity.hash = hash;
+
     try {
-      return await this.imageRepository.save(imageEntity);
+      imageEntity = await this.imageRepository.save(imageEntity);
     } catch (e: any) {
       return Fail(e?.message);
     }
+
+    // Strips unwanted data
+    return plainToClass(EImage, imageEntity);
   }
 
   public async findOne<B extends true | undefined = undefined>(

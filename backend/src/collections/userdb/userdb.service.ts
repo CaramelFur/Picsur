@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 import { EUser } from 'imagur-shared/dist/entities/user.entity';
 import {
@@ -26,17 +27,20 @@ export class UsersService {
   ): AsyncFailable<EUser> {
     if (await this.exists(username)) return Fail('User already exists');
 
-    const user = new EUser();
+    let user = new EUser();
     user.username = username;
     user.password = hashedPassword;
 
     try {
-      return await this.usersRepository.save(user);
+      user = await this.usersRepository.save(user, { reload: true });
     } catch (e: any) {
       return Fail(e?.message);
     }
+
+    return plainToClass(EUser, user); // Strips unwanted data
   }
 
+  // Returns user object without id
   public async delete(user: string | EUser): AsyncFailable<EUser> {
     const userToModify = await this.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
@@ -94,7 +98,8 @@ export class UsersService {
     if (typeof user === 'string') {
       return await this.findOne(user);
     } else {
-      const errors = await validate(user);
+      user = plainToClass(EUser, user);
+      const errors = await validate(user, { forbidUnknownValues: true });
       if (errors.length > 0) {
         this.logger.warn(errors);
         return Fail('Invalid user');

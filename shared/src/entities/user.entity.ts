@@ -1,33 +1,31 @@
+import { Exclude, Expose } from 'class-transformer';
 import {
-  IsBoolean,
   IsDefined,
+  IsEmpty,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
-  IsString,
 } from 'class-validator';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+
+// Different data for public and private
 
 @Entity()
 export class EUser {
   @PrimaryGeneratedColumn()
-  @IsNumber()
-  @IsDefined()
-  id: number;
+  @IsOptional()
+  id?: number;
 
   @Index()
   @Column({ unique: true })
-  @IsString()
   @IsNotEmpty()
   username: string;
 
   @Column({ default: false })
   @IsDefined()
-  @IsBoolean()
   isAdmin: boolean;
 
   @Column({ select: false })
   @IsOptional()
-  @IsString()
+  @Exclude()
   password?: string;
 }
