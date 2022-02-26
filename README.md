@@ -93,3 +93,9 @@ IMAGUR_JWT_EXPIRY: 1d
 IMAGUR_MAX_FILE_SIZE: 128000000
 IMAGUR_STATIC_FRONTEND_ROOT: "/imagur/frontend/dist"
 ```
+
+## Api
+
+Here is a usually up to date documentation of the api:
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/rubikscraft/workspace/imagur/collection/1841871-78e559b6-4f39-4092-87c3-92fa29547d03)
