@@ -1,5 +1,5 @@
 import { ImageUploadRequest } from '../frontenddto/imageroute.dto';
-import ImagurApi from './api';
+import PicsurApi from './api';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 
@@ -10,7 +10,7 @@ export interface ImageLinks {
   rst: string;
   bbcode: string;
 }
-export default class ImagesApi extends ImagurApi {
+export default class ImagesApi extends PicsurApi {
   public static readonly I = new ImagesApi();
 
   protected constructor() {

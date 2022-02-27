@@ -10,7 +10,7 @@ export abstract class MultiPartRequest {
   public abstract createFormData(): FormData;
 }
 
-class ImagurApiImplementation {
+class PicsurApiImplementation {
   private async fetch(
     url: RequestInfo,
     options: RequestInit,
@@ -122,11 +122,11 @@ class ImagurApiImplementation {
   }
 }
 
-export default abstract class ImagurApi {
-  private static readonly instance = new ImagurApiImplementation();
+export default abstract class PicsurApi {
+  private static readonly instance = new PicsurApiImplementation();
 
   protected get api() {
-    return ImagurApi.instance;
+    return PicsurApi.instance;
   }
 
   protected constructor() {}
