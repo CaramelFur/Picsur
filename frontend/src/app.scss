@@ -1,8 +1,21 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  flex-grow: 1;
+}
+
 .contentwindow {
-  width: 85vw;
-  height: 80vh;
-  margin: auto;
   border-radius: 20px;
+  height: 100%;
 
   border-style: solid;
   border-width: 5px;

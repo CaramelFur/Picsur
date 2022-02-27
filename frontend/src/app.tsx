@@ -4,6 +4,9 @@ import Centered from './components/centered/centered';
 import './app.scss';
 import AppRouter from './routes/router';
 import { SnackbarProvider } from 'notistack';
+import Header from './components/header/header';
+import { Container } from '@mui/material';
+import Footer from './components/footer/footer';
 
 export default function App() {
   const darkTheme = createTheme({
@@ -15,11 +18,12 @@ export default function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-
       <SnackbarProvider maxSnack={3}>
-        <Centered fullScreen={true}>
+        <Header />
+        <Container className="main-container">
           <AppRouter />
-        </Centered>
+        </Container>
+        <Footer />
       </SnackbarProvider>
     </ThemeProvider>
   );

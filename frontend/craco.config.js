@@ -1,5 +1,4 @@
 const scopedcss = require('craco-plugin-scoped-css');
-const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
@@ -17,7 +16,7 @@ module.exports = {
 
     port: 3300,
     liveReload: true,
-    hot: true,
+    hot: false,
     open: false,
   },
   plugins: [

@@ -65,9 +65,9 @@ services:
       POSTGRES_USER: picsur
     restart: unless-stopped
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - picsur-data:/var/lib/postgresql/data
 volumes:
-  db-data:
+  picsur-data:
 ```
 
 ## Api
