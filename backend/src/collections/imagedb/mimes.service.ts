@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Fail, Failable } from 'imagur-shared/dist/types';
+import { Fail, Failable } from 'picsur-shared/dist/types';
 import {
   FullMime,
   SupportedAnimMimes,
   SupportedImageMimes,
   SupportedMime,
-} from 'imagur-shared/dist/dto/mimes.dto';
+} from 'picsur-shared/dist/dto/mimes.dto';
 
 @Injectable()
 export class MimesService {

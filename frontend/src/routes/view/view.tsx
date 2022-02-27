@@ -9,7 +9,7 @@ import Debounce from '../../lib/debounce';
 import Centered from '../../components/centered/centered';
 
 import './view.scoped.scss';
-import { HasFailed } from 'imagur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types';
 import useError from '../../lib/useerror';
 
 // Stupid names go brrr

@@ -2,13 +2,13 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
-import { EUser } from 'imagur-shared/dist/entities/user.entity';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import {
   AsyncFailable,
   Fail,
   HasFailed,
   HasSuccess,
-} from 'imagur-shared/dist/types';
+} from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import { GetCols } from '../collectionutils';
 

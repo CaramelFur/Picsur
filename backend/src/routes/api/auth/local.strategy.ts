@@ -2,8 +2,8 @@ import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AsyncFailable, HasFailed } from 'imagur-shared/dist/types';
-import { EUser } from 'imagur-shared/dist/entities/user.entity';
+import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {

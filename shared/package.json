@@ -1,10 +1,10 @@
 {
   "private": false,
-  "name": "imagur-shared",
+  "name": "picsur-shared",
   "version": "0.0.0",
-  "description": "Shared libraries for Imagur",
+  "description": "Shared libraries for Picsur",
   "license": "GPL-3.0",
-  "repository": "https://github.com/rubikscraft/Imagur",
+  "repository": "https://github.com/rubikscraft/Picsur",
   "author": "Rubikscraft <contact@rubikscraft.nl>",
   "type": "commonjs",
   "main": "./dist/index.js",

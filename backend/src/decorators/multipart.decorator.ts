@@ -8,7 +8,7 @@ import {
 import { validate } from 'class-validator';
 import { FastifyRequest } from 'fastify';
 import { Multipart, MultipartFields, MultipartFile } from 'fastify-multipart';
-import { Newable } from 'imagur-shared/dist/types';
+import { Newable } from 'picsur-shared/dist/types';
 import Config from '../env';
 import { MultiPartFieldDto, MultiPartFileDto } from '../backenddto/multipart.dto';
 

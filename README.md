@@ -1,6 +1,6 @@
-<img align="left" width="100" height="100" src="branding/logo/imagur.svg"/>
+<img align="left" width="100" height="100" src="branding/logo/picsur.svg"/>
 
-# Imagur
+# Picsur
 
 <br>
 
@@ -17,13 +17,13 @@ But it does function, so feel free to give it a try.
 
 ## Demo
 
-You can view a live demo here: <https://imagur-demo.rubikscraft.nl/>
+You can view a live demo here: <https://picsur.rubikscraft.nl/>
 
 The images are deleted every five minutes, and the max filesize is 16MB. But it should give you an indication of how it works.
 
 ## Bugs
 
-If you encounter any bugs or oddities, please open an issue [here](https://github.com/rubikscraft/Imagur/issues). Cause without feedback I'll never know they exists.
+If you encounter any bugs or oddities, please open an issue [here](https://github.com/rubikscraft/Picsur/issues). Cause without feedback I'll never know they exists.
 
 ## Running
 
@@ -32,37 +32,37 @@ You easily run this service yourself via Docker. Here is an example docker-compo
 ```yaml
 version: "3"
 services:
-  imagur:
-    image: ghcr.io/rubikscraft/imagur:latest
-    container_name: imagur
+  picsur:
+    image: ghcr.io/rubikscraft/picsur:latest
+    container_name: picsur
     ports:
       - "8080:8080"
     environment:
-      # IMAGUR_HOST: '0.0.0.0'
-      # IMAGUR_PORT: 8080
+      # PICSUR_HOST: '0.0.0.0'
+      # PICSUR_PORT: 8080
 
-      IMAGUR_DB_HOST: imagur_postgres
-      # IMAGUR_DB_PORT: 5432
-      # IMAGUR_DB_USER: imagur
-      # IMAGUR_DB_PASSWORD: imagur
-      # IMAGUR_DB_NAME: imagur
+      PICSUR_DB_HOST: picsur_postgres
+      # PICSUR_DB_PORT: 5432
+      # PICSUR_DB_USER: picsur
+      # PICSUR_DB_PASSWORD: picsur
+      # PICSUR_DB_NAME: picsur
 
-      # IMAGUR_ADMIN_USERNAME: imagur
-      # IMAGUR_ADMIN_PASSWORD: imagur
+      # PICSUR_ADMIN_USERNAME: picsur
+      # PICSUR_ADMIN_PASSWORD: picsur
 
-      # IMAGUR_JWT_SECRET: CHANGE_ME
-      # IMAGUR_JWT_EXPIRY: 1d
+      # PICSUR_JWT_SECRET: CHANGE_ME
+      # PICSUR_JWT_EXPIRY: 1d
 
-      # IMAGUR_MAX_FILE_SIZE: 128000000
-      # IMAGUR_STATIC_FRONTEND_ROOT: "/imagur/frontend/dist"
+      # PICSUR_MAX_FILE_SIZE: 128000000
+      # PICSUR_STATIC_FRONTEND_ROOT: "/picsur/frontend/dist"
     restart: unless-stopped
-  imagur_postgres:
+  picsur_postgres:
     image: postgres:11-alpine
-    container_name: imagur_postgres
+    container_name: picsur_postgres
     environment:
-      POSTGRES_DB: imagur
-      POSTGRES_PASSWORD: imagur
-      POSTGRES_USER: imagur
+      POSTGRES_DB: picsur
+      POSTGRES_PASSWORD: picsur
+      POSTGRES_USER: picsur
     restart: unless-stopped
     volumes:
       - db-data:/var/lib/postgresql/data
@@ -70,32 +70,8 @@ volumes:
   db-data:
 ```
 
-## Configuration
-
-You can configure a couple different things using environment variables. Here is the current list with their default values:
-
-```txt
-IMAGUR_HOST: '0.0.0.0'
-IMAGUR_PORT: 8080
-
-IMAGUR_DB_HOST: imagur_postgres
-IMAGUR_DB_PORT: 5432
-IMAGUR_DB_USER: imagur
-IMAGUR_DB_PASSWORD: imagur
-IMAGUR_DB_NAME: imagur
-
-IMAGUR_ADMIN_USERNAME: imagur
-IMAGUR_ADMIN_PASSWORD: imagur
-
-IMAGUR_JWT_SECRET: CHANGE_ME
-IMAGUR_JWT_EXPIRY: 1d
-
-IMAGUR_MAX_FILE_SIZE: 128000000
-IMAGUR_STATIC_FRONTEND_ROOT: "/imagur/frontend/dist"
-```
-
 ## Api
 
 Here is a usually up to date documentation of the api:
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/rubikscraft/workspace/imagur/collection/1841871-78e559b6-4f39-4092-87c3-92fa29547d03)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/rubikscraft/workspace/picsur/collection/1841871-78e559b6-4f39-4092-87c3-92fa29547d03)

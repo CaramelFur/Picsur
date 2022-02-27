@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
-import { EUser } from 'imagur-shared/dist/entities/user.entity';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
 
 @Injectable()
 export class AdminGuard implements CanActivate {

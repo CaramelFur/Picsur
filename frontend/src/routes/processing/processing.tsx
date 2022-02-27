@@ -2,7 +2,7 @@ import Centered from '../../components/centered/centered';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { HasFailed } from 'imagur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types';
 import ImagesApi from '../../api/images';
 import useError from '../../lib/useerror';
 

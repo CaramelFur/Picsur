@@ -3,9 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
-import { JwtDataDto } from 'imagur-shared/dist/dto/auth.dto';
-import { EUser } from 'imagur-shared/dist/entities/user.entity';
-import { AsyncFailable, HasFailed, Fail } from 'imagur-shared/dist/types';
+import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
+import { AsyncFailable, HasFailed, Fail } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 
 @Injectable()

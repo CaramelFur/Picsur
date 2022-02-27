@@ -10,7 +10,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { HasFailed } from 'imagur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart.decorator';
 import { ImageManagerService } from '../../managers/imagemanager/imagemanager.service';
 import { ImageUploadDto } from '../../backenddto/imageroute.dto';

@@ -1,7 +1,7 @@
 import { ImageUploadRequest } from '../frontenddto/imageroute.dto';
 import ImagurApi from './api';
-import { EImage } from 'imagur-shared/dist/entities/image.entity';
-import { AsyncFailable, HasFailed } from 'imagur-shared/dist/types';
+import { EImage } from 'picsur-shared/dist/entities/image.entity';
+import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 
 export interface ImageLinks {
   source: string;

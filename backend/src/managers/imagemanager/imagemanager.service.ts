@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { isHash } from 'class-validator';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
-import { FullMime } from 'imagur-shared/dist/dto/mimes.dto';
-import { EImage } from 'imagur-shared/dist/entities/image.entity';
-import { AsyncFailable, Fail, HasFailed } from 'imagur-shared/dist/types';
+import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
+import { EImage } from 'picsur-shared/dist/entities/image.entity';
+import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { ImageDBService } from '../../collections/imagedb/imagedb.service';
 import { MimesService } from '../../collections/imagedb/mimes.service';
 

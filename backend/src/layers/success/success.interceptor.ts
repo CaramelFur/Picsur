@@ -4,7 +4,7 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
-import { ApiResponse } from 'imagur-shared/dist/dto/api.dto';
+import { ApiResponse } from 'picsur-shared/dist/dto/api.dto';
 import { Observable, map } from 'rxjs';
 
 @Injectable()

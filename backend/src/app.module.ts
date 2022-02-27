@@ -5,8 +5,8 @@ import { ImageModule } from './routes/image/imageroute.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import Config from './env';
 import { DemoManagerModule } from './managers/demo/demomanager.module';
-import { EUser } from 'imagur-shared/dist/entities/user.entity';
-import { EImage } from 'imagur-shared/dist/entities/image.entity';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
+import { EImage } from 'picsur-shared/dist/entities/image.entity';
 
 @Module({
   imports: [

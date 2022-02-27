@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { FastifyReply } from 'fastify';
-import { ApiErrorResponse, ApiResponse } from 'imagur-shared/dist/dto/api.dto';
+import { ApiErrorResponse } from 'picsur-shared/dist/dto/api.dto';
 
 @Catch(HttpException)
 export class MainExceptionFilter implements ExceptionFilter {

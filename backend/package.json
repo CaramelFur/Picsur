@@ -1,10 +1,10 @@
 {
-  "name": "imagur-backend",
+  "name": "picsur-backend",
   "private": false,
   "version": "0.0.0",
-  "description": "Backend for Imagur",
+  "description": "Backend for Picsur",
   "license": "GPL-3.0",
-  "repository": "https://github.com/rubikscraft/Imagur",
+  "repository": "https://github.com/rubikscraft/Picsur",
   "author": "Rubikscraft <contact@rubikscraft.nl>",
   "type": "module",
   "main": "dist/main.js",
@@ -41,7 +41,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.4",
     "typeorm": "^0.2.44",
-    "imagur-shared": "*"
+    "picsur-shared": "*"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.1",

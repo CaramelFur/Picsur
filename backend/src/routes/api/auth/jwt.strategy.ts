@@ -4,8 +4,8 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import Config from '../../../env';
-import { JwtDataDto } from 'imagur-shared/dist/dto/auth.dto';
-import { EUser } from 'imagur-shared/dist/entities/user.entity';
+import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {

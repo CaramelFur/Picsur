@@ -13,9 +13,9 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.guard';
 import { AdminGuard } from './admin.guard';
-import { HasFailed } from 'imagur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types';
 import AuthFasityRequest from './authrequest';
-import { AuthDeleteRequest, AuthLoginResponse, AuthRegisterRequest } from 'imagur-shared/dist/dto/auth.dto';
+import { AuthDeleteRequest, AuthLoginResponse, AuthRegisterRequest } from 'picsur-shared/dist/dto/auth.dto';
 
 @Controller('api/auth')
 export class AuthController {

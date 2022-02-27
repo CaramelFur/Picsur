@@ -7,10 +7,10 @@ import {
   Fail,
   HasFailed,
   HasSuccess,
-} from 'imagur-shared/dist/types';
-import { SupportedMime } from 'imagur-shared/dist/dto/mimes.dto';
+} from 'picsur-shared/dist/types';
+import { SupportedMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { GetCols } from '../collectionutils';
-import { EImage } from 'imagur-shared/dist/entities/image.entity';
+import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { plainToClass } from 'class-transformer';
 
 @Injectable()

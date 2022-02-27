@@ -4,46 +4,46 @@ const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../');
 
 const Config = {
   main: {
-    host: process.env.IMAGUR_HOST || '0.0.0.0',
-    port: process.env.IMAGUR_PORT || 8080,
+    host: process.env.PICSUR_HOST || '0.0.0.0',
+    port: process.env.PICSUR_PORT || 8080,
   },
   database: {
-    host: process.env.IMAGUR_DB_HOST ?? 'localhost',
-    port: process.env.IMAGUR_DB_PORT
-      ? parseInt(process.env.IMAGUR_DB_PORT)
+    host: process.env.PICSUR_DB_HOST ?? 'localhost',
+    port: process.env.PICSUR_DB_PORT
+      ? parseInt(process.env.PICSUR_DB_PORT)
       : 5432,
-    username: process.env.IMAGUR_DB_USERNAME ?? 'imagur',
-    password: process.env.IMAGUR_DB_PASSWORD ?? 'imagur',
-    database: process.env.IMAGUR_DB_DATABASE ?? 'imagur',
+    username: process.env.PICSUR_DB_USERNAME ?? 'picsur',
+    password: process.env.PICSUR_DB_PASSWORD ?? 'picsur',
+    database: process.env.PICSUR_DB_DATABASE ?? 'picsur',
   },
   defaultAdmin: {
-    username: process.env.IMAGUR_ADMIN_USERNAME ?? 'admin',
-    password: process.env.IMAGUR_ADMIN_PASSWORD ?? 'admin',
+    username: process.env.PICSUR_ADMIN_USERNAME ?? 'admin',
+    password: process.env.PICSUR_ADMIN_PASSWORD ?? 'admin',
   },
   jwt: {
-    secret: process.env.IMAGUR_JWT_SECRET ?? 'CHANGE_ME',
-    expiresIn: process.env.IMAGUR_JWT_EXPIRES_IN ?? '1d',
+    secret: process.env.PICSUR_JWT_SECRET ?? 'CHANGE_ME',
+    expiresIn: process.env.PICSUR_JWT_EXPIRES_IN ?? '1d',
   },
   uploadLimits: {
     fieldNameSize: 128,
     fieldSize: 1024,
     fields: 16,
     files: 16,
-    fileSize: process.env.IMAGUR_MAX_FILE_SIZE
-      ? parseInt(process.env.IMAGUR_MAX_FILE_SIZE)
+    fileSize: process.env.PICSUR_MAX_FILE_SIZE
+      ? parseInt(process.env.PICSUR_MAX_FILE_SIZE)
       : 128000000,
   },
   static: {
     packageRoot: packageRoot,
     frontendRoot:
-      process.env.IMAGUR_STATIC_FRONTEND_ROOT ??
+      process.env.PICSUR_STATIC_FRONTEND_ROOT ??
       join(packageRoot, '../frontend/dist'),
     backendRoutes: ['i', 'api'],
   },
   demo: {
-    enabled: process.env.IMAGUR_DEMO?.toLowerCase() === 'true',
-    interval: process.env.IMAGUR_DEMO_INTERVAL
-      ? parseInt(process.env.IMAGUR_DEMO_INTERVAL)
+    enabled: process.env.PICSUR_DEMO?.toLowerCase() === 'true',
+    interval: process.env.PICSUR_DEMO_INTERVAL
+      ? parseInt(process.env.PICSUR_DEMO_INTERVAL)
       : 1000 * 60 * 5,
   },
 };

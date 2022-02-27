@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EUser } from 'imagur-shared/dist/entities/user.entity';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { UsersService } from './userdb.service';
 
 @Module({

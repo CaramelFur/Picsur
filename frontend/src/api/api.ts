@@ -1,8 +1,8 @@
-import { AsyncFailable, Fail, HasFailed } from 'imagur-shared/dist/types';
+import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import {
   ApiResponse,
   ApiSuccessResponse,
-} from 'imagur-shared/dist/dto/api.dto';
+} from 'picsur-shared/dist/dto/api.dto';
 import { validate } from 'class-validator';
 import { ClassConstructor, plainToClass } from 'class-transformer';
 

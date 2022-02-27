@@ -8,13 +8,13 @@ VERSION=$(cat ../package.json | grep version | head -1 | awk -F: '{ print $2 }' 
 
 echo "Building version $VERSION"
 
-docker build -t "ghcr.io/rubikscraft/imagur:$VERSION" -t "ghcr.io/rubikscraft/imagur:latest" -f ./imagur.Dockerfile ..
+docker build -t "ghcr.io/rubikscraft/picsur:$VERSION" -t "ghcr.io/rubikscraft/picsur:latest" -f ./picsur.Dockerfile ..
 
 echo "Done"
 
 echo "Pushing to ghcr.io"
 
-docker push "ghcr.io/rubikscraft/imagur:$VERSION"
-docker push "ghcr.io/rubikscraft/imagur:latest"
+docker push "ghcr.io/rubikscraft/picsur:$VERSION"
+docker push "ghcr.io/rubikscraft/picsur:latest"
 
 echo "Done"

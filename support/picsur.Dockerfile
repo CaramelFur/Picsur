@@ -3,18 +3,18 @@ FROM node:16-alpine
 # Sorry for the humongous docker container this generates
 # Maybe I'll trim it down some day
 
-ADD . /imagur
-WORKDIR /imagur
+ADD . /picsur
+WORKDIR /picsur
 
 RUN yarn install --frozen-lockfile
 
-WORKDIR /imagur/shared
+WORKDIR /picsur/shared
 RUN yarn build
 
-WORKDIR /imagur/frontend
+WORKDIR /picsur/frontend
 RUN yarn build
 
-WORKDIR /imagur/backend
+WORKDIR /picsur/backend
 RUN yarn build
 
 CMD ["yarn", "start:prod"]
