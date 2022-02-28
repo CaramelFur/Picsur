@@ -23,7 +23,7 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new MainExceptionFilter());
   app.useGlobalInterceptors(new SuccessInterceptor());
-  app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: true }));
+  app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: true, forbidUnknownValues: true }));
   await app.listen(Config.main.port, Config.main.host);
 }
 

@@ -15,7 +15,12 @@ import { JwtAuthGuard } from './jwt.guard';
 import { AdminGuard } from './admin.guard';
 import { HasFailed } from 'picsur-shared/dist/types';
 import AuthFasityRequest from './authrequest';
-import { AuthDeleteRequest, AuthLoginResponse, AuthRegisterRequest } from 'picsur-shared/dist/dto/auth.dto';
+import {
+  AuthDeleteRequest,
+  AuthLoginResponse,
+  AuthMeResponse,
+  AuthRegisterRequest,
+} from 'picsur-shared/dist/dto/auth.dto';
 
 @Controller('api/auth')
 export class AuthController {
@@ -77,6 +82,10 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async me(@Request() req: AuthFasityRequest) {
-    return req.user;
+    const meResponse: AuthMeResponse = new AuthMeResponse();
+    meResponse.user = req.user;
+    meResponse.newJwtToken = await this.authService.createToken(req.user);
+
+    return meResponse;
   }
 }

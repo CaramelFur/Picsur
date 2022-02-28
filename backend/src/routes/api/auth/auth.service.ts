@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { plainToClass } from 'class-transformer';
+import { instanceToPlain, plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -51,7 +51,7 @@ export class AuthService {
       throw new Error('Invalid jwt token generated');
     }
 
-    return this.jwtService.signAsync(jwtData);
+    return this.jwtService.signAsync(instanceToPlain(jwtData));
   }
 
   async makeAdmin(user: string | EUser): AsyncFailable<true> {

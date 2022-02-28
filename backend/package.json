@@ -29,7 +29,6 @@
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
-    "fastify": "^3.27.2",
     "fastify-multipart": "^5.3.1",
     "fastify-static": "^4.5.0",
     "file-type": "^17.1.1",
@@ -37,11 +36,11 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "pg": "^8.7.3",
+    "picsur-shared": "*",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.4",
-    "typeorm": "^0.2.44",
-    "picsur-shared": "*"
+    "typeorm": "^0.2.44"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.1",

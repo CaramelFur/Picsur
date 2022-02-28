@@ -50,6 +50,17 @@ export class AuthDeleteRequest {
 
 export class AuthDeleteResponse extends EUser {}
 
+export class AuthMeResponse {
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => EUser)
+  user: EUser;
+
+  @IsString()
+  @IsDefined()
+  newJwtToken: string;
+}
+
 // Extra
 
 export class JwtDataDto {

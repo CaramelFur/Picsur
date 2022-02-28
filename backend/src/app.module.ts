@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './routes/api/auth/auth.module';
 import { ImageModule } from './routes/image/imageroute.module';
@@ -29,4 +29,5 @@ import { EImage } from 'picsur-shared/dist/entities/image.entity';
     DemoManagerModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+}

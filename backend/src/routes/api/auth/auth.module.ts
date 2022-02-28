@@ -1,4 +1,10 @@
-import { Logger, Module, OnModuleInit } from '@nestjs/common';
+import {
+  Logger,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  OnModuleInit,
+} from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './local.strategy';
@@ -27,7 +33,6 @@ export class AuthModule implements OnModuleInit {
 
   onModuleInit() {
     this.checkJwtSecret();
-
     this.ensureAdminExists();
   }
 

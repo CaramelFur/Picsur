@@ -1,18 +1,16 @@
 import {
-  Box,
   Button,
   Container,
   Grid,
   IconButton,
   TextField,
 } from '@mui/material';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useSnackbar } from 'notistack';
 import { isHash } from 'class-validator';
 import ImagesApi from '../../api/images';
-import Debounce from '../../lib/debounce';
 import Centered from '../../components/centered/centered';
 
 import './view.scoped.scss';
