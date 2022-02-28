@@ -6,7 +6,7 @@
   "license": "GPL-3.0",
   "repository": "https://github.com/rubikscraft/Picsur",
   "author": "Rubikscraft <contact@rubikscraft.nl>",
-  "type": "commonjs",
+  "type": "module",
   "main": "./dist/index.js",
   "dependencies": {
     "class-transformer": "^0.5.1",

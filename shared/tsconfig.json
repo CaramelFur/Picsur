@@ -1,9 +1,10 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    
+    "target": "es2017",
+    "module": "es2020",
+    "lib": ["es2020"],
+
     "outDir": "./dist",
     "declaration": true,
     "emitDecoratorMetadata": true,

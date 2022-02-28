@@ -8,6 +8,11 @@ import {
 } from '@angular/material/snack-bar';
 import { ProcessingComponent } from '../routes/processing/processing.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ApiModule } from '../api/api.module';
+import { PageNotFoundModule } from '../components/pagenotfound/pagenotfound.module';
+import { PageNotFoundComponent } from '../components/pagenotfound/pagenotfound.component';
+import { ViewComponent } from '../routes/view/view.component';
+import { CopyFieldModule } from '../components/copy-field/copy-field.module';
 
 const routes: Routes = [
   { path: '', component: UploadComponent },
@@ -15,6 +20,8 @@ const routes: Routes = [
     path: 'processing',
     component: ProcessingComponent,
   },
+  { path: 'view/:hash', component: ViewComponent },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
@@ -22,9 +29,12 @@ const routes: Routes = [
     NgxDropzoneModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    PageNotFoundModule,
+    CopyFieldModule,
+    ApiModule,
     RouterModule.forRoot(routes),
   ],
-  declarations: [UploadComponent, ProcessingComponent],
+  declarations: [UploadComponent, ProcessingComponent, ViewComponent],
   providers: [
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
