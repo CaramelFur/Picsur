@@ -1,0 +1,27 @@
+.svg-logo {
+  margin-right: 1rem;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+}
+
+img {
+  height: 48px;
+  width: 48px;
+  border-radius: 20%;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+mat-toolbar {
+  height: 64px;
+  box-shadow: 0px 2px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+}

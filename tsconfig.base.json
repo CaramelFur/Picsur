@@ -10,6 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     "strictPropertyInitialization": false,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noImplicitThis": true,

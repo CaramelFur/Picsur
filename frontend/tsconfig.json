@@ -1,17 +1,27 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "extends": "../tsconfig.base.json",
+  "compileOnSave": false,
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "lib": [
-      "dom",
-      "dom.iterable"
-    ],
-    "jsx": "react-jsx",
-    "noEmit": true,
-    "skipLibCheck": true
+    "baseUrl": "./",
+    "outDir": "./out-tsc/",
+
+    "target": "es2017",
+    "module": "es2020",
+
+    "lib": ["es2020", "dom"],
+
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "importHelpers": true,
   },
-  "include": [
-    "src"
-  ]
+  "files": ["src/main.ts", "src/polyfills.ts"],
+  "include": ["src/**/*.d.ts"],
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
 }

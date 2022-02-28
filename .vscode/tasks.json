@@ -34,7 +34,7 @@
     {
       "type": "shell",
       "label": "Start frontend",
-      "command": "yarn start",
+      "command": "yarn watch",
       "options": {
         "cwd": "./frontend"
       },
