@@ -251,8 +251,6 @@ $altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
   }
 }
 
-// Custom shit
-$grid-gutter-width: 5rem;
 
 // Include bootstrap-grid.scss from node_modules
 @import "../node_modules/bootstrap/scss/bootstrap-grid.scss";
@@ -272,8 +270,15 @@ app-root {
 html {
   box-sizing: border-box;
 }
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
+
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 @import "./styles.personal";

@@ -13,6 +13,7 @@ import { PageNotFoundModule } from '../components/pagenotfound/pagenotfound.modu
 import { PageNotFoundComponent } from '../components/pagenotfound/pagenotfound.component';
 import { ViewComponent } from '../routes/view/view.component';
 import { CopyFieldModule } from '../components/copy-field/copy-field.module';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   { path: '', component: UploadComponent },
@@ -29,6 +30,7 @@ const routes: Routes = [
     NgxDropzoneModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    MatButtonModule,
     PageNotFoundModule,
     CopyFieldModule,
     ApiModule,

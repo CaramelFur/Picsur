@@ -38,4 +38,8 @@ export class ViewComponent implements OnInit {
     this.imageUrl = this.imageService.GetImageURL(hash);
     this.imageLinks = this.imageService.CreateImageLinks(this.imageUrl);
   }
+
+  goBackHome() {
+    this.router.navigate(['/']);
+  }
 }

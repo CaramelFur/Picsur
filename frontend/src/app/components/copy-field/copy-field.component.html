@@ -1,7 +1,7 @@
 <mat-form-field appearance="outline" color="accent">
-  <mat-label>{{ name }}</mat-label>
+  <mat-label>{{ label }}</mat-label>
   <input matInput [value]="value" readonly="readonly" />
-  <button mat-icon-button matSuffix [attr.aria-label]="'Copy'">
+  <button mat-icon-button matSuffix [attr.aria-label]="'Copy'" (click)="copy()">
     <mat-icon>content_copy</mat-icon>
   </button>
 </mat-form-field>
