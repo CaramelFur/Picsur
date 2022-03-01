@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
-import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import {
   AsyncFailable,
   Fail,
@@ -10,6 +9,7 @@ import {
   HasSuccess,
 } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
+import { EUserBackend } from '../../backenddto/user.entity';
 import { GetCols } from '../collectionutils';
 
 @Injectable()
@@ -17,17 +17,17 @@ export class UsersService {
   private readonly logger = new Logger('UsersService');
 
   constructor(
-    @InjectRepository(EUser)
-    private usersRepository: Repository<EUser>,
+    @InjectRepository(EUserBackend)
+    private usersRepository: Repository<EUserBackend>,
   ) {}
 
   public async create(
     username: string,
     hashedPassword: string,
-  ): AsyncFailable<EUser> {
+  ): AsyncFailable<EUserBackend> {
     if (await this.exists(username)) return Fail('User already exists');
 
-    let user = new EUser();
+    let user = new EUserBackend();
     user.username = username;
     user.password = hashedPassword;
 
@@ -37,11 +37,11 @@ export class UsersService {
       return Fail(e?.message);
     }
 
-    return plainToClass(EUser, user); // Strips unwanted data
+    return plainToClass(EUserBackend, user); // Strips unwanted data
   }
 
   // Returns user object without id
-  public async delete(user: string | EUser): AsyncFailable<EUser> {
+  public async delete(user: string | EUserBackend): AsyncFailable<EUserBackend> {
     const userToModify = await this.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
 
@@ -55,7 +55,7 @@ export class UsersService {
   public async findOne<B extends true | undefined = undefined>(
     username: string,
     getPrivate?: B,
-  ): AsyncFailable<B extends undefined ? EUser : Required<EUser>> {
+  ): AsyncFailable<B extends undefined ? EUserBackend : Required<EUserBackend>> {
     try {
       const found = await this.usersRepository.findOne({
         where: { username },
@@ -63,13 +63,13 @@ export class UsersService {
       });
 
       if (!found) return Fail('User not found');
-      return found as B extends undefined ? EUser : Required<EUser>;
+      return found as B extends undefined ? EUserBackend : Required<EUserBackend>;
     } catch (e: any) {
       return Fail(e?.message);
     }
   }
 
-  public async findAll(): AsyncFailable<EUser[]> {
+  public async findAll(): AsyncFailable<EUserBackend[]> {
     try {
       return await this.usersRepository.find();
     } catch (e: any) {
@@ -82,7 +82,7 @@ export class UsersService {
   }
 
   public async modifyAdmin(
-    user: string | EUser,
+    user: string | EUserBackend,
     admin: boolean,
   ): AsyncFailable<true> {
     const userToModify = await this.resolve(user);
@@ -94,11 +94,11 @@ export class UsersService {
     return true;
   }
 
-  private async resolve(user: string | EUser): AsyncFailable<EUser> {
+  private async resolve(user: string | EUserBackend): AsyncFailable<EUserBackend> {
     if (typeof user === 'string') {
       return await this.findOne(user);
     } else {
-      user = plainToClass(EUser, user);
+      user = plainToClass(EUserBackend, user);
       const errors = await validate(user, { forbidUnknownValues: true });
       if (errors.length > 0) {
         this.logger.warn(errors);

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EUser } from 'picsur-shared/dist/entities/user.entity';
+import { EUserBackend } from '../../backenddto/user.entity';
 import { UsersService } from './userdb.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EUser])],
+  imports: [TypeOrmModule.forFeature([EUserBackend])],
   providers: [UsersService],
   exports: [UsersService],
 })

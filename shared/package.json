@@ -11,8 +11,7 @@
   "dependencies": {
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
-    "tsc-watch": "^4.6.0",
-    "typeorm": "^0.2.44"
+    "tsc-watch": "^4.6.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.21",

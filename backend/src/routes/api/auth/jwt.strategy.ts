@@ -5,7 +5,7 @@ import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import Config from '../../../env';
 import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
-import { EUser } from 'picsur-shared/dist/entities/user.entity';
+import { EUserBackend } from '../../../backenddto/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(payload: any): Promise<EUser> {
+  async validate(payload: any): Promise<EUserBackend> {
     const jwt = plainToClass(JwtDataDto, payload);
 
     const errors = await validate(jwt, {

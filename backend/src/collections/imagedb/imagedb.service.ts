@@ -10,25 +10,25 @@ import {
 } from 'picsur-shared/dist/types';
 import { SupportedMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { GetCols } from '../collectionutils';
-import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { plainToClass } from 'class-transformer';
+import { EImageBackend } from '../../backenddto/image.entity';
 
 @Injectable()
 export class ImageDBService {
   constructor(
-    @InjectRepository(EImage)
-    private imageRepository: Repository<EImage>,
+    @InjectRepository(EImageBackend)
+    private imageRepository: Repository<EImageBackend>,
   ) {}
 
   public async create(
     image: Buffer,
     type: SupportedMime,
-  ): AsyncFailable<EImage> {
+  ): AsyncFailable<EImageBackend> {
     const hash = this.hash(image);
     const find = await this.findOne(hash);
     if (HasSuccess(find)) return find;
 
-    let imageEntity = new EImage();
+    let imageEntity = new EImageBackend();
     imageEntity.data = image;
     imageEntity.mime = type;
     imageEntity.hash = hash;
@@ -40,13 +40,13 @@ export class ImageDBService {
     }
 
     // Strips unwanted data
-    return plainToClass(EImage, imageEntity);
+    return plainToClass(EImageBackend, imageEntity);
   }
 
   public async findOne<B extends true | undefined = undefined>(
     hash: string,
     getPrivate?: B,
-  ): AsyncFailable<B extends undefined ? EImage : Required<EImage>> {
+  ): AsyncFailable<B extends undefined ? EImageBackend : Required<EImageBackend>> {
     try {
       const found = await this.imageRepository.findOne({
         where: { hash },
@@ -54,7 +54,7 @@ export class ImageDBService {
       });
 
       if (!found) return Fail('Image not found');
-      return found as B extends undefined ? EImage : Required<EImage>;
+      return found as B extends undefined ? EImageBackend : Required<EImageBackend>;
     } catch (e: any) {
       return Fail(e?.message);
     }
@@ -63,7 +63,7 @@ export class ImageDBService {
   public async findMany(
     startId: number,
     limit: number,
-  ): AsyncFailable<EImage[]> {
+  ): AsyncFailable<EImageBackend[]> {
     try {
       const found = await this.imageRepository.find({
         where: { id: { gte: startId } },

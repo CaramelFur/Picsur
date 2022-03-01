@@ -5,8 +5,8 @@ import { ImageModule } from './routes/image/imageroute.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import Config from './env';
 import { DemoManagerModule } from './managers/demo/demomanager.module';
-import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { EImage } from 'picsur-shared/dist/entities/image.entity';
+import { EImageBackend } from './backenddto/image.entity';
+import { EUserBackend } from './backenddto/user.entity';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { EImage } from 'picsur-shared/dist/entities/image.entity';
       database: Config.database.database,
       synchronize: true,
 
-      entities: [EUser, EImage],
+      entities: [EUserBackend, EImageBackend],
     }),
     ServeStaticModule.forRoot({
       rootPath: Config.static.frontendRoot,

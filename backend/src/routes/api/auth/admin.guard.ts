@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
-import { EUser } from 'picsur-shared/dist/entities/user.entity';
+import { EUserBackend } from '../../../backenddto/user.entity';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
@@ -15,7 +15,7 @@ export class AdminGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    const user = plainToClass(EUser, request.user);
+    const user = plainToClass(EUserBackend, request.user);
     const errors = await validate(user, {forbidUnknownValues: true});
     if (errors.length > 0) {
       this.logger.warn(errors);

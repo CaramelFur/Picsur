@@ -5,27 +5,27 @@ import {
   IsHash,
   IsOptional,
 } from 'class-validator';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+//import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { SupportedMime, SupportedMimes } from '../dto/mimes.dto';
 
-@Entity()
+//@Entity()
 export class EImage {
-  @PrimaryGeneratedColumn()
+  // @PrimaryGeneratedColumn()
   @IsOptional()
   id?: number;
 
-  @Index()
-  @Column({ unique: true })
+  // @Index()
+  // @Column({ unique: true })
   @IsHash('sha256')
   hash: string;
 
   // Binary data
-  @Column({ type: 'bytea', nullable: false, select: false })
+  // @Column({ type: 'bytea', nullable: false, select: false })
   @IsOptional()
   @Exclude()
   data?: Buffer;
 
-  @Column({ enum: SupportedMimes })
+  // @Column({ enum: SupportedMimes })
   @IsEnum(SupportedMimes)
   @IsDefined()
   mime: SupportedMime;

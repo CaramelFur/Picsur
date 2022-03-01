@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EImageBackend } from '../../backenddto/image.entity';
 import { ImageDBService } from './imagedb.service';
 import { MimesService } from './mimes.service';
-import { EImage } from 'picsur-shared/dist/entities/image.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EImage])],
+  imports: [TypeOrmModule.forFeature([EImageBackend])],
   providers: [ImageDBService, MimesService],
   exports: [ImageDBService, MimesService],
 })

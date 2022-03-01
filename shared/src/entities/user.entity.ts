@@ -5,26 +5,26 @@ import {
   IsNotEmpty,
   IsOptional,
 } from 'class-validator';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+// import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 // Different data for public and private
 
-@Entity()
+// @Entity()
 export class EUser {
-  @PrimaryGeneratedColumn()
+  // @PrimaryGeneratedColumn()
   @IsOptional()
   id?: number;
 
-  @Index()
-  @Column({ unique: true })
+  // @Index()
+  // @Column({ unique: true })
   @IsNotEmpty()
   username: string;
 
-  @Column({ default: false })
+  // @Column({ default: false })
   @IsDefined()
   isAdmin: boolean;
 
-  @Column({ select: false })
+  // @Column({ select: false })
   @IsOptional()
   @Exclude()
   password?: string;
