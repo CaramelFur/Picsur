@@ -1,0 +1,24 @@
+.snackbar {
+  background: #272727;
+  color: white;
+
+  &.snack-success {
+    background: #4d9a51;
+  }
+
+  &.snack-error {
+    background: #d74545;
+  }
+
+  &.snack-warning {
+    background: #f68a1c;
+  }
+
+  &.snack-info {
+    background: #1d95d6;
+  }
+
+  &.snack-default {
+    background: #272727;
+  }
+}

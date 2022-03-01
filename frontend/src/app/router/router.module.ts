@@ -2,10 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UploadComponent } from '../routes/upload/upload.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import {
-  MatSnackBarModule,
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-} from '@angular/material/snack-bar';
 import { ProcessingComponent } from '../routes/processing/processing.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ApiModule } from '../api/api.module';
@@ -14,6 +10,7 @@ import { PageNotFoundComponent } from '../components/pagenotfound/pagenotfound.c
 import { ViewComponent } from '../routes/view/view.component';
 import { CopyFieldModule } from '../components/copy-field/copy-field.module';
 import { MatButtonModule } from '@angular/material/button';
+import { UtilModule } from '../util/util.module';
 
 const routes: Routes = [
   { path: '', component: UploadComponent },
@@ -28,7 +25,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     NgxDropzoneModule,
-    MatSnackBarModule,
+    UtilModule,
     MatProgressSpinnerModule,
     MatButtonModule,
     PageNotFoundModule,
@@ -37,16 +34,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
   ],
   declarations: [UploadComponent, ProcessingComponent, ViewComponent],
-  providers: [
-    {
-      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
-      useValue: {
-        duration: 2500,
-        horizontalPosition: 'left',
-        panelClass: ['mat-toolbar', 'mat-primary'],
-      },
-    },
-  ],
   exports: [RouterModule],
 })
 export class AppRouterModule {}

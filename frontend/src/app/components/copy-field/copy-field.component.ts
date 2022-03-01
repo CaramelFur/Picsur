@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarType } from 'src/app/models/snack-bar-type';
+import { UtilService } from 'src/app/util/util.service';
 
 @Component({
   selector: 'copy-field',
@@ -11,11 +13,18 @@ export class CopyFieldComponent {
   @Input() label: string = 'Loading...';
   @Input() value: string = 'Loading...';
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private utilService: UtilService) {}
 
   public copy() {
-    navigator.clipboard.writeText(this.value);
+    try {
+      navigator.clipboard.writeText(this.value);
+    } catch (e) {
+      return this.utilService.showSnackBar(
+        'Copying to clipboard failed',
+        SnackBarType.Error
+      );
+    }
 
-    this.snackBar.open(`Copied ${this.label}!`);
+    this.utilService.showSnackBar(`Copied ${this.label}!`, SnackBarType.Info);
   }
 }

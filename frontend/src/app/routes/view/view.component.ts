@@ -5,6 +5,7 @@ import { isHash } from 'class-validator';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { ImageService } from 'src/app/api/image.service';
 import { ImageLinks } from 'picsur-shared/dist/dto/imagelinks.dto';
+import { UtilService } from 'src/app/util/util.service';
 
 @Component({
   selector: 'app-view',
@@ -15,7 +16,8 @@ export class ViewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private utilService: UtilService
   ) {}
 
   public imageUrl: string;
@@ -25,14 +27,12 @@ export class ViewComponent implements OnInit {
     const params = this.route.snapshot.paramMap;
     const hash = params.get('hash') ?? '';
     if (!isHash(hash, 'sha256')) {
-      this.router.navigate(['/'], { replaceUrl: true });
-      return;
+      return this.utilService.quitError('Invalid image link');
     }
 
     const imageMeta = await this.imageService.GetImageMeta(hash);
     if (HasFailed(imageMeta)) {
-      this.router.navigate(['/'], { replaceUrl: true });
-      return;
+      return this.utilService.quitError(imageMeta.getReason());
     }
 
     this.imageUrl = this.imageService.GetImageURL(hash);

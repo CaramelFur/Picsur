@@ -4,7 +4,7 @@ import { CopyFieldComponent } from './copy-field.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { UtilModule } from 'src/app/util/util.module';
 @NgModule({
   declarations: [CopyFieldComponent],
   imports: [
@@ -12,7 +12,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatSnackBarModule,
+    UtilModule,
   ],
   exports: [CopyFieldComponent],
 })
