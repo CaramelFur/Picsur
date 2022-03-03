@@ -23,8 +23,16 @@ import { KeyService } from './key.service';
   providedIn: 'root',
 })
 export class UserService {
-  public get user() {
+  public get liveUser() {
     return this.userSubject;
+  }
+
+  public get user() {
+    return this.userSubject.getValue();
+  }
+
+  public get isLoggedIn() {
+    return this.userSubject.getValue() !== null;
   }
 
   private userSubject = new BehaviorSubject<EUser | null>(null);
@@ -74,6 +82,7 @@ export class UserService {
     const user = await this.extractUser(apikey);
     if (HasFailed(user)) {
       console.warn(user.getReason());
+      await this.logout();
       return;
     }
 
@@ -82,6 +91,7 @@ export class UserService {
     const fetchedUser = await this.fetchUser();
     if (HasFailed(fetchedUser)) {
       console.warn(fetchedUser.getReason());
+      await this.logout();
       return;
     }
 

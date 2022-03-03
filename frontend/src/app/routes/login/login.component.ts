@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/api/user.service';
+import { SnackBarType } from 'src/app/models/snack-bar-type';
+import { UtilService } from 'src/app/util/util.service';
 import { LoginControl } from './login.model';
 
 @Component({
@@ -10,23 +12,20 @@ import { LoginControl } from './login.model';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit, OnDestroy {
-  private userSubscription: Subscription;
-
+export class LoginComponent implements OnInit {
   model = new LoginControl();
   loginFail = false;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private utilService: UtilService
+  ) {}
 
   ngOnInit(): void {
-    console.log('init');
-    this.userSubscription = this.userService.user.subscribe((user) => {
-      console.log('sub', user);
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+    if (this.userService.isLoggedIn) {
+      this.router.navigate(['/'], { replaceUrl: true });
+    }
   }
 
   async onSubmit() {
@@ -42,6 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.utilService.showSnackBar('Login successful', SnackBarType.Success);
     this.router.navigate(['/']);
   }
 }

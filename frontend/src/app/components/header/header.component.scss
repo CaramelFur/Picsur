@@ -6,10 +6,22 @@
   align-items: center;
 }
 
+.username {
+  margin-right: 1rem;
+}
+
+.mat-menu-item[disabled] {
+  color: inherit;
+}
+
 img {
   height: 48px;
   width: 48px;
   border-radius: 20%;
+}
+
+h2 {
+  margin: 0;
 }
 
 .text-link {

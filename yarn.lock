@@ -5582,6 +5582,13 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+ngx-auto-unsubscribe-decorator@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-auto-unsubscribe-decorator/-/ngx-auto-unsubscribe-decorator-1.0.0.tgz#780830df3d5f43543b1bb9b6ed3fc9a4db5f60b4"
+  integrity sha512-bCXxWBE/AcmbxKSdYqNmjwDJXcUHbQvfCHGZvHiqqbGR7fwZRYMWPNxe4oiw5C+QIEYb+sOWWDOu2hQ2QhD0/w==
+  dependencies:
+    tslib "^2.1.0"
+
 ngx-dropzone@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/ngx-dropzone/-/ngx-dropzone-3.1.0.tgz#f2045a9ca90903fa96304f1b2aa33a922f14b15a"

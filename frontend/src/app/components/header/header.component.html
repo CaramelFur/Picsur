@@ -2,9 +2,34 @@
   <a [routerLink]="['/']" class="svg-logo">
     <img src="/assets/image/logo/picsur.svg" alt="Picsur" />
   </a>
-  <a [routerLink]="['/']" class="text-link">
+  <a [routerLink]="['/']" class="text-link d-none d-sm-block">
     <span>Picsur</span>
   </a>
+
   <span class="spacer"></span>
-  <button mat-stroked-button (click)="doLogin()">Login</button>
+
+  <button *ngIf="!isLoggedIn" mat-stroked-button (click)="doLogin()">
+    Login
+  </button>
+
+  <span *ngIf="isLoggedIn" class="username d-none d-sm-block">
+    {{ user?.username }}
+  </span>
+  <button *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu" xPosition="before">
+    <ng-template matMenuContent>
+      <span mat-menu-item disabled>
+        <div class="centered">
+          <h2>{{ user?.username }}</h2>
+        </div>
+      </span>
+      <button mat-menu-item (click)="doLogout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </ng-template>
+  </mat-menu>
 </mat-toolbar>

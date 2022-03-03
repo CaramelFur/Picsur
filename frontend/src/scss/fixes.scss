@@ -1,0 +1,6 @@
+.mat-icon {
+  // Yes yes, !important is here, deal with it
+  // If someone wants to properly figure out why icons are escaping their 24px box, feel free to
+  height: initial !important;
+  width: initial !important;
+}
