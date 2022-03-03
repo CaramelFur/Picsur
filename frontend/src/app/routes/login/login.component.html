@@ -1,0 +1,44 @@
+<div class="content-border">
+  <div class="container centered">
+    <form class="row" (ngSubmit)="onSubmit()">
+      <div class="col-12 py-2" *ngIf="loginFail">
+        <mat-error>
+          Failed to login. Please check your username and password.
+        </mat-error>
+      </div>
+      <div class="col-12 py-2">
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            type="text"
+            [formControl]="model.username"
+            name="username"
+            required
+          />
+          <mat-error *ngIf="model.username.errors">{{
+            model.usernameError
+          }}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 py-2">
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            type="password"
+            [formControl]="model.password"
+            name="password"
+            required
+          />
+          <mat-error *ngIf="model.password.errors">{{
+            model.passwordError
+          }}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 py-2">
+        <button mat-raised-button color="accent" type="submit">Login</button>
+      </div>
+    </form>
+  </div>
+</div>

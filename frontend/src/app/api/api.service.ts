@@ -8,12 +8,13 @@ import {
 import { validate } from 'class-validator';
 import { ClassConstructor, plainToClass } from 'class-transformer';
 import { MultiPartRequest } from '../models/multi-part-request';
+import { KeyService } from './key.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor() {}
+  constructor(private keyService: KeyService) {}
 
   public async get<T extends Object>(
     type: ClassConstructor<T>,
@@ -52,16 +53,34 @@ export class ApiService {
     });
   }
 
-  private async fetch(
+  private async fetchSafeJson<T extends Object>(
+    type: ClassConstructor<T>,
     url: RequestInfo,
     options: RequestInit
-  ): AsyncFailable<Response> {
-    try {
-      return await window.fetch(url, options);
-    } catch (e: any) {
-      console.warn(e);
+  ): AsyncFailable<T> {
+    let result = await this.fetchJsonAs<ApiResponse<T>>(url, options);
+    if (HasFailed(result)) return result;
+
+    if (result.success === false) return Fail(result.data.message);
+
+    const resultClass = plainToClass<
+      ApiSuccessResponse<T>,
+      ApiSuccessResponse<T>
+    >(ApiSuccessResponse, result);
+    const resultErrors = await validate(resultClass);
+    if (resultErrors.length > 0) {
+      console.warn('result', resultErrors);
       return Fail('Something went wrong');
     }
+
+    const dataClass = plainToClass(type, result.data);
+    const dataErrors = await validate(dataClass);
+    if (dataErrors.length > 0) {
+      console.warn('data', dataErrors);
+      return Fail('Something went wrong');
+    }
+
+    return result.data;
   }
 
   private async fetchJsonAs<T>(
@@ -95,33 +114,24 @@ export class ApiService {
     }
   }
 
-  private async fetchSafeJson<T extends Object>(
-    type: ClassConstructor<T>,
+  private async fetch(
     url: RequestInfo,
     options: RequestInit
-  ): AsyncFailable<T> {
-    let result = await this.fetchJsonAs<ApiResponse<T>>(url, options);
-    if (HasFailed(result)) return result;
+  ): AsyncFailable<Response> {
+    try {
+      const key = this.keyService.get();
+      const isJSON = typeof options.body === 'string';
 
-    if (result.success === false) return Fail(result.data.message);
+      const headers: any = options.headers || {};
+      if (key !== null)
+        headers['Authorization'] = `Bearer ${this.keyService.get()}`;
+      if (isJSON) headers['Content-Type'] = 'application/json';
+      options.headers = headers;
 
-    const resultClass = plainToClass<
-      ApiSuccessResponse<T>,
-      ApiSuccessResponse<T>
-    >(ApiSuccessResponse, result);
-    const resultErrors = await validate(resultClass);
-    if (resultErrors.length > 0) {
-      console.warn('result', resultErrors);
+      return await window.fetch(url, options);
+    } catch (e: any) {
+      console.warn(e);
       return Fail('Something went wrong');
     }
-
-    const dataClass = plainToClass(type, result.data);
-    const dataErrors = await validate(dataClass);
-    if (dataErrors.length > 0) {
-      console.warn('data', dataErrors);
-      return Fail('Something went wrong');
-    }
-
-    return result.data;
   }
 }

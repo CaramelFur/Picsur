@@ -25,7 +25,7 @@ export class AuthLoginRequest {
 export class AuthLoginResponse {
   @IsString()
   @IsDefined()
-  access_token: string;
+  jwt_token: string;
 }
 
 export class AuthRegisterRequest {

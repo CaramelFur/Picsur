@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { AppRouterModule } from 'src/app/router/router.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  imports: [CommonModule, MatToolbarModule, MatButtonModule, AppRouterModule],
+  imports: [CommonModule, MatToolbarModule, MatButtonModule, RouterModule],
   declarations: [HeaderComponent],
   exports: [HeaderComponent],
 })
-export class HeaderModule {}
+export class HeaderModule {
+
+}

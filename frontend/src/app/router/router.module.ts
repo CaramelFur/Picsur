@@ -11,6 +11,11 @@ import { ViewComponent } from '../routes/view/view.component';
 import { CopyFieldModule } from '../components/copy-field/copy-field.module';
 import { MatButtonModule } from '@angular/material/button';
 import { UtilModule } from '../util/util.module';
+import { LoginComponent } from '../routes/login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import {MatFormFieldControl, MatFormFieldModule} from '@angular/material/form-field';
 
 const routes: Routes = [
   { path: '', component: UploadComponent },
@@ -19,21 +24,32 @@ const routes: Routes = [
     component: ProcessingComponent,
   },
   { path: 'view/:hash', component: ViewComponent },
+  { path: 'login', component: LoginComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
   imports: [
+    CommonModule,
     NgxDropzoneModule,
     UtilModule,
     MatProgressSpinnerModule,
     MatButtonModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
     PageNotFoundModule,
     CopyFieldModule,
     ApiModule,
+    FormsModule,
     RouterModule.forRoot(routes),
   ],
-  declarations: [UploadComponent, ProcessingComponent, ViewComponent],
+  declarations: [
+    UploadComponent,
+    ProcessingComponent,
+    ViewComponent,
+    LoginComponent,
+  ],
   exports: [RouterModule],
 })
 export class AppRouterModule {}

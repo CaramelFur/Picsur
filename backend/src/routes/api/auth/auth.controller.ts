@@ -30,7 +30,7 @@ export class AuthController {
   @Post('login')
   async login(@Request() req: AuthFasityRequest) {
     const response: AuthLoginResponse = {
-      access_token: await this.authService.createToken(req.user),
+      jwt_token: await this.authService.createToken(req.user),
     };
 
     return response;
