@@ -1,13 +1,11 @@
 import {
   Logger,
-  MiddlewareConsumer,
   Module,
-  NestModule,
   OnModuleInit,
 } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { LocalStrategy } from './local.strategy';
+import { LocalAuthStrategy } from './localauth.strategy';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
@@ -23,7 +21,7 @@ import Config from '../../../env';
       signOptions: { expiresIn: Config.jwt.expiresIn },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalAuthStrategy, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule implements OnModuleInit {

@@ -11,7 +11,7 @@ import {
 import { SupportedMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { GetCols } from '../collectionutils';
 import { plainToClass } from 'class-transformer';
-import { EImageBackend } from '../../backenddto/image.entity';
+import { EImageBackend } from '../../models/entities/image.entity';
 
 @Injectable()
 export class ImageDBService {

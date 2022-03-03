@@ -5,8 +5,8 @@ import { ImageModule } from './routes/image/imageroute.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import Config from './env';
 import { DemoManagerModule } from './managers/demo/demomanager.module';
-import { EImageBackend } from './backenddto/image.entity';
-import { EUserBackend } from './backenddto/user.entity';
+import { EImageBackend } from './models/entities/image.entity';
+import { EUserBackend } from './models/entities/user.entity';
 
 @Module({
   imports: [

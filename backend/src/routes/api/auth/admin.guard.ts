@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
-import { EUserBackend } from '../../../backenddto/user.entity';
+import { EUserBackend } from '../../../models/entities/user.entity';
 
 @Injectable()
 export class AdminGuard implements CanActivate {

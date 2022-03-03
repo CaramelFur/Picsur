@@ -9,7 +9,7 @@ import {
   HasSuccess,
 } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
-import { EUserBackend } from '../../backenddto/user.entity';
+import { EUserBackend } from '../../models/entities/user.entity';
 import { GetCols } from '../collectionutils';
 
 @Injectable()

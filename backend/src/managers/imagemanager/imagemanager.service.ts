@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
-import { EImageBackend } from '../../backenddto/image.entity';
+import { EImageBackend } from '../../models/entities/image.entity';
 import { ImageDBService } from '../../collections/imagedb/imagedb.service';
 import { MimesService } from '../../collections/imagedb/mimes.service';
 

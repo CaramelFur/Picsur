@@ -9,7 +9,7 @@ import {
   NotFoundException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { LocalAuthGuard } from './local-auth.guard';
+import { LocalAuthGuard } from './localauth.guard';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.guard';
 import { AdminGuard } from './admin.guard';

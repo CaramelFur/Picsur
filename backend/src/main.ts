@@ -1,4 +1,4 @@
-import { Res, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -7,7 +7,7 @@ import {
 import { AppModule } from './app.module';
 
 import * as multipart from 'fastify-multipart';
-import { MainExceptionFilter } from './layers/http-exception/http-exception.filter';
+import { MainExceptionFilter } from './layers/httpexception/httpexception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
 import Config from './env';
 

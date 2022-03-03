@@ -8,7 +8,7 @@ import { ApiModule } from '../api/api.module';
 import { PageNotFoundModule } from '../components/pagenotfound/pagenotfound.module';
 import { PageNotFoundComponent } from '../components/pagenotfound/pagenotfound.component';
 import { ViewComponent } from '../routes/view/view.component';
-import { CopyFieldModule } from '../components/copy-field/copy-field.module';
+import { CopyFieldModule } from '../components/copyfield/copyfield.module';
 import { MatButtonModule } from '@angular/material/button';
 import { UtilModule } from '../util/util.module';
 import { LoginComponent } from '../routes/login/login.component';

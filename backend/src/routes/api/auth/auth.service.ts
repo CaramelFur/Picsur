@@ -5,7 +5,7 @@ import { instanceToPlain, plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
 import { AsyncFailable, HasFailed, Fail } from 'picsur-shared/dist/types';
-import { EUserBackend } from '../../../backenddto/user.entity';
+import { EUserBackend } from '../../../models/entities/user.entity';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 
 @Injectable()

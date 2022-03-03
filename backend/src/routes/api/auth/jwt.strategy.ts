@@ -5,7 +5,7 @@ import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import Config from '../../../env';
 import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
-import { EUserBackend } from '../../../backenddto/user.entity';
+import { EUserBackend } from '../../../models/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {

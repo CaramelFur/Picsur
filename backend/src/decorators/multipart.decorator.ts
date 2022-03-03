@@ -10,7 +10,7 @@ import { FastifyRequest } from 'fastify';
 import { Multipart, MultipartFields, MultipartFile } from 'fastify-multipart';
 import { Newable } from 'picsur-shared/dist/types';
 import Config from '../env';
-import { MultiPartFieldDto, MultiPartFileDto } from '../backenddto/multipart.dto';
+import { MultiPartFieldDto, MultiPartFileDto } from '../models/dto/multipart.dto';
 
 const logger = new Logger('MultiPart');
 export interface MPFile {

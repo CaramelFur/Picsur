@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EImageBackend } from '../../backenddto/image.entity';
+import { EImageBackend } from '../../models/entities/image.entity';
 import { ImageDBService } from './imagedb.service';
 import { MimesService } from './mimes.service';
 
