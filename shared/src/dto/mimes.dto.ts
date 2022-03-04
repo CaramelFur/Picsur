@@ -1,4 +1,4 @@
-const tuple = <T extends string[]>(...args: T): T => args;
+import tuple from '../types/tuple';
 
 // Config
 

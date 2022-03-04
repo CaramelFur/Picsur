@@ -1,11 +1,13 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
+import { SysPreferences } from '../dto/syspreferences.dto';
 
 export class ESysPreference {
   @IsOptional()
   id?: number;
 
   @IsNotEmpty()
-  name: string;
+  @IsEnum(SysPreferences)
+  key: SysPreferences;
 
   @IsNotEmpty()
   value: string;
