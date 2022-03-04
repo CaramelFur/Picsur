@@ -46,8 +46,10 @@ export class AuthController {
       register.username,
       register.password,
     );
-
-    if (HasFailed(user)) throw new ConflictException('User already exists');
+    if (HasFailed(user)) {
+      console.warn(user.getReason());
+      throw new InternalServerErrorException('Could not create user');
+    }
 
     if (register.isAdmin) {
       await this.authService.makeAdmin(user);
@@ -63,7 +65,10 @@ export class AuthController {
     @Body() deleteData: AuthDeleteRequest,
   ) {
     const user = await this.authService.deleteUser(deleteData.username);
-    if (HasFailed(user)) throw new NotFoundException('User does not exist');
+    if (HasFailed(user)) {
+      console.warn(user.getReason());
+      throw new InternalServerErrorException('Could not delete user');
+    }
 
     return user;
   }
@@ -72,9 +77,10 @@ export class AuthController {
   @Get('list')
   async listUsers(@Request() req: AuthFasityRequest) {
     const users = this.authService.listUsers();
-
-    if (HasFailed(users))
+    if (HasFailed(users)) {
+      console.warn(users.getReason());
       throw new InternalServerErrorException('Could not list users');
+    }
 
     return users;
   }

@@ -1,26 +1,47 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  NotFoundException,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { UpdateSysPreferenceRequest } from 'picsur-shared/dist/dto/syspreferences.dto';
+import { HasFailed } from 'picsur-shared/dist/types';
+import { SysPreferenceService } from '../../../collections/syspreferencesdb/syspreferencedb.service';
 import { AdminGuard } from '../auth/admin.guard';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 
-@Controller('pref')
+@UseGuards(JwtAuthGuard, AdminGuard)
+@Controller('api/pref')
 export class PrefController {
-  @UseGuards(JwtAuthGuard, AdminGuard)
-  @Post('set/:key')
-  async register(
-    @Request() req: AuthFasityRequest,
-    @Body() register: AuthRegisterRequest,
-  ) {
-    const user = await this.authService.createUser(
-      register.username,
-      register.password,
-    );
+  constructor(private prefService: SysPreferenceService) {}
 
-    if (HasFailed(user)) throw new ConflictException('User already exists');
-
-    if (register.isAdmin) {
-      await this.authService.makeAdmin(user);
+  @Get('sys/:key')
+  async getSysPref(@Param('key') key: string) {
+    const returned = await this.prefService.getPreference(key);
+    if (HasFailed(returned)) {
+      console.warn(returned.getReason());
+      throw new InternalServerErrorException('Could not get preference');
     }
 
-    return user;
+    return returned;
+  }
+
+  @Post('sys/:key')
+  async setSysPref(
+    @Param('key') key: string,
+    @Body() body: UpdateSysPreferenceRequest,
+  ) {
+    const value = body.value;
+    const returned = await this.prefService.setPreference(key, value);
+    if (HasFailed(returned)) {
+      console.warn(returned.getReason());
+      throw new InternalServerErrorException('Could not set preference');
+    }
+
+    return returned;
   }
 }

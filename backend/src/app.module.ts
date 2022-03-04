@@ -8,6 +8,7 @@ import { DemoManagerModule } from './managers/demo/demomanager.module';
 import { EImageBackend } from './models/entities/image.entity';
 import { EUserBackend } from './models/entities/user.entity';
 import { PrefModule } from './routes/api/pref/pref.module';
+import { ESysPreferenceBackend } from './models/entities/syspreference.entity';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { PrefModule } from './routes/api/pref/pref.module';
       database: Config.database.database,
       synchronize: true,
 
-      entities: [EUserBackend, EImageBackend],
+      entities: [EUserBackend, EImageBackend, ESysPreferenceBackend],
     }),
     ServeStaticModule.forRoot({
       rootPath: Config.static.frontendRoot,
@@ -31,5 +32,4 @@ import { PrefModule } from './routes/api/pref/pref.module';
     PrefModule,
   ],
 })
-export class AppModule {
-}
+export class AppModule {}

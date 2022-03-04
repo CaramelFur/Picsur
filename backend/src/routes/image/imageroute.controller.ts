@@ -27,8 +27,10 @@ export class ImageController {
     if (!isHash(hash, 'sha256')) throw new BadRequestException('Invalid hash');
 
     const image = await this.imagesService.retrieveComplete(hash);
-    if (HasFailed(image))
-      throw new NotFoundException('Image not found');
+    if (HasFailed(image)) {
+      console.warn(image.getReason());
+      throw new NotFoundException('Could not find image');
+    }
 
     res.type(image.mime);
     return image.data;
@@ -39,8 +41,10 @@ export class ImageController {
     if (!isHash(hash, 'sha256')) throw new BadRequestException('Invalid hash');
 
     const image = await this.imagesService.retrieveInfo(hash);
-    if (HasFailed(image))
-      throw new NotFoundException('Image not found');
+    if (HasFailed(image)) {
+      console.warn(image.getReason());
+      throw new NotFoundException('Could not find image');
+    }
 
     return image;
   }
@@ -53,7 +57,8 @@ export class ImageController {
     const fileBuffer = await multipart.image.toBuffer();
     const image = await this.imagesService.upload(fileBuffer);
     if (HasFailed(image)) {
-      throw new InternalServerErrorException('Failed to upload image');
+      console.warn(image.getReason());
+      throw new InternalServerErrorException('Could not upload image');
     }
 
     return image;

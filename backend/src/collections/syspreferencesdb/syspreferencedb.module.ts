@@ -8,4 +8,4 @@ import { SysPreferenceService } from './syspreferencedb.service';
   providers: [SysPreferenceService],
   exports: [SysPreferenceService],
 })
-export class UsersModule {}
+export class SysPreferenceModule {}
