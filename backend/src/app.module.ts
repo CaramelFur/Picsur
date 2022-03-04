@@ -7,6 +7,7 @@ import Config from './env';
 import { DemoManagerModule } from './managers/demo/demomanager.module';
 import { EImageBackend } from './models/entities/image.entity';
 import { EUserBackend } from './models/entities/user.entity';
+import { PrefModule } from './routes/api/pref/pref.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { EUserBackend } from './models/entities/user.entity';
     AuthModule,
     ImageModule,
     DemoManagerModule,
+    PrefModule,
   ],
 })
 export class AppModule {
