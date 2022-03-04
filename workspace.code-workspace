@@ -17,5 +17,7 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"vsicons.presets.angular": true
+	}
 }
