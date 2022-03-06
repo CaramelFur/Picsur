@@ -1,21 +1,19 @@
-import { Injectable, OnInit } from '@angular/core';
-import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { BehaviorSubject, Subject } from 'rxjs';
-import jwt_decode from 'jwt-decode';
-import {
-  AsyncFailable,
-  Fail,
-  Failable,
-  HasFailed,
-} from 'picsur-shared/dist/types';
+import { Injectable } from '@angular/core';
 import { plainToClass } from 'class-transformer';
+import { validate } from 'class-validator';
+import jwt_decode from 'jwt-decode';
 import {
   AuthLoginRequest,
   AuthLoginResponse,
   AuthMeResponse,
-  JwtDataDto,
+  JwtDataDto
 } from 'picsur-shared/dist/dto/auth.dto';
-import { validate } from 'class-validator';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
+import {
+  AsyncFailable,
+  Fail, HasFailed
+} from 'picsur-shared/dist/types';
+import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { KeyService } from './key.service';
 

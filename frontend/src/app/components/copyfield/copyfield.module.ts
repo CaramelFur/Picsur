@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CopyFieldComponent } from './copyfield.component';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
+import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { UtilModule } from 'src/app/util/util.module';
+import { CopyFieldComponent } from './copyfield.component';
 @NgModule({
   declarations: [CopyFieldComponent],
   imports: [

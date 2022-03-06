@@ -1,7 +1,7 @@
-import { MultipartFile } from 'fastify-multipart';
 import { BusboyFileStream } from '@fastify/busboy';
-import { IsDefined, IsNotEmpty, IsString } from 'class-validator';
 import { HttpException } from '@nestjs/common';
+import { IsDefined, IsNotEmpty, IsString } from 'class-validator';
+import { MultipartFile } from 'fastify-multipart';
 
 export class MultiPartFileDto {
   @IsString()

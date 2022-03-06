@@ -1,11 +1,9 @@
 import {
-  Injectable,
-  NestInterceptor,
-  ExecutionContext,
-  CallHandler,
+  CallHandler, ExecutionContext, Injectable,
+  NestInterceptor
 } from '@nestjs/common';
 import { ApiResponse } from 'picsur-shared/dist/dto/api.dto';
-import { Observable, map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable()
 export class SuccessInterceptor<T> implements NestInterceptor {

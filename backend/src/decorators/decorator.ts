@@ -1,6 +1,6 @@
 import {
   createParamDecorator,
-  ExecutionContext,
+  ExecutionContext
 } from '@nestjs/common';
 import { Newable } from 'picsur-shared/dist/types';
 import { MultiPartPipe } from './multipart.pipe';

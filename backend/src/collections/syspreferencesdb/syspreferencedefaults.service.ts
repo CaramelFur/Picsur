@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { SysPreferences } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { EnvJwtConfigService } from '../../config/jwt.config.service';

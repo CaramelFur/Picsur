@@ -1,16 +1,16 @@
-import { ExistingProvider, Logger, Module, OnModuleInit } from '@nestjs/common';
-import { PassportModule } from '@nestjs/passport';
-import { AuthService } from './auth.service';
-import { LocalAuthStrategy } from './localauth.strategy';
-import { AuthController } from './auth.controller';
+import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt.strategy';
-import { UsersModule } from '../../../collections/userdb/userdb.module';
-
+import { PassportModule } from '@nestjs/passport';
 import { SysPreferenceModule } from '../../../collections/syspreferencesdb/syspreferencedb.module';
+import { UsersModule } from '../../../collections/userdb/userdb.module';
+import { AuthConfigService } from '../../../config/auth.config.service';
 import { JwtConfigService, JwtSecretProvider } from '../../../config/jwt.lateconfig.service';
 import { PicsurLateConfigModule } from '../../../config/lateconfig.module';
-import { AuthConfigService } from '../../../config/auth.config.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { JwtStrategy } from './jwt.strategy';
+import { LocalAuthStrategy } from './localauth.strategy';
+
 
 @Module({
   imports: [

@@ -2,14 +2,14 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
-  NestFastifyApplication,
+  NestFastifyApplication
 } from '@nestjs/platform-fastify';
-import { AppModule } from './app.module';
-
 import * as multipart from 'fastify-multipart';
+import { AppModule } from './app.module';
+import { HostConfigService } from './config/host.config.service';
 import { MainExceptionFilter } from './layers/httpexception/httpexception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
-import { HostConfigService } from './config/host.config.service';
+
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();

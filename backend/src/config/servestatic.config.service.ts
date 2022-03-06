@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
   ServeStaticModuleOptions,
-  ServeStaticModuleOptionsFactory,
+  ServeStaticModuleOptionsFactory
 } from '@nestjs/serve-static';
 import { join } from 'path';
 import { EnvPrefix, PackageRoot } from './config.static';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ServeStaticConfigService

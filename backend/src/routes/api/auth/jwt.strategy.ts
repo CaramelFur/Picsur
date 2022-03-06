@@ -1,13 +1,13 @@
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { PassportStrategy } from '@nestjs/passport';
 import {
   Inject,
   Injectable,
   Logger,
-  UnauthorizedException,
+  UnauthorizedException
 } from '@nestjs/common';
-import { validate } from 'class-validator';
+import { PassportStrategy } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
+import { validate } from 'class-validator';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
 import { EUserBackend } from '../../../models/entities/user.entity';
 @Injectable()

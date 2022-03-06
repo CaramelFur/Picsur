@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
-import { ApiService } from './api.service';
 import { ImageUploadRequest } from '../models/image-upload-request';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',

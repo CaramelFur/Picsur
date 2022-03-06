@@ -1,6 +1,6 @@
 import {
   SupportedMime,
-  SupportedMimes,
+  SupportedMimes
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';

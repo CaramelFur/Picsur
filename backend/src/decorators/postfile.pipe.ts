@@ -3,7 +3,7 @@ import {
   Injectable,
   Logger,
   PipeTransform,
-  Scope,
+  Scope
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { Multipart } from 'fastify-multipart';

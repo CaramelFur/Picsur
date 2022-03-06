@@ -2,15 +2,13 @@ import {
   Body,
   Controller,
   Get,
-  InternalServerErrorException,
-  NotFoundException,
-  Param,
+  InternalServerErrorException, Param,
   Post,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
 import {
   SysPreferences,
-  UpdateSysPreferenceRequest,
+  UpdateSysPreferenceRequest
 } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/syspreferencesdb/syspreferencedb.service';

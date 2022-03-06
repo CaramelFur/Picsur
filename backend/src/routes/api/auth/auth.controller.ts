@@ -1,26 +1,18 @@
 import {
-  Controller,
-  Post,
-  UseGuards,
-  Request,
-  Body,
-  Get,
-  ConflictException,
-  NotFoundException,
-  InternalServerErrorException,
+  Body, Controller, Get, InternalServerErrorException, Post, Request, UseGuards
 } from '@nestjs/common';
-import { LocalAuthGuard } from './localauth.guard';
-import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './jwt.guard';
-import { AdminGuard } from './admin.guard';
-import { HasFailed } from 'picsur-shared/dist/types';
-import AuthFasityRequest from './authrequest';
 import {
   AuthDeleteRequest,
   AuthLoginResponse,
   AuthMeResponse,
-  AuthRegisterRequest,
+  AuthRegisterRequest
 } from 'picsur-shared/dist/dto/auth.dto';
+import { HasFailed } from 'picsur-shared/dist/types';
+import { AdminGuard } from './admin.guard';
+import { AuthService } from './auth.service';
+import AuthFasityRequest from './authrequest';
+import { JwtAuthGuard } from './jwt.guard';
+import { LocalAuthGuard } from './localauth.guard';
 
 @Controller('api/auth')
 export class AuthController {

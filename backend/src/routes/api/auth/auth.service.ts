@@ -4,9 +4,9 @@ import * as bcrypt from 'bcrypt';
 import { instanceToPlain, plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
-import { AsyncFailable, HasFailed, Fail } from 'picsur-shared/dist/types';
-import { EUserBackend } from '../../../models/entities/user.entity';
+import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
+import { EUserBackend } from '../../../models/entities/user.entity';
 
 @Injectable()
 export class AuthService {

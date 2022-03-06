@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { UtilService } from 'src/app/util/util.service';
 

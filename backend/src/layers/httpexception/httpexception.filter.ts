@@ -1,11 +1,7 @@
 import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpException,
+  ArgumentsHost, Catch, ExceptionFilter, HttpException
 } from '@nestjs/common';
-import { FastifyRequest } from 'fastify';
-import { FastifyReply } from 'fastify';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import { ApiErrorResponse } from 'picsur-shared/dist/dto/api.dto';
 
 @Catch(HttpException)

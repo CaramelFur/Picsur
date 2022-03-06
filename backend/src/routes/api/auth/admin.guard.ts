@@ -1,8 +1,6 @@
 import {
-  Injectable,
   CanActivate,
-  ExecutionContext,
-  Logger,
+  ExecutionContext, Injectable, Logger
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';

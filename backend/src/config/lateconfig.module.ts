@@ -1,9 +1,9 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
-import { JwtConfigService } from './jwt.lateconfig.service';
 import { SysPreferenceModule } from '../collections/syspreferencesdb/syspreferencedb.module';
+import { SysPreferenceService } from '../collections/syspreferencesdb/syspreferencedb.service';
 import { PicsurConfigModule } from './config.module';
 import { EnvJwtConfigService } from './jwt.config.service';
-import { SysPreferenceService } from '../collections/syspreferencesdb/syspreferencedb.service';
+import { JwtConfigService } from './jwt.lateconfig.service';
 
 // This module contains all configservices that depend on the syspref module
 // The syspref module can only be used when connected to the database

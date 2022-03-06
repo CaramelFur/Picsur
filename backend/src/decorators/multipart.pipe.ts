@@ -3,7 +3,7 @@ import {
   Injectable,
   Logger,
   PipeTransform,
-  Scope,
+  Scope
 } from '@nestjs/common';
 import { validate } from 'class-validator';
 import { FastifyRequest } from 'fastify';
@@ -12,7 +12,7 @@ import { Newable } from 'picsur-shared/dist/types';
 import { MultipartConfigService } from '../config/multipart.config.service';
 import {
   MultiPartFieldDto,
-  MultiPartFileDto,
+  MultiPartFileDto
 } from '../models/dto/multipart.dto';
 
 @Injectable({ scope: Scope.REQUEST })

@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UserService } from 'src/app/api/user.service';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
