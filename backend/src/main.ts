@@ -9,12 +9,12 @@ import { AppModule } from './app.module';
 import * as multipart from 'fastify-multipart';
 import { MainExceptionFilter } from './layers/httpexception/httpexception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
-import Config from './env';
+import { HostConfigService } from './config/host.config.service';
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
 
-  // Todo: generic error messages
+  // TODO: generic error messages
   fastifyAdapter.register(multipart as any);
 
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -23,8 +23,15 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new MainExceptionFilter());
   app.useGlobalInterceptors(new SuccessInterceptor());
-  app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: true, forbidUnknownValues: true }));
-  await app.listen(Config.main.port, Config.main.host);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      disableErrorMessages: true,
+      forbidUnknownValues: true,
+    }),
+  );
+
+  const hostConfigService = app.get(HostConfigService);
+  await app.listen(hostConfigService.getPort(), hostConfigService.getHost());
 }
 
 bootstrap().catch(console.error);

@@ -11,10 +11,10 @@ import {
 } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { MultiPart } from '../../decorators/multipart.decorator';
 import { ImageManagerService } from '../../managers/imagemanager/imagemanager.service';
 import { isHash } from 'class-validator';
 import { ImageUploadDto } from '../../models/dto/imageroute.dto';
+import { MultiPart } from '../../decorators/decorator';
 @Controller('i')
 export class ImageController {
   constructor(private readonly imagesService: ImageManagerService) {}

@@ -8,7 +8,10 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { UpdateSysPreferenceRequest } from 'picsur-shared/dist/dto/syspreferences.dto';
+import {
+  SysPreferences,
+  UpdateSysPreferenceRequest,
+} from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/syspreferencesdb/syspreferencedb.service';
 import { AdminGuard } from '../auth/admin.guard';
@@ -21,7 +24,9 @@ export class PrefController {
 
   @Get('sys/:key')
   async getSysPref(@Param('key') key: string) {
-    const returned = await this.prefService.getPreference(key);
+    const returned = await this.prefService.getPreference(
+      key as SysPreferences,
+    );
     if (HasFailed(returned)) {
       console.warn(returned.getReason());
       throw new InternalServerErrorException('Could not get preference');
@@ -36,7 +41,10 @@ export class PrefController {
     @Body() body: UpdateSysPreferenceRequest,
   ) {
     const value = body.value;
-    const returned = await this.prefService.setPreference(key, value);
+    const returned = await this.prefService.setPreference(
+      key as SysPreferences,
+      value,
+    );
     if (HasFailed(returned)) {
       console.warn(returned.getReason());
       throw new InternalServerErrorException('Could not set preference');

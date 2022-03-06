@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^8.4.0",
+    "@nestjs/config": "^1.2.0",
     "@nestjs/core": "^8.4.0",
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/passport": "^8.2.1",

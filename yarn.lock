@@ -1409,6 +1409,16 @@
     tslib "2.3.1"
     uuid "8.3.2"
 
+"@nestjs/config@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/config/-/config-1.2.0.tgz#a4eb58390dd8145b761ee0c8e98e78c8471cabb1"
+  integrity sha512-GGZOj2g6EMZ23orsQqeD2Vs5E2ZrmAiB0qCGvERv+5nQmZjY4nKkisG4awQsym1uotmmzgtsd9lOiKqTIFONhA==
+  dependencies:
+    dotenv "16.0.0"
+    dotenv-expand "8.0.1"
+    lodash "4.17.21"
+    uuid "8.3.2"
+
 "@nestjs/core@^8.4.0":
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-8.4.0.tgz#f4c1840b9b233e3985407f496b7c1e78e0169c70"
@@ -3298,6 +3308,16 @@ domutils@^2.8.0:
     domelementtype "^2.2.0"
     domhandler "^4.2.0"
 
+dotenv-expand@8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-8.0.1.tgz#332aa17c14b12e28e2e230f8d183eecc1c014fdc"
+  integrity sha512-j/Ih7bIERDR5PzI89Zu8ayd3tXZ6E3dbY0ljQ9Db0K87qBO8zdLsi2dIvDHMWtjC3Yxb8XixOTHAtia0fDHRpg==
+
+dotenv@16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.0.tgz#c619001253be89ebb638d027b609c75c26e47411"
+  integrity sha512-qD9WU0MPM4SWLPJy/r2Be+2WgQj8plChsyrCNQzW/0WjvcJQiKQJ9mH3ZgB3fxbUUxgc/11ZJ0Fi5KiimWGz2Q==
+
 dotenv@^8.2.0:
   version "8.6.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.6.0.tgz#061af664d19f7f4d8fc6e4ff9b584ce237adcb8b"
@@ -5164,7 +5184,7 @@ lodash.once@^4.0.0:
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
   integrity sha1-DdOXEhPHxW34gJd9UEyI+0cal6w=
 
-lodash@^4.17.14, lodash@^4.17.19, lodash@^4.17.21:
+lodash@4.17.21, lodash@^4.17.14, lodash@^4.17.19, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==

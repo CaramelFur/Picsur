@@ -1,21 +1,24 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
-import Config from '../../../env';
 import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
 import { EUserBackend } from '../../../models/entities/user.entity';
-
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   private readonly logger = new Logger('JwtStrategy');
 
-  constructor() {
+  constructor(@Inject('JWT_SECRET') private jwtSecret: string) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: Config.jwt.secret,
+      secretOrKey: jwtSecret,
     });
   }
 
