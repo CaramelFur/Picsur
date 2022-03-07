@@ -8,15 +8,15 @@ import {
   AuthRegisterRequest
 } from 'picsur-shared/dist/dto/auth.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { AdminGuard } from './admin.guard';
-import { AuthService } from './auth.service';
-import AuthFasityRequest from './authrequest';
-import { JwtAuthGuard } from './jwt.guard';
-import { LocalAuthGuard } from './localauth.guard';
+import { AuthManagerService } from '../../../managers/auth/auth.service';
+import { AdminGuard } from '../../../managers/auth/guards/admin.guard';
+import { JwtAuthGuard } from '../../../managers/auth/guards/jwt.guard';
+import { LocalAuthGuard } from '../../../managers/auth/guards/localauth.guard';
+import AuthFasityRequest from '../../../models/dto/authrequest.dto';
 
 @Controller('api/auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthManagerService) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')

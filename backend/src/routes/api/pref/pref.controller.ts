@@ -12,8 +12,8 @@ import {
 } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/syspreferencesdb/syspreferencedb.service';
-import { AdminGuard } from '../auth/admin.guard';
-import { JwtAuthGuard } from '../auth/jwt.guard';
+import { AdminGuard } from '../../../managers/auth/guards/admin.guard';
+import { JwtAuthGuard } from '../../../managers/auth/guards/jwt.guard';
 
 @UseGuards(JwtAuthGuard, AdminGuard)
 @Controller('api/pref')
