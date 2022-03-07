@@ -1,5 +1,11 @@
 import {
-  Body, Controller, Get, InternalServerErrorException, Post, Request, UseGuards
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Post,
+  Request,
+  UseGuards
 } from '@nestjs/common';
 import {
   AuthDeleteRequest,
@@ -8,9 +14,8 @@ import {
   AuthRegisterRequest
 } from 'picsur-shared/dist/dto/auth.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
+import { Authenticated } from '../../../decorators/authenticated';
 import { AuthManagerService } from '../../../managers/auth/auth.service';
-import { AdminGuard } from '../../../managers/auth/guards/admin.guard';
-import { JwtAuthGuard } from '../../../managers/auth/guards/jwt.guard';
 import { LocalAuthGuard } from '../../../managers/auth/guards/localauth.guard';
 import AuthFasityRequest from '../../../models/dto/authrequest.dto';
 
@@ -18,8 +23,8 @@ import AuthFasityRequest from '../../../models/dto/authrequest.dto';
 export class AuthController {
   constructor(private authService: AuthManagerService) {}
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
+  @UseGuards(LocalAuthGuard)
   async login(@Request() req: AuthFasityRequest) {
     const response: AuthLoginResponse = {
       jwt_token: await this.authService.createToken(req.user),
@@ -28,8 +33,8 @@ export class AuthController {
     return response;
   }
 
-  @UseGuards(JwtAuthGuard, AdminGuard)
   @Post('create')
+  @Authenticated(true)
   async register(
     @Request() req: AuthFasityRequest,
     @Body() register: AuthRegisterRequest,
@@ -50,8 +55,8 @@ export class AuthController {
     return user;
   }
 
-  @UseGuards(JwtAuthGuard, AdminGuard)
   @Post('delete')
+  @Authenticated(true)
   async delete(
     @Request() req: AuthFasityRequest,
     @Body() deleteData: AuthDeleteRequest,
@@ -65,8 +70,8 @@ export class AuthController {
     return user;
   }
 
-  @UseGuards(JwtAuthGuard, AdminGuard)
   @Get('list')
+  @Authenticated(true)
   async listUsers(@Request() req: AuthFasityRequest) {
     const users = this.authService.listUsers();
     if (HasFailed(users)) {
@@ -77,8 +82,8 @@ export class AuthController {
     return users;
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('me')
+  @Authenticated()
   async me(@Request() req: AuthFasityRequest) {
     const meResponse: AuthMeResponse = new AuthMeResponse();
     meResponse.user = req.user;

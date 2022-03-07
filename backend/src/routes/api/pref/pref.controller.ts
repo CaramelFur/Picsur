@@ -2,9 +2,9 @@ import {
   Body,
   Controller,
   Get,
-  InternalServerErrorException, Param,
-  Post,
-  UseGuards
+  InternalServerErrorException,
+  Param,
+  Post
 } from '@nestjs/common';
 import {
   SysPreferences,
@@ -12,11 +12,10 @@ import {
 } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/syspreferencesdb/syspreferencedb.service';
-import { AdminGuard } from '../../../managers/auth/guards/admin.guard';
-import { JwtAuthGuard } from '../../../managers/auth/guards/jwt.guard';
+import { Authenticated } from '../../../decorators/authenticated';
 
-@UseGuards(JwtAuthGuard, AdminGuard)
 @Controller('api/pref')
+@Authenticated(true)
 export class PrefController {
   constructor(private prefService: SysPreferenceService) {}
 
