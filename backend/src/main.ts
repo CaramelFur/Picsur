@@ -9,7 +9,7 @@ import { AppModule } from './app.module';
 import { HostConfigService } from './config/host.config.service';
 import { MainExceptionFilter } from './layers/httpexception/httpexception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
-
+import { PicsurLoggerService } from './logger/logger.service';
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
@@ -20,6 +20,9 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     fastifyAdapter,
+    {
+      bufferLogs: true
+    }
   );
   app.useGlobalFilters(new MainExceptionFilter());
   app.useGlobalInterceptors(new SuccessInterceptor());
@@ -29,6 +32,8 @@ async function bootstrap() {
       forbidUnknownValues: true,
     }),
   );
+
+  app.useLogger(app.get(PicsurLoggerService));
 
   const hostConfigService = app.get(HostConfigService);
   await app.listen(hostConfigService.getPort(), hostConfigService.getHost());

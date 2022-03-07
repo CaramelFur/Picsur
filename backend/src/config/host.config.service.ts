@@ -21,17 +21,28 @@ export class HostConfigService {
   }
 
   public isDemo() {
-    const enabled = this.configService.get<boolean>(`${EnvPrefix}_DEMO`, false);
+    const enabled = this.configService.get<boolean>(`${EnvPrefix}DEMO`, false);
     this.logger.debug('Demo enabled: ' + enabled);
     return enabled;
   }
 
   public getDemoInterval() {
     const interval = this.configService.get<number>(
-      `${EnvPrefix}_DEMO_INTERVAL`,
+      `${EnvPrefix}DEMO_INTERVAL`,
       1000 * 60 * 5,
     );
     this.logger.debug('Demo interval: ' + interval);
     return interval;
+  }
+
+  public isProduction() {
+    const enabled = this.configService.get<boolean>(
+      `${EnvPrefix}PRODUCTION`,
+      false,
+    );
+    if (enabled) {
+      this.logger.log('Running in production mode');
+    }
+    return enabled;
   }
 }

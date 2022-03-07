@@ -12,18 +12,18 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
 
   public getTypeOrmServerOptions() {
     const varOptions = {
-      host: this.configService.get<string>(`${EnvPrefix}_DB_HOST`, 'localhost'),
-      port: this.configService.get<number>(`${EnvPrefix}_DB_PORT`, 5432),
+      host: this.configService.get<string>(`${EnvPrefix}DB_HOST`, 'localhost'),
+      port: this.configService.get<number>(`${EnvPrefix}DB_PORT`, 5432),
       username: this.configService.get<string>(
-        `${EnvPrefix}_DB_USERNAME`,
+        `${EnvPrefix}DB_USERNAME`,
         DefaultName,
       ),
       password: this.configService.get<string>(
-        `${EnvPrefix}_DB_PASSWORD`,
+        `${EnvPrefix}DB_PASSWORD`,
         DefaultName,
       ),
       database: this.configService.get<string>(
-        `${EnvPrefix}_DB_DATABASE`,
+        `${EnvPrefix}DB_DATABASE`,
         DefaultName,
       ),
     };

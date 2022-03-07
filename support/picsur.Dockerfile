@@ -3,6 +3,8 @@ FROM node:16-alpine
 # Sorry for the humongous docker container this generates
 # Maybe I'll trim it down some day
 
+ENV PICSUR_PRODUCTION=true
+
 ADD . /picsur
 WORKDIR /picsur
 
