@@ -4,6 +4,6 @@ import { PrefController } from './pref.controller';
 
 @Module({
   imports: [SysPreferenceModule],
-  controllers: [PrefController]
+  controllers: [PrefController],
 })
 export class PrefModule {}

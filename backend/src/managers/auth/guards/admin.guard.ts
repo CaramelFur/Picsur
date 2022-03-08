@@ -1,6 +1,8 @@
 import {
   CanActivate,
-  ExecutionContext, Injectable, Logger
+  ExecutionContext,
+  Injectable,
+  Logger
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
@@ -13,8 +15,12 @@ export class AdminGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
+    if (!request.user) {
+      return false;
+    }
+
     const user = plainToClass(EUserBackend, request.user);
-    const errors = await validate(user, {forbidUnknownValues: true});
+    const errors = await validate(user, { forbidUnknownValues: true });
     if (errors.length > 0) {
       this.logger.warn(errors);
       return false;

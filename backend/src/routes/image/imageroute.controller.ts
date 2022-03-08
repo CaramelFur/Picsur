@@ -12,9 +12,10 @@ import {
 import { isHash } from 'class-validator';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { MultiPart } from '../../decorators/decorator';
+import { MultiPart } from '../../decorators/multipart';
 import { ImageManagerService } from '../../managers/imagemanager/imagemanager.service';
 import { ImageUploadDto } from '../../models/dto/imageroute.dto';
+
 @Controller('i')
 export class ImageController {
   constructor(private readonly imagesService: ImageManagerService) {}
