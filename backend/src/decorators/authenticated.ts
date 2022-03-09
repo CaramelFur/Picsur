@@ -1,9 +1,9 @@
 import { CanActivate, UseGuards } from '@nestjs/common';
 import { AdminGuard } from '../managers/auth/guards/admin.guard';
-import { JwtAuthGuard } from '../managers/auth/guards/jwt.guard';
+import { MainAuthGuard } from '../managers/auth/guards/main.guard';
 
 export const Authenticated = (adminOnly: boolean = false) => {
-  const guards: (Function | CanActivate)[] = [JwtAuthGuard];
+  const guards: (Function | CanActivate)[] = [MainAuthGuard];
   if (adminOnly) guards.push(AdminGuard);
 
   return UseGuards(...guards);

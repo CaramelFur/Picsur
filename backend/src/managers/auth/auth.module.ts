@@ -10,6 +10,7 @@ import {
 } from '../../config/jwt.lateconfig.service';
 import { PicsurLateConfigModule } from '../../config/lateconfig.module';
 import { AuthManagerService } from './auth.service';
+import { GuestStrategy } from './guards/guest.strategy';
 import { JwtStrategy } from './guards/jwt.strategy';
 import { LocalAuthStrategy } from './guards/localauth.strategy';
 
@@ -28,6 +29,7 @@ import { LocalAuthStrategy } from './guards/localauth.strategy';
     AuthManagerService,
     LocalAuthStrategy,
     JwtStrategy,
+    GuestStrategy,
     JwtSecretProvider,
   ],
   exports: [AuthManagerService],
