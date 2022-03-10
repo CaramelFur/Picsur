@@ -3,12 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { EntityList } from '../models/entities';
 import { DefaultName, EnvPrefix } from './config.static';
+import { HostConfigService } from './host.config.service';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   private readonly logger = new Logger('TypeOrmConfigService');
 
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService, private hostService: HostConfigService) {}
 
   public getTypeOrmServerOptions() {
     const varOptions = {
@@ -42,7 +43,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     const varOptions = this.getTypeOrmServerOptions();
     return {
       type: 'postgres',
-      synchronize: true,
+      synchronize: !this.hostService.isProduction(),
 
       entities: EntityList,
 

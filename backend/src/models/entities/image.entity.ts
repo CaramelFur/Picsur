@@ -11,13 +11,13 @@ export class EImageBackend extends EImage {
   override id?: number;
 
   @Index()
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   override hash: string;
 
   // Binary data
   @Column({ type: 'bytea', nullable: false, select: false })
   override data?: Buffer;
 
-  @Column({ enum: SupportedMimes })
+  @Column({ enum: SupportedMimes, nullable: false })
   override mime: SupportedMime;
 }

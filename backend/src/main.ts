@@ -21,8 +21,8 @@ async function bootstrap() {
     AppModule,
     fastifyAdapter,
     {
-      bufferLogs: true
-    }
+      bufferLogs: true,
+    },
   );
   app.useGlobalFilters(new MainExceptionFilter());
   app.useGlobalInterceptors(new SuccessInterceptor());

@@ -7,9 +7,9 @@ export class ESysPreferenceBackend extends ESysPreference {
   @PrimaryGeneratedColumn()
   override id?: number;
 
-  @Column({ unique: true })
+  @Column({ nullable: false, unique: true })
   override key: SysPreferences;
 
-  @Column()
+  @Column({ nullable: false })
   override value: string;
 }

@@ -30,6 +30,10 @@ export class AuthManagerService {
     return this.usersService.findAll();
   }
 
+  async userExists(username: string): Promise<boolean> {
+    return this.usersService.exists(username);
+  }
+
   async authenticate(username: string, password: string): AsyncFailable<EUserBackend> {
     const user = await this.usersService.findOne(username, true);
     if (HasFailed(user)) return user;
@@ -55,10 +59,10 @@ export class AuthManagerService {
   }
 
   async makeAdmin(user: string | EUserBackend): AsyncFailable<true> {
-    return this.usersService.modifyAdmin(user, true);
+    return this.usersService.addRoles(user, ['admin']);
   }
 
   async revokeAdmin(user: string | EUserBackend): AsyncFailable<true> {
-    return this.usersService.modifyAdmin(user, false);
+    return this.usersService.removeRoles(user, ['admin']);
   }
 }

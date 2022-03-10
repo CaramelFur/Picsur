@@ -1,6 +1,7 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceModule } from '../../collections/syspreferencesdb/syspreferencedb.module';
 import { UsersModule } from '../../collections/userdb/userdb.module';
 import { AuthConfigService } from '../../config/auth.config.service';
@@ -51,7 +52,23 @@ export class AuthManagerModule implements OnModuleInit {
     const password = this.authConfigService.getDefaultAdminPassword();
     this.logger.debug(`Ensuring admin user "${username}" exists`);
 
-    await this.authService.createUser(username, password);
-    await this.authService.makeAdmin(username);
+    const exists = await this.authService.userExists(username);
+    if (exists) return;
+
+    const newUser = await this.authService.createUser(username, password);
+    if (HasFailed(newUser)) {
+      this.logger.error(
+        `Failed to create admin user "${username}" because: ${newUser.getReason()}`,
+      );
+      return;
+    }
+
+    const result = await this.authService.makeAdmin(newUser);
+    if (HasFailed(result)) {
+      this.logger.error(
+        `Failed to make admin user "${username}" because: ${result.getReason()}`,
+      );
+      return;
+    }
   }
 }

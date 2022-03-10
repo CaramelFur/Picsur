@@ -26,6 +26,6 @@ export class AdminGuard implements CanActivate {
       return false;
     }
 
-    return user.isAdmin;
+    return user.roles.includes('admin');
   }
 }
