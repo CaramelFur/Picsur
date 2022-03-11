@@ -12,11 +12,13 @@ import {
 import { isHash } from 'class-validator';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { MultiPart } from '../../decorators/multipart';
+import { MultiPart } from '../../decorators/multipart.decorator';
+import { Guest } from '../../decorators/roles.decorator';
 import { ImageManagerService } from '../../managers/imagemanager/imagemanager.service';
 import { ImageUploadDto } from '../../models/dto/imageroute.dto';
 
 @Controller('i')
+@Guest()
 export class ImageController {
   constructor(private readonly imagesService: ImageManagerService) {}
 
@@ -51,6 +53,7 @@ export class ImageController {
   }
 
   @Post()
+  //@User()
   async uploadImage(
     @Req() req: FastifyRequest,
     @MultiPart(ImageUploadDto) multipart: ImageUploadDto,

@@ -4,8 +4,7 @@ import {
   Get,
   InternalServerErrorException,
   Post,
-  Request,
-  UseGuards
+  Request
 } from '@nestjs/common';
 import {
   AuthDeleteRequest,
@@ -14,9 +13,8 @@ import {
   AuthRegisterRequest
 } from 'picsur-shared/dist/dto/auth.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { Authenticated } from '../../../decorators/authenticated';
+import { Admin, UseLocalAuth, User } from '../../../decorators/roles.decorator';
 import { AuthManagerService } from '../../../managers/auth/auth.service';
-import { LocalAuthGuard } from '../../../managers/auth/guards/localauth.guard';
 import AuthFasityRequest from '../../../models/dto/authrequest.dto';
 
 @Controller('api/auth')
@@ -24,7 +22,7 @@ export class AuthController {
   constructor(private authService: AuthManagerService) {}
 
   @Post('login')
-  @UseGuards(LocalAuthGuard)
+  @UseLocalAuth()
   async login(@Request() req: AuthFasityRequest) {
     const response: AuthLoginResponse = {
       jwt_token: await this.authService.createToken(req.user),
@@ -34,7 +32,7 @@ export class AuthController {
   }
 
   @Post('create')
-  @Authenticated(true)
+  @Admin()
   async register(
     @Request() req: AuthFasityRequest,
     @Body() register: AuthRegisterRequest,
@@ -56,7 +54,7 @@ export class AuthController {
   }
 
   @Post('delete')
-  @Authenticated(true)
+  @Admin()
   async delete(
     @Request() req: AuthFasityRequest,
     @Body() deleteData: AuthDeleteRequest,
@@ -71,7 +69,7 @@ export class AuthController {
   }
 
   @Get('list')
-  @Authenticated(true)
+  @Admin()
   async listUsers(@Request() req: AuthFasityRequest) {
     const users = this.authService.listUsers();
     if (HasFailed(users)) {
@@ -83,7 +81,7 @@ export class AuthController {
   }
 
   @Get('me')
-  @Authenticated()
+  @User()
   async me(@Request() req: AuthFasityRequest) {
     const meResponse: AuthMeResponse = new AuthMeResponse();
     meResponse.user = req.user;

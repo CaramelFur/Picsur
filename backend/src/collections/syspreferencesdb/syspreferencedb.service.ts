@@ -61,7 +61,9 @@ export class SysPreferenceService {
         ESysPreferenceBackend,
         foundSysPreference,
       );
-      const errors = await validate(foundSysPreference);
+      const errors = await validate(foundSysPreference, {
+        forbidUnknownValues: true,
+      });
       if (errors.length > 0) {
         this.logger.warn(errors);
         return Fail('Invalid preference');
@@ -85,7 +87,9 @@ export class SysPreferenceService {
     verifySysPreference.key = key as SysPreferences;
     verifySysPreference.value = value;
 
-    const errors = await validate(verifySysPreference);
+    const errors = await validate(verifySysPreference, {
+      forbidUnknownValues: true,
+    });
     if (errors.length > 0) {
       this.logger.warn(errors);
       return Fail('Invalid preference');

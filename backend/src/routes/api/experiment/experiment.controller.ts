@@ -1,13 +1,13 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
-import { MainAuthGuard } from '../../../managers/auth/guards/main.guard';
+import { Controller, Get, Request } from '@nestjs/common';
+import { Guest } from '../../../decorators/roles.decorator';
 import AuthFasityRequest from '../../../models/dto/authrequest.dto';
 
 @Controller('api/experiment')
 export class ExperimentController {
+  
   @Get()
-  @UseGuards(MainAuthGuard)
+  @Guest()
   async testRoute(@Request() req: AuthFasityRequest) {
-    console.log("calledroutes")
     return {
       message: req.user,
     };

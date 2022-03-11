@@ -14,6 +14,7 @@ import { AuthManagerService } from './auth.service';
 import { GuestStrategy } from './guards/guest.strategy';
 import { JwtStrategy } from './guards/jwt.strategy';
 import { LocalAuthStrategy } from './guards/localauth.strategy';
+import { GuestService } from './guest.service';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { LocalAuthStrategy } from './guards/localauth.strategy';
     JwtStrategy,
     GuestStrategy,
     JwtSecretProvider,
+    GuestService,
   ],
   exports: [AuthManagerService],
 })

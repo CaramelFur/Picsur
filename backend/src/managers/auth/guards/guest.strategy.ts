@@ -4,6 +4,7 @@ import { Request } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { Strategy } from 'passport-strategy';
 import { ParsedQs } from 'qs';
+import { GuestService } from '../guest.service';
 
 type ReqType = Request<
   ParamsDictionary,
@@ -18,10 +19,9 @@ class GuestPassportStrategy extends Strategy {
     return undefined;
   }
 
-  override authenticate(req: ReqType, options?: any): void {
-    const user = this.validate(req);
-    req['user'] = user;
-    this.pass();
+  override async authenticate(req: ReqType, options?: any) {
+    const user = await this.validate(req);
+    this.success(user);
   }
 }
 
@@ -32,8 +32,11 @@ export class GuestStrategy extends PassportStrategy(
 ) {
   private readonly logger = new Logger('GuestStrategy');
 
+  constructor(private guestService: GuestService) {
+    super();
+  }
+
   override async validate(payload: any) {
-    // TODO: add guest user
-    return;
+    return this.guestService.createGuest();
   }
 }

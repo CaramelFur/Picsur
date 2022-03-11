@@ -1,5 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
   NestFastifyApplication
@@ -10,6 +10,7 @@ import { HostConfigService } from './config/host.config.service';
 import { MainExceptionFilter } from './layers/httpexception/httpexception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
 import { PicsurLoggerService } from './logger/logger.service';
+import { MainAuthGuard } from './managers/auth/guards/main.guard';
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
@@ -32,6 +33,7 @@ async function bootstrap() {
       forbidUnknownValues: true,
     }),
   );
+  app.useGlobalGuards(new MainAuthGuard(new Reflector()));
 
   app.useLogger(app.get(PicsurLoggerService));
 

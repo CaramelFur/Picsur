@@ -12,10 +12,10 @@ import {
 } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/syspreferencesdb/syspreferencedb.service';
-import { Authenticated } from '../../../decorators/authenticated';
+import { Admin } from '../../../decorators/roles.decorator';
 
 @Controller('api/pref')
-@Authenticated(true)
+@Admin()
 export class PrefController {
   constructor(private prefService: SysPreferenceService) {}
 
