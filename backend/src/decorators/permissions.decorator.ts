@@ -8,7 +8,7 @@ export const RequiredPermissions = (...permissions: Permissions) => {
 };
 
 // Easy to read roles
-export const NoAuth = () => RequiredPermissions();
+export const NoPermissions = () => RequiredPermissions();
 
 export const UseLocalAuth = (...permissions: Permissions) =>
   CombineDecorators(

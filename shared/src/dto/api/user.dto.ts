@@ -90,14 +90,17 @@ export class UserMeResponse {
   @Type(() => EUser)
   user: EUser;
 
+  @IsString()
+  @IsDefined()
+  token: string;
+}
+
+// UserMePermissions
+export class UserMePermissionsResponse {
   @IsDefined()
   @IsArray()
   @IsEnum(PermissionsList, { each: true })
   permissions: Permissions;
-
-  @IsString()
-  @IsDefined()
-  newJwtToken: string;
 }
 
 // UserUpdateRoles

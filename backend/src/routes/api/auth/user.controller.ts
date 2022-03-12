@@ -14,6 +14,7 @@ import {
   UserInfoResponse,
   UserListResponse,
   UserLoginResponse,
+  UserMePermissionsResponse,
   UserMeResponse,
   UserRegisterRequest,
   UserRegisterResponse,
@@ -23,6 +24,7 @@ import {
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import {
+  NoPermissions,
   RequiredPermissions,
   UseLocalAuth
 } from '../../../decorators/permissions.decorator';
@@ -94,7 +96,7 @@ export class UserController {
       body.username,
       body.roles,
     );
-    
+
     if (HasFailed(updatedUser)) {
       this.logger.warn(updatedUser.getReason());
       throw new InternalServerErrorException('Could not update user');
@@ -133,16 +135,24 @@ export class UserController {
   @Get('me')
   @RequiredPermissions('user-view')
   async me(@Request() req: AuthFasityRequest): Promise<UserMeResponse> {
+    return {
+      user: req.user,
+      token: await this.authService.createToken(req.user),
+    };
+  }
+
+  // You can always check your permissions
+  @Get('me/permissions')
+  @NoPermissions()
+  async refresh(
+    @Request() req: AuthFasityRequest,
+  ): Promise<UserMePermissionsResponse> {
     const permissions = await this.usersService.getPermissions(req.user);
     if (HasFailed(permissions)) {
       this.logger.warn(permissions.getReason());
       throw new InternalServerErrorException('Could not get permissions');
     }
 
-    return {
-      user: req.user,
-      permissions,
-      newJwtToken: await this.authService.createToken(req.user),
-    };
+    return { permissions };
   }
 }

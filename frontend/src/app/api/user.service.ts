@@ -4,8 +4,7 @@ import { validate } from 'class-validator';
 import jwt_decode from 'jwt-decode';
 import {
   UserLoginRequest,
-  UserLoginResponse,
-  UserMeResponse
+  UserLoginResponse, UserMeResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { JwtDataDto } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -117,7 +116,7 @@ export class UserService {
     const got = await this.api.get(UserMeResponse, '/api/user/me');
     if (HasFailed(got)) return got;
 
-    this.key.set(got.newJwtToken);
+    this.key.set(got.token);
     return got.user;
   }
 }

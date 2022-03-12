@@ -7,8 +7,8 @@ const PermissionsTuple = tuple(
   'image-upload',
   'user-login', // Ability to log in
   'user-register', // Ability to register
-  'user-view', // Ability to view user info, only granted if logged in
   'user-manage',
+  'user-view', // Ability to view user details and refresh token
   'role-manage',
   'syspref-manage',
 );
