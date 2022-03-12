@@ -132,7 +132,7 @@ export class RolesService {
         where: { name },
       });
 
-      if (!found) return Fail('User not found');
+      if (!found) return Fail('Role not found');
       return found as ERoleBackend;
     } catch (e: any) {
       return Fail(e?.message);

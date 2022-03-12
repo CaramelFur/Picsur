@@ -7,13 +7,19 @@ import {
   Post,
   Request
 } from '@nestjs/common';
-import { AuthUserInfoRequest } from 'picsur-shared/dist/dto/api/auth.dto';
 import {
-  AuthDeleteRequest,
-  AuthLoginResponse,
-  AuthMeResponse,
-  AuthRegisterRequest
-} from 'picsur-shared/dist/dto/auth.dto';
+  UserDeleteRequest,
+  UserDeleteResponse,
+  UserInfoRequest,
+  UserInfoResponse,
+  UserListResponse,
+  UserLoginResponse,
+  UserMeResponse,
+  UserRegisterRequest,
+  UserRegisterResponse,
+  UserUpdateRolesRequest,
+  UserUpdateRolesResponse
+} from 'picsur-shared/dist/dto/api/user.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import {
@@ -23,8 +29,8 @@ import {
 import { AuthManagerService } from '../../../managers/auth/auth.service';
 import AuthFasityRequest from '../../../models/dto/authrequest.dto';
 
-@Controller('api/auth')
-export class AuthController {
+@Controller('api/user')
+export class UserController {
   private readonly logger = new Logger('AuthController');
 
   constructor(
@@ -34,20 +40,17 @@ export class AuthController {
 
   @Post('login')
   @UseLocalAuth('user-login')
-  async login(@Request() req: AuthFasityRequest) {
-    const response: AuthLoginResponse = {
+  async login(@Request() req: AuthFasityRequest): Promise<UserLoginResponse> {
+    return {
       jwt_token: await this.authService.createToken(req.user),
     };
-
-    return response;
   }
 
   @Post('register')
   @RequiredPermissions('user-register')
   async register(
-    @Request() req: AuthFasityRequest,
-    @Body() register: AuthRegisterRequest,
-  ) {
+    @Body() register: UserRegisterRequest,
+  ): Promise<UserRegisterResponse> {
     const user = await this.usersService.create(
       register.username,
       register.password,
@@ -58,7 +61,11 @@ export class AuthController {
     }
 
     if (register.isAdmin) {
-      await this.usersService.addRoles(user, ['admin']);
+      const result = await this.usersService.addRoles(user, ['admin']);
+      if (HasFailed(result)) {
+        this.logger.warn(result.getReason());
+        throw new InternalServerErrorException('Could not add admin role');
+      }
     }
 
     return user;
@@ -67,9 +74,8 @@ export class AuthController {
   @Post('delete')
   @RequiredPermissions('user-manage')
   async delete(
-    @Request() req: AuthFasityRequest,
-    @Body() deleteData: AuthDeleteRequest,
-  ) {
+    @Body() deleteData: UserDeleteRequest,
+  ): Promise<UserDeleteResponse> {
     const user = await this.usersService.delete(deleteData.username);
     if (HasFailed(user)) {
       this.logger.warn(user.getReason());
@@ -79,9 +85,27 @@ export class AuthController {
     return user;
   }
 
+  @Post('roles')
+  @RequiredPermissions('user-manage')
+  async setPermissions(
+    @Body() body: UserUpdateRolesRequest,
+  ): Promise<UserUpdateRolesResponse> {
+    const updatedUser = await this.usersService.setRoles(
+      body.username,
+      body.roles,
+    );
+    
+    if (HasFailed(updatedUser)) {
+      this.logger.warn(updatedUser.getReason());
+      throw new InternalServerErrorException('Could not update user');
+    }
+
+    return updatedUser;
+  }
+
   @Post('info')
   @RequiredPermissions('user-manage')
-  async getUser(@Body() body: AuthUserInfoRequest) {
+  async getUser(@Body() body: UserInfoRequest): Promise<UserInfoResponse> {
     const user = await this.usersService.findOne(body.username);
     if (HasFailed(user)) {
       this.logger.warn(user.getReason());
@@ -93,30 +117,32 @@ export class AuthController {
 
   @Get('list')
   @RequiredPermissions('user-manage')
-  async listUsers(@Request() req: AuthFasityRequest) {
-    const users = this.usersService.findAll();
+  async listUsers(): Promise<UserListResponse> {
+    const users = await this.usersService.findAll();
     if (HasFailed(users)) {
       this.logger.warn(users.getReason());
       throw new InternalServerErrorException('Could not list users');
     }
 
-    return users;
+    return {
+      users,
+      total: users.length,
+    };
   }
 
   @Get('me')
   @RequiredPermissions('user-view')
-  async me(@Request() req: AuthFasityRequest) {
+  async me(@Request() req: AuthFasityRequest): Promise<UserMeResponse> {
     const permissions = await this.usersService.getPermissions(req.user);
     if (HasFailed(permissions)) {
       this.logger.warn(permissions.getReason());
       throw new InternalServerErrorException('Could not get permissions');
     }
 
-    const meResponse: AuthMeResponse = new AuthMeResponse();
-    meResponse.user = req.user;
-    meResponse.permissions = permissions;
-    meResponse.newJwtToken = await this.authService.createToken(req.user);
-
-    return meResponse;
+    return {
+      user: req.user,
+      permissions,
+      newJwtToken: await this.authService.createToken(req.user),
+    };
   }
 }

@@ -9,11 +9,10 @@ export class InfoController {
 
   @Get()
   @NoAuth()
-  getInfo() {
-    const response: InfoResponse = {
+  async getInfo(): Promise<InfoResponse> {
+    return {
       demo: this.hostConfig.isDemo(),
       production: this.hostConfig.isProduction(),
     };
-    return response;
   }
 }

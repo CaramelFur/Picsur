@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { isHash } from 'class-validator';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart.decorator';
 import { RequiredPermissions } from '../../decorators/permissions.decorator';
@@ -29,7 +30,7 @@ export class ImageController {
   async getImage(
     @Res({ passthrough: true }) res: FastifyReply,
     @Param('hash') hash: string,
-  ) {
+  ): Promise<Buffer> {
     if (!isHash(hash, 'sha256')) throw new BadRequestException('Invalid hash');
 
     const image = await this.imagesService.retrieveComplete(hash);
@@ -43,7 +44,7 @@ export class ImageController {
   }
 
   @Get('meta/:hash')
-  async getImageMeta(@Param('hash') hash: string) {
+  async getImageMeta(@Param('hash') hash: string): Promise<ImageMetaResponse> {
     if (!isHash(hash, 'sha256')) throw new BadRequestException('Invalid hash');
 
     const image = await this.imagesService.retrieveInfo(hash);
@@ -60,7 +61,7 @@ export class ImageController {
   async uploadImage(
     @Req() req: FastifyRequest,
     @MultiPart(ImageUploadDto) multipart: ImageUploadDto,
-  ) {
+  ): Promise<ImageMetaResponse> {
     const fileBuffer = await multipart.image.toBuffer();
     const image = await this.imagesService.upload(fileBuffer);
     if (HasFailed(image)) {

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { instanceToPlain, plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
-import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
+import { JwtDataDto } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUserBackend } from '../../models/entities/user.entity';
 
 @Injectable()

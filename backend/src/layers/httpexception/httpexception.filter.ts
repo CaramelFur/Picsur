@@ -2,7 +2,7 @@ import {
   ArgumentsHost, Catch, ExceptionFilter, HttpException
 } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { ApiErrorResponse } from 'picsur-shared/dist/dto/api.dto';
+import { ApiErrorResponse } from 'picsur-shared/dist/dto/api';
 
 @Catch(HttpException)
 export class MainExceptionFilter implements ExceptionFilter {

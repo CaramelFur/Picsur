@@ -4,11 +4,10 @@ import { validate } from 'class-validator';
 import {
   ApiResponse,
   ApiSuccessResponse
-} from 'picsur-shared/dist/dto/api.dto';
+} from 'picsur-shared/dist/dto/api';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { MultiPartRequest } from '../models/multi-part-request';
 import { KeyService } from './key.service';
-
 
 @Injectable({
   providedIn: 'root',

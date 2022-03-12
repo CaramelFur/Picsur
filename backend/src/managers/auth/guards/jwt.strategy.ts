@@ -8,8 +8,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
+import { JwtDataDto } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUserBackend } from '../../../models/entities/user.entity';
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   private readonly logger = new Logger('JwtStrategy');

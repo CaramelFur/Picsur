@@ -2,7 +2,7 @@ import {
   CallHandler, ExecutionContext, Injectable,
   NestInterceptor
 } from '@nestjs/common';
-import { ApiResponse } from 'picsur-shared/dist/dto/api.dto';
+import { ApiResponse } from 'picsur-shared/dist/dto/api';
 import { map, Observable } from 'rxjs';
 
 @Injectable()

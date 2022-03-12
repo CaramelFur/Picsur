@@ -8,9 +8,10 @@ import {
   Post
 } from '@nestjs/common';
 import {
-  SysPreferences,
+  SysPreferenceResponse,
   UpdateSysPreferenceRequest
-} from 'picsur-shared/dist/dto/syspreferences.dto';
+} from 'picsur-shared/dist/dto/api/pref.dto';
+import { SysPreferences } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/syspreferencesdb/syspreferencedb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
@@ -23,7 +24,7 @@ export class PrefController {
   constructor(private prefService: SysPreferenceService) {}
 
   @Get('sys/:key')
-  async getSysPref(@Param('key') key: string) {
+  async getSysPref(@Param('key') key: string): Promise<SysPreferenceResponse> {
     const returned = await this.prefService.getPreference(
       key as SysPreferences,
     );
@@ -39,7 +40,7 @@ export class PrefController {
   async setSysPref(
     @Param('key') key: string,
     @Body() body: UpdateSysPreferenceRequest,
-  ) {
+  ): Promise<SysPreferenceResponse> {
     const value = body.value;
     const returned = await this.prefService.setPreference(
       key as SysPreferences,

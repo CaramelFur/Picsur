@@ -1,4 +1,3 @@
-import { IsNotEmpty } from 'class-validator';
 import tuple from '../types/tuple';
 
 const SysPreferencesTuple = tuple(
@@ -9,8 +8,3 @@ const SysPreferencesTuple = tuple(
 
 export const SysPreferences: string[] = SysPreferencesTuple;
 export type SysPreferences = typeof SysPreferencesTuple[number];
-
-export class UpdateSysPreferenceRequest {
-  @IsNotEmpty()
-  value: string;
-}

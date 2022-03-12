@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
+import { UserApiModule } from './auth/user.module';
 import { ExperimentModule } from './experiment/experiment.module';
 import { InfoModule } from './info/info.module';
 import { PrefModule } from './pref/pref.module';
@@ -7,7 +7,7 @@ import { RolesApiModule } from './roles/roles.module';
 
 @Module({
   imports: [
-    AuthModule,
+    UserApiModule,
     PrefModule,
     ExperimentModule,
     InfoModule,

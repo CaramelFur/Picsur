@@ -88,43 +88,46 @@ export class UsersService {
   public async addRoles(
     user: string | EUserBackend,
     roles: Roles,
-  ): AsyncFailable<true> {
+  ): AsyncFailable<EUserBackend> {
     const userToModify = await this.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
 
-    // This is stupid
-    userToModify.roles = [...new Set([...userToModify.roles, ...roles])];
+    const newRoles = [...new Set([...userToModify.roles, ...roles])];
 
-    try {
-      await this.usersRepository.save(userToModify);
-    } catch (e: any) {
-      return Fail(e?.message);
-    }
-
-    return true;
+    return this.setRoles(userToModify, newRoles);
   }
 
   public async removeRoles(
     user: string | EUserBackend,
     roles: Roles,
-  ): AsyncFailable<true> {
+  ): AsyncFailable<EUserBackend> {
     const userToModify = await this.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
 
-    // Make sure we don't remove unremovable roles
-    roles = roles.filter((role) => !PermanentRolesList.includes(role));
+    const newRoles = userToModify.roles.filter((role) => !roles.includes(role));
 
-    userToModify.roles = userToModify.roles.filter(
-      (role) => !roles.includes(role),
+    return this.setRoles(userToModify, newRoles);
+  }
+
+  public async setRoles(
+    user: string | EUserBackend,
+    roles: Roles,
+  ): AsyncFailable<EUserBackend> {
+    const userToModify = await this.resolve(user);
+    if (HasFailed(userToModify)) return userToModify;
+
+    const rolesToKeep = userToModify.roles.filter((role) =>
+      PermanentRolesList.includes(role),
     );
+    const newRoles = [...new Set([...rolesToKeep, ...roles])];
+
+    userToModify.roles = newRoles;
 
     try {
-      await this.usersRepository.save(userToModify);
+      return await this.usersRepository.save(userToModify);
     } catch (e: any) {
       return Fail(e?.message);
     }
-
-    return true;
   }
 
   public async findOne<B extends true | undefined = undefined>(

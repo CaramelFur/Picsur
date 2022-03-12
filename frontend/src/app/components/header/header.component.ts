@@ -13,6 +13,8 @@ import { UtilService } from 'src/app/util/util.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+  private readonly logger = console;
+
   private currentUser: EUser | null = null;
 
   public get user() {
@@ -36,7 +38,7 @@ export class HeaderComponent implements OnInit {
   @AutoUnsubscribe()
   subscribeUser() {
     return this.userService.liveUser.subscribe((user) => {
-      console.log('user', user);
+      this.logger.log('user', user);
       this.currentUser = user;
     });
   }

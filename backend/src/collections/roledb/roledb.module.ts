@@ -36,7 +36,7 @@ export class RolesModule implements OnModuleInit {
 
   private async nukeRoles() {
     this.logger.error('Nuking system roles');
-    const result = this.rolesService.nukeSystemRoles(true);
+    const result = await this.rolesService.nukeSystemRoles(true);
     if (HasFailed(result)) {
       this.logger.error(`Failed to nuke roles because: ${result.getReason()}`);
     }

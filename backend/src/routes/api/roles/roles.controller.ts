@@ -8,9 +8,14 @@ import {
 } from '@nestjs/common';
 import {
   RoleCreateRequest,
+  RoleCreateResponse,
   RoleDeleteRequest,
+  RoleDeleteResponse,
   RoleInfoRequest,
-  RoleUpdateRequest
+  RoleInfoResponse,
+  RoleListResponse,
+  RoleUpdateRequest,
+  RoleUpdateResponse
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { RolesService } from '../../../collections/roledb/roledb.service';
@@ -24,19 +29,22 @@ export class RolesController {
   constructor(private rolesService: RolesService) {}
 
   @Get('/list')
-  getRoles() {
-    const roles = this.rolesService.findAll();
+  async getRoles(): Promise<RoleListResponse> {
+    const roles = await this.rolesService.findAll();
     if (HasFailed(roles)) {
       this.logger.warn(roles.getReason());
       throw new InternalServerErrorException('Could not list roles');
     }
 
-    return roles;
+    return {
+      roles,
+      total: roles.length,
+    };
   }
 
   @Post('/info')
-  getRole(@Body() body: RoleInfoRequest) {
-    const role = this.rolesService.findOne(body.name);
+  async getRole(@Body() body: RoleInfoRequest): Promise<RoleInfoResponse> {
+    const role = await this.rolesService.findOne(body.name);
     if (HasFailed(role)) {
       this.logger.warn(role.getReason());
       throw new InternalServerErrorException('Could not find role');
@@ -45,9 +53,11 @@ export class RolesController {
     return role;
   }
 
-  @Post('/permissions/set')
-  updateRole(@Body() body: RoleUpdateRequest) {
-    const updatedRole = this.rolesService.setPermissions(
+  @Post('/permissions')
+  async updateRole(
+    @Body() body: RoleUpdateRequest,
+  ): Promise<RoleUpdateResponse> {
+    const updatedRole = await this.rolesService.setPermissions(
       body.name,
       body.permissions,
     );
@@ -59,39 +69,11 @@ export class RolesController {
     return updatedRole;
   }
 
-  @Post('/permissions/add')
-  addPermissions(@Body() body: RoleUpdateRequest) {
-    const updatedRole = this.rolesService.addPermissions(
-      body.name,
-      body.permissions,
-    );
-    if (HasFailed(updatedRole)) {
-      this.logger.warn(updatedRole.getReason());
-      throw new InternalServerErrorException('Could not add role permissions');
-    }
-
-    return updatedRole;
-  }
-
-  @Post('/permissions/remove')
-  removePermissions(@Body() body: RoleUpdateRequest) {
-    const updatedRole = this.rolesService.removePermissions(
-      body.name,
-      body.permissions,
-    );
-    if (HasFailed(updatedRole)) {
-      this.logger.warn(updatedRole.getReason());
-      throw new InternalServerErrorException(
-        'Could not remove role permissions',
-      );
-    }
-
-    return updatedRole;
-  }
-
   @Post('/create')
-  createRole(@Body() role: RoleCreateRequest) {
-    const newRole = this.rolesService.create(role.name, role.permissions);
+  async createRole(
+    @Body() role: RoleCreateRequest,
+  ): Promise<RoleCreateResponse> {
+    const newRole = await this.rolesService.create(role.name, role.permissions);
     if (HasFailed(newRole)) {
       this.logger.warn(newRole.getReason());
       throw new InternalServerErrorException('Could not create role');
@@ -101,8 +83,10 @@ export class RolesController {
   }
 
   @Post('/delete')
-  deleteRole(@Body() role: RoleDeleteRequest) {
-    const deletedRole = this.rolesService.delete(role.name);
+  async deleteRole(
+    @Body() role: RoleDeleteRequest,
+  ): Promise<RoleDeleteResponse> {
+    const deletedRole = await this.rolesService.delete(role.name);
     if (HasFailed(deletedRole)) {
       this.logger.warn(deletedRole.getReason());
       throw new InternalServerErrorException('Could not delete role');

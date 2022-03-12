@@ -3,16 +3,13 @@ import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 import jwt_decode from 'jwt-decode';
 import {
-  AuthLoginRequest,
-  AuthLoginResponse,
-  AuthMeResponse,
-  JwtDataDto
-} from 'picsur-shared/dist/dto/auth.dto';
+  UserLoginRequest,
+  UserLoginResponse,
+  UserMeResponse
+} from 'picsur-shared/dist/dto/api/user.dto';
+import { JwtDataDto } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import {
-  AsyncFailable,
-  Fail, HasFailed
-} from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { KeyService } from './key.service';
@@ -38,19 +35,19 @@ export class UserService {
   private userSubject = new BehaviorSubject<EUser | null>(null);
 
   constructor(private api: ApiService, private key: KeyService) {
-    this.init().catch(console.error);
+    this.init().catch(this.logger.error);
   }
 
   public async login(username: string, password: string): AsyncFailable<EUser> {
-    const request: AuthLoginRequest = {
+    const request: UserLoginRequest = {
       username,
       password,
     };
 
     const response = await this.api.post(
-      AuthLoginRequest,
-      AuthLoginResponse,
-      '/api/auth/login',
+      UserLoginRequest,
+      UserLoginResponse,
+      '/api/user/login',
       request
     );
 
@@ -117,7 +114,7 @@ export class UserService {
   }
 
   private async fetchUser(): AsyncFailable<EUser> {
-    const got = await this.api.get(AuthMeResponse, '/api/auth/me');
+    const got = await this.api.get(UserMeResponse, '/api/user/me');
     if (HasFailed(got)) return got;
 
     this.key.set(got.newJwtToken);
