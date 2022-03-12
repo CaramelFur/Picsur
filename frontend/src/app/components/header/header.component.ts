@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { Permissions } from 'picsur-shared/dist/dto/permissions';
+import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { PermissionService } from 'src/app/api/permission.service';
@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public get canLogIn() {
-    return this.permissions.includes('user-login');
+    return this.permissions.includes(Permission.UserLogin);
   }
 
   constructor(

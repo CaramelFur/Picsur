@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { ImageDBService } from '../../collections/imagedb/imagedb.service';
 import { RolesService } from '../../collections/roledb/roledb.service';
 
@@ -15,7 +16,7 @@ export class DemoManagerService {
     this.logger.warn(
       'Modifying roles for demo mode, this will not be reverted automatically',
     );
-    this.rolesService.addPermissions('guest', ['image-upload']);
+    this.rolesService.addPermissions('guest', [Permission.ImageUpload]);
   }
 
   public execute() {

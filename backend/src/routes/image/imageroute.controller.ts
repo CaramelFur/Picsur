@@ -13,6 +13,7 @@ import {
 import { isHash } from 'class-validator';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
+import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart.decorator';
 import { RequiredPermissions } from '../../decorators/permissions.decorator';
@@ -20,7 +21,7 @@ import { ImageManagerService } from '../../managers/imagemanager/imagemanager.se
 import { ImageUploadDto } from '../../models/dto/imageroute.dto';
 
 @Controller('i')
-@RequiredPermissions('image-view')
+@RequiredPermissions(Permission.ImageView)
 export class ImageController {
   private readonly logger = new Logger('ImageController');
 
@@ -57,7 +58,7 @@ export class ImageController {
   }
 
   @Post()
-  @RequiredPermissions('image-upload')
+  @RequiredPermissions(Permission.ImageUpload)
   async uploadImage(
     @Req() req: FastifyRequest,
     @MultiPart(ImageUploadDto) multipart: ImageUploadDto,

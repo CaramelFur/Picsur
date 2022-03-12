@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { Permissions } from 'picsur-shared/dist/dto/permissions';
+import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { PermissionService } from 'src/app/api/permission.service';
 import { UserService } from 'src/app/api/user.service';
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   private permissions: Permissions = [];
 
   public get showRegister() {
-    return this.permissions.includes('user-register');
+    return this.permissions.includes(Permission.UserRegister);
   }
 
   model = new LoginControl();

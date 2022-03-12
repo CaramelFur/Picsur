@@ -17,12 +17,13 @@ import {
   RoleUpdateRequest,
   RoleUpdateResponse
 } from 'picsur-shared/dist/dto/api/roles.dto';
+import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { RolesService } from '../../../collections/roledb/roledb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 
 @Controller('api/roles')
-@RequiredPermissions('role-manage')
+@RequiredPermissions(Permission.RoleManage)
 export class RolesController {
   private readonly logger = new Logger('RolesController');
 

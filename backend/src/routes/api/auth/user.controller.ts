@@ -21,6 +21,7 @@ import {
   UserUpdateRolesRequest,
   UserUpdateRolesResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
+import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import {
@@ -41,7 +42,7 @@ export class UserController {
   ) {}
 
   @Post('login')
-  @UseLocalAuth('user-login')
+  @UseLocalAuth(Permission.UserLogin)
   async login(@Request() req: AuthFasityRequest): Promise<UserLoginResponse> {
     return {
       jwt_token: await this.authService.createToken(req.user),
@@ -49,7 +50,7 @@ export class UserController {
   }
 
   @Post('register')
-  @RequiredPermissions('user-register')
+  @RequiredPermissions(Permission.UserRegister)
   async register(
     @Body() register: UserRegisterRequest,
   ): Promise<UserRegisterResponse> {
@@ -74,7 +75,7 @@ export class UserController {
   }
 
   @Post('delete')
-  @RequiredPermissions('user-manage')
+  @RequiredPermissions(Permission.UserManage)
   async delete(
     @Body() deleteData: UserDeleteRequest,
   ): Promise<UserDeleteResponse> {
@@ -88,7 +89,7 @@ export class UserController {
   }
 
   @Post('roles')
-  @RequiredPermissions('user-manage')
+  @RequiredPermissions(Permission.UserManage)
   async setPermissions(
     @Body() body: UserUpdateRolesRequest,
   ): Promise<UserUpdateRolesResponse> {
@@ -106,7 +107,7 @@ export class UserController {
   }
 
   @Post('info')
-  @RequiredPermissions('user-manage')
+  @RequiredPermissions(Permission.UserManage)
   async getUser(@Body() body: UserInfoRequest): Promise<UserInfoResponse> {
     const user = await this.usersService.findOne(body.username);
     if (HasFailed(user)) {
@@ -118,7 +119,7 @@ export class UserController {
   }
 
   @Get('list')
-  @RequiredPermissions('user-manage')
+  @RequiredPermissions(Permission.UserManage)
   async listUsers(): Promise<UserListResponse> {
     const users = await this.usersService.findAll();
     if (HasFailed(users)) {
@@ -133,7 +134,7 @@ export class UserController {
   }
 
   @Get('me')
-  @RequiredPermissions('user-view')
+  @RequiredPermissions(Permission.UserView)
   async me(@Request() req: AuthFasityRequest): Promise<UserMeResponse> {
     return {
       user: req.user,

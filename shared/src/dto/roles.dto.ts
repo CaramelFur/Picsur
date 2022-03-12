@@ -1,5 +1,5 @@
 import tuple from '../types/tuple';
-import { Permissions, PermissionsList } from './permissions';
+import { Permission, Permissions, PermissionsList } from './permissions';
 
 // Config
 
@@ -24,10 +24,15 @@ export type SystemRoles = SystemRole[];
 export const SystemRoleDefaults: {
   [key in SystemRole]: Permissions;
 } = {
-  guest: ['image-view', 'user-login'],
-  user: ['image-view', 'user-view', 'user-login', 'image-upload'],
+  guest: [Permission.ImageView, Permission.UserLogin],
+  user: [
+    Permission.ImageView,
+    Permission.UserView,
+    Permission.UserLogin,
+    Permission.ImageUpload,
+  ],
   // Grant all permissions to admin
-  admin: PermissionsList as Permissions,
+  admin: PermissionsList,
 };
 
 // Normal roles types

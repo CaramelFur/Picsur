@@ -8,13 +8,12 @@ import {
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
-import { isArray, isEnum, isString, validate } from 'class-validator';
+import { validate } from 'class-validator';
 import {
-  Permissions,
-  PermissionsList
+  Permissions
 } from 'picsur-shared/dist/dto/permissions';
-import { Roles } from 'picsur-shared/dist/dto/roles.dto';
 import { Fail, Failable, HasFailed } from 'picsur-shared/dist/types';
+import { isPermissionsArray } from 'picsur-shared/dist/util/permissions';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import { EUserBackend } from '../../../models/entities/user.entity';
 
@@ -42,13 +41,13 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
 
     const permissions = this.extractPermissions(context);
     if (HasFailed(permissions)) {
-      this.logger.warn("222"+permissions.getReason());
+      this.logger.warn('222' + permissions.getReason());
       throw new InternalServerErrorException();
     }
 
     const userPermissions = await this.usersService.getPermissions(user);
     if (HasFailed(userPermissions)) {
-      this.logger.warn("111"+userPermissions.getReason());
+      this.logger.warn('111' + userPermissions.getReason());
       throw new InternalServerErrorException();
     }
 
@@ -69,19 +68,11 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
       );
     }
 
-    if (!this.isPermissionsArray(permissions)) {
+    if (!isPermissionsArray(permissions)) {
       return Fail(`Permissions for ${handlerName} is not a string array`);
     }
 
     return permissions;
-  }
-
-  private isPermissionsArray(value: any): value is Roles {
-    if (!isArray(value)) return false;
-    if (!value.every((item: unknown) => isString(item))) return false;
-    if (!value.every((item: string) => isEnum(item, PermissionsList)))
-      return false;
-    return true;
   }
 
   private async validateUser(user: EUserBackend): Promise<EUserBackend> {

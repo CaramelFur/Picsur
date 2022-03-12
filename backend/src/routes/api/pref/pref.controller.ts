@@ -11,13 +11,14 @@ import {
   SysPreferenceResponse,
   UpdateSysPreferenceRequest
 } from 'picsur-shared/dist/dto/api/pref.dto';
+import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { SysPreferences } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/syspreferencesdb/syspreferencedb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 
 @Controller('api/pref')
-@RequiredPermissions('syspref-manage')
+@RequiredPermissions(Permission.SysPrefManage)
 export class PrefController {
   private readonly logger = new Logger('PrefController');
 
