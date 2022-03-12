@@ -1,12 +1,15 @@
 import { Type } from 'class-transformer';
 import {
-  IsArray, IsBoolean,
-  IsDefined, IsEnum, IsInt, IsNotEmpty,
+  IsArray,
+  IsBoolean,
+  IsDefined,
+  IsEnum, IsNotEmpty,
   IsOptional,
-  IsString, ValidateNested
+  IsString,
+  ValidateNested
 } from 'class-validator';
-import { EUser } from '../entities/user.entity';
-import { Permissions, PermissionsList } from './permissions';
+import { EUser } from '../../entities/user.entity';
+import { Permissions, PermissionsList } from '../permissions';
 
 // Api
 
@@ -62,21 +65,4 @@ export class AuthMeResponse {
   @IsString()
   @IsDefined()
   newJwtToken: string;
-}
-
-// Extra
-
-export class JwtDataDto {
-  @IsDefined()
-  @ValidateNested()
-  @Type(() => EUser)
-  user: EUser;
-
-  @IsOptional()
-  @IsInt()
-  iat?: number;
-
-  @IsOptional()
-  @IsInt()
-  exp?: number;
 }
