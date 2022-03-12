@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   InternalServerErrorException,
+  Logger,
   Post,
   Request
 } from '@nestjs/common';
@@ -13,16 +14,22 @@ import {
   AuthRegisterRequest
 } from 'picsur-shared/dist/dto/auth.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { Admin, UseLocalAuth, User } from '../../../decorators/roles.decorator';
+import { UsersService } from '../../../collections/userdb/userdb.service';
+import { RequiredPermissions, UseLocalAuth } from '../../../decorators/permissions.decorator';
 import { AuthManagerService } from '../../../managers/auth/auth.service';
 import AuthFasityRequest from '../../../models/dto/authrequest.dto';
 
 @Controller('api/auth')
 export class AuthController {
-  constructor(private authService: AuthManagerService) {}
+  private readonly logger = new Logger('AuthController');
+  
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthManagerService,
+  ) {}
 
   @Post('login')
-  @UseLocalAuth()
+  @UseLocalAuth('user-login')
   async login(@Request() req: AuthFasityRequest) {
     const response: AuthLoginResponse = {
       jwt_token: await this.authService.createToken(req.user),
@@ -31,37 +38,37 @@ export class AuthController {
     return response;
   }
 
-  @Post('create')
-  @Admin()
+  @Post('register')
+  @RequiredPermissions('user-register')
   async register(
     @Request() req: AuthFasityRequest,
     @Body() register: AuthRegisterRequest,
   ) {
-    const user = await this.authService.createUser(
+    const user = await this.usersService.create(
       register.username,
       register.password,
     );
     if (HasFailed(user)) {
-      console.warn(user.getReason());
-      throw new InternalServerErrorException('Could not create user');
+      this.logger.warn(user.getReason());
+      throw new InternalServerErrorException('Could not register user');
     }
 
     if (register.isAdmin) {
-      await this.authService.makeAdmin(user);
+      await this.usersService.addRoles(user, ['admin']);
     }
 
     return user;
   }
 
   @Post('delete')
-  @Admin()
+  @RequiredPermissions('user-manage')
   async delete(
     @Request() req: AuthFasityRequest,
     @Body() deleteData: AuthDeleteRequest,
   ) {
-    const user = await this.authService.deleteUser(deleteData.username);
+    const user = await this.usersService.delete(deleteData.username);
     if (HasFailed(user)) {
-      console.warn(user.getReason());
+      this.logger.warn(user.getReason());
       throw new InternalServerErrorException('Could not delete user');
     }
 
@@ -69,11 +76,11 @@ export class AuthController {
   }
 
   @Get('list')
-  @Admin()
+  @RequiredPermissions('user-manage')
   async listUsers(@Request() req: AuthFasityRequest) {
-    const users = this.authService.listUsers();
+    const users = this.usersService.findAll();
     if (HasFailed(users)) {
-      console.warn(users.getReason());
+      this.logger.warn(users.getReason());
       throw new InternalServerErrorException('Could not list users');
     }
 
@@ -81,10 +88,17 @@ export class AuthController {
   }
 
   @Get('me')
-  @User()
+  @RequiredPermissions('user-view')
   async me(@Request() req: AuthFasityRequest) {
+    const permissions = await this.usersService.getPermissions(req.user);
+    if (HasFailed(permissions)) {
+      this.logger.warn(permissions.getReason());
+      throw new InternalServerErrorException('Could not get permissions');
+    }
+
     const meResponse: AuthMeResponse = new AuthMeResponse();
     meResponse.user = req.user;
+    meResponse.permissions = permissions;
     meResponse.newJwtToken = await this.authService.createToken(req.user);
 
     return meResponse;

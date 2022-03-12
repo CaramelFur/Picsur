@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   InternalServerErrorException,
+  Logger,
   Param,
   Post
 } from '@nestjs/common';
@@ -12,11 +13,13 @@ import {
 } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/syspreferencesdb/syspreferencedb.service';
-import { Admin } from '../../../decorators/roles.decorator';
+import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 
 @Controller('api/pref')
-@Admin()
+@RequiredPermissions('syspref-manage')
 export class PrefController {
+  private readonly logger = new Logger('PrefController');
+
   constructor(private prefService: SysPreferenceService) {}
 
   @Get('sys/:key')
@@ -25,7 +28,7 @@ export class PrefController {
       key as SysPreferences,
     );
     if (HasFailed(returned)) {
-      console.warn(returned.getReason());
+      this.logger.warn(returned.getReason());
       throw new InternalServerErrorException('Could not get preference');
     }
 
@@ -43,7 +46,7 @@ export class PrefController {
       value,
     );
     if (HasFailed(returned)) {
-      console.warn(returned.getReason());
+      this.logger.warn(returned.getReason());
       throw new InternalServerErrorException('Could not set preference');
     }
 

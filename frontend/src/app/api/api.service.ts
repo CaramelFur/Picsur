@@ -14,6 +14,8 @@ import { KeyService } from './key.service';
   providedIn: 'root',
 })
 export class ApiService {
+  private readonly logger = console;
+
   constructor(private keyService: KeyService) {}
 
   public async get<T extends Object>(
@@ -32,7 +34,7 @@ export class ApiService {
     const sendClass = plainToClass(sendType, data);
     const errors = await validate(sendClass);
     if (errors.length > 0) {
-      console.warn(errors);
+      this.logger.warn(errors);
       return Fail('Something went wrong');
     }
 
@@ -69,14 +71,14 @@ export class ApiService {
     >(ApiSuccessResponse, result);
     const resultErrors = await validate(resultClass);
     if (resultErrors.length > 0) {
-      console.warn('result', resultErrors);
+      this.logger.warn('result', resultErrors);
       return Fail('Something went wrong');
     }
 
     const dataClass = plainToClass(type, result.data);
     const dataErrors = await validate(dataClass);
     if (dataErrors.length > 0) {
-      console.warn('data', dataErrors);
+      this.logger.warn('data', dataErrors);
       return Fail('Something went wrong');
     }
 
@@ -94,7 +96,7 @@ export class ApiService {
     try {
       return await response.json();
     } catch (e) {
-      console.warn(e);
+      this.logger.warn(e);
       return Fail('Something went wrong');
     }
   }
@@ -109,7 +111,7 @@ export class ApiService {
     try {
       return await response.arrayBuffer();
     } catch (e) {
-      console.warn(e);
+      this.logger.warn(e);
       return Fail('Something went wrong');
     }
   }
@@ -130,7 +132,7 @@ export class ApiService {
 
       return await window.fetch(url, options);
     } catch (e: any) {
-      console.warn(e);
+      this.logger.warn(e);
       return Fail('Something went wrong');
     }
   }

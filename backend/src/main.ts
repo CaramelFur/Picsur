@@ -6,6 +6,7 @@ import {
 } from '@nestjs/platform-fastify';
 import * as multipart from 'fastify-multipart';
 import { AppModule } from './app.module';
+import { UsersService } from './collections/userdb/userdb.service';
 import { HostConfigService } from './config/host.config.service';
 import { MainExceptionFilter } from './layers/httpexception/httpexception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
@@ -33,7 +34,9 @@ async function bootstrap() {
       forbidUnknownValues: true,
     }),
   );
-  app.useGlobalGuards(new MainAuthGuard(new Reflector()));
+  app.useGlobalGuards(
+    new MainAuthGuard(app.get(Reflector), app.get(UsersService)),
+  );
 
   app.useLogger(app.get(PicsurLoggerService));
 

@@ -1,48 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 import { instanceToPlain, plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 import { JwtDataDto } from 'picsur-shared/dist/dto/auth.dto';
-import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
-import { UsersService } from '../../collections/userdb/userdb.service';
 import { EUserBackend } from '../../models/entities/user.entity';
 
 @Injectable()
 export class AuthManagerService {
   private readonly logger = new Logger('AuthService');
 
-  constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService,
-  ) {}
-
-  async createUser(username: string, password: string): AsyncFailable<EUserBackend> {
-    const hashedPassword = await bcrypt.hash(password, 12);
-    return this.usersService.create(username, hashedPassword);
-  }
-
-  async deleteUser(user: string | EUserBackend): AsyncFailable<EUserBackend> {
-    return this.usersService.delete(user);
-  }
-
-  async listUsers(): AsyncFailable<EUserBackend[]> {
-    return this.usersService.findAll();
-  }
-
-  async userExists(username: string): Promise<boolean> {
-    return this.usersService.exists(username);
-  }
-
-  async authenticate(username: string, password: string): AsyncFailable<EUserBackend> {
-    const user = await this.usersService.findOne(username, true);
-    if (HasFailed(user)) return user;
-
-    if (!(await bcrypt.compare(password, user.password)))
-      return Fail('Wrong password');
-
-    return await this.usersService.findOne(username);
-  }
+  constructor(private jwtService: JwtService) {}
 
   async createToken(user: EUserBackend): Promise<string> {
     const jwtData: JwtDataDto = plainToClass(JwtDataDto, {
@@ -56,13 +23,5 @@ export class AuthManagerService {
     }
 
     return this.jwtService.signAsync(instanceToPlain(jwtData));
-  }
-
-  async makeAdmin(user: string | EUserBackend): AsyncFailable<true> {
-    return this.usersService.addRoles(user, ['admin']);
-  }
-
-  async revokeAdmin(user: string | EUserBackend): AsyncFailable<true> {
-    return this.usersService.removeRoles(user, ['admin']);
   }
 }

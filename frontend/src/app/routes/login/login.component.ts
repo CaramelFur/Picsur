@@ -12,6 +12,8 @@ import { LoginControl } from './login.model';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  private readonly logger = console;
+
   model = new LoginControl();
   loginFail = false;
 
@@ -35,7 +37,7 @@ export class LoginComponent implements OnInit {
 
     const user = await this.userService.login(data.username, data.password);
     if (HasFailed(user)) {
-      console.warn(user);
+      this.logger.warn(user);
       this.loginFail = true;
       return;
     }

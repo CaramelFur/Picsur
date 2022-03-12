@@ -8,9 +8,9 @@ import { PicsurLoggerModule } from './logger/logger.module';
 import { AuthManagerModule } from './managers/auth/auth.module';
 import { DemoManagerModule } from './managers/demo/demomanager.module';
 import { AuthModule } from './routes/api/auth/auth.module';
+import { ExperimentModule } from './routes/api/experiment/experiment.module';
 import { PrefModule } from './routes/api/pref/pref.module';
 import { ImageModule } from './routes/image/imageroute.module';
-import { ExperimentModule } from './routes/api/experiment/experiment.module';
 
 @Module({
   imports: [
@@ -22,6 +22,7 @@ import { ExperimentModule } from './routes/api/experiment/experiment.module';
       useExisting: ServeStaticConfigService,
       imports: [PicsurConfigModule],
     }),
+
     AuthManagerModule,
     AuthModule,
     ImageModule,

@@ -1,6 +1,10 @@
 import { Exclude } from 'class-transformer';
-import { IsArray, IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
-import { Roles, RolesList } from '../dto/roles.dto';
+import {
+  IsArray, IsNotEmpty,
+  IsOptional,
+  IsString
+} from 'class-validator';
+import { Roles } from '../dto/roles.dto';
 
 export class EUser {
   @IsOptional()
@@ -10,7 +14,7 @@ export class EUser {
   username: string;
 
   @IsArray()
-  @IsEnum(RolesList, { each: true })
+  @IsString({ each: true })
   roles: Roles;
 
   @IsOptional()

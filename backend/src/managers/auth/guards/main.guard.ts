@@ -8,15 +8,23 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
 import { isArray, isEnum, isString, validate } from 'class-validator';
-import { Roles, RolesList } from 'picsur-shared/dist/dto/roles.dto';
+import {
+  Permissions,
+  PermissionsList
+} from 'picsur-shared/dist/dto/permissions';
+import { Roles } from 'picsur-shared/dist/dto/roles.dto';
 import { Fail, Failable, HasFailed } from 'picsur-shared/dist/types';
+import { UsersService } from '../../../collections/userdb/userdb.service';
 import { EUserBackend } from '../../../models/entities/user.entity';
 
 @Injectable()
 export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
   private readonly logger = new Logger('MainAuthGuard');
 
-  constructor(private reflector: Reflector) {
+  constructor(
+    private reflector: Reflector,
+    private usersService: UsersService,
+  ) {
     super();
   }
 
@@ -31,39 +39,47 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
       context.switchToHttp().getRequest().user,
     );
 
-    const roles = this.extractRoles(context);
-    if (HasFailed(roles)) {
-      this.logger.warn(roles.getReason());
+    const permissions = this.extractPermissions(context);
+    if (HasFailed(permissions)) {
+      this.logger.warn(permissions.getReason());
       return false;
     }
 
-    // User must have all roles
-    return roles.every((role) => user.roles.includes(role));
+    const userPermissions = await this.usersService.getPermissions(user);
+    if (HasFailed(userPermissions)) {
+      this.logger.warn(userPermissions.getReason());
+      return false;
+    }
+
+    return permissions.every((permission) =>
+      userPermissions.includes(permission),
+    );
   }
 
-  private extractRoles(context: ExecutionContext): Failable<Roles> {
+  private extractPermissions(context: ExecutionContext): Failable<Permissions> {
     const handlerName = context.getHandler().name;
-    const roles =
-      this.reflector.get<Roles>('roles', context.getHandler()) ??
-      this.reflector.get<Roles>('roles', context.getClass());
+    const permissions =
+      this.reflector.get<Permissions>('permissions', context.getHandler()) ??
+      this.reflector.get<Permissions>('permissions', context.getClass());
 
-    if (roles === undefined) {
+    if (permissions === undefined) {
       return Fail(
-        `${handlerName} does not have any roles defined, denying access`,
+        `${handlerName} does not have any permissions defined, denying access`,
       );
     }
 
-    if (!this.isRolesArray(roles)) {
-      return Fail(`Roles for ${handlerName} is not a string array`);
+    if (!this.isPermissionsArray(permissions)) {
+      return Fail(`Permissions for ${handlerName} is not a string array`);
     }
 
-    return roles;
+    return permissions;
   }
 
-  private isRolesArray(value: any): value is Roles {
+  private isPermissionsArray(value: any): value is Roles {
     if (!isArray(value)) return false;
     if (!value.every((item: unknown) => isString(item))) return false;
-    if (!value.every((item: string) => isEnum(item, RolesList))) return false;
+    if (!value.every((item: string) => isEnum(item, PermissionsList)))
+      return false;
     return true;
   }
 

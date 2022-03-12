@@ -1,14 +1,12 @@
+import { Type } from 'class-transformer';
 import {
-  IsBoolean,
-  IsDefined,
-  IsNotEmpty,
+  IsArray, IsBoolean,
+  IsDefined, IsEnum, IsInt, IsNotEmpty,
   IsOptional,
-  IsString,
-  IsInt,
-  ValidateNested,
+  IsString, ValidateNested
 } from 'class-validator';
 import { EUser } from '../entities/user.entity';
-import { Type } from 'class-transformer';
+import { Permissions, PermissionsList } from './permissions';
 
 // Api
 
@@ -55,6 +53,11 @@ export class AuthMeResponse {
   @ValidateNested()
   @Type(() => EUser)
   user: EUser;
+
+  @IsDefined()
+  @IsArray()
+  @IsEnum(PermissionsList, { each: true })
+  permissions: Permissions;
 
   @IsString()
   @IsDefined()

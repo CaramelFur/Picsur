@@ -21,6 +21,8 @@ import { KeyService } from './key.service';
   providedIn: 'root',
 })
 export class UserService {
+  private readonly logger = console;
+
   public get liveUser() {
     return this.userSubject;
   }
@@ -79,7 +81,7 @@ export class UserService {
 
     const user = await this.extractUser(apikey);
     if (HasFailed(user)) {
-      console.warn(user.getReason());
+      this.logger.warn(user.getReason());
       await this.logout();
       return;
     }
@@ -88,7 +90,7 @@ export class UserService {
 
     const fetchedUser = await this.fetchUser();
     if (HasFailed(fetchedUser)) {
-      console.warn(fetchedUser.getReason());
+      this.logger.warn(fetchedUser.getReason());
       await this.logout();
       return;
     }
@@ -107,7 +109,7 @@ export class UserService {
     const jwtData = plainToClass(JwtDataDto, decoded);
     const errors = await validate(jwtData);
     if (errors.length > 0) {
-      console.warn(errors);
+      this.logger.warn(errors);
       return Fail('Invalid token data');
     }
 
