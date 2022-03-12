@@ -37,7 +37,19 @@
         </mat-form-field>
       </div>
       <div class="col-12 py-2">
-        <button mat-raised-button color="accent" type="submit">Login</button>
+        <button mat-raised-button color="accent" class="mx-2" type="submit">
+          Login
+        </button>
+        <button
+          *ngIf="showRegister"
+          mat-raised-button
+          color="primary"
+          class="mx-2"
+          (click)="onRegister()"
+          type="button"
+        >
+          Register
+        </button>
       </div>
     </form>
   </div>

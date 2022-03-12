@@ -1,8 +1,13 @@
 <div class="content-border">
-  <ngx-dropzone (change)="onSelect($event)">
+  <ngx-dropzone *ngIf="hasUploadPermission" (change)="onSelect($event)">
     <div class="centered">
       <h1>Upload Image</h1>
       <p>Drag and drop an image here, or click to select an image</p>
     </div>
   </ngx-dropzone>
+
+  <div class="centered" *ngIf="!hasUploadPermission">
+    <h1>Please Log In</h1>
+    <p>You do not yet have permission to upload</p>
+  </div>
 </div>

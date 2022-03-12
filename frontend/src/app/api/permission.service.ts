@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { UserMePermissionsResponse } from 'picsur-shared/dist/dto/api/user.dto';
-import { Permissions } from 'picsur-shared/dist/dto/permissions';
+import {
+  Permissions,
+  PermissionsList
+} from 'picsur-shared/dist/dto/permissions';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
@@ -15,19 +18,22 @@ export class PermissionService {
     this.onUser();
   }
 
-  public get livePermissions() {
+  public get live() {
     return this.permissionsSubject;
   }
 
-  public get permissions() {
+  public get snapshot() {
     return this.permissionsSubject.getValue();
   }
 
-  private permissionsSubject = new BehaviorSubject<Permissions>([]);
+  // Lets be optimistic for better ux
+  private permissionsSubject = new BehaviorSubject<Permissions>(
+    PermissionsList as Permissions
+  );
 
   @AutoUnsubscribe()
   private onUser() {
-    return this.userService.liveUser.subscribe(async (user) => {
+    return this.userService.live.subscribe(async (user) => {
       const permissions = await this.fetchPermissions();
       if (HasFailed(permissions)) {
         this.logger.warn(permissions.getReason());

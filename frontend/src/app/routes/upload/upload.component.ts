@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { NgxDropzoneChangeEvent } from 'ngx-dropzone';
+import { Permissions } from 'picsur-shared/dist/dto/permissions';
+import { PermissionService } from 'src/app/api/permission.service';
 import { UtilService } from 'src/app/util/util.service';
 import { ProcessingViewMetadata } from '../../models/processing-view-metadata';
 
@@ -8,8 +11,31 @@ import { ProcessingViewMetadata } from '../../models/processing-view-metadata';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss'],
 })
-export class UploadComponent {
-  constructor(private utilService: UtilService, private router: Router) {}
+export class UploadComponent implements OnInit {
+  private permissions: Permissions = [];
+
+  // Lets be optimistic here, this makes for a better ux
+  public get hasUploadPermission() {
+    return this.permissions.includes('image-upload');
+  }
+
+  constructor(
+    private utilService: UtilService,
+    private permissionService: PermissionService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.onPermission();
+  }
+
+  @AutoUnsubscribe()
+  onPermission() {
+    return this.permissionService.live.subscribe((permissions) => {
+      this.permissions = permissions;
+    });
+  }
+
   onSelect(event: NgxDropzoneChangeEvent) {
     if (event.addedFiles.length > 1) {
       this.utilService.showSnackBar(

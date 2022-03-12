@@ -8,7 +8,7 @@
 
   <span class="spacer"></span>
 
-  <button *ngIf="!isLoggedIn" mat-stroked-button (click)="doLogin()">
+  <button *ngIf="!isLoggedIn && canLogIn" mat-stroked-button (click)="doLogin()">
     Login
   </button>
 

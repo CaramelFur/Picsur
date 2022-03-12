@@ -19,11 +19,11 @@ import { KeyService } from './key.service';
 export class UserService {
   private readonly logger = console;
 
-  public get liveUser() {
+  public get live() {
     return this.userSubject;
   }
 
-  public get user() {
+  public get snapshot() {
     return this.userSubject.getValue();
   }
 
