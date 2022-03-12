@@ -66,3 +66,9 @@ export class AuthMeResponse {
   @IsDefined()
   newJwtToken: string;
 }
+
+export class AuthUserInfoRequest {
+  @IsString()
+  @IsNotEmpty()
+  username: string;
+}

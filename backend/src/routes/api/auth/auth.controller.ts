@@ -7,6 +7,7 @@ import {
   Post,
   Request
 } from '@nestjs/common';
+import { AuthUserInfoRequest } from 'picsur-shared/dist/dto/api/auth.dto';
 import {
   AuthDeleteRequest,
   AuthLoginResponse,
@@ -15,14 +16,17 @@ import {
 } from 'picsur-shared/dist/dto/auth.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
-import { RequiredPermissions, UseLocalAuth } from '../../../decorators/permissions.decorator';
+import {
+  RequiredPermissions,
+  UseLocalAuth
+} from '../../../decorators/permissions.decorator';
 import { AuthManagerService } from '../../../managers/auth/auth.service';
 import AuthFasityRequest from '../../../models/dto/authrequest.dto';
 
 @Controller('api/auth')
 export class AuthController {
   private readonly logger = new Logger('AuthController');
-  
+
   constructor(
     private usersService: UsersService,
     private authService: AuthManagerService,
@@ -70,6 +74,18 @@ export class AuthController {
     if (HasFailed(user)) {
       this.logger.warn(user.getReason());
       throw new InternalServerErrorException('Could not delete user');
+    }
+
+    return user;
+  }
+
+  @Post('info')
+  @RequiredPermissions('user-manage')
+  async getUser(@Body() body: AuthUserInfoRequest) {
+    const user = await this.usersService.findOne(body.username);
+    if (HasFailed(user)) {
+      this.logger.warn(user.getReason());
+      throw new InternalServerErrorException('Could not find user');
     }
 
     return user;

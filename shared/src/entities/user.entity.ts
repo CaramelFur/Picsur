@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import {
-  IsArray, IsNotEmpty,
+  IsArray, IsInt, IsNotEmpty,
   IsOptional,
   IsString
 } from 'class-validator';
@@ -8,9 +8,11 @@ import { Roles } from '../dto/roles.dto';
 
 export class EUser {
   @IsOptional()
+  @IsInt()
   id?: number;
 
   @IsNotEmpty()
+  @IsString()
   username: string;
 
   @IsArray()
@@ -19,5 +21,6 @@ export class EUser {
 
   @IsOptional()
   @Exclude()
+  @IsString()
   password?: string;
 }

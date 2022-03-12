@@ -14,7 +14,7 @@ import {
   HasFailed,
   HasSuccess
 } from 'picsur-shared/dist/types';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { ERoleBackend } from '../../models/entities/role.entity';
 
 @Injectable()
@@ -79,7 +79,7 @@ export class RolesService {
   public async addPermissions(
     role: string | ERoleBackend,
     permissions: Permissions,
-  ): AsyncFailable<true> {
+  ): AsyncFailable<ERoleBackend> {
     const roleToModify = await this.resolve(role);
     if (HasFailed(roleToModify)) return roleToModify;
 
@@ -94,7 +94,7 @@ export class RolesService {
   public async removePermissions(
     role: string | ERoleBackend,
     permissions: Permissions,
-  ): AsyncFailable<true> {
+  ): AsyncFailable<ERoleBackend> {
     const roleToModify = await this.resolve(role);
     if (HasFailed(roleToModify)) return roleToModify;
 
@@ -109,7 +109,7 @@ export class RolesService {
     role: string | ERoleBackend,
     permissions: Permissions,
     allowImmutable: boolean = false,
-  ): AsyncFailable<true> {
+  ): AsyncFailable<ERoleBackend> {
     const roleToModify = await this.resolve(role);
     if (HasFailed(roleToModify)) return roleToModify;
 
@@ -120,12 +120,10 @@ export class RolesService {
     roleToModify.permissions = permissions;
 
     try {
-      await this.rolesRepository.save(roleToModify);
+      return await this.rolesRepository.save(roleToModify);
     } catch (e: any) {
       return Fail(e?.message);
     }
-
-    return true;
   }
 
   public async findOne(name: string): AsyncFailable<ERoleBackend> {
@@ -141,14 +139,26 @@ export class RolesService {
     }
   }
 
+  public async findAll(): AsyncFailable<ERoleBackend[]> {
+    try {
+      const found = await this.rolesRepository.find();
+      if (!found) return Fail('No roles found');
+      return found as ERoleBackend[];
+    } catch (e: any) {
+      return Fail(e?.message);
+    }
+  }
+
   public async exists(username: string): Promise<boolean> {
     return HasSuccess(await this.findOne(username));
   }
 
-  public async nuke(iamsure: boolean = false): AsyncFailable<true> {
+  public async nukeSystemRoles(iamsure: boolean = false): AsyncFailable<true> {
     if (!iamsure) return Fail('Nuke aborted');
     try {
-      await this.rolesRepository.delete({});
+      await this.rolesRepository.delete({
+        name: In(SystemRolesList),
+      });
     } catch (e: any) {
       return Fail(e?.message);
     }

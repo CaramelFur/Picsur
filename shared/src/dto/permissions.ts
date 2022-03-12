@@ -9,6 +9,7 @@ const PermissionsTuple = tuple(
   'user-register', // Ability to register
   'user-view', // Ability to view user info, only granted if logged in
   'user-manage',
+  'role-manage',
   'syspref-manage',
 );
 
