@@ -1,5 +1,6 @@
 import {
   ExecutionContext,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   Logger
@@ -32,7 +33,7 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
     const result = await super.canActivate(context);
     if (result !== true) {
       this.logger.error('Main Auth has denied access, this should not happen');
-      return false;
+      throw new InternalServerErrorException();
     }
 
     const user = await this.validateUser(
@@ -42,18 +43,18 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
     const permissions = this.extractPermissions(context);
     if (HasFailed(permissions)) {
       this.logger.warn(permissions.getReason());
-      return false;
+      throw new InternalServerErrorException();
     }
 
     const userPermissions = await this.usersService.getPermissions(user);
     if (HasFailed(userPermissions)) {
       this.logger.warn(userPermissions.getReason());
-      return false;
+      throw new InternalServerErrorException();
     }
 
-    return permissions.every((permission) =>
-      userPermissions.includes(permission),
-    );
+    if (permissions.every((permission) => userPermissions.includes(permission)))
+      return true;
+    else throw new ForbiddenException('Permission denied');
   }
 
   private extractPermissions(context: ExecutionContext): Failable<Permissions> {
