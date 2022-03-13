@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
+  Router,
   RouterStateSnapshot
 } from '@angular/router';
 import { Permissions } from 'picsur-shared/dist/dto/permissions';
@@ -12,7 +13,10 @@ import { PermissionService } from '../api/permission.service';
   providedIn: 'root',
 })
 export class PermissionGuard implements CanActivate {
-  constructor(private permissionService: PermissionService) {}
+  constructor(
+    private permissionService: PermissionService,
+    private router: Router
+  ) {}
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const requiredPermissions: Permissions = route.data['permissions'];
@@ -28,6 +32,9 @@ export class PermissionGuard implements CanActivate {
       ourPermissions.includes(permission)
     );
 
+    if (!isOk) {
+      this.router.navigate(['/']);
+    }
     return isOk;
   }
 }

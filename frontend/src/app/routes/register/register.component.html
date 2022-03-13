@@ -2,12 +2,10 @@
   <div class="container centered">
     <form class="row" (ngSubmit)="onSubmit()">
       <div class="col-12 py-2">
-        <h1>Login</h1>
+        <h1>Register</h1>
       </div>
-      <div class="col-12 py-2" *ngIf="loginFail">
-        <mat-error>
-          Failed to login. Please check your username and password.
-        </mat-error>
+      <div class="col-12 py-2" *ngIf="registerFail">
+        <mat-error> Failed to register. </mat-error>
       </div>
       <div class="col-12 py-2">
         <mat-form-field appearance="outline" color="accent">
@@ -40,18 +38,33 @@
         </mat-form-field>
       </div>
       <div class="col-12 py-2">
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            type="password"
+            [formControl]="model.passwordConfirm"
+            name="confirmpassword"
+            required
+          />
+          <mat-error *ngIf="model.passwordConfirm.errors">{{
+            model.passwordConfirmError
+          }}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 py-2">
         <button mat-raised-button color="accent" class="mx-2" type="submit">
-          Login
+          Register
         </button>
         <button
-          *ngIf="showRegister"
+          *ngIf="showLogin"
           mat-raised-button
           color="primary"
           class="mx-2"
-          (click)="onRegister()"
+          (click)="onLogin()"
           type="button"
         >
-          Register
+          Login
         </button>
       </div>
     </form>

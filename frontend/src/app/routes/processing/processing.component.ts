@@ -7,7 +7,6 @@ import { UtilService } from 'src/app/util/util.service';
 
 @Component({
   templateUrl: './processing.component.html',
-  styleUrls: ['./processing.component.scss'],
 })
 export class ProcessingComponent implements OnInit {
   constructor(

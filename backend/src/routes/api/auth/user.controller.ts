@@ -63,14 +63,6 @@ export class UserController {
       throw new InternalServerErrorException('Could not register user');
     }
 
-    if (register.isAdmin) {
-      const result = await this.usersService.addRoles(user, ['admin']);
-      if (HasFailed(result)) {
-        this.logger.warn(result.getReason());
-        throw new InternalServerErrorException('Could not add admin role');
-      }
-    }
-
     return user;
   }
 

@@ -4,3 +4,8 @@
   height: initial !important;
   width: initial !important;
 }
+
+form mat-form-field {
+  width: inherit;
+  max-width: 40rem;
+}

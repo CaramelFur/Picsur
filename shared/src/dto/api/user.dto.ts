@@ -1,13 +1,9 @@
 import { Type } from 'class-transformer';
 import {
-  IsArray,
-  IsBoolean,
-  IsDefined,
+  IsArray, IsDefined,
   IsEnum,
   IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsPositive,
+  IsNotEmpty, IsPositive,
   IsString,
   ValidateNested
 } from 'class-validator';
@@ -43,10 +39,6 @@ export class UserRegisterRequest {
   @IsString()
   @IsNotEmpty()
   password: string;
-
-  @IsBoolean()
-  @IsOptional()
-  isAdmin?: boolean;
 }
 
 export class UserRegisterResponse extends EUser {}

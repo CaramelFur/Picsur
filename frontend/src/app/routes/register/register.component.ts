@@ -5,27 +5,27 @@ import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { PermissionService } from 'src/app/api/permission.service';
 import { UserService } from 'src/app/api/user.service';
+import { UserPassModel } from 'src/app/models/forms/userpass';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { UtilService } from 'src/app/util/util.service';
-import { LoginControl } from '../../models/forms/login.model';
-import { UserPassModel } from '../../models/forms/userpass';
+import { RegisterControl } from '../../models/forms/register.model';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class RegisterComponent implements OnInit {
   private readonly logger = console;
 
   private permissions: Permissions = [];
 
-  public get showRegister() {
-    return this.permissions.includes(Permission.UserRegister);
+  public get showLogin() {
+    return this.permissions.includes(Permission.UserLogin);
   }
 
-  model = new LoginControl();
-  loginFail = false;
+  model = new RegisterControl();
+  registerFail = false;
 
   constructor(
     private userService: UserService,
@@ -57,19 +57,28 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const user = await this.userService.login(data.username, data.password);
+    const user = await this.userService.register(data.username, data.password);
     if (HasFailed(user)) {
       this.logger.warn(user);
-      this.loginFail = true;
+      this.registerFail = true;
       return;
     }
 
-    this.utilService.showSnackBar('Login successful', SnackBarType.Success);
+    this.utilService.showSnackBar('Register successful', SnackBarType.Success);
+
+    if (!this.userService.isLoggedIn) {
+      const loginResult = this.userService.login(data.username, data.password);
+      if (HasFailed(loginResult)) {
+        this.logger.warn(loginResult);
+        this.utilService.showSnackBar('Failed to login', SnackBarType.Error);
+      }
+    }
+
     this.router.navigate(['/']);
   }
 
-  async onRegister() {
-    this.router.navigate(['/register'], {
+  async onLogin() {
+    this.router.navigate(['/login'], {
       state: this.model.getRawData(),
     });
   }

@@ -4,7 +4,7 @@ import { validate } from 'class-validator';
 import jwt_decode from 'jwt-decode';
 import {
   UserLoginRequest,
-  UserLoginResponse, UserMeResponse
+  UserLoginResponse, UserMeResponse, UserRegisterRequest, UserRegisterResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { JwtDataDto } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -58,6 +58,22 @@ export class UserService {
 
     this.userSubject.next(user);
     return user;
+  }
+
+  public async register(username: string, password: string): AsyncFailable<EUser> {
+    const request: UserRegisterRequest = {
+      username,
+      password,
+    };
+
+    const response = await this.api.post(
+      UserRegisterRequest,
+      UserRegisterResponse,
+      '/api/user/register',
+      request
+    );
+
+    return response;
   }
 
   public async logout(): AsyncFailable<EUser> {

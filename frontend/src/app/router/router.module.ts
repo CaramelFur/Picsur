@@ -4,38 +4,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { ApiModule } from '../api/api.module';
 import { CopyFieldModule } from '../components/copyfield/copyfield.module';
-import { PageNotFoundComponent } from '../components/pagenotfound/pagenotfound.component';
 import { PageNotFoundModule } from '../components/pagenotfound/pagenotfound.module';
 import { GuardsModule } from '../guards/guards.module';
-import { PermissionGuard } from '../guards/permission.guard';
 import { LoginComponent } from '../routes/login/login.component';
 import { ProcessingComponent } from '../routes/processing/processing.component';
+import { RegisterComponent } from '../routes/register/register.component';
 import { UploadComponent } from '../routes/upload/upload.component';
 import { ViewComponent } from '../routes/view/view.component';
 import { UtilModule } from '../util/util.module';
-
-// TODO: split up router
-
-const routes: Routes = [
-  { path: '', component: UploadComponent },
-  {
-    path: 'processing',
-    component: ProcessingComponent,
-  },
-  { path: 'view/:hash', component: ViewComponent },
-  {
-    path: 'login',
-    component: LoginComponent,
-    canActivate: [PermissionGuard],
-    data: { permissions: [Permission.UserLogin] },
-  },
-  { path: '**', component: PageNotFoundComponent },
-];
+import { routes } from './routes';
 
 @NgModule({
   imports: [
@@ -59,6 +40,7 @@ const routes: Routes = [
     ProcessingComponent,
     ViewComponent,
     LoginComponent,
+    RegisterComponent,
   ],
   exports: [RouterModule],
 })
