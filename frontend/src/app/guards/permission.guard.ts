@@ -14,7 +14,7 @@ import { PermissionService } from '../api/permission.service';
 export class PermissionGuard implements CanActivate {
   constructor(private permissionService: PermissionService) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const requiredPermissions: Permissions = route.data['permissions'];
     if (!isPermissionsArray(requiredPermissions)) {
       throw new Error(
@@ -22,14 +22,10 @@ export class PermissionGuard implements CanActivate {
       );
     }
 
-    const ourPermissions = this.permissionService.snapshot;
+    const ourPermissions = await this.permissionService.loadedSnapshot();
 
     const isOk = requiredPermissions.every((permission) =>
       ourPermissions.includes(permission)
-    );
-
-    console.log(
-      `PermissionGuard: requiredPermissions=${requiredPermissions} ourPermissions=${ourPermissions} isOk=${isOk}`
     );
 
     return isOk;
