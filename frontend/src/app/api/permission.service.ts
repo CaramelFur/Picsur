@@ -6,7 +6,7 @@ import {
   PermissionsList
 } from 'picsur-shared/dist/dto/permissions';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
-import { BehaviorSubject, filter, Observable, take } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, take } from 'rxjs';
 import { ApiService } from './api.service';
 import { UserService } from './user.service';
 
@@ -20,21 +20,26 @@ export class PermissionService {
 
   public get live(): Observable<Permissions> {
     return this.permissionsSubject.pipe(
-      filter((v) => v !== null)
-    ) as Observable<Permissions>;
-  }
-
-  public get snapshot(): Permissions {
-    return (
-      this.permissionsSubject.getValue() ?? (PermissionsList as Permissions)
+      map((permissions) => permissions ?? this.defaultPermissions)
     );
   }
 
-  public loadedSnapshot(): Promise<Permissions> {
-    return new Promise((resolve) => this.live.pipe(take(1)).subscribe(resolve));
+  public get snapshot(): Permissions {
+    return this.permissionsSubject.getValue() ?? this.defaultPermissions;
   }
 
-  // Lets be optimistic for better ux
+  // This will not be optimistic, it will instead wait for correct data
+  public loadedSnapshot(): Promise<Permissions> {
+    return new Promise((resolve) => {
+      const filtered = this.permissionsSubject.pipe(
+        filter((permissions) => permissions !== null),
+        take(1)
+      );
+      (filtered as Observable<Permissions>).subscribe(resolve);
+    });
+  }
+
+  private defaultPermissions = PermissionsList as Permissions;
   private permissionsSubject = new BehaviorSubject<Permissions | null>(null);
 
   @AutoUnsubscribe()
