@@ -8,7 +8,7 @@ import { UserService } from 'src/app/api/user.service';
 import { UserPassModel } from 'src/app/models/forms/userpass';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { UtilService } from 'src/app/util/util.service';
-import { RegisterControl } from '../../models/forms/register.model';
+import { RegisterControl } from '../../../models/forms/register.model';
 
 @Component({
   templateUrl: './register.component.html',

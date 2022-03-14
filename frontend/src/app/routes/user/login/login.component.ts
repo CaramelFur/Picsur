@@ -7,8 +7,8 @@ import { PermissionService } from 'src/app/api/permission.service';
 import { UserService } from 'src/app/api/user.service';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { UtilService } from 'src/app/util/util.service';
-import { LoginControl } from '../../models/forms/login.model';
-import { UserPassModel } from '../../models/forms/userpass';
+import { LoginControl } from '../../../models/forms/login.model';
+import { UserPassModel } from '../../../models/forms/userpass';
 
 @Component({
   templateUrl: './login.component.html',

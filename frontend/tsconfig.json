@@ -16,10 +16,10 @@
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
-    "importHelpers": true,
+    "importHelpers": true
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["src/**/*.d.ts"],
+  "include": ["src/**/*.d.ts", "src/**/*.ts"],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
