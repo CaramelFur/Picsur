@@ -11,9 +11,7 @@ import { LoginControl } from '../../models/forms/login.model';
 import { UserPassModel } from '../../models/forms/userpass';
 
 @Component({
-  selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   private readonly logger = console;

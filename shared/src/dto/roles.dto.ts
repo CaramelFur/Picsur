@@ -27,7 +27,7 @@ export const SystemRoleDefaults: {
   guest: [Permission.ImageView, Permission.UserLogin],
   user: [
     Permission.ImageView,
-    Permission.UserView,
+    Permission.UserMe,
     Permission.UserLogin,
     Permission.ImageUpload,
   ],

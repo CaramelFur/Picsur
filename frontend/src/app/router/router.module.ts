@@ -10,14 +10,14 @@ import { ApiModule } from '../api/api.module';
 import { CopyFieldModule } from '../components/copyfield/copyfield.module';
 import { PageNotFoundModule } from '../components/pagenotfound/pagenotfound.module';
 import { GuardsModule } from '../guards/guards.module';
+import { AdminComponent } from '../routes/admin/admin/admin.component';
 import { LoginComponent } from '../routes/login/login.component';
 import { ProcessingComponent } from '../routes/processing/processing.component';
 import { RegisterComponent } from '../routes/register/register.component';
 import { UploadComponent } from '../routes/upload/upload.component';
 import { ViewComponent } from '../routes/view/view.component';
 import { UtilModule } from '../util/util.module';
-import { routes } from './routes';
-
+import { angularRoutes } from './routes';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,7 +33,7 @@ import { routes } from './routes';
     CopyFieldModule,
     ApiModule,
     FormsModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(angularRoutes),
   ],
   declarations: [
     UploadComponent,
@@ -41,6 +41,7 @@ import { routes } from './routes';
     ViewComponent,
     LoginComponent,
     RegisterComponent,
+    AdminComponent,
   ],
   exports: [RouterModule],
 })

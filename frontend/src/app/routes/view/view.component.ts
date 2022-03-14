@@ -7,7 +7,6 @@ import { ImageService } from 'src/app/api/image.service';
 import { UtilService } from 'src/app/util/util.service';
 
 @Component({
-  selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss'],
 })

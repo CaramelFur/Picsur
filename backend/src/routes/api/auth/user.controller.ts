@@ -126,7 +126,7 @@ export class UserController {
   }
 
   @Get('me')
-  @RequiredPermissions(Permission.UserView)
+  @RequiredPermissions(Permission.UserMe)
   async me(@Request() req: AuthFasityRequest): Promise<UserMeResponse> {
     return {
       user: req.user,
