@@ -17,14 +17,15 @@ import { PRouteData } from './models/picsur-routes';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  private readonly logger = console;
+  readonly logger = console;
 
-  @ViewChild(MatSidenav) snav: MatSidenav;
+  @ViewChild(MatSidenav) sidebar: MatSidenav;
 
   containerWrap: boolean = true;
   sidebarPortal: Portal<any> | undefined = undefined;
 
-  isMobile: boolean = false;
+  isDesktop: boolean = false;
+  hasSidebar: boolean = false;
 
   constructor(
     private router: Router,
@@ -54,29 +55,41 @@ export class AppComponent implements OnInit {
     return this.breakPointObserver
       .observe(['(min-width: 576px)']) // Bootstrap breakpoints
       .subscribe((state) => {
-        this.isMobile = !state.matches;
+        this.isDesktop = state.matches;
+        this.updateSidebar();
       });
   }
 
-  private onNavigationEnd(event: NavigationEnd) {
-    this.reset();
-
-    const data = this.routeData;
-    this.containerWrap = !data.noContainer;
-    if (data.sidebar !== undefined)
-      this.sidebarPortal = new ComponentPortal(data.sidebar);
-
-    console.log(data)
+  onHamburgerClick() {
+    this.sidebar.toggle();
   }
 
-  private onNavigationError(event: NavigationError) {
+  private async onNavigationError(event: NavigationError) {
     const error: Error = event.error;
     if (error.message.startsWith('Cannot match any routes'))
       this.router.navigate(['/pagenotfound']);
   }
 
-  private reset() {
-    this.containerWrap = true;
-    this.sidebarPortal = undefined;
+  private async onNavigationEnd(event: NavigationEnd) {
+    const data = this.routeData;
+    this.containerWrap = !data.noContainer;
+
+    if (data.sidebar !== undefined) {
+      this.sidebarPortal?.detach();
+      this.sidebarPortal = new ComponentPortal(data.sidebar);
+
+      this.hasSidebar = true;
+    } else {
+      this.hasSidebar = false;
+    }
+    this.updateSidebar();
+  }
+
+  private updateSidebar() {
+    if (this.sidebarPortal === undefined || !this.hasSidebar) {
+      this.sidebar.opened = false;
+    } else {
+      this.sidebar.opened = true;
+    }
   }
 }

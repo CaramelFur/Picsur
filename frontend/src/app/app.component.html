@@ -1,26 +1,20 @@
-<ng-template #content>
-  <div class="header-spacer"></div>
-  <div class="grow-full" [class.container]="containerWrap">
-    <router-outlet></router-outlet>
-  </div>
-  <app-footer></app-footer>
-</ng-template>
+<app-header
+  [enableHamburger]="hasSidebar && !isDesktop"
+  (onHamburgerClick)="onHamburgerClick()"
+></app-header>
 
-<!-- Actual page -->
-<app-header></app-header>
-
-<mat-sidenav-container *ngIf="sidebarPortal !== undefined" class="grow-full">
-  <mat-sidenav mode="side" [opened]="!isMobile">
+<mat-sidenav-container class="grow-full">
+  <mat-sidenav class="sidenav-nav" [mode]="isDesktop ? 'side' : 'over'">
     <ng-template [cdkPortalOutlet]="sidebarPortal"></ng-template>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="sidenav-content" [class.container]="containerWrap">
-      <ng-container *ngTemplateOutlet="content"></ng-container>
+      <div class="header-spacer"></div>
+      <div class="grow-full" [class.container]="containerWrap">
+        <router-outlet></router-outlet>
+      </div>
+      <app-footer></app-footer>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
-
-<ng-container *ngIf="sidebarPortal === undefined">
-  <ng-container *ngTemplateOutlet="content"></ng-container>
-</ng-container>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
@@ -16,6 +16,9 @@ import { UtilService } from 'src/app/util/util.service';
 })
 export class HeaderComponent implements OnInit {
   private readonly logger = console;
+
+  @Input('enableHamburger') enableHamburger: boolean = false;
+  @Output('onHamburgerClick') onHamburgerClick = new EventEmitter<void>();
 
   private currentUser: EUser | null = null;
   private permissions: Permissions = [];

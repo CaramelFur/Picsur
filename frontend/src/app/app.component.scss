@@ -8,9 +8,8 @@
   flex-shrink: 0; // why, what, wtf flexbox
 }
 
-.sidebar-mobile {
-  position: fixed;
-  z-index: 2;
+.sidenav-nav {
+  margin-top: 64px;
 }
 
 .sidenav-content {

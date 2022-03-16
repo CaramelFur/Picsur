@@ -1,6 +1,5 @@
 import { PortalModule } from '@angular/cdk/portal';
 import { NgModule } from '@angular/core';
-import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,7 +17,6 @@ import { routes } from './routes/routes';
     BrowserAnimationsModule,
     PortalModule,
     MatSidenavModule,
-    MatListModule,
 
     GuardsModule,
     AppRoutingModule,

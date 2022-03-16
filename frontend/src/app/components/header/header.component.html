@@ -1,4 +1,13 @@
 <mat-toolbar color="primary">
+  <button
+    *ngIf="enableHamburger"
+    class="hamburger"
+    mat-icon-button
+    (click)="onHamburgerClick.emit()"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+
   <a [routerLink]="['/']" class="svg-logo">
     <img src="/assets/image/logo/picsur.svg" alt="Picsur" />
   </a>
@@ -8,7 +17,11 @@
 
   <span class="spacer"></span>
 
-  <button *ngIf="!isLoggedIn && canLogIn" mat-stroked-button (click)="doLogin()">
+  <button
+    *ngIf="!isLoggedIn && canLogIn"
+    mat-stroked-button
+    (click)="doLogin()"
+  >
     Login
   </button>
 
