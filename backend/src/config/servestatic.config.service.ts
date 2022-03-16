@@ -15,14 +15,15 @@ export class ServeStaticConfigService
 
   private defaultLocation = join(PackageRoot, '../frontend/dist');
 
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) {
+    this.logger.debug('Static directory: ' + this.getStaticDirectory());
+  }
 
   public getStaticDirectory(): string {
     const directory = this.configService.get<string>(
       `${EnvPrefix}STATIC_FRONTEND_ROOT`,
       this.defaultLocation,
     );
-    this.logger.debug('Static directory: ' + directory);
     return directory;
   }
 

@@ -86,7 +86,13 @@ export class AppComponent implements OnInit {
   }
 
   private updateSidebar() {
-    if (this.sidebarPortal === undefined || !this.hasSidebar) {
+    if (!this.sidebar) return;
+
+    if (
+      this.sidebarPortal === undefined ||
+      !this.hasSidebar ||
+      !this.isDesktop
+    ) {
       this.sidebar.opened = false;
     } else {
       this.sidebar.opened = true;

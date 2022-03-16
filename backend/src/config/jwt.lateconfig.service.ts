@@ -7,15 +7,22 @@ import { SysPreferenceService } from '../collections/syspreferencesdb/sysprefere
 export class JwtConfigService implements JwtOptionsFactory {
   private readonly logger = new Logger('JwtConfigService');
 
-  constructor(private prefService: SysPreferenceService) {}
+  constructor(private prefService: SysPreferenceService) {
+    this.printDebug().catch(this.logger.error);
+  }
+
+  private async printDebug() {
+    const secret = await this.getJwtSecret();
+    const expiresIn = await this.getJwtExpiresIn();
+    this.logger.debug('JWT secret: ' + secret);
+    this.logger.debug('JWT expiresIn: ' + expiresIn);
+  }
 
   public async getJwtSecret(): Promise<string> {
     const secret = await this.prefService.getPreference('jwt_secret');
     if (HasFailed(secret)) {
       throw new Error('JWT secret could not be retrieved');
     }
-
-    this.logger.debug('JWT secret: ' + secret.value);
     return secret.value;
   }
 
@@ -24,8 +31,6 @@ export class JwtConfigService implements JwtOptionsFactory {
     if (HasFailed(expiresIn)) {
       throw new Error('JWT expiresIn could not be retrieved');
     }
-
-    this.logger.debug('JWT expiresIn: ' + expiresIn.value);
     return expiresIn.value;
   }
 

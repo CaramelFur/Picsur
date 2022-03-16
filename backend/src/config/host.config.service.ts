@@ -6,23 +6,25 @@ import { EnvPrefix } from './config.static';
 export class HostConfigService {
   private readonly logger = new Logger('HostConfigService');
 
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) {
+    this.logger.debug('Host: ' + this.getHost());
+    this.logger.debug('Port: ' + this.getPort());
+    this.logger.debug('Demo: ' + this.isDemo());
+    this.logger.debug('Demo Interval: ' + this.getDemoInterval() / 1000 + 's');
+  }
 
   public getHost(): string {
     const host = this.configService.get<string>(`${EnvPrefix}HOST`, '0.0.0.0');
-    this.logger.debug('Host: ' + host);
     return host;
   }
 
   public getPort(): number {
     const port = this.configService.get<number>(`${EnvPrefix}PORT`, 8080);
-    this.logger.debug('Port: ' + port);
     return port;
   }
 
   public isDemo() {
     const enabled = this.configService.get<boolean>(`${EnvPrefix}DEMO`, false);
-    this.logger.debug('Demo enabled: ' + enabled);
     return enabled;
   }
 
@@ -31,7 +33,6 @@ export class HostConfigService {
       `${EnvPrefix}DEMO_INTERVAL`,
       1000 * 60 * 5,
     );
-    this.logger.debug('Demo interval: ' + interval);
     return interval;
   }
 
@@ -40,9 +41,6 @@ export class HostConfigService {
       `${EnvPrefix}PRODUCTION`,
       false,
     );
-    if (enabled) {
-      this.logger.log('Running in production mode');
-    }
     return enabled;
   }
 }

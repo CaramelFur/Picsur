@@ -26,6 +26,13 @@ html {
   transition-property: width, height, background-color, color, opacity;
 }
 
+:not(input) {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .mat-icon {
   // Yes yes, !important is here, deal with it
   // If someone wants to properly figure out why icons are escaping their 24px box, feel free to

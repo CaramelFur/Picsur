@@ -4,7 +4,7 @@
 ></app-header>
 
 <mat-sidenav-container class="grow-full">
-  <mat-sidenav class="sidenav-nav" [mode]="isDesktop ? 'side' : 'over'">
+  <mat-sidenav class="sidenav-nav" [mode]="isDesktop ? 'side' : 'over'" opened="false">
     <ng-template [cdkPortalOutlet]="sidebarPortal"></ng-template>
   </mat-sidenav>
 

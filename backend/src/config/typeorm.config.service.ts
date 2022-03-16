@@ -9,7 +9,18 @@ import { HostConfigService } from './host.config.service';
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   private readonly logger = new Logger('TypeOrmConfigService');
 
-  constructor(private configService: ConfigService, private hostService: HostConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    private hostService: HostConfigService,
+  ) {
+    const varOptions = this.getTypeOrmServerOptions();
+
+    this.logger.debug('DB host: ' + varOptions.host);
+    this.logger.debug('DB port: ' + varOptions.port);
+    this.logger.debug('DB username: ' + varOptions.username);
+    this.logger.debug('DB password: ' + varOptions.password);
+    this.logger.debug('DB database: ' + varOptions.database);
+  }
 
   public getTypeOrmServerOptions() {
     const varOptions = {
@@ -28,18 +39,10 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         DefaultName,
       ),
     };
-
-    this.logger.debug('DB host: ' + varOptions.host);
-    this.logger.debug('DB port: ' + varOptions.port);
-    this.logger.debug('DB username: ' + varOptions.username);
-    this.logger.debug('DB password: ' + varOptions.password);
-    this.logger.debug('DB database: ' + varOptions.database);
     return varOptions;
   }
 
   public createTypeOrmOptions(connectionName?: string): TypeOrmModuleOptions {
-    this.logger.debug('Creating TypeOrmOptions for: ' + connectionName);
-
     const varOptions = this.getTypeOrmServerOptions();
     return {
       type: 'postgres',
