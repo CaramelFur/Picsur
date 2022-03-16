@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { InfoResponse } from 'picsur-shared/dist/dto/api/info.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
-import { ServerInfo } from '../models/server-info';
+import { ServerInfo } from '../../models/server-info';
 import { ApiService } from './api.service';
 
 @Injectable({

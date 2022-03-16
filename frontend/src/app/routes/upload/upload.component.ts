@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { NgxDropzoneChangeEvent } from 'ngx-dropzone';
 import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
-import { PermissionService } from 'src/app/api/permission.service';
+import { PermissionService } from 'src/app/services/api/permission.service';
 import { UtilService } from 'src/app/util/util.service';
 import { ProcessingViewMetadata } from '../../models/processing-view-metadata';
 

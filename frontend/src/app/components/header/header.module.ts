@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import { ApiModule } from 'src/app/api/api.module';
+import { ApiModule } from 'src/app/services/api/api.module';
 import { UtilModule } from 'src/app/util/util.module';
 import { HeaderComponent } from './header.component';
 

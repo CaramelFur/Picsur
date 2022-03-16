@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { PermissionService } from 'src/app/api/permission.service';
-import { UserService } from 'src/app/api/user.service';
 import { UserPassModel } from 'src/app/models/forms/userpass';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
+import { PermissionService } from 'src/app/services/api/permission.service';
+import { UserService } from 'src/app/services/api/user.service';
 import { UtilService } from 'src/app/util/util.service';
 import { RegisterControl } from '../../../models/forms/register.model';
 

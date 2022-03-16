@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { Permissions } from 'picsur-shared/dist/dto/permissions';
 import { isPermissionsArray } from 'picsur-shared/dist/util/permissions';
-import { PermissionService } from '../api/permission.service';
+import { PermissionService } from '../services/api/permission.service';
 
 @Injectable({
   providedIn: 'root',

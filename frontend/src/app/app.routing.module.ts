@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { PRoutes } from './models/picsur-routes';
 
-const routes: Routes = [];
+const routes: PRoutes = [];
 
 @NgModule({
   imports: [

@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { PRoutes } from 'src/app/models/picsur-routes';
 import { ProcessingComponent } from './processing.component';
 
-const routes: Routes = [
+const routes: PRoutes = [
   {
     path: 'processing',
     component: ProcessingComponent,

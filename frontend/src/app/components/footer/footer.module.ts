@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ApiModule } from 'src/app/api/api.module';
+import { ApiModule } from 'src/app/services/api/api.module';
 import { FooterComponent } from './footer.component';
 
 

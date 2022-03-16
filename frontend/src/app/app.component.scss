@@ -2,3 +2,19 @@
   flex-grow: 1;
 }
 
+.header-spacer {
+  height: 64px;
+  margin-bottom: 32px;
+  flex-shrink: 0; // why, what, wtf flexbox
+}
+
+.sidebar-mobile {
+  position: fixed;
+  z-index: 2;
+}
+
+.sidenav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}

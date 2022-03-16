@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { InfoService } from 'src/app/api/info.service';
+import { InfoService } from 'src/app/services/api/info.service';
 
 @Component({
   selector: 'app-footer',

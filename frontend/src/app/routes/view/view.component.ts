@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { isHash } from 'class-validator';
 import { ImageLinks } from 'picsur-shared/dist/dto/imagelinks.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { ImageService } from 'src/app/api/image.service';
+import { ImageService } from 'src/app/services/api/image.service';
 import { UtilService } from 'src/app/util/util.service';
 
 @Component({

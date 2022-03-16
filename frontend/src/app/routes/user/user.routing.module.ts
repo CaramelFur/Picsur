@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { PermissionGuard } from 'src/app/guards/permission.guard';
+import { PRoutes } from 'src/app/models/picsur-routes';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
-const routes: Routes = [
+const routes: PRoutes = [
   {
     path: 'login',
     component: LoginComponent,

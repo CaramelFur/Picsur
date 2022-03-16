@@ -1,5 +1,26 @@
+<ng-template #content>
+  <div class="header-spacer"></div>
+  <div class="grow-full" [class.container]="containerWrap">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer></app-footer>
+</ng-template>
+
+<!-- Actual page -->
 <app-header></app-header>
-<div class="grow-full">
-  <router-outlet></router-outlet>
-</div>
-<app-footer></app-footer>
+
+<mat-sidenav-container *ngIf="sidebarPortal !== undefined" class="grow-full">
+  <mat-sidenav mode="side" [opened]="!isMobile">
+    <ng-template [cdkPortalOutlet]="sidebarPortal"></ng-template>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="sidenav-content" [class.container]="containerWrap">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<ng-container *ngIf="sidebarPortal === undefined">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</ng-container>

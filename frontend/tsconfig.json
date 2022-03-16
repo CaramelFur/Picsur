@@ -19,7 +19,7 @@
     "importHelpers": true
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["src/**/*.d.ts", "src/**/*.ts"],
+  "include": ["src/**/*.d.ts", "src/app/**/*.ts"],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

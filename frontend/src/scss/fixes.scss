@@ -1,3 +1,29 @@
+html,
+body {
+  height: 100%;
+}
+
+app-root {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+
 .mat-icon {
   // Yes yes, !important is here, deal with it
   // If someone wants to properly figure out why icons are escaping their 24px box, feel free to

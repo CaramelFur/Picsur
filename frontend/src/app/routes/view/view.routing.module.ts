@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { PermissionGuard } from 'src/app/guards/permission.guard';
+import { PRoutes } from 'src/app/models/picsur-routes';
 import { ViewComponent } from './view.component';
 
-const routes: Routes = [
+const routes: PRoutes = [
   {
     path: 'view/:hash',
     component: ViewComponent,
