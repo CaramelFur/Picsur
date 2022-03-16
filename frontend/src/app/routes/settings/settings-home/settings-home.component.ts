@@ -4,10 +4,10 @@ import {
 } from '@angular/core';
 
 @Component({
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss'],
+  templateUrl: './settings-home.component.html',
+  styleUrls: ['./settings-home.component.scss'],
 })
-export class AdminComponent implements OnInit {
+export class SettingsHomeComponent implements OnInit {
 
   constructor(
   ) {}

@@ -35,6 +35,10 @@ export class HeaderComponent implements OnInit {
     return this.permissions.includes(Permission.UserLogin);
   }
 
+  public get canAccessSettings() {
+    return this.permissions.includes(Permission.Settings);
+  }
+
   constructor(
     private router: Router,
     private userService: UserService,
@@ -73,5 +77,9 @@ export class HeaderComponent implements OnInit {
     }
 
     this.utilService.showSnackBar('Logout successful', SnackBarType.Success);
+  }
+
+  doSettings() {
+    this.router.navigate(['/settings']);
   }
 }

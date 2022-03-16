@@ -39,6 +39,10 @@
           <h2>{{ user?.username }}</h2>
         </div>
       </span>
+      <button *ngIf="canAccessSettings" mat-menu-item (click)="doSettings()">
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
       <button mat-menu-item (click)="doLogout()">
         <mat-icon>logout</mat-icon>
         <span>Logout</span>

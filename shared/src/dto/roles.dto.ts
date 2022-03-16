@@ -29,6 +29,7 @@ export const SystemRoleDefaults: {
     Permission.ImageView,
     Permission.UserMe,
     Permission.UserLogin,
+    Permission.Settings,
     Permission.ImageUpload,
   ],
   // Grant all permissions to admin
