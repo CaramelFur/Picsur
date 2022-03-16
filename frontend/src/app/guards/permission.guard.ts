@@ -33,7 +33,7 @@ export class PermissionGuard implements CanActivate {
     );
 
     if (!isOk) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/error/401'], { replaceUrl: true });
     }
     return isOk;
   }

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PRoutes } from 'src/app/models/picsur-routes';
-import { SettingsHomeComponent } from './settings-home/settings-home.component';
+import { SettingsGeneralRouteModule } from './settings-general/settings-home.module';
 import { SettingsSidebarComponent } from './settings-sidebar/settings-sidebar.component';
 
-const routes: PRoutes = [
+const SettingsRoutes: PRoutes = [
   {
-    path: 'settings',
-    component: SettingsHomeComponent,
+    path: '',
+    loadChildren: () => SettingsGeneralRouteModule,
     data: {
       sidebar: SettingsSidebarComponent,
     },
@@ -15,7 +15,7 @@ const routes: PRoutes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(SettingsRoutes)],
   exports: [RouterModule],
 })
 export class SettingsRoutingModule {}

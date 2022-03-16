@@ -3,6 +3,7 @@ import { Route } from '@angular/router';
 import { Permissions } from 'picsur-shared/dist/dto/permissions';
 
 export type PRouteData = {
+  title?: string;
   permissions?: Permissions;
   noContainer?: boolean;
   sidebar?: ComponentType<unknown>;

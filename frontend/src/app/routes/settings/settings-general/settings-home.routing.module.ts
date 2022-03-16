@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PRoutes } from 'src/app/models/picsur-routes';
-import { PageNotFoundComponent } from './pagenotfound.component';
+import { SettingsGeneralComponent } from './settings-general.component';
 
 const routes: PRoutes = [
   {
-    path: 'pagenotfound',
-    component: PageNotFoundComponent,
+    path: '',
+    component: SettingsGeneralComponent,
   },
 ];
 
@@ -14,4 +14,4 @@ const routes: PRoutes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class PageNotFoundRoutingModule {}
+export class SettingsGeneralRoutingModule {}

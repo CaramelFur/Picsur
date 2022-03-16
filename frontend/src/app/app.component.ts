@@ -34,7 +34,19 @@ export class AppComponent implements OnInit {
   ) {}
 
   private get routeData(): PRouteData {
-    return this.activatedRoute.firstChild?.snapshot.data ?? {};
+    let currentRoute: ActivatedRoute | null = this.activatedRoute;
+    let accumulate: PRouteData = {};
+    while (currentRoute !== null) {
+      const data = currentRoute.snapshot.data;
+      if (data !== undefined) {
+        accumulate = {
+          ...accumulate,
+          ...data,
+        };
+      }
+      currentRoute = currentRoute.firstChild;
+    }
+    return accumulate;
   }
 
   ngOnInit() {
@@ -67,12 +79,14 @@ export class AppComponent implements OnInit {
   private async onNavigationError(event: NavigationError) {
     const error: Error = event.error;
     if (error.message.startsWith('Cannot match any routes'))
-      this.router.navigate(['/pagenotfound']);
+      this.router.navigate(['/error/404'], { replaceUrl: true });
   }
 
   private async onNavigationEnd(event: NavigationEnd) {
     const data = this.routeData;
     this.containerWrap = !data.noContainer;
+
+    console.log(data);
 
     if (data.sidebar !== undefined) {
       this.sidebarPortal?.detach();

@@ -7,7 +7,7 @@ import { ViewComponent } from './view.component';
 
 const routes: PRoutes = [
   {
-    path: 'view/:hash',
+    path: ':hash',
     component: ViewComponent,
     canActivate: [PermissionGuard],
     data: { permissions: [Permission.ImageView] },

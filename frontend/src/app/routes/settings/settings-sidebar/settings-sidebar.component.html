@@ -1,6 +1,30 @@
 <mat-nav-list>
-  <a mat-list-item routerLink="/settings" routerLinkActive="active">
-    <mat-icon mat-list-icon>settings</mat-icon>
-    <span mat-line>General</span>
-  </a>
+  <ng-container *ngIf="personalRoutes.length > 0">
+    <span mat-subheader>Personal</span>
+    <a
+      *ngFor="let route of personalRoutes"
+      mat-list-item
+      [routerLink]="route.path"
+      routerLinkActive="active"
+    >
+      <mat-icon mat-list-icon>{{ route.icon }}</mat-icon>
+      <span mat-line>{{ route.name }}</span>
+    </a>
+  </ng-container>
+
+  <mat-divider *ngIf="systemRoutes.length > 0 && personalRoutes.length > 0">
+  </mat-divider>
+
+  <ng-container *ngIf="systemRoutes.length > 0">
+    <span mat-subheader>System</span>
+    <a
+      *ngFor="let route of systemRoutes"
+      mat-list-item
+      [routerLink]="route.path"
+      routerLinkActive="active"
+    >
+      <mat-icon mat-list-icon>{{ route.icon }}</mat-icon>
+      <span mat-line>{{ route.name }}</span>
+    </a>
+  </ng-container>
 </mat-nav-list>

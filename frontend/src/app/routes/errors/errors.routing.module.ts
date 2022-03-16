@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PRoutes } from 'src/app/models/picsur-routes';
-import { ProcessingComponent } from './processing.component';
+import { E401Component } from './401.component';
+import { E404Component } from './404.component';
 
 const routes: PRoutes = [
   {
-    path: '',
-    component: ProcessingComponent,
+    path: '404',
+    component: E404Component,
+  },
+  {
+    path: '401',
+    component: E401Component,
   },
 ];
 
@@ -14,4 +19,4 @@ const routes: PRoutes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ProcessingRoutingModule {}
+export class ErrorsRoutingModule {}

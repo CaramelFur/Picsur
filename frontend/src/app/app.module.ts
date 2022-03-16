@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app.routing.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
 import { GuardsModule } from './guards/guards.module';
-import { routes } from './routes/routes';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,8 +22,6 @@ import { routes } from './routes/routes';
 
     HeaderModule,
     FooterModule,
-
-    ...routes,
   ],
   providers: [],
   bootstrap: [AppComponent],

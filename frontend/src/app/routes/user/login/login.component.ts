@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
   }
 
   async onRegister() {
-    this.router.navigate(['/register'], {
+    this.router.navigate(['/user/register'], {
       state: this.model.getRawData(),
     });
   }
