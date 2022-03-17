@@ -7,6 +7,7 @@ const routes: PRoutes = [
   {
     path: '',
     component: UploadComponent,
+    // No permission check here, as that is handled ui friendly in the component itself
   },
 ];
 

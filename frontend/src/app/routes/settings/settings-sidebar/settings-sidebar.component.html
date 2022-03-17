@@ -1,14 +1,16 @@
 <mat-nav-list>
+  <span mat-subheader>Big Peepee</span>
   <ng-container *ngIf="personalRoutes.length > 0">
     <span mat-subheader>Personal</span>
     <a
       *ngFor="let route of personalRoutes"
       mat-list-item
-      [routerLink]="route.path"
+      [routerLink]="'/settings/' + route.path"
       routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
     >
-      <mat-icon mat-list-icon>{{ route.icon }}</mat-icon>
-      <span mat-line>{{ route.name }}</span>
+      <mat-icon mat-list-icon>{{ route.data?.page?.icon }}</mat-icon>
+      <span mat-line>{{ route.data?.page?.title }}</span>
     </a>
   </ng-container>
 
@@ -20,11 +22,11 @@
     <a
       *ngFor="let route of systemRoutes"
       mat-list-item
-      [routerLink]="route.path"
+      [routerLink]="'/settings/' + route.path"
       routerLinkActive="active"
     >
-      <mat-icon mat-list-icon>{{ route.icon }}</mat-icon>
-      <span mat-line>{{ route.name }}</span>
+      <mat-icon mat-list-icon>{{ route.data?.page?.icon }}</mat-icon>
+      <span mat-line>{{ route.data?.page?.title }}</span>
     </a>
   </ng-container>
 </mat-nav-list>

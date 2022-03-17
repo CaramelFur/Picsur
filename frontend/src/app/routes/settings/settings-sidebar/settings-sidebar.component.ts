@@ -1,40 +1,55 @@
 import { Component, OnInit } from '@angular/core';
-
-type SideBarRoute = {
-  type: 'personal' | 'system';
-  path: string;
-  name: string;
-  icon: string;
-};
-
-const SideBarRoutes: SideBarRoute[] = [
-  {
-    type: 'personal',
-    path: '',
-    name: 'General',
-    icon: 'settings',
-  },
-];
+import { Router } from '@angular/router';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
+import { PRoutes } from 'src/app/models/picsur-routes';
+import { PermissionService } from 'src/app/services/api/permission.service';
 
 @Component({
   templateUrl: './settings-sidebar.component.html',
   styleUrls: ['./settings-sidebar.component.scss'],
 })
 export class SettingsSidebarComponent implements OnInit {
-  personalRoutes: SideBarRoute[] = [];
-  systemRoutes: SideBarRoute[] = [];
+  private accessibleRoutes: PRoutes = [];
+  private settingsRoutes: PRoutes = [];
 
-  constructor() {}
+  personalRoutes: PRoutes = [];
+  systemRoutes: PRoutes = [];
+
+  constructor(
+    /* @Inject('SettingsRoutes')*/
+    private permissionService: PermissionService,
+    private router: Router
+  ) {
+    console.error("contstruct");
+    console.log('stat', this.router.getCurrentNavigation());
+  }
 
   ngOnInit() {
-    const routes = SideBarRoutes.map((route) => {
-      return {
-        ...route,
-        path: `/settings/${route.path}`,
-      };
-    });
+    console.log('SettingsSidebarComponent.ngOnInit()');
+    this.subscribePermissions();
 
-    this.personalRoutes = routes.filter((route) => route.type === 'personal');
-    this.systemRoutes = routes.filter((route) => route.type === 'system');
+
+  }
+
+  @AutoUnsubscribe()
+  private subscribePermissions() {
+    return this.permissionService.live.subscribe((permissions) => {
+      this.accessibleRoutes = this.settingsRoutes
+        .filter((route) => route.path !== '')
+        .filter((route) =>
+          route.data?.permissions !== undefined
+            ? route.data?.permissions?.every((permission) =>
+                permissions.includes(permission)
+              )
+            : true
+        );
+
+      this.personalRoutes = this.accessibleRoutes.filter(
+        (route) => route.data?.page?.category === 'personal'
+      );
+      this.systemRoutes = this.accessibleRoutes.filter(
+        (route) => route.data?.page?.category === 'system'
+      );
+    });
   }
 }
