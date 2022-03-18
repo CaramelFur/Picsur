@@ -29,7 +29,7 @@ const SettingsRoutes: PRoutes = [
         },
       },
       {
-        path: 'general',
+        path: 'syspref',
         loadChildren: () => SettingsSysprefRouteModule,
         data: {
           permissions: [Permission.SysPrefManage],

@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PRoutes } from 'src/app/models/picsur-routes';
 import { PermissionService } from 'src/app/services/api/permission.service';
 
@@ -14,7 +15,8 @@ export class SettingsSidebarComponent implements OnInit {
 
   constructor(
     @Inject('SettingsRoutes') private settingsRoutes: PRoutes,
-    private permissionService: PermissionService
+    private permissionService: PermissionService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -40,6 +42,10 @@ export class SettingsSidebarComponent implements OnInit {
       this.systemRoutes = this.accessibleRoutes.filter(
         (route) => route.data?.page?.category === 'system'
       );
+
+      if (this.systemRoutes.length === 0 && this.personalRoutes.length === 0) {
+        this.router.navigate(['/']);
+      }
     });
   }
 }
