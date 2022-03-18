@@ -10,20 +10,15 @@ import { BehaviorSubject, filter, map, Observable, take } from 'rxjs';
 import { ApiService } from './api.service';
 import { UserService } from './user.service';
 
-let i = 0;
-
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
   private readonly logger = console;
-  public counter = 0;
 
   constructor(
     private userService: UserService,
     private api: ApiService,
     @Optional() @SkipSelf() parent?: PermissionService
   ) {
-    this.counter = ++i;
-    console.log('PermissionService.constructor(' + this.counter + ')');
     this.onUser();
   }
 
@@ -54,13 +49,11 @@ export class PermissionService {
   @AutoUnsubscribe()
   private onUser() {
     return this.userService.live.subscribe(async (user) => {
-      console.log('PermissionService.onUser(' + this.counter + ')', user);
       const permissions = await this.fetchPermissions();
       if (HasFailed(permissions)) {
         this.logger.warn(permissions.getReason());
         return;
       }
-      console.log('Permissions next', permissions);
       this.permissionsSubject.next(permissions);
     });
   }

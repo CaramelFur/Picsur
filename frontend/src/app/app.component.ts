@@ -87,8 +87,6 @@ export class AppComponent implements OnInit {
     const data = this.routeData;
     this.containerWrap = !data.noContainer;
 
-    console.log(data);
-
     if (data._sidebar_portal !== undefined) {
       this.sidebarPortal = data._sidebar_portal;
       this.hasSidebar = true;
