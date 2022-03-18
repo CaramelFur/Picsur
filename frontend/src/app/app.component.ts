@@ -1,6 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { ComponentPortal, Portal } from '@angular/cdk/portal';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Portal } from '@angular/cdk/portal';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import {
   ActivatedRoute,
@@ -30,7 +30,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private breakPointObserver: BreakpointObserver
+    private breakPointObserver: BreakpointObserver,
+    private injector: Injector
   ) {}
 
   private get routeData(): PRouteData {
@@ -88,10 +89,8 @@ export class AppComponent implements OnInit {
 
     console.log(data);
 
-    if (data.sidebar !== undefined) {
-      this.sidebarPortal?.detach();
-      this.sidebarPortal = new ComponentPortal(data.sidebar);
-
+    if (data._sidebar_portal !== undefined) {
+      this.sidebarPortal = data._sidebar_portal;
       this.hasSidebar = true;
     } else {
       this.hasSidebar = false;

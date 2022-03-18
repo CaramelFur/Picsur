@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { PRoutes } from 'src/app/models/picsur-routes';
 import { PermissionService } from 'src/app/services/api/permission.service';
 
@@ -8,32 +6,30 @@ import { PermissionService } from 'src/app/services/api/permission.service';
   templateUrl: './settings-sidebar.component.html',
   styleUrls: ['./settings-sidebar.component.scss'],
 })
-export class SettingsSidebarComponent implements OnInit {
+export class SettingsSidebarComponent implements OnInit, OnDestroy {
+  //private settingsRoutes: PRoutes = [];
   private accessibleRoutes: PRoutes = [];
-  private settingsRoutes: PRoutes = [];
 
   personalRoutes: PRoutes = [];
   systemRoutes: PRoutes = [];
 
   constructor(
-    /* @Inject('SettingsRoutes')*/
-    private permissionService: PermissionService,
-    private router: Router
-  ) {
-    console.error("contstruct");
-    console.log('stat', this.router.getCurrentNavigation());
+    @Inject('SettingsRoutes') private settingsRoutes: PRoutes,
+    private permissionService: PermissionService
+  ) {}
+  ngOnDestroy(): void {
+    console.error('destoryed');
   }
 
   ngOnInit() {
-    console.log('SettingsSidebarComponent.ngOnInit()');
+    console.log('SettingsSidebarComponent.ngOnInit() with ' + this.permissionService.counter);
     this.subscribePermissions();
-
-
   }
 
-  @AutoUnsubscribe()
+//  @AutoUnsubscribe()
   private subscribePermissions() {
-    return this.permissionService.live.subscribe((permissions) => {
+    const o = this.permissionService.live.subscribe((permissions) => {
+      console.warn('pog', permissions);
       this.accessibleRoutes = this.settingsRoutes
         .filter((route) => route.path !== '')
         .filter((route) =>
@@ -51,5 +47,9 @@ export class SettingsSidebarComponent implements OnInit {
         (route) => route.data?.page?.category === 'system'
       );
     });
+    o.add(() => {
+      console.error('stopped');
+    });
+    return o;
   }
 }
