@@ -7,7 +7,9 @@ import {
   Param,
   Post
 } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
 import {
+  MultipleSysPreferencesResponse,
   SysPreferenceResponse,
   UpdateSysPreferenceRequest
 } from 'picsur-shared/dist/dto/api/pref.dto';
@@ -24,6 +26,22 @@ export class PrefController {
 
   constructor(private prefService: SysPreferenceService) {}
 
+  @Get('sys')
+  async getAllSysPrefs(): Promise<MultipleSysPreferencesResponse> {
+    const prefs = await this.prefService.getAllPreferences();
+    if (HasFailed(prefs)) {
+      this.logger.warn(prefs.getReason());
+      throw new InternalServerErrorException('Could not get preferences');
+    }
+
+    const returned = new MultipleSysPreferencesResponse();
+    returned.preferences = prefs.map((pref) =>
+      plainToClass(SysPreferenceResponse, pref),
+    );
+
+    return returned;
+  }
+
   @Get('sys/:key')
   async getSysPref(@Param('key') key: string): Promise<SysPreferenceResponse> {
     const pref = await this.prefService.getPreference(key as SysPreferences);
@@ -32,12 +50,7 @@ export class PrefController {
       throw new InternalServerErrorException('Could not get preference');
     }
 
-    const returned = new SysPreferenceResponse();
-    returned.key = key as SysPreferences;
-    returned.value = pref.value;
-    returned.type = pref.type;
-
-    return returned;
+    return plainToClass(SysPreferenceResponse, pref);
   }
 
   @Post('sys/:key')
@@ -46,7 +59,7 @@ export class PrefController {
     @Body() body: UpdateSysPreferenceRequest,
   ): Promise<SysPreferenceResponse> {
     const value = body.value;
-    
+
     const pref = await this.prefService.setPreference(
       key as SysPreferences,
       value,

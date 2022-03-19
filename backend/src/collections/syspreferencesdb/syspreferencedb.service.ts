@@ -48,6 +48,7 @@ export class SysPreferenceService {
 
     // Return
     return {
+      key: sysPreference.key,
       value,
       type: SysPreferenceValueTypes[key],
     };
@@ -119,6 +120,18 @@ export class SysPreferenceService {
     return pref.value as boolean;
   }
 
+  public async getAllPreferences(): AsyncFailable<
+    InternalSysprefRepresentation[]
+  > {
+    let internalSysPrefs = await Promise.all(
+      SysPreferences.map((key) => this.getPreference(key as SysPreferences)),
+    );
+    if (internalSysPrefs.some((pref) => HasFailed(pref))) {
+      return Fail('Could not get all preferences');
+    }
+
+    return internalSysPrefs as InternalSysprefRepresentation[];
+  }
   // Private
 
   private async saveDefault(
@@ -134,16 +147,19 @@ export class SysPreferenceService {
     switch (type) {
       case 'string':
         return {
+          key: preference.key,
           value: preference.value,
           type: 'string',
         };
       case 'number':
         return {
+          key: preference.key,
           value: parseInt(preference.value, 10),
           type: 'number',
         };
       case 'boolean':
         return {
+          key: preference.key,
           value: preference.value == 'true',
           type: 'boolean',
         };

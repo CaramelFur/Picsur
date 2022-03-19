@@ -1,4 +1,9 @@
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsEnum,
+  IsNotEmpty, ValidateNested
+} from 'class-validator';
 import {
   IsSysPrefValue,
   SysPreferences,
@@ -24,4 +29,12 @@ export class SysPreferenceResponse {
   @IsNotEmpty()
   @IsEnum(SysPrefValueTypes)
   type: SysPrefValueTypeStrings;
+}
+
+export class MultipleSysPreferencesResponse {
+  @IsArray()
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => SysPreferenceResponse)
+  preferences: SysPreferenceResponse[];
 }

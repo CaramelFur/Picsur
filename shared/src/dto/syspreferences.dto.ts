@@ -60,6 +60,7 @@ export function IsSysPrefValue(validationOptions?: ValidationOptions) {
 // interfaces
 
 export interface InternalSysprefRepresentation {
+  key: SysPreferences;
   value: SysPrefValueType;
   type: SysPrefValueTypeStrings;
 }
