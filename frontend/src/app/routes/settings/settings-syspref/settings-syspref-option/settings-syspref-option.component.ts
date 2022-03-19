@@ -6,7 +6,7 @@ import {
   SysPrefValueType
 } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { debounceTime, Subject } from 'rxjs';
+import { Subject, throttleTime } from 'rxjs';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { SysprefService } from 'src/app/services/api/syspref.service';
 import { UtilService } from 'src/app/util/util.service';
@@ -70,7 +70,7 @@ export class SettingsSysprefOptionComponent implements OnInit {
   @AutoUnsubscribe()
   subscribeUpdate() {
     return this.updateSubject
-      .pipe(debounceTime(300))
+      .pipe(throttleTime(300, undefined, { leading: true, trailing: true }))
       .subscribe(async (value) => {
         const result = await this.sysprefService.setPreference(
           this.pref.key,

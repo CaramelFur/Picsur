@@ -1,2 +1,26 @@
 <h1>Users</h1>
 
+<table mat-table [dataSource]="dataSubject">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="username">
+    <th mat-header-cell *matHeaderCellDef>Username</th>
+    <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<mat-paginator
+  color="accent"
+  [pageSizeOptions]="pageSizeOptions"
+  [pageSize]="startingPageSize"
+  length="Infinity"
+  aria-label="Select page of periodic elements"
+  (page)="updateSubject.next($event)"
+>
+</mat-paginator>
