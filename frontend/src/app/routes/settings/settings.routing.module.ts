@@ -29,12 +29,12 @@ const SettingsRoutes: PRoutes = [
         },
       },
       {
-        path: 'syspref',
+        path: 'system',
         loadChildren: () => SettingsSysprefRouteModule,
         data: {
           permissions: [Permission.SysPrefManage],
           page: {
-            title: 'Sys Preferences',
+            title: 'System Settings',
             icon: 'settings',
             category: 'system',
           },
