@@ -19,19 +19,21 @@ export class JwtConfigService implements JwtOptionsFactory {
   }
 
   public async getJwtSecret(): Promise<string> {
-    const secret = await this.prefService.getPreference('jwt_secret');
+    const secret = await this.prefService.getStringPreference('jwt_secret');
     if (HasFailed(secret)) {
       throw new Error('JWT secret could not be retrieved');
     }
-    return secret.value;
+    return secret;
   }
 
   public async getJwtExpiresIn(): Promise<string> {
-    const expiresIn = await this.prefService.getPreference('jwt_expires_in');
+    const expiresIn = await this.prefService.getStringPreference(
+      'jwt_expires_in',
+    );
     if (HasFailed(expiresIn)) {
       throw new Error('JWT expiresIn could not be retrieved');
     }
-    return expiresIn.value;
+    return expiresIn;
   }
 
   public async createJwtOptions(): Promise<JwtModuleOptions> {

@@ -26,13 +26,16 @@ export class PrefController {
 
   @Get('sys/:key')
   async getSysPref(@Param('key') key: string): Promise<SysPreferenceResponse> {
-    const returned = await this.prefService.getPreference(
-      key as SysPreferences,
-    );
-    if (HasFailed(returned)) {
-      this.logger.warn(returned.getReason());
+    const pref = await this.prefService.getPreference(key as SysPreferences);
+    if (HasFailed(pref)) {
+      this.logger.warn(pref.getReason());
       throw new InternalServerErrorException('Could not get preference');
     }
+
+    const returned = new SysPreferenceResponse();
+    returned.key = key as SysPreferences;
+    returned.value = pref.value;
+    returned.type = pref.type;
 
     return returned;
   }
@@ -43,14 +46,20 @@ export class PrefController {
     @Body() body: UpdateSysPreferenceRequest,
   ): Promise<SysPreferenceResponse> {
     const value = body.value;
-    const returned = await this.prefService.setPreference(
+    
+    const pref = await this.prefService.setPreference(
       key as SysPreferences,
       value,
     );
-    if (HasFailed(returned)) {
-      this.logger.warn(returned.getReason());
+    if (HasFailed(pref)) {
+      this.logger.warn(pref.getReason());
       throw new InternalServerErrorException('Could not set preference');
     }
+
+    const returned = new SysPreferenceResponse();
+    returned.key = key as SysPreferences;
+    returned.value = pref.value;
+    returned.type = pref.type;
 
     return returned;
   }
