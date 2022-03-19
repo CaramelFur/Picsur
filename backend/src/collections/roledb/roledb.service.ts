@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
-import { validate } from 'class-validator';
 import { Permissions } from 'picsur-shared/dist/dto/permissions';
 import {
   ImmuteableRolesList,
@@ -14,6 +13,7 @@ import {
   HasFailed,
   HasSuccess
 } from 'picsur-shared/dist/types';
+import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { In, Repository } from 'typeorm';
 import { ERoleBackend } from '../../models/entities/role.entity';
 
@@ -172,7 +172,7 @@ export class RolesService {
       return await this.findOne(user);
     } else {
       user = plainToClass(ERoleBackend, user);
-      const errors = await validate(user, { forbidUnknownValues: true });
+      const errors = await strictValidate(user);
       if (errors.length > 0) {
         this.logger.warn(errors);
         return Fail('Invalid role');

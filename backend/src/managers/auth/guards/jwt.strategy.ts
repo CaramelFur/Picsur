@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
-import { validate } from 'class-validator';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtDataDto } from 'picsur-shared/dist/dto/jwt.dto';
+import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { EUserBackend } from '../../../models/entities/user.entity';
 
 @Injectable()
@@ -26,9 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   async validate(payload: any): Promise<EUserBackend> {
     const jwt = plainToClass(JwtDataDto, payload);
 
-    const errors = await validate(jwt, {
-      forbidUnknownValues: true,
-    });
+    const errors = await strictValidate(jwt);
 
     if (errors.length > 0) {
       this.logger.warn(errors);

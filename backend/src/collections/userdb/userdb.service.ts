@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { plainToClass } from 'class-transformer';
-import { validate } from 'class-validator';
 import { Permissions } from 'picsur-shared/dist/dto/permissions';
 import { PermanentRolesList, Roles } from 'picsur-shared/dist/dto/roles.dto';
 import {
@@ -11,6 +10,7 @@ import {
   HasFailed,
   HasSuccess
 } from 'picsur-shared/dist/types';
+import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Repository } from 'typeorm';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { GetCols } from '../collectionutils';
@@ -170,7 +170,7 @@ export class UsersService {
       return await this.findOne(user);
     } else {
       user = plainToClass(EUserBackend, user);
-      const errors = await validate(user, { forbidUnknownValues: true });
+      const errors = await strictValidate(user);
       if (errors.length > 0) {
         this.logger.warn(errors);
         return Fail('Invalid user');

@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
-import { validate } from 'class-validator';
 import {
   InternalSysprefRepresentation,
   SysPreferences,
@@ -14,6 +13,7 @@ import {
   Failable,
   HasFailed
 } from 'picsur-shared/dist/types';
+import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Repository } from 'typeorm';
 import { ESysPreferenceBackend } from '../../models/entities/syspreference.entity';
 import { SysPreferenceDefaultsService } from './syspreferencedefaults.service';
@@ -81,9 +81,7 @@ export class SysPreferenceService {
         ESysPreferenceBackend,
         foundSysPreference,
       );
-      const errors = await validate(foundSysPreference, {
-        forbidUnknownValues: true,
-      });
+      const errors = await strictValidate(foundSysPreference);
       if (errors.length > 0) {
         this.logger.warn(errors);
         return Fail('Invalid preference');
@@ -183,9 +181,7 @@ export class SysPreferenceService {
     verifySysPreference.value = validatedValue;
 
     // Just to be sure
-    const errors = await validate(verifySysPreference, {
-      forbidUnknownValues: true,
-    });
+    const errors = await strictValidate(verifySysPreference);
     if (errors.length > 0) {
       this.logger.warn(errors);
       return Fail('Invalid preference');

@@ -7,6 +7,7 @@ import { SidebarResolverService } from 'src/app/services/sidebar-resolver/sideba
 import { SettingsGeneralRouteModule } from './settings-general/settings-general.module';
 import { SettingsSidebarComponent } from './settings-sidebar/settings-sidebar.component';
 import { SettingsSysprefRouteModule } from './settings-syspref/settings-syspref.module';
+import { SettingsUsersRouteModule } from './settings-users/settings-users.module';
 
 const SettingsRoutes: PRoutes = [
   {
@@ -36,6 +37,18 @@ const SettingsRoutes: PRoutes = [
           page: {
             title: 'System Settings',
             icon: 'settings',
+            category: 'system',
+          },
+        },
+      },
+      {
+        path: 'users',
+        loadChildren: () => SettingsUsersRouteModule,
+        data: {
+          permissions: [Permission.UserManage],
+          page: {
+            title: 'Users',
+            icon: 'people',
             category: 'system',
           },
         },

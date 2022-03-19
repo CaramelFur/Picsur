@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ClassConstructor, plainToClass } from 'class-transformer';
-import { validate } from 'class-validator';
-import {
-  ApiResponse,
-  ApiSuccessResponse
-} from 'picsur-shared/dist/dto/api';
+import { ApiResponse, ApiSuccessResponse } from 'picsur-shared/dist/dto/api';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { MultiPartRequest } from '../../models/multi-part-request';
 import { KeyService } from './key.service';
 
@@ -31,7 +28,7 @@ export class ApiService {
     data: object
   ): AsyncFailable<W> {
     const sendClass = plainToClass(sendType, data);
-    const errors = await validate(sendClass);
+    const errors = await strictValidate(sendClass);
     if (errors.length > 0) {
       this.logger.warn(errors);
       return Fail('Something went wrong');
@@ -68,14 +65,15 @@ export class ApiService {
       ApiSuccessResponse<T>,
       ApiSuccessResponse<T>
     >(ApiSuccessResponse, result);
-    const resultErrors = await validate(resultClass);
+
+    const resultErrors = await strictValidate(resultClass);
     if (resultErrors.length > 0) {
       this.logger.warn('result', resultErrors);
       return Fail('Something went wrong');
     }
 
     const dataClass = plainToClass(type, result.data);
-    const dataErrors = await validate(dataClass);
+    const dataErrors = await strictValidate(dataClass);
     if (dataErrors.length > 0) {
       this.logger.warn('data', dataErrors);
       return Fail('Something went wrong');

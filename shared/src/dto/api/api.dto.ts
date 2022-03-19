@@ -5,8 +5,7 @@ import {
   IsNotEmpty,
   IsString,
   Max,
-  Min,
-  ValidateNested,
+  Min
 } from 'class-validator';
 
 class BaseApiResponse<T extends Object, W extends boolean> {
@@ -24,7 +23,7 @@ class BaseApiResponse<T extends Object, W extends boolean> {
   @IsNotEmpty()
   timestamp: string;
 
-  @ValidateNested()
+  //@ValidateNested()
   @IsDefined()
   data: T;
 }

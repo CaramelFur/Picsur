@@ -5,10 +5,10 @@ import {
   PipeTransform,
   Scope
 } from '@nestjs/common';
-import { validate } from 'class-validator';
 import { FastifyRequest } from 'fastify';
 import { MultipartFields, MultipartFile } from 'fastify-multipart';
 import { Newable } from 'picsur-shared/dist/types';
+import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { MultipartConfigService } from '../config/multipart.config.service';
 import {
   MultiPartFieldDto,
@@ -61,7 +61,7 @@ export class MultiPartPipe implements PipeTransform {
       }
     }
 
-    const errors = await validate(dtoClass, { forbidUnknownValues: true });
+    const errors = await strictValidate(dtoClass);
     if (errors.length > 0) {
       this.logger.warn(errors);
       throw new BadRequestException('Invalid file');

@@ -1,15 +1,11 @@
 import { Type } from 'class-transformer';
 import {
   IsArray, IsDefined,
-  IsEnum,
-  IsInt,
-  IsNotEmpty, IsPositive,
-  IsString,
+  IsEnum, IsNotEmpty, IsString,
   ValidateNested
 } from 'class-validator';
 import { EUser } from '../../entities/user.entity';
 import { Permissions, PermissionsList } from '../permissions';
-import { Roles } from '../roles.dto';
 
 // Api
 
@@ -43,38 +39,6 @@ export class UserRegisterRequest {
 
 export class UserRegisterResponse extends EUser {}
 
-// UserDelete
-export class UserDeleteRequest {
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-}
-
-export class UserDeleteResponse extends EUser {}
-
-// UserInfo
-export class UserInfoRequest {
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-}
-
-export class UserInfoResponse extends EUser {}
-
-// UserList
-export class UserListResponse {
-  @IsArray()
-  @IsDefined()
-  @ValidateNested()
-  @Type(() => EUser)
-  users: EUser[];
-
-  @IsInt()
-  @IsPositive()
-  @IsDefined()
-  total: number;
-}
-
 // UserMe
 export class UserMeResponse {
   @IsDefined()
@@ -94,17 +58,3 @@ export class UserMePermissionsResponse {
   @IsEnum(PermissionsList, { each: true })
   permissions: Permissions;
 }
-
-// UserUpdateRoles
-export class UserUpdateRolesRequest {
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-
-  @IsArray()
-  @IsDefined()
-  @IsString({ each: true })
-  roles: Roles;
-}
-
-export class UserUpdateRolesResponse extends EUser {}

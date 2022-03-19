@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { instanceToPlain, plainToClass } from 'class-transformer';
-import { validate } from 'class-validator';
 import { JwtDataDto } from 'picsur-shared/dist/dto/jwt.dto';
+import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { EUserBackend } from '../../models/entities/user.entity';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class AuthManagerService {
       user,
     });
 
-    const errors = await validate(jwtData, { forbidUnknownValues: true });
+    const errors = await strictValidate(jwtData);
     if (errors.length > 0) {
       this.logger.warn(errors);
       throw new Error('Invalid jwt token generated');

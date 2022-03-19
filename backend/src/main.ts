@@ -5,6 +5,7 @@ import {
   NestFastifyApplication
 } from '@nestjs/platform-fastify';
 import * as multipart from 'fastify-multipart';
+import { ValidateOptions } from 'picsur-shared/dist/util/validate';
 import { AppModule } from './app.module';
 import { UsersService } from './collections/userdb/userdb.service';
 import { HostConfigService } from './config/host.config.service';
@@ -28,12 +29,7 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new MainExceptionFilter());
   app.useGlobalInterceptors(new SuccessInterceptor());
-  app.useGlobalPipes(
-    new ValidationPipe({
-      disableErrorMessages: true,
-      forbidUnknownValues: true,
-    }),
-  );
+  app.useGlobalPipes(new ValidationPipe(ValidateOptions));
   app.useGlobalGuards(
     new MainAuthGuard(app.get(Reflector), app.get(UsersService)),
   );

@@ -8,12 +8,12 @@ import {
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
-import { validate } from 'class-validator';
 import {
   Permissions
 } from 'picsur-shared/dist/dto/permissions';
 import { Fail, Failable, HasFailed } from 'picsur-shared/dist/types';
 import { isPermissionsArray } from 'picsur-shared/dist/util/permissions';
+import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import { EUserBackend } from '../../../models/entities/user.entity';
 
@@ -77,9 +77,7 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
 
   private async validateUser(user: EUserBackend): Promise<EUserBackend> {
     const userClass = plainToClass(EUserBackend, user);
-    const errors = await validate(userClass, {
-      forbidUnknownValues: true,
-    });
+    const errors = await strictValidate(userClass);
 
     if (errors.length > 0) {
       this.logger.error(

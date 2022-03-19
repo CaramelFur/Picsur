@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { plainToClass } from 'class-transformer';
-import { validate } from 'class-validator';
 import jwt_decode from 'jwt-decode';
 import {
   UserLoginRequest,
-  UserLoginResponse, UserMeResponse, UserRegisterRequest, UserRegisterResponse
+  UserLoginResponse,
+  UserMeResponse,
+  UserRegisterRequest,
+  UserRegisterResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { JwtDataDto } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { KeyService } from './key.service';
@@ -60,7 +63,10 @@ export class UserService {
     return user;
   }
 
-  public async register(username: string, password: string): AsyncFailable<EUser> {
+  public async register(
+    username: string,
+    password: string
+  ): AsyncFailable<EUser> {
     const request: UserRegisterRequest = {
       username,
       password,
@@ -119,7 +125,7 @@ export class UserService {
     }
 
     const jwtData = plainToClass(JwtDataDto, decoded);
-    const errors = await validate(jwtData);
+    const errors = await strictValidate(jwtData);
     if (errors.length > 0) {
       this.logger.warn(errors);
       return Fail('Invalid token data');
