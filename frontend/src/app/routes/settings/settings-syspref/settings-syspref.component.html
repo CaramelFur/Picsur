@@ -1,2 +1,7 @@
 <h1>Settings Syspref</h1>
 
+<ng-container *ngIf="render">
+  <ng-container *ngFor="let pref of preferences">
+    <syspref-option [pref]="pref"></syspref-option>
+  </ng-container>
+</ng-container>

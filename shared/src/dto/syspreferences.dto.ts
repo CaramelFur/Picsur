@@ -10,7 +10,6 @@ import tuple from '../types/tuple';
 const SysPreferencesTuple = tuple(
   'jwt_secret',
   'jwt_expires_in',
-  'upload_require_auth',
   'test_string',
   'test_number',
   'test_boolean',
@@ -18,6 +17,16 @@ const SysPreferencesTuple = tuple(
 
 export const SysPreferences: string[] = SysPreferencesTuple;
 export type SysPreferences = typeof SysPreferencesTuple[number];
+
+export const SysPreferenceFriendlyNames: {
+  [key in SysPreferences]: string;
+} = {
+  jwt_secret: 'JWT Secret',
+  jwt_expires_in: 'JWT Expiry Time',
+  test_string: 'Test String',
+  test_number: 'Test Number',
+  test_boolean: 'Test Boolean',
+};
 
 // Syspref Values
 
@@ -30,7 +39,6 @@ export const SysPreferenceValueTypes: {
 } = {
   jwt_secret: 'string',
   jwt_expires_in: 'string',
-  upload_require_auth: 'boolean',
   test_string: 'string',
   test_number: 'number',
   test_boolean: 'boolean',

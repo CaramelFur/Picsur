@@ -12,7 +12,9 @@ app-root {
 
 html {
   box-sizing: border-box;
+  color-scheme: dark;
 }
+
 *,
 *:before,
 *:after {
@@ -43,4 +45,8 @@ html {
 form mat-form-field {
   width: inherit;
   max-width: 40rem;
+}
+
+input::placeholder {
+  color: white;
 }

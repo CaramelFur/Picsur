@@ -27,7 +27,6 @@ export class SysPreferenceDefaultsService {
       }
     },
     jwt_expires_in: () => this.jwtConfigService.getJwtExpiresIn() ?? '7d',
-    upload_require_auth: () => true,
 
     test_string: () => 'test_string',
     test_number: () => 123,

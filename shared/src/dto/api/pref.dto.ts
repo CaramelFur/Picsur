@@ -14,7 +14,8 @@ import {
 
 export class UpdateSysPreferenceRequest {
   @IsNotEmpty()
-  value: string;
+  @IsSysPrefValue()
+  value: SysPrefValueType;
 }
 
 export class SysPreferenceResponse {

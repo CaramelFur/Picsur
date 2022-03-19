@@ -1,4 +1,4 @@
-import { Injectable, Optional, SkipSelf } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { UserMePermissionsResponse } from 'picsur-shared/dist/dto/api/user.dto';
 import {
@@ -14,11 +14,7 @@ import { UserService } from './user.service';
 export class PermissionService {
   private readonly logger = console;
 
-  constructor(
-    private userService: UserService,
-    private api: ApiService,
-    @Optional() @SkipSelf() parent?: PermissionService
-  ) {
+  constructor(private userService: UserService, private api: ApiService) {
     this.onUser();
   }
 

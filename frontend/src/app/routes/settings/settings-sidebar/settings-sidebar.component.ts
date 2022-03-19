@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { PRoutes } from 'src/app/models/picsur-routes';
 import { PermissionService } from 'src/app/services/api/permission.service';
 
@@ -23,7 +24,7 @@ export class SettingsSidebarComponent implements OnInit {
     this.subscribePermissions();
   }
 
-  //  @AutoUnsubscribe()
+  @AutoUnsubscribe()
   private subscribePermissions() {
     return this.permissionService.live.subscribe((permissions) => {
       this.accessibleRoutes = this.settingsRoutes
