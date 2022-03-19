@@ -7,10 +7,13 @@ import {
   Post
 } from '@nestjs/common';
 import {
+  UserCreateRequest,
+  UserCreateResponse,
   UserDeleteRequest,
   UserDeleteResponse,
   UserInfoRequest,
   UserInfoResponse,
+  UserListRequest,
   UserListResponse,
   UserUpdateRolesRequest,
   UserUpdateRolesResponse
@@ -29,7 +32,18 @@ export class UserManageController {
 
   @Get('list')
   async listUsers(): Promise<UserListResponse> {
-    const users = await this.usersService.findAll();
+    const body = new UserListRequest();
+    body.count = 20;
+    body.page = 0;
+
+    return this.listUsersPaged(body);
+  }
+
+  @Post('list')
+  async listUsersPaged(
+    @Body() body: UserListRequest,
+  ): Promise<UserListResponse> {
+    const users = await this.usersService.findMany(body.count, body.page);
     if (HasFailed(users)) {
       this.logger.warn(users.getReason());
       throw new InternalServerErrorException('Could not list users');
@@ -37,8 +51,25 @@ export class UserManageController {
 
     return {
       users,
-      total: users.length,
+      count: users.length,
+      page: body.page,
     };
+  }
+
+  @Post('create')
+  async register(
+    @Body() create: UserCreateRequest,
+  ): Promise<UserCreateResponse> {
+    const user = await this.usersService.create(
+      create.username,
+      create.password,
+    );
+    if (HasFailed(user)) {
+      this.logger.warn(user.getReason());
+      throw new InternalServerErrorException('Could not create user');
+    }
+
+    return user;
   }
 
   @Post('delete')
@@ -49,6 +80,18 @@ export class UserManageController {
     if (HasFailed(user)) {
       this.logger.warn(user.getReason());
       throw new InternalServerErrorException('Could not delete user');
+    }
+
+    return user;
+  }
+
+  @Post('info')
+  async getUser(@Body() body: UserInfoRequest): Promise<UserInfoResponse> {
+    console.log(body);
+    const user = await this.usersService.findOne(body.username);
+    if (HasFailed(user)) {
+      this.logger.warn(user.getReason());
+      throw new InternalServerErrorException('Could not find user');
     }
 
     return user;
@@ -69,17 +112,5 @@ export class UserManageController {
     }
 
     return updatedUser;
-  }
-
-  @Post('info')
-  async getUser(@Body() body: UserInfoRequest): Promise<UserInfoResponse> {
-    console.log(body);
-    const user = await this.usersService.findOne(body.username);
-    if (HasFailed(user)) {
-      this.logger.warn(user.getReason());
-      throw new InternalServerErrorException('Could not find user');
-    }
-
-    return user;
   }
 }

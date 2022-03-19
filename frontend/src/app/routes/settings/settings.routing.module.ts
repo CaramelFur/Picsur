@@ -30,18 +30,6 @@ const SettingsRoutes: PRoutes = [
         },
       },
       {
-        path: 'system',
-        loadChildren: () => SettingsSysprefRouteModule,
-        data: {
-          permissions: [Permission.SysPrefManage],
-          page: {
-            title: 'System Settings',
-            icon: 'settings',
-            category: 'system',
-          },
-        },
-      },
-      {
         path: 'users',
         loadChildren: () => SettingsUsersRouteModule,
         data: {
@@ -49,6 +37,18 @@ const SettingsRoutes: PRoutes = [
           page: {
             title: 'Users',
             icon: 'people',
+            category: 'system',
+          },
+        },
+      },
+      {
+        path: 'system',
+        loadChildren: () => SettingsSysprefRouteModule,
+        data: {
+          permissions: [Permission.SysPrefManage],
+          page: {
+            title: 'System Settings',
+            icon: 'tune',
             category: 'system',
           },
         },

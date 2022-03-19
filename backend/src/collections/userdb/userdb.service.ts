@@ -26,6 +26,8 @@ export class UsersService {
     private rolesService: RolesService,
   ) {}
 
+  // Creation and deletion
+
   public async create(
     username: string,
     password: string,
@@ -63,6 +65,8 @@ export class UsersService {
     }
   }
 
+  // Authentication
+
   async authenticate(
     username: string,
     password: string,
@@ -75,6 +79,8 @@ export class UsersService {
 
     return await this.findOne(username);
   }
+
+  // Permissions and roles
 
   public async getPermissions(
     user: string | EUserBackend,
@@ -130,6 +136,8 @@ export class UsersService {
     }
   }
 
+  // Listing
+
   public async findOne<B extends true | undefined = undefined>(
     username: string,
     getPrivate?: B,
@@ -151,9 +159,18 @@ export class UsersService {
     }
   }
 
-  public async findAll(): AsyncFailable<EUserBackend[]> {
+  public async findMany(
+    count: number,
+    page: number,
+  ): AsyncFailable<EUserBackend[]> {
+    if (count < 1 || page < 0) return Fail('Invalid page');
+    if (count > 100) return Fail('Too many results');
+
     try {
-      return await this.usersRepository.find();
+      return await this.usersRepository.find({
+        take: count,
+        skip: count * page,
+      });
     } catch (e: any) {
       return Fail(e?.message);
     }
@@ -162,6 +179,8 @@ export class UsersService {
   public async exists(username: string): Promise<boolean> {
     return HasSuccess(await this.findOne(username));
   }
+
+  // Internal resolver
 
   private async resolve(
     user: string | EUserBackend,

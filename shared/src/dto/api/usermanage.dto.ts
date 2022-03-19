@@ -1,7 +1,52 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsDefined, IsInt, IsNotEmpty, IsPositive, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsDefined, IsInt, IsNotEmpty, IsString, Min, ValidateNested } from 'class-validator';
 import { EUser } from '../../entities/user.entity';
 import { Roles } from '../roles.dto';
+
+// UserList
+export class UserListRequest {
+  @IsDefined()
+  @IsInt()
+  @Min(0)
+  count: number;
+
+  @IsDefined()
+  @IsInt()
+  @Min(0)
+  page: number;
+}
+
+export class UserListResponse {
+  @IsArray()
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => EUser)
+  users: EUser[];
+
+  @IsDefined()
+  @IsInt()
+  @Min(0)
+  count: number;
+
+  @IsDefined()
+  @IsInt()
+  @Min(0)
+  page: number;
+}
+
+// UserCreate
+export class UserCreateRequest {
+  @IsString()
+  @IsNotEmpty()
+  username: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
+
+export class UserCreateResponse extends EUser {}
+
 
 // UserDelete
 export class UserDeleteRequest {
@@ -20,20 +65,6 @@ export class UserInfoRequest {
 }
 
 export class UserInfoResponse extends EUser {}
-
-// UserList
-export class UserListResponse {
-  @IsArray()
-  @IsDefined()
-  @ValidateNested()
-  @Type(() => EUser)
-  users: EUser[];
-
-  @IsInt()
-  @IsPositive()
-  @IsDefined()
-  total: number;
-}
 
 // UserUpdateRoles
 export class UserUpdateRolesRequest {
