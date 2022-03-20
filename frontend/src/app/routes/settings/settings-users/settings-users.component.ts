@@ -32,12 +32,12 @@ export class SettingsUsersComponent implements OnInit {
     return this.updateSubject
       .pipe(throttleTime(500, undefined, { leading: true, trailing: true }))
       .subscribe(async (pageEvent: PageEvent) => {
-        let amount = await this.fetchUsers(
+        let success = await this.fetchUsers(
           pageEvent.pageSize,
           pageEvent.pageIndex
         );
-        if (amount === 0) {
-          if ( pageEvent.previousPageIndex === pageEvent.pageIndex - 1){
+        if (!success) {
+          if (pageEvent.previousPageIndex === pageEvent.pageIndex - 1) {
             this.paginator.previousPage();
           } else {
             this.paginator.firstPage();
@@ -49,12 +49,15 @@ export class SettingsUsersComponent implements OnInit {
   private async fetchUsers(
     pageSize: number,
     pageIndex: number
-  ): Promise<number> {
+  ): Promise<boolean> {
     const result = await this.userManageService.getUsers(pageSize, pageIndex);
-    if (HasFailed(result)) return 0;
+    if (HasFailed(result)) return false;
 
-    this.dataSubject.next(result);
+    if (result.length > 0) {
+      this.dataSubject.next(result);
+      return true;
+    }
 
-    return result.length;
+    return false;
   }
 }

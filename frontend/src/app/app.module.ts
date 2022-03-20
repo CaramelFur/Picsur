@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app.routing.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
 import { GuardsModule } from './guards/guards.module';
+import { UtilModule } from './util/util.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { GuardsModule } from './guards/guards.module';
     PortalModule,
     MatSidenavModule,
 
+    UtilModule.forRoot(),
     GuardsModule,
     AppRoutingModule,
 

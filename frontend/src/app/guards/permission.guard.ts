@@ -24,12 +24,12 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    console.log('canActivateChild');
+    //console.log('canActivateChild');
     return await this.can(childRoute, state);
   }
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log('canActivate');
+    //console.log('canActivate');
     return await this.can(route, state);
   }
 

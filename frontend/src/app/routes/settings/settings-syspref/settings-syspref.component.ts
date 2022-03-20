@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { SysPreferenceResponse } from 'picsur-shared/dist/dto/api/pref.dto';
 import { SysprefService as SysPrefService } from 'src/app/services/api/syspref.service';
@@ -6,7 +6,7 @@ import { SysprefService as SysPrefService } from 'src/app/services/api/syspref.s
 @Component({
   templateUrl: './settings-syspref.component.html',
 })
-export class SettingsSysprefComponent implements OnInit, OnChanges {
+export class SettingsSysprefComponent implements OnInit {
   render = true;
   preferences: SysPreferenceResponse[] = [];
 
@@ -30,10 +30,6 @@ export class SettingsSysprefComponent implements OnInit, OnChanges {
 
       this.preferences = preferences;
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('cahnges', changes);
   }
 
   private compareFlatObjectArray(a: any[], b: any[]): boolean {

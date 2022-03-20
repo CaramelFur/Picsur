@@ -111,7 +111,6 @@ export class SysprefService {
   }
 
   private sync() {
-    console.warn('System preferences have been flushed');
     this.sysprefObservable.next(
       ([] as SysPreferenceResponse[]).concat(this.snapshot)
     );

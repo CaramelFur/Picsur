@@ -3,6 +3,8 @@ import { ClassConstructor, plainToClass } from 'class-transformer';
 import { ApiResponse, ApiSuccessResponse } from 'picsur-shared/dist/dto/api';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
+import { Subject } from 'rxjs';
+import { ApiError } from 'src/app/models/api-error';
 import { MultiPartRequest } from '../../models/multi-part-request';
 import { KeyService } from './key.service';
 
@@ -11,6 +13,12 @@ import { KeyService } from './key.service';
 })
 export class ApiService {
   private readonly logger = console;
+
+  private errorSubject = new Subject<ApiError>();
+
+  public get networkErrors() {
+    return this.errorSubject.asObservable();
+  }
 
   constructor(private keyService: KeyService) {}
 
@@ -128,9 +136,12 @@ export class ApiService {
       options.headers = headers;
 
       return await window.fetch(url, options);
-    } catch (e: any) {
-      this.logger.warn(e);
-      return Fail('Something went wrong');
+    } catch (error: any) {
+      this.errorSubject.next({
+        error,
+        url,
+      });
+      return Fail('Network Error');
     }
   }
 }

@@ -87,7 +87,6 @@ export class UserManageController {
 
   @Post('info')
   async getUser(@Body() body: UserInfoRequest): Promise<UserInfoResponse> {
-    console.log(body);
     const user = await this.usersService.findOne(body.username);
     if (HasFailed(user)) {
       this.logger.warn(user.getReason());
