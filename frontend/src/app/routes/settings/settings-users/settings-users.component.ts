@@ -11,7 +11,7 @@ import { UserManageService } from 'src/app/services/api/usermanage.service';
   styleUrls: ['./settings-users.component.scss'],
 })
 export class SettingsUsersComponent implements OnInit {
-  public readonly displayedColumns: string[] = ['id', 'username'];
+  public readonly displayedColumns: string[] = ['id', 'username', 'actions'];
   public readonly pageSizeOptions: number[] = [5, 10, 25, 100];
   public readonly startingPageSize = this.pageSizeOptions[2];
 

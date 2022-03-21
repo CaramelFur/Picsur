@@ -1,43 +1,29 @@
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Fail, Failable } from 'picsur-shared/dist/types';
+import {
+  CreatePasswordError,
+  CreateUsernameError,
+  PasswordValidators,
+  UsernameValidators
+} from './default-validators';
 import { UserPassModel } from './userpass';
 
 export class LoginControl {
-  public username = new FormControl('', [
-    Validators.required,
-    Validators.minLength(3),
-  ]);
-
-  public password = new FormControl('', [
-    Validators.required,
-    Validators.minLength(3),
-  ]);
+  public username = new FormControl('', UsernameValidators);
+  public password = new FormControl('', PasswordValidators);
 
   public get usernameError() {
-    return this.username.hasError('required')
-      ? 'Username is required'
-      : this.username.hasError('minlength')
-      ? 'Username is too short'
-      : '';
+    return CreateUsernameError(this.username.errors);
   }
 
   public get passwordError() {
-    return this.password.hasError('required')
-      ? 'Password is required'
-      : this.password.hasError('minlength')
-      ? 'Password is too short'
-      : '';
+    return CreatePasswordError(this.password.errors);
   }
 
   public getData(): Failable<UserPassModel> {
-    if (this.username.errors || this.password.errors) {
+    if (this.username.errors || this.password.errors)
       return Fail('Invalid username or password');
-    } else {
-      return {
-        username: this.username.value,
-        password: this.password.value,
-      };
-    }
+    else return this.getRawData();
   }
 
   public getRawData(): UserPassModel {

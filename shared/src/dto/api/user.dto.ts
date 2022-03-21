@@ -1,24 +1,16 @@
 import { Type } from 'class-transformer';
 import {
   IsArray, IsDefined,
-  IsEnum, IsNotEmpty, IsString,
+  IsEnum, IsString,
   ValidateNested
 } from 'class-validator';
-import { EUser } from '../../entities/user.entity';
+import { EUser, SimpleUser } from '../../entities/user.entity';
 import { Permissions, PermissionsList } from '../permissions';
 
 // Api
 
 // UserLogin
-export class UserLoginRequest {
-  @IsNotEmpty()
-  @IsString()
-  username: string;
-
-  @IsNotEmpty()
-  @IsString()
-  password: string;
-}
+export class UserLoginRequest extends SimpleUser {}
 
 export class UserLoginResponse {
   @IsString()
@@ -27,15 +19,7 @@ export class UserLoginResponse {
 }
 
 // UserRegister
-export class UserRegisterRequest {
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-}
+export class UserRegisterRequest extends SimpleUser {}
 
 export class UserRegisterResponse extends EUser {}
 

@@ -1,6 +1,12 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsDefined, IsInt, IsNotEmpty, IsString, Min, ValidateNested } from 'class-validator';
-import { EUser } from '../../entities/user.entity';
+import {
+  IsArray,
+  IsDefined,
+  IsInt, IsString,
+  Min,
+  ValidateNested
+} from 'class-validator';
+import { EUser, SimpleUser, SimpleUsername } from '../../entities/user.entity';
 import { Roles } from '../roles.dto';
 
 // UserList
@@ -35,43 +41,19 @@ export class UserListResponse {
 }
 
 // UserCreate
-export class UserCreateRequest {
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-}
-
+export class UserCreateRequest extends SimpleUser {}
 export class UserCreateResponse extends EUser {}
 
-
 // UserDelete
-export class UserDeleteRequest {
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-}
-
+export class UserDeleteRequest extends SimpleUsername {}
 export class UserDeleteResponse extends EUser {}
 
 // UserInfo
-export class UserInfoRequest {
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-}
-
+export class UserInfoRequest extends SimpleUsername {}
 export class UserInfoResponse extends EUser {}
 
 // UserUpdateRoles
-export class UserUpdateRolesRequest {
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-
+export class UserUpdateRolesRequest extends SimpleUsername {
   @IsArray()
   @IsDefined()
   @IsString({ each: true })

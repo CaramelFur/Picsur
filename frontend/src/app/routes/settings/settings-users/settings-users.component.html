@@ -1,19 +1,30 @@
 <h1>Users</h1>
 
-<table mat-table [dataSource]="dataSubject">
+<mat-table [dataSource]="dataSubject" class="mat-elevation-z8">
   <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef>ID</th>
-    <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+    <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="username">
-    <th mat-header-cell *matHeaderCellDef>Username</th>
-    <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+    <mat-header-cell *matHeaderCellDef>Username</mat-header-cell>
+    <mat-cell *matCellDef="let user">{{ user.username }}</mat-cell>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+    <mat-cell *matCellDef="let user">
+      <button mat-icon-button>
+        <mat-icon aria-label="Edit">edit</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns">
+    pog
+  </mat-row>
+</mat-table>
 
 <mat-paginator
   color="accent"

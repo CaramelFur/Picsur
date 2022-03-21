@@ -1,49 +1,32 @@
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Fail, Failable } from 'picsur-shared/dist/types';
 import { Compare } from './compare.validator';
+import {
+  CreatePasswordError,
+  CreateUsernameError,
+  PasswordValidators,
+  UsernameValidators
+} from './default-validators';
 import { UserPassModel } from './userpass';
 
 export class RegisterControl {
-  public username = new FormControl('', [
-    Validators.required,
-    Validators.minLength(3),
-  ]);
-
-  public password = new FormControl('', [
-    Validators.required,
-    Validators.minLength(3),
-  ]);
-
+  public username = new FormControl('', UsernameValidators);
+  public password = new FormControl('', PasswordValidators);
   public passwordConfirm = new FormControl('', [
-    Validators.required,
-    Validators.minLength(3),
+    ...PasswordValidators,
     Compare(this.password),
   ]);
 
   public get usernameError() {
-    return this.username.hasError('required')
-      ? 'Username is required'
-      : this.username.hasError('minlength')
-      ? 'Username is too short'
-      : '';
+    return CreateUsernameError(this.username.errors);
   }
 
   public get passwordError() {
-    return this.password.hasError('required')
-      ? 'Password is required'
-      : this.password.hasError('minlength')
-      ? 'Password is too short'
-      : '';
+    return CreatePasswordError(this.password.errors);
   }
 
   public get passwordConfirmError() {
-    return this.passwordConfirm.hasError('required')
-      ? 'Password confirmation is required'
-      : this.passwordConfirm.hasError('minlength')
-      ? 'Password confirmation is too short'
-      : this.passwordConfirm.hasError('compare')
-      ? 'Password confirmation does not match'
-      : '';
+    return CreatePasswordError(this.passwordConfirm.errors);
   }
 
   public getData(): Failable<UserPassModel> {
@@ -51,14 +34,9 @@ export class RegisterControl {
       this.username.errors ||
       this.password.errors ||
       this.passwordConfirm.errors
-    ) {
+    )
       return Fail('Invalid username or password');
-    } else {
-      return {
-        username: this.username.value,
-        password: this.password.value,
-      };
-    }
+    else return this.getRawData();
   }
 
   public getRawData(): UserPassModel {
