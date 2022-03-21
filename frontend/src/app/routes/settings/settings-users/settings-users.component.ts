@@ -4,7 +4,9 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, Subject, throttleTime } from 'rxjs';
+import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { UserManageService } from 'src/app/services/api/usermanage.service';
+import { UtilService } from 'src/app/util/util.service';
 
 @Component({
   templateUrl: './settings-users.component.html',
@@ -20,7 +22,10 @@ export class SettingsUsersComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private userManageService: UserManageService) {}
+  constructor(
+    private userManageService: UserManageService,
+    private utilService: UtilService
+  ) {}
 
   async ngOnInit() {
     this.subscribeToUpdate();
@@ -51,7 +56,13 @@ export class SettingsUsersComponent implements OnInit {
     pageIndex: number
   ): Promise<boolean> {
     const result = await this.userManageService.getUsers(pageSize, pageIndex);
-    if (HasFailed(result)) return false;
+    if (HasFailed(result)) {
+      this.utilService.showSnackBar(
+        'Failed to fetch users',
+        SnackBarType.Error
+      );
+      return false;
+    }
 
     if (result.length > 0) {
       this.dataSubject.next(result);

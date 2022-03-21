@@ -1,3 +1,4 @@
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +12,7 @@ import { CopyFieldComponent } from './copyfield.component';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
+    ClipboardModule,
   ],
   exports: [CopyFieldComponent],
 })
