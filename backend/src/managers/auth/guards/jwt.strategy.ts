@@ -1,8 +1,7 @@
 import {
   Inject,
   Injectable,
-  Logger,
-  UnauthorizedException
+  Logger
 } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
@@ -23,14 +22,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(payload: any): Promise<EUserBackend> {
+  async validate(payload: any): Promise<EUserBackend | false> {
     const jwt = plainToClass(JwtDataDto, payload);
 
     const errors = await strictValidate(jwt);
 
     if (errors.length > 0) {
       this.logger.warn(errors);
-      throw new UnauthorizedException();
+      return false;
     }
 
     return jwt.user;

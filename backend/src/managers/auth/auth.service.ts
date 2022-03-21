@@ -13,7 +13,10 @@ export class AuthManagerService {
 
   async createToken(user: EUserBackend): Promise<string> {
     const jwtData: JwtDataDto = plainToClass(JwtDataDto, {
-      user,
+      user: {
+        username: user.username,
+        roles: user.roles,
+      },
     });
 
     const errors = await strictValidate(jwtData);

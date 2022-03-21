@@ -29,15 +29,18 @@ export class SimpleUser extends SimpleUsername {
   password: string;
 }
 
-// Actual entity that goes in the db
-export class EUser extends SimpleUsername {
-  @IsOptional()
-  @IsInt()
-  id?: number;
-
+// Add a user object with just the username and roles for jwt
+export class RoledUser extends SimpleUsername {
   @IsArray()
   @IsString({ each: true })
   roles: Roles;
+}
+
+// Actual entity that goes in the db
+export class EUser extends RoledUser {
+  @IsOptional()
+  @IsInt()
+  id?: number;
 
   @IsOptional()
   @Exclude()
