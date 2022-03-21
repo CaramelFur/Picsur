@@ -1,7 +1,7 @@
 {
   "name": "picsur-backend",
   "private": false,
-  "version": "0.0.0",
+  "version": "3.0.0",
   "description": "Backend for Picsur",
   "license": "GPL-3.0",
   "repository": "https://github.com/rubikscraft/Picsur",

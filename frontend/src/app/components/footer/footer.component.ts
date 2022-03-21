@@ -11,6 +11,7 @@ export class FooterComponent implements OnInit {
   constructor(private infoService: InfoService) {}
 
   isDemo: boolean = false;
+  version: string = 'V0.0.0';
 
   ngOnInit(): void {
     this.subscribeInfo();
@@ -20,6 +21,7 @@ export class FooterComponent implements OnInit {
   subscribeInfo() {
     return this.infoService.live.subscribe((info) => {
       this.isDemo = info.demo;
+      this.version = 'V' + info.version;
     });
   }
 }

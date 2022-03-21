@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { plainToClass } from 'class-transformer';
 import { InfoResponse } from 'picsur-shared/dist/dto/api/info.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
@@ -25,9 +26,7 @@ export class InfoService {
     const response = await this.api.get(InfoResponse, '/api/info');
     if (HasFailed(response)) return response;
 
-    const info = new ServerInfo();
-    info.production = response.production;
-    info.demo = response.demo;
+    const info = plainToClass(ServerInfo, response);
 
     this.infoSubject.next(info);
     return info;

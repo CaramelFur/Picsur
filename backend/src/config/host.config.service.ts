@@ -43,4 +43,12 @@ export class HostConfigService {
     );
     return enabled;
   }
+
+  public getVersion() {
+    const version = this.configService.get<string>(
+      `npm_package_version`,
+      '0.0.0',
+    );
+    return version;
+  }
 }

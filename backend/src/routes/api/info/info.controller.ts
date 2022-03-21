@@ -13,6 +13,7 @@ export class InfoController {
     return {
       demo: this.hostConfig.isDemo(),
       production: this.hostConfig.isProduction(),
+      version: this.hostConfig.getVersion(),
     };
   }
 }

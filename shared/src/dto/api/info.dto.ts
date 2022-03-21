@@ -1,4 +1,4 @@
-import { IsBoolean, IsDefined } from 'class-validator';
+import { IsBoolean, IsDefined, IsSemVer, IsString } from 'class-validator';
 
 export class InfoResponse {
   @IsBoolean()
@@ -8,4 +8,9 @@ export class InfoResponse {
   @IsBoolean()
   @IsDefined()
   demo: boolean;
+
+  @IsDefined()
+  @IsString()
+  @IsSemVer()
+  version: string;
 }
