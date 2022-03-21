@@ -11,5 +11,8 @@
     "devdb:stop": "podman-compose -f ./dev/docker-compose.yml down",
     "build": "./support/build.sh",
     "setversion": "./support/setversion.sh"
+  },
+  "resolutions": {
+    "minimist": "npm:minimist-lite"
   }
 }
