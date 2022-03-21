@@ -1,6 +1,6 @@
 <h1>Users</h1>
 
-<mat-table [dataSource]="dataSubject" class="mat-elevation-z8">
+<mat-table [dataSource]="dataSubject" class="mat-elevation-z2">
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
     <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
@@ -21,17 +21,11 @@
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns">
-    pog
-  </mat-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"> pog </mat-row>
 </mat-table>
 
-<mat-paginator
-  color="accent"
-  [pageSizeOptions]="pageSizeOptions"
-  [pageSize]="startingPageSize"
-  length="Infinity"
-  aria-label="Select page of periodic elements"
-  (page)="updateSubject.next($event)"
->
-</mat-paginator>
+<div class="fabholder">
+  <button mat-fab color="accent" class="fabbutton fullanimate mat-elevation-z6">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

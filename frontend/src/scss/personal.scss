@@ -1,3 +1,4 @@
+// Create white border around content
 .content-border {
   border-radius: 20px;
   height: 100%;
@@ -6,6 +7,7 @@
   border-width: 5px;
 }
 
+// Easily center content
 .centered {
   display: flex;
   flex-direction: column;
@@ -18,6 +20,7 @@
   width: 100%;
 }
 
+// Unstyled links
 .link-unstyled {
   &,
   &:visited,
@@ -41,4 +44,25 @@
     padding: inherit;
     vertical-align: inherit;
   }
+}
+
+// Fabs
+.fabholder {
+  display: flex;
+  justify-content: flex-end;
+
+  & > .fabbutton {
+    position: fixed;
+    bottom: 1.5rem;
+
+    @include media-breakpoint-up(xl) {
+      bottom: 4rem;
+    }
+  }
+}
+
+// Anim
+
+.fullanimate, .fullanimate * {
+  transition: ease-in-out all 0.2s !important;
 }

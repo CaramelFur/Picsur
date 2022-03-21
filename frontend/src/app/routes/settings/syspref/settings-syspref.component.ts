@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { SysPreferenceResponse } from 'picsur-shared/dist/dto/api/pref.dto';
+import { HasFailed } from 'picsur-shared/dist/types';
+import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { SysprefService as SysPrefService } from 'src/app/services/api/syspref.service';
+import { UtilService } from 'src/app/util/util.service';
 
 @Component({
   templateUrl: './settings-syspref.component.html',
@@ -10,11 +13,20 @@ export class SettingsSysprefComponent implements OnInit {
   render = true;
   preferences: SysPreferenceResponse[] = [];
 
-  constructor(private sysprefService: SysPrefService) {}
+  constructor(
+    private sysprefService: SysPrefService,
+    private utilService: UtilService
+  ) {}
 
   async ngOnInit() {
     this.subscribePreferences();
-    await this.sysprefService.getPreferences();
+    const success = await this.sysprefService.getPreferences();
+    if (HasFailed(success)) {
+      this.utilService.showSnackBar(
+        'Failed to load preferences',
+        SnackBarType.Error
+      );
+    }
   }
 
   @AutoUnsubscribe()

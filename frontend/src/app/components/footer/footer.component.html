@@ -1,15 +1,21 @@
 <footer class="container">
   <p>
-    Made with 🤍 by
-    <a class="link-unstyled" href="https://rubikscraft.nl" target="_blank"
-      >Rubikscraft</a
-    >
-    {{ isDemo ? " - Demo Version" : "" }}
-    -
-    {{ version }}
-    -
-    <a class="link-unstyled" href="https://github.com/rubikscraft/picsur"
-      >Source Code</a
-    >
+    <span class="line">
+      Made with 🤍 by
+      <a class="link-unstyled" href="https://rubikscraft.nl" target="_blank"
+        >Rubikscraft</a
+      >
+
+      {{ isDemo ? " - Demo Version" : "" }}
+    </span>
+
+    <span class="line">
+      &nbsp;-
+      {{ version }}
+      -
+      <a class="link-unstyled" href="https://github.com/rubikscraft/picsur"
+        >Source Code</a
+      >
+    </span>
   </p>
 </footer>

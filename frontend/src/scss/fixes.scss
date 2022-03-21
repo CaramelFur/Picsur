@@ -1,3 +1,4 @@
+// General styling
 html,
 body {
   height: 100%;
@@ -19,13 +20,6 @@ html {
 *:before,
 *:after {
   box-sizing: inherit;
-
-  -webkit-transition: 0.2s;
-  -moz-transition: 0.2s;
-  -o-transition: 0.2s;
-  transition: 0.2s;
-
-  transition-property: width, height, background-color, color, opacity;
 }
 
 :not(input) {
@@ -41,6 +35,8 @@ html {
   height: initial !important;
   width: initial !important;
 }
+
+// Fix small form inputs
 
 form mat-form-field {
   width: inherit;
