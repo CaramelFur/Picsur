@@ -1,12 +1,12 @@
 import { Type } from 'class-transformer';
 import { IsDefined, IsInt, IsOptional, ValidateNested } from 'class-validator';
-import { RoledUser } from '../entities/user.entity';
+import { NameRolesUser } from '../entities/user.entity';
 
 export class JwtDataDto {
   @IsDefined()
   @ValidateNested()
-  @Type(() => RoledUser)
-  user: RoledUser;
+  @Type(() => NameRolesUser)
+  user: NameRolesUser;
 
   @IsOptional()
   @IsInt()

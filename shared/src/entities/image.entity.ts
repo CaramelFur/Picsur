@@ -1,10 +1,10 @@
 import { Exclude } from 'class-transformer';
-import { IsDefined, IsEnum, IsHash, IsInt, IsOptional } from 'class-validator';
+import { IsDefined, IsEnum, IsHash, IsOptional } from 'class-validator';
 import { SupportedMime, SupportedMimes } from '../dto/mimes.dto';
+import { EntityID } from '../validators/entity-id.validator';
 
 export class EImage {
-  @IsOptional()
-  @IsInt()
+  @EntityID()
   id?: number;
 
   @IsHash('sha256')

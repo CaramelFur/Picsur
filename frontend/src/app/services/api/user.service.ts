@@ -83,6 +83,7 @@ export class UserService {
   }
 
   public async logout(): AsyncFailable<EUser> {
+    console.log('logging out');
     const value = this.userSubject.getValue();
     this.key.clear();
     this.userSubject.next(null);

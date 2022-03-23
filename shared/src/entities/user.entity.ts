@@ -1,45 +1,33 @@
 import { Exclude } from 'class-transformer';
 import {
-  IsAlphanumeric,
-  IsArray,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Length
+  IsArray, IsOptional,
+  IsString
 } from 'class-validator';
 import { Roles } from '../dto/roles.dto';
+import { EntityID } from '../validators/entity-id.validator';
+import { IsPlainTextPwd, IsUsername } from '../validators/user.validators';
 
-// Match this with user validators in frontend
-// (Not security focused, but it tells the user what is wrong)
-
-export class SimpleUsername {
-  @IsNotEmpty()
-  @IsString()
-  @Length(4, 32)
-  @IsAlphanumeric()
+export class UsernameUser {
+  @IsUsername()
   username: string;
 }
 
 // This is a simple user object with just the username and unhashed password
-export class SimpleUser extends SimpleUsername {
-  @IsNotEmpty()
-  @IsString()
-  @Length(4, 1024)
+export class NamePassUser extends UsernameUser {
+  @IsPlainTextPwd()
   password: string;
 }
 
 // Add a user object with just the username and roles for jwt
-export class RoledUser extends SimpleUsername {
+export class NameRolesUser extends UsernameUser {
   @IsArray()
   @IsString({ each: true })
   roles: Roles;
 }
 
 // Actual entity that goes in the db
-export class EUser extends RoledUser {
-  @IsOptional()
-  @IsInt()
+export class EUser extends NameRolesUser {
+  @EntityID()
   id?: number;
 
   @IsOptional()

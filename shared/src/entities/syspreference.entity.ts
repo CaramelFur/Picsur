@@ -1,9 +1,9 @@
-import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { SysPreferences } from '../dto/syspreferences.dto';
+import { EntityID } from '../validators/entity-id.validator';
 
 export class ESysPreference {
-  @IsOptional()
-  @IsInt()
+  @EntityID()
   id?: number;
 
   @IsNotEmpty()

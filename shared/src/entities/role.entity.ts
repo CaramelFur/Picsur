@@ -1,9 +1,9 @@
-import { IsArray, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { Permissions, PermissionsList } from '../dto/permissions';
+import { EntityID } from '../validators/entity-id.validator';
 
 export class ERole {
-  @IsOptional()
-  @IsInt()
+  @EntityID()
   id?: number;
 
   @IsNotEmpty()

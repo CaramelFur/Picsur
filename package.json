@@ -14,5 +14,8 @@
   },
   "resolutions": {
     "minimist": "npm:minimist-lite"
+  },
+  "dependencies": {
+    "minimist": "npm:minimist-lite"
   }
 }

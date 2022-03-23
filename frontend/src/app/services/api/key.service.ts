@@ -26,11 +26,11 @@ export class KeyService {
 
   public set(key: string) {
     this.key = key;
-    setTimeout(this.store.bind(this), 0);
+    this.store();
   }
 
   public clear() {
     this.key = null;
-    setTimeout(this.store.bind(this), 0);
+    this.store();
   }
 }

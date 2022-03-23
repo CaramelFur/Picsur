@@ -4,13 +4,13 @@ import {
   IsEnum, IsString,
   ValidateNested
 } from 'class-validator';
-import { EUser, SimpleUser } from '../../entities/user.entity';
+import { EUser, NamePassUser } from '../../entities/user.entity';
 import { Permissions, PermissionsList } from '../permissions';
 
 // Api
 
 // UserLogin
-export class UserLoginRequest extends SimpleUser {}
+export class UserLoginRequest extends NamePassUser {}
 
 export class UserLoginResponse {
   @IsString()
@@ -19,7 +19,7 @@ export class UserLoginResponse {
 }
 
 // UserRegister
-export class UserRegisterRequest extends SimpleUser {}
+export class UserRegisterRequest extends NamePassUser {}
 
 export class UserRegisterResponse extends EUser {}
 
