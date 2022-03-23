@@ -5,6 +5,7 @@ import { PermissionGuard } from 'src/app/guards/permission.guard';
 import { PRoutes } from 'src/app/models/picsur-routes';
 import { SidebarResolverService } from 'src/app/services/sidebar-resolver/sidebar-resolver.service';
 import { SettingsGeneralRouteModule } from './general/settings-general.module';
+import { SettingsRolesRouteModule } from './roles/settings-roles.module';
 import { SettingsSidebarComponent } from './sidebar/settings-sidebar.component';
 import { SettingsSysprefRouteModule } from './syspref/settings-syspref.module';
 import { SettingsUsersRouteModule } from './users/settings-users.module';
@@ -36,7 +37,19 @@ const SettingsRoutes: PRoutes = [
           permissions: [Permission.UserManage],
           page: {
             title: 'Users',
-            icon: 'people',
+            icon: 'people_outline',
+            category: 'system',
+          },
+        },
+      },
+      {
+        path: 'roles',
+        loadChildren: () => SettingsRolesRouteModule,
+        data: {
+          permissions: [Permission.RoleManage],
+          page: {
+            title: 'Roles',
+            icon: 'admin_panel_settings',
             category: 'system',
           },
         },

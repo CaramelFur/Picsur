@@ -10,7 +10,11 @@
     <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
     <mat-cell *matCellDef="let user">
       <mat-chip-list aria-label="User Roles">
-        <mat-chip [disableRipple]="true" [disabled]="true" *ngIf="isSystem(user)">
+        <mat-chip
+          [disableRipple]="true"
+          [disabled]="true"
+          *ngIf="isSystem(user)"
+        >
           System
         </mat-chip>
         <mat-chip [disableRipple]="true" *ngFor="let role of user.roles">
@@ -24,14 +28,21 @@
     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
     <mat-cell *matCellDef="let user">
       <button mat-icon-button (click)="editUser(user)">
-        <mat-icon aria-label="Edit">edit</mat-icon>
+        <mat-icon fontSet="material-icons-outlined" aria-label="Edit"
+          >edit</mat-icon
+        >
       </button>
       <button
         *ngIf="!isSystem(user)"
         mat-icon-button
         (click)="deleteUser(user)"
       >
-        <mat-icon class="icon-red" aria-label="Delete">delete</mat-icon>
+        <mat-icon
+          fontSet="material-icons-outlined"
+          class="icon-red"
+          aria-label="Delete"
+          >delete</mat-icon
+        >
       </button>
     </mat-cell>
   </ng-container>
@@ -57,6 +68,6 @@
     class="fabbutton fullanimate mat-elevation-z6"
     (click)="addUser()"
   >
-    <mat-icon>add</mat-icon>
+    <mat-icon fontSet="material-icons-outlined">person_add</mat-icon>
   </button>
 </div>

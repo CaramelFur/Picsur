@@ -29,7 +29,7 @@
     {{ user?.username }}
   </span>
   <button *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu">
-    <mat-icon>account_circle</mat-icon>
+    <mat-icon fontSet="material-icons-outlined">account_circle</mat-icon>
   </button>
 
   <mat-menu #menu="matMenu" xPosition="before">
@@ -40,11 +40,11 @@
         </div>
       </span>
       <button *ngIf="canAccessSettings" mat-menu-item (click)="doSettings()">
-        <mat-icon>settings</mat-icon>
+        <mat-icon fontSet="material-icons-outlined">settings</mat-icon>
         <span>Settings</span>
       </button>
       <button mat-menu-item (click)="doLogout()">
-        <mat-icon>logout</mat-icon>
+        <mat-icon fontSet="material-icons-outlined">logout</mat-icon>
         <span>Logout</span>
       </button>
     </ng-template>
