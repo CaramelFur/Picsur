@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   UserCreateRequest,
   UserCreateResponse,
+  UserDeleteRequest,
+  UserDeleteResponse,
   UserInfoRequest,
   UserInfoResponse,
   UserListRequest,
@@ -72,6 +74,21 @@ export class UserManageService {
       UserUpdateResponse,
       '/api/user/update',
       user
+    );
+
+    return result;
+  }
+
+  public async deleteUser(username: string): AsyncFailable<EUser> {
+    const body = {
+      username,
+    };
+
+    const result = await this.apiService.post(
+      UserDeleteRequest,
+      UserDeleteResponse,
+      '/api/user/delete',
+      body
     );
 
     return result;

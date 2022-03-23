@@ -1,5 +1,6 @@
 import { FormControl } from '@angular/forms';
 import Fuse from 'fuse.js';
+import { Permissions } from 'picsur-shared/dist/dto/permissions';
 import { PermanentRolesList } from 'picsur-shared/dist/dto/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -69,6 +70,23 @@ export class UpdateUserControl {
   public isRemovable(role: string) {
     if (PermanentRolesList.includes(role)) return false;
     return true;
+  }
+
+  public getEffectivePermissions(): Permissions {
+    const permissions: Permissions = [];
+    for (const role of this.selectedRoles) {
+      const fullRole = this.fullRoles.find((r) => r.name === role);
+      if (!fullRole) {
+        console.warn(`Role ${role} not found`);
+        continue;
+      }
+
+      permissions.push(
+        ...fullRole.permissions.filter((p) => !permissions.includes(p))
+      );
+    }
+
+    return permissions;
   }
 
   // Data interaction

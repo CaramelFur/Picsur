@@ -27,3 +27,20 @@ export const AdminDashboardPermissions: Permissions = [
   Permission.RoleManage,
   Permission.SysPrefManage,
 ];
+
+export const UIFriendlyPermissions: {
+  [key in Permission]: string;
+} = {
+  [Permission.ImageView]: 'View images',
+  [Permission.ImageUpload]: 'Upload images',
+
+  [Permission.UserLogin]: 'Login',
+  [Permission.UserMe]: 'View own user details',
+  [Permission.UserRegister]: 'Register',
+
+  [Permission.Settings]: 'View available settings',
+
+  [Permission.UserManage]: 'Manage users',
+  [Permission.RoleManage]: 'Manage roles',
+  [Permission.SysPrefManage]: 'Manage system preferences',
+};

@@ -24,9 +24,9 @@
           name="username"
           required
         />
-        <mat-error *ngIf="model.username.errors">{{
-          model.usernameError
-        }}</mat-error>
+        <mat-error *ngIf="model.username.errors">
+          {{ model.usernameError }}
+        </mat-error>
       </mat-form-field>
     </div>
   </div>
@@ -42,9 +42,9 @@
           name="password"
           [required]="adding"
         />
-        <mat-error *ngIf="model.password.errors">{{
-          model.passwordError
-        }}</mat-error>
+        <mat-error *ngIf="model.password.errors">
+          {{ model.passwordError }}
+        </mat-error>
       </mat-form-field>
     </div>
   </div>
@@ -57,6 +57,7 @@
           <mat-chip
             *ngFor="let role of model.selectedRoles"
             [removable]="model.isRemovable(role)"
+            [disabled]="!model.isRemovable(role)"
             (removed)="removeRole(role)"
           >
             {{ role }}
@@ -91,7 +92,23 @@
   </div>
 
   <div class="row">
-    <div class="col-12 py-2">
+    <div class="col-12">
+      <h3>Effective Permissions</h3>
+    </div>
+    <div class="col-12">
+      <mat-chip-list aria-label="User Permissions">
+        <mat-chip
+          *ngFor="let permission of getEffectivePermissions()"
+          [disableRipple]="true"
+        >
+          {{ permission }}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 py-4">
       <button mat-raised-button color="accent" type="submit">
         {{ editing ? "Update" : "Add" }}
       </button>

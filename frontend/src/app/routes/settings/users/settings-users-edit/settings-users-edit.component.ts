@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UIFriendlyPermissions } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UpdateUserControl } from 'src/app/models/forms/updateuser.control';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
@@ -75,6 +76,12 @@ export class SettingsUsersEditComponent implements OnInit {
     }
 
     this.model.putAllRoles(roles);
+  }
+
+  getEffectivePermissions() {
+    return this.model
+      .getEffectivePermissions()
+      .map((permission) => UIFriendlyPermissions[permission]);
   }
 
   removeRole(role: string) {

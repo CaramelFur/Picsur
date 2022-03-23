@@ -1,14 +1,20 @@
 <h1>Users</h1>
 
 <mat-table [dataSource]="dataSubject" class="mat-elevation-z2">
-  <!-- <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-    <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
-  </ng-container> -->
-
   <ng-container matColumnDef="username">
     <mat-header-cell *matHeaderCellDef>Username</mat-header-cell>
     <mat-cell *matCellDef="let user">{{ user.username }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="roles">
+    <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
+    <mat-cell *matCellDef="let user">
+      <mat-chip-list aria-label="User Roles">
+        <mat-chip [disableRipple]="true" *ngFor="let role of user.roles">
+          {{ role }}
+        </mat-chip>
+      </mat-chip-list>
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="actions">
@@ -16,6 +22,9 @@
     <mat-cell *matCellDef="let user">
       <button mat-icon-button (click)="editUser(user)">
         <mat-icon aria-label="Edit">edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="deleteUser(user)">
+        <mat-icon class="icon-red" aria-label="Delete">delete</mat-icon>
       </button>
     </mat-cell>
   </ng-container>

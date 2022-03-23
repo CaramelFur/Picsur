@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
@@ -8,13 +9,18 @@ import { BehaviorSubject, Subject, throttleTime } from 'rxjs';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { UserManageService } from 'src/app/services/api/usermanage.service';
 import { UtilService } from 'src/app/util/util.service';
+import { DeleteConfirmDialogComponent } from './delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Component({
   templateUrl: './settings-users.component.html',
   styleUrls: ['./settings-users.component.scss'],
 })
 export class SettingsUsersComponent implements OnInit {
-  public readonly displayedColumns: string[] = [/*'id',*/ 'username', 'actions'];
+  public readonly displayedColumns: string[] = [
+    'username',
+    'roles',
+    'actions',
+  ];
   public readonly pageSizeOptions: number[] = [5, 10, 25, 100];
   public readonly startingPageSize = this.pageSizeOptions[2];
 
@@ -26,7 +32,8 @@ export class SettingsUsersComponent implements OnInit {
   constructor(
     private userManageService: UserManageService,
     private utilService: UtilService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   async ngOnInit() {
@@ -34,12 +41,28 @@ export class SettingsUsersComponent implements OnInit {
     this.fetchUsers(this.startingPageSize, 0);
   }
 
+  public addUser() {
+    this.router.navigate(['/settings/users/add']);
+  }
+
   public editUser(user: EUser) {
     this.router.navigate(['/settings/users/edit', user.username]);
   }
 
-  public addUser() {
-    this.router.navigate(['/settings/users/add']);
+  public deleteUser(user: EUser) {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+      data: user,
+    });
+
+    dialogRef.afterClosed().subscribe(async () => {
+      const page = this.paginator.pageIndex;
+      const pageSize = this.paginator.pageSize;
+
+      const success = await this.fetchUsers(pageSize, page);
+      if (!success) {
+        this.paginator.firstPage();
+      }
+    });
   }
 
   @AutoUnsubscribe()
