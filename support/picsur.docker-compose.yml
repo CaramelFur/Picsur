@@ -15,7 +15,6 @@ services:
       # PICSUR_DB_PASSWORD: picsur
       # PICSUR_DB_NAME: picsur
 
-      # PICSUR_ADMIN_USERNAME: picsur
       # PICSUR_ADMIN_PASSWORD: picsur
 
       # PICSUR_JWT_SECRET: CHANGE_ME

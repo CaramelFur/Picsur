@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
+import { SystemUsersList } from 'picsur-shared/dist/dto/specialusers.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, Subject, throttleTime } from 'rxjs';
@@ -16,11 +17,7 @@ import { DeleteConfirmDialogComponent } from './delete-confirm-dialog/delete-con
   styleUrls: ['./settings-users.component.scss'],
 })
 export class SettingsUsersComponent implements OnInit {
-  public readonly displayedColumns: string[] = [
-    'username',
-    'roles',
-    'actions',
-  ];
+  public readonly displayedColumns: string[] = ['username', 'roles', 'actions'];
   public readonly pageSizeOptions: number[] = [5, 10, 25, 100];
   public readonly startingPageSize = this.pageSizeOptions[2];
 
@@ -103,5 +100,9 @@ export class SettingsUsersComponent implements OnInit {
     }
 
     return false;
+  }
+
+  isSystem(user: EUser): boolean {
+    return SystemUsersList.includes(user.username);
   }
 }

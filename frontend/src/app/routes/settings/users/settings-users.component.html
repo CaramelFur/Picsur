@@ -10,6 +10,9 @@
     <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
     <mat-cell *matCellDef="let user">
       <mat-chip-list aria-label="User Roles">
+        <mat-chip [disableRipple]="true" [disabled]="true" *ngIf="isSystem(user)">
+          System
+        </mat-chip>
         <mat-chip [disableRipple]="true" *ngFor="let role of user.roles">
           {{ role }}
         </mat-chip>
@@ -23,7 +26,11 @@
       <button mat-icon-button (click)="editUser(user)">
         <mat-icon aria-label="Edit">edit</mat-icon>
       </button>
-      <button mat-icon-button (click)="deleteUser(user)">
+      <button
+        *ngIf="!isSystem(user)"
+        mat-icon-button
+        (click)="deleteUser(user)"
+      >
         <mat-icon class="icon-red" aria-label="Delete">delete</mat-icon>
       </button>
     </mat-cell>

@@ -37,6 +37,6 @@ export class GuestStrategy extends PassportStrategy(
   }
 
   override async validate(payload: any) {
-    return this.guestService.createGuest();
+    return await this.guestService.getGuestUser();
   }
 }

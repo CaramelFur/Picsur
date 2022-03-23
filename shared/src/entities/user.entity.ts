@@ -1,8 +1,5 @@
 import { Exclude } from 'class-transformer';
-import {
-  IsArray, IsOptional,
-  IsString
-} from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 import { Roles } from '../dto/roles.dto';
 import { EntityID } from '../validators/entity-id.validator';
 import { IsPlainTextPwd, IsUsername } from '../validators/user.validators';

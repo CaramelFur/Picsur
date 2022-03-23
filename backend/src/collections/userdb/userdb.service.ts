@@ -2,7 +2,16 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { plainToClass } from 'class-transformer';
-import { PermanentRolesList, Roles } from 'picsur-shared/dist/dto/roles.dto';
+import {
+  DefaultRolesList,
+  PermanentRolesList,
+  Roles
+} from 'picsur-shared/dist/dto/roles.dto';
+import {
+  LockedLoginUsersList,
+  LockedPermsUsersList,
+  SystemUsersList
+} from 'picsur-shared/dist/dto/specialusers.dto';
 import {
   AsyncFailable,
   Fail,
@@ -33,6 +42,7 @@ export class UsersService {
     username: string,
     password: string,
     roles?: Roles,
+    byPassRoleCheck?: boolean,
   ): AsyncFailable<EUserBackend> {
     if (await this.exists(username)) return Fail('User already exists');
 
@@ -41,7 +51,13 @@ export class UsersService {
     let user = new EUserBackend();
     user.username = username;
     user.password = hashedPassword;
-    user.roles = ['user', ...(roles || [])];
+    if (byPassRoleCheck) {
+      const rolesToAdd = roles ?? [];
+      user.roles = [...new Set([...rolesToAdd])];
+    } else {
+      const rolesToAdd = this.filterAddedRoles(roles ?? []);
+      user.roles = [...new Set([...DefaultRolesList, ...rolesToAdd])];
+    }
 
     try {
       user = await this.usersRepository.save(user, { reload: true });
@@ -59,6 +75,10 @@ export class UsersService {
     const userToModify = await this.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
 
+    if (SystemUsersList.includes(userToModify.username)) {
+      return Fail('Cannot delete system user');
+    }
+
     try {
       return await this.usersRepository.remove(userToModify);
     } catch (e: any) {
@@ -75,12 +95,15 @@ export class UsersService {
     const userToModify = await this.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
 
+    if (LockedPermsUsersList.includes(userToModify.username)) {
+      // Just fail silently
+      return userToModify;
+    }
+
     const rolesToKeep = userToModify.roles.filter((role) =>
       PermanentRolesList.includes(role),
     );
-    const rolesToAdd = roles.filter(
-      (role) => !PermanentRolesList.includes(role),
-    );
+    const rolesToAdd = this.filterAddedRoles(roles);
 
     const newRoles = [...new Set([...rolesToKeep, ...rolesToAdd])];
 
@@ -120,6 +143,10 @@ export class UsersService {
   ): AsyncFailable<EUserBackend> {
     const user = await this.findOne(username, true);
     if (HasFailed(user)) return user;
+
+    if (LockedLoginUsersList.includes(user.username)) {
+      return Fail('Wrong password');
+    }
 
     if (!(await bcrypt.compare(password, user.password)))
       return Fail('Wrong password');
@@ -187,5 +214,13 @@ export class UsersService {
       }
       return user;
     }
+  }
+
+  private filterAddedRoles(roles: Roles): Roles {
+    const filteredRoles = roles.filter(
+      (role) => !PermanentRolesList.includes(role),
+    );
+
+    return filteredRoles;
   }
 }

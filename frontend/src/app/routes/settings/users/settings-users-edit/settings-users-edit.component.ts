@@ -4,6 +4,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UIFriendlyPermissions } from 'picsur-shared/dist/dto/permissions';
+import { DefaultRolesList } from 'picsur-shared/dist/dto/roles.dto';
+import { LockedPermsUsersList } from 'picsur-shared/dist/dto/specialusers.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UpdateUserControl } from 'src/app/models/forms/updateuser.control';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
@@ -52,6 +54,7 @@ export class SettingsUsersEditComponent implements OnInit {
     const username = this.route.snapshot.paramMap.get('username');
     if (!username) {
       this.mode = EditMode.add;
+      this.model.putRoles(DefaultRolesList);
       return;
     }
 
@@ -97,6 +100,10 @@ export class SettingsUsersEditComponent implements OnInit {
     this.model.addRole(event.option.viewValue);
   }
 
+  cancel() {
+    this.router.navigate(['/settings/users']);
+  }
+
   async updateUser() {
     const data = this.model.getData();
 
@@ -131,5 +138,13 @@ export class SettingsUsersEditComponent implements OnInit {
     }
 
     this.router.navigate(['/settings/users']);
+  }
+
+  isLockedPerms(): boolean {
+    if (this.adding) {
+      return false;
+    } else {
+      return LockedPermsUsersList.includes(this.model.getData().username);
+    }
   }
 }

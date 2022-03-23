@@ -1,6 +1,7 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HasFailed } from 'picsur-shared/dist/types';
+import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { AuthConfigService } from '../../config/auth.config.service';
 import { PicsurConfigModule } from '../../config/config.module';
 import { EUserBackend } from '../../models/entities/user.entity';
@@ -27,29 +28,49 @@ export class UsersModule implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
+    await this.ensureGuestExists();
     await this.ensureAdminExists();
   }
 
-  private async ensureAdminExists() {
-    const username = this.authConfigService.getDefaultAdminUsername();
-    const password = this.authConfigService.getDefaultAdminPassword();
-    this.logger.debug(`Ensuring admin user "${username}" exists`);
+  private async ensureGuestExists() {
+    const username = 'guest';
+    const password = generateRandomString(128);
+    this.logger.debug(`Ensuring guest user exists`);
 
     const exists = await this.usersService.exists(username);
     if (exists) return;
 
-    const newUser = await this.usersService.create(username, password);
+    const newUser = await this.usersService.create(
+      username,
+      password,
+      ['guest'],
+      true,
+    );
     if (HasFailed(newUser)) {
       this.logger.error(
-        `Failed to create admin user "${username}" because: ${newUser.getReason()}`,
+        `Failed to create guest user because: ${newUser.getReason()}`,
       );
       return;
     }
+  }
 
-    const result = await this.userRolesService.addRoles(newUser, ['admin']);
-    if (HasFailed(result)) {
+  private async ensureAdminExists() {
+    const username = 'admin';
+    const password = this.authConfigService.getDefaultAdminPassword();
+    this.logger.debug(`Ensuring admin user exists`);
+
+    const exists = await this.usersService.exists(username);
+    if (exists) return;
+
+    const newUser = await this.usersService.create(
+      username,
+      password,
+      ['user', 'admin'],
+      true,
+    );
+    if (HasFailed(newUser)) {
       this.logger.error(
-        `Failed to make admin user "${username}" because: ${result.getReason()}`,
+        `Failed to create admin user because: ${newUser.getReason()}`,
       );
       return;
     }

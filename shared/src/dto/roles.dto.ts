@@ -9,12 +9,15 @@ const PermanentRolesTuple = tuple('guest', 'user');
 const ImmuteableRolesTuple = tuple('admin');
 // These roles can never be removed from the server
 const SystemRolesTuple = tuple(...PermanentRolesTuple, ...ImmuteableRolesTuple);
+// These roles will be applied by default to new users
+export const DefaultRolesList: string[] = ['user'];
 
 // Derivatives
 
 export const PermanentRolesList: string[] = PermanentRolesTuple;
 export const ImmuteableRolesList: string[] = ImmuteableRolesTuple;
 export const SystemRolesList: string[] = SystemRolesTuple;
+
 
 export type SystemRole = typeof SystemRolesTuple[number];
 export type SystemRoles = SystemRole[];
