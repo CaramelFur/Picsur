@@ -12,7 +12,6 @@ function errorsToError(errors: ValidationErrors | null): string {
 }
 
 export const UsernameValidators = [
-  Validators.required,
   Validators.minLength(4),
   Validators.maxLength(32),
   Validators.pattern('^[a-zA-Z0-9]+$'),
@@ -37,7 +36,6 @@ export const CreateUsernameError = (
 };
 
 export const PasswordValidators = [
-  Validators.required,
   Validators.minLength(4),
   Validators.maxLength(1024),
 ];

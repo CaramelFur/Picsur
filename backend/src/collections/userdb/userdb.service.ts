@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { plainToClass } from 'class-transformer';
-import { Permissions } from 'picsur-shared/dist/dto/permissions';
 import { PermanentRolesList, Roles } from 'picsur-shared/dist/dto/roles.dto';
 import {
   AsyncFailable,
@@ -15,6 +14,8 @@ import { Repository } from 'typeorm';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { GetCols } from '../collectionutils';
 import { RolesService } from '../roledb/roledb.service';
+
+const BCryptStrength = 12;
 
 @Injectable()
 export class UsersService {
@@ -35,7 +36,7 @@ export class UsersService {
   ): AsyncFailable<EUserBackend> {
     if (await this.exists(username)) return Fail('User already exists');
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(password, BCryptStrength);
 
     let user = new EUserBackend();
     user.username = username;
@@ -65,6 +66,52 @@ export class UsersService {
     }
   }
 
+  // Updating
+
+  public async setRoles(
+    user: string | EUserBackend,
+    roles: Roles,
+  ): AsyncFailable<EUserBackend> {
+    const userToModify = await this.resolve(user);
+    if (HasFailed(userToModify)) return userToModify;
+
+    const rolesToKeep = userToModify.roles.filter((role) =>
+      PermanentRolesList.includes(role),
+    );
+    const rolesToAdd = roles.filter(
+      (role) => !PermanentRolesList.includes(role),
+    );
+
+    const newRoles = [...new Set([...rolesToKeep, ...rolesToAdd])];
+
+    userToModify.roles = newRoles;
+
+    try {
+      return await this.usersRepository.save(userToModify);
+    } catch (e: any) {
+      return Fail(e?.message);
+    }
+  }
+
+  public async updatePassword(
+    user: string | EUserBackend,
+    password: string,
+  ): AsyncFailable<EUserBackend> {
+    const userToModify = await this.resolve(user);
+    if (HasFailed(userToModify)) return userToModify;
+
+    const hashedPassword = await bcrypt.hash(password, BCryptStrength);
+
+    userToModify.password = hashedPassword;
+
+    try {
+      const fullUser = await this.usersRepository.save(userToModify);
+      return plainToClass(EUserBackend, fullUser);
+    } catch (e: any) {
+      return Fail(e?.message);
+    }
+  }
+
   // Authentication
 
   async authenticate(
@@ -78,62 +125,6 @@ export class UsersService {
       return Fail('Wrong password');
 
     return await this.findOne(username);
-  }
-
-  // Permissions and roles
-
-  public async getPermissions(
-    user: string | EUserBackend,
-  ): AsyncFailable<Permissions> {
-    const userToModify = await this.resolve(user);
-    if (HasFailed(userToModify)) return userToModify;
-
-    return await this.rolesService.getPermissions(userToModify.roles);
-  }
-
-  public async addRoles(
-    user: string | EUserBackend,
-    roles: Roles,
-  ): AsyncFailable<EUserBackend> {
-    const userToModify = await this.resolve(user);
-    if (HasFailed(userToModify)) return userToModify;
-
-    const newRoles = [...new Set([...userToModify.roles, ...roles])];
-
-    return this.setRoles(userToModify, newRoles);
-  }
-
-  public async removeRoles(
-    user: string | EUserBackend,
-    roles: Roles,
-  ): AsyncFailable<EUserBackend> {
-    const userToModify = await this.resolve(user);
-    if (HasFailed(userToModify)) return userToModify;
-
-    const newRoles = userToModify.roles.filter((role) => !roles.includes(role));
-
-    return this.setRoles(userToModify, newRoles);
-  }
-
-  public async setRoles(
-    user: string | EUserBackend,
-    roles: Roles,
-  ): AsyncFailable<EUserBackend> {
-    const userToModify = await this.resolve(user);
-    if (HasFailed(userToModify)) return userToModify;
-
-    const rolesToKeep = userToModify.roles.filter((role) =>
-      PermanentRolesList.includes(role),
-    );
-    const newRoles = [...new Set([...rolesToKeep, ...roles])];
-
-    userToModify.roles = newRoles;
-
-    try {
-      return await this.usersRepository.save(userToModify);
-    } catch (e: any) {
-      return Fail(e?.message);
-    }
   }
 
   // Listing
@@ -182,7 +173,7 @@ export class UsersService {
 
   // Internal resolver
 
-  private async resolve(
+  public async resolve(
     user: string | EUserBackend,
   ): AsyncFailable<EUserBackend> {
     if (typeof user === 'string') {

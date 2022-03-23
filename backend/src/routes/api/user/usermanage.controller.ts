@@ -15,8 +15,8 @@ import {
   UserInfoResponse,
   UserListRequest,
   UserListResponse,
-  UserUpdateRolesRequest,
-  UserUpdateRolesResponse
+  UserUpdateRequest,
+  UserUpdateResponse
 } from 'picsur-shared/dist/dto/api/usermanage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
@@ -63,6 +63,7 @@ export class UserManageController {
     const user = await this.usersService.create(
       create.username,
       create.password,
+      create.roles,
     );
     if (HasFailed(user)) {
       this.logger.warn(user.getReason());
@@ -96,20 +97,32 @@ export class UserManageController {
     return user;
   }
 
-  @Post('roles')
+  @Post('update')
   async setPermissions(
-    @Body() body: UserUpdateRolesRequest,
-  ): Promise<UserUpdateRolesResponse> {
-    const updatedUser = await this.usersService.setRoles(
-      body.username,
-      body.roles,
-    );
-
-    if (HasFailed(updatedUser)) {
-      this.logger.warn(updatedUser.getReason());
-      throw new InternalServerErrorException('Could not update user');
+    @Body() body: UserUpdateRequest,
+  ): Promise<UserUpdateResponse> {
+    let user = await this.usersService.findOne(body.username);
+    if (HasFailed(user)) {
+      this.logger.warn(user.getReason());
+      throw new InternalServerErrorException('Could not find user');
     }
 
-    return updatedUser;
+    if (body.roles) {
+      user = await this.usersService.setRoles(user, body.roles);
+      if (HasFailed(user)) {
+        this.logger.warn(user.getReason());
+        throw new InternalServerErrorException('Could not update user');
+      }
+    }
+
+    if (body.password) {
+      user = await this.usersService.updatePassword(user, body.password);
+      if (HasFailed(user)) {
+        this.logger.warn(user.getReason());
+        throw new InternalServerErrorException('Could not update user');
+      }
+    }
+
+    return user;
   }
 }

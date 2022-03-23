@@ -3,11 +3,13 @@ import {
   IsArray,
   IsDefined,
   IsInt,
+  IsOptional,
   IsString,
   Min,
   ValidateNested
 } from 'class-validator';
 import { EUser, NamePassUser, UsernameUser } from '../../entities/user.entity';
+import { IsPlainTextPwd } from '../../validators/user.validators';
 import { Roles } from '../roles.dto';
 
 // UserList
@@ -42,7 +44,12 @@ export class UserListResponse {
 }
 
 // UserCreate
-export class UserCreateRequest extends NamePassUser {}
+export class UserCreateRequest extends NamePassUser {
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  roles?: Roles;
+}
 export class UserCreateResponse extends EUser {}
 
 // UserDelete
@@ -54,11 +61,15 @@ export class UserInfoRequest extends UsernameUser {}
 export class UserInfoResponse extends EUser {}
 
 // UserUpdateRoles
-export class UserUpdateRolesRequest extends UsernameUser {
+export class UserUpdateRequest extends UsernameUser {
+  @IsOptional()
   @IsArray()
-  @IsDefined()
   @IsString({ each: true })
-  roles: Roles;
+  roles?: Roles;
+
+  @IsPlainTextPwd()
+  @IsOptional()
+  password?: string;
 }
 
-export class UserUpdateRolesResponse extends EUser {}
+export class UserUpdateResponse extends EUser {}

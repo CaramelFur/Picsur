@@ -36,9 +36,3 @@ html {
   width: initial !important;
 }
 
-// Fix small form inputs
-
-form mat-form-field {
-  width: inherit;
-  max-width: 40rem;
-}

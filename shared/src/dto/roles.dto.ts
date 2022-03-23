@@ -3,9 +3,9 @@ import { Permission, Permissions, PermissionsList } from './permissions';
 
 // Config
 
-// These roles can never be removed from a user
+// These roles can never be removed or added to a user.
 const PermanentRolesTuple = tuple('guest', 'user');
-// These reles can never be modified
+// These roles can never be modified
 const ImmuteableRolesTuple = tuple('admin');
 // These roles can never be removed from the server
 const SystemRolesTuple = tuple(...PermanentRolesTuple, ...ImmuteableRolesTuple);

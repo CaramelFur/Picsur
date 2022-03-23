@@ -6,6 +6,7 @@ import { PicsurConfigModule } from '../../config/config.module';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { RolesModule } from '../roledb/roledb.module';
 import { UsersService } from './userdb.service';
+import { UserRolesService } from './userrolesdb.service';
 
 @Module({
   imports: [
@@ -13,14 +14,15 @@ import { UsersService } from './userdb.service';
     RolesModule,
     TypeOrmModule.forFeature([EUserBackend]),
   ],
-  providers: [UsersService],
-  exports: [UsersService],
+  providers: [UsersService, UserRolesService],
+  exports: [UsersService, UserRolesService],
 })
 export class UsersModule implements OnModuleInit {
   private readonly logger = new Logger('UsersModule');
 
   constructor(
     private usersService: UsersService,
+    private userRolesService: UserRolesService,
     private authConfigService: AuthConfigService,
   ) {}
 
@@ -44,7 +46,7 @@ export class UsersModule implements OnModuleInit {
       return;
     }
 
-    const result = await this.usersService.addRoles(newUser, ['admin']);
+    const result = await this.userRolesService.addRoles(newUser, ['admin']);
     if (HasFailed(result)) {
       this.logger.error(
         `Failed to make admin user "${username}" because: ${result.getReason()}`,

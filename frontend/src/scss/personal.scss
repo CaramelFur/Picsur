@@ -5,6 +5,8 @@
 
   border-style: solid;
   border-width: 5px;
+
+  transition: all 0.2s ease-in-out;
 }
 
 // Easily center content
@@ -63,6 +65,11 @@
 
 // Anim
 
-.fullanimate, .fullanimate * {
+.container, .row > div {
+  transition: ease-in-out all 0.2s;
+}
+
+.fullanimate,
+.fullanimate * {
   transition: ease-in-out all 0.2s !important;
 }

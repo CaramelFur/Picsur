@@ -1,21 +1,16 @@
 import { FormControl } from '@angular/forms';
 import { Fail, Failable } from 'picsur-shared/dist/types';
-import { Compare } from './compare.validator';
 import {
   CreatePasswordError,
   CreateUsernameError,
   PasswordValidators,
   UsernameValidators
 } from './default-validators';
-import { UserPassModel } from './userpass';
+import { UserPassModel } from './userpass.model';
 
-export class RegisterControl {
+export class LoginControl {
   public username = new FormControl('', UsernameValidators);
   public password = new FormControl('', PasswordValidators);
-  public passwordConfirm = new FormControl('', [
-    ...PasswordValidators,
-    Compare(this.password),
-  ]);
 
   public get usernameError() {
     return CreateUsernameError(this.username.errors);
@@ -25,16 +20,8 @@ export class RegisterControl {
     return CreatePasswordError(this.password.errors);
   }
 
-  public get passwordConfirmError() {
-    return CreatePasswordError(this.passwordConfirm.errors);
-  }
-
   public getData(): Failable<UserPassModel> {
-    if (
-      this.username.errors ||
-      this.password.errors ||
-      this.passwordConfirm.errors
-    )
+    if (this.username.errors || this.password.errors)
       return Fail('Invalid username or password');
     else return this.getRawData();
   }
@@ -49,6 +36,5 @@ export class RegisterControl {
   public putData(data: UserPassModel) {
     this.username.setValue(data.username);
     this.password.setValue(data.password);
-    this.passwordConfirm.setValue(data.password);
   }
 }

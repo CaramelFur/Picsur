@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
@@ -13,7 +14,7 @@ import { UtilService } from 'src/app/util/util.service';
   styleUrls: ['./settings-users.component.scss'],
 })
 export class SettingsUsersComponent implements OnInit {
-  public readonly displayedColumns: string[] = ['id', 'username', 'actions'];
+  public readonly displayedColumns: string[] = [/*'id',*/ 'username', 'actions'];
   public readonly pageSizeOptions: number[] = [5, 10, 25, 100];
   public readonly startingPageSize = this.pageSizeOptions[2];
 
@@ -24,12 +25,21 @@ export class SettingsUsersComponent implements OnInit {
 
   constructor(
     private userManageService: UserManageService,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private router: Router
   ) {}
 
   async ngOnInit() {
     this.subscribeToUpdate();
     this.fetchUsers(this.startingPageSize, 0);
+  }
+
+  public editUser(user: EUser) {
+    this.router.navigate(['/settings/users/edit', user.username]);
+  }
+
+  public addUser() {
+    this.router.navigate(['/settings/users/add']);
   }
 
   @AutoUnsubscribe()

@@ -10,7 +10,11 @@ const routes: PRoutes = [
     component: SettingsUsersComponent,
   },
   {
-    path: 'edit/:id',
+    path: 'edit/:username',
+    component: SettingsUsersEditComponent,
+  },
+  {
+    path: 'add',
     component: SettingsUsersEditComponent,
   }
 ];

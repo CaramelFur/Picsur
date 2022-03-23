@@ -15,6 +15,7 @@ import { Fail, Failable, HasFailed } from 'picsur-shared/dist/types';
 import { isPermissionsArray } from 'picsur-shared/dist/util/permissions';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { UsersService } from '../../../collections/userdb/userdb.service';
+import { UserRolesService } from '../../../collections/userdb/userrolesdb.service';
 import { EUserBackend } from '../../../models/entities/user.entity';
 
 @Injectable()
@@ -24,6 +25,7 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
   constructor(
     private reflector: Reflector,
     private usersService: UsersService,
+    private userRolesService: UserRolesService,
   ) {
     super();
   }
@@ -45,7 +47,7 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
       throw new InternalServerErrorException();
     }
 
-    const userPermissions = await this.usersService.getPermissions(user);
+    const userPermissions = await this.userRolesService.getPermissions(user);
     if (HasFailed(userPermissions)) {
       this.logger.warn('111' + userPermissions.getReason());
       throw new InternalServerErrorException();

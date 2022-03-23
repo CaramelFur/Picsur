@@ -69,8 +69,8 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/user/login']);
   }
 
-  doLogout() {
-    const user = this.userService.logout();
+  async doLogout() {
+    const user = await this.userService.logout();
     if (HasFailed(user)) {
       this.utilService.showSnackBar(user.getReason(), SnackBarType.Error);
       return;

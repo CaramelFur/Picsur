@@ -7,11 +7,12 @@ import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UserService } from 'src/app/services/api/user.service';
 import { UtilService } from 'src/app/util/util.service';
-import { LoginControl } from '../../../models/forms/login.model';
-import { UserPassModel } from '../../../models/forms/userpass';
+import { LoginControl } from '../../../models/forms/login.control';
+import { UserPassModel } from '../../../models/forms/userpass.model';
 
 @Component({
   templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   private readonly logger = console;
