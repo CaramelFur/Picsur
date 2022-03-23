@@ -1,2 +1,84 @@
 <h1>Roles</h1>
 
+<mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+    <mat-cell *matCellDef="let role">{{ role.name }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="permissions">
+    <mat-header-cell class="d-none d-md-flex" *matHeaderCellDef>Permissions</mat-header-cell>
+    <mat-cell class="d-none d-md-flex" *matCellDef="let role">
+      <mat-chip-list aria-label="Role Permissions">
+        <mat-chip
+          [disableRipple]="true"
+          [disabled]="true"
+          *ngIf="isSystem(role)"
+        >
+          System
+        </mat-chip>
+        <mat-chip
+          [disableRipple]="true"
+          *ngFor="
+            let permission of role.permissions.slice(0, permissionsTruncate)
+          "
+        >
+          {{ uiFriendlyPermission(permission) }}
+        </mat-chip>
+        <mat-chip
+          [disableRipple]="true"
+          *ngIf="role.permissions.length > permissionsTruncate"
+        >
+          +{{ role.permissions.length - permissionsTruncate }}
+        </mat-chip>
+      </mat-chip-list>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+    <mat-cell *matCellDef="let role">
+      <button mat-icon-button (click)="editRole(role)">
+        <mat-icon fontSet="material-icons-outlined" aria-label="Edit"
+          >edit</mat-icon
+        >
+      </button>
+      <button
+        *ngIf="!isSystem(role)"
+        mat-icon-button
+        (click)="deleteRole(role)"
+      >
+        <mat-icon
+          fontSet="material-icons-outlined"
+          class="icon-red"
+          aria-label="Delete"
+        >
+          delete
+        </mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"> </mat-row>
+</mat-table>
+
+<mat-paginator
+  color="accent"
+  [pageSizeOptions]="pageSizeOptions"
+  [pageSize]="startingPageSize"
+  showFirstLastButtons
+  aria-label="Select page of roles"
+>
+</mat-paginator>
+
+<div class="fabholder">
+  <button
+    mat-fab
+    color="accent"
+    class="fabbutton fullanimate mat-elevation-z6"
+    (click)="addRole()"
+  >
+    <mat-icon fontSet="material-icons-outlined">add</mat-icon>
+  </button>
+</div>

@@ -35,12 +35,12 @@ export const UIFriendlyPermissions: {
   [Permission.ImageUpload]: 'Upload images',
 
   [Permission.UserLogin]: 'Login',
-  [Permission.UserMe]: 'View own user details',
+  [Permission.UserMe]: 'View self',
   [Permission.UserRegister]: 'Register',
 
-  [Permission.Settings]: 'View available settings',
+  [Permission.Settings]: 'View settings',
 
   [Permission.UserManage]: 'Manage users',
   [Permission.RoleManage]: 'Manage roles',
-  [Permission.SysPrefManage]: 'Manage system preferences',
+  [Permission.SysPrefManage]: 'Manage system',
 };

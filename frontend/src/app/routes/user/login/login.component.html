@@ -17,6 +17,8 @@
             type="text"
             [formControl]="model.username"
             name="username"
+            autocorrect="off"
+            autocapitalize="none"
             required
           />
           <mat-error *ngIf="model.username.errors">

@@ -1,13 +1,14 @@
 mat-table {
   width: 100%;
+
 }
 
 .mat-column-actions {
   justify-content: end;
 }
 
-.mat-column-roles {
-  flex-grow: 2;
+.mat-column-permissions {
+  flex-grow: 3;
 }
 
 .icon-red {

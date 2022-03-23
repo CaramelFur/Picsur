@@ -7,8 +7,8 @@
   </ng-container>
 
   <ng-container matColumnDef="roles">
-    <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
-    <mat-cell *matCellDef="let user">
+    <mat-header-cell class="d-none d-md-flex" *matHeaderCellDef>Roles</mat-header-cell>
+    <mat-cell class="d-none d-md-flex" *matCellDef="let user">
       <mat-chip-list aria-label="User Roles">
         <mat-chip
           [disableRipple]="true"
@@ -17,8 +17,17 @@
         >
           System
         </mat-chip>
-        <mat-chip [disableRipple]="true" *ngFor="let role of user.roles">
+        <mat-chip
+          [disableRipple]="true"
+          *ngFor="let role of user.roles.slice(0, rolesTruncate)"
+        >
           {{ role }}
+        </mat-chip>
+        <mat-chip
+          [disableRipple]="true"
+          *ngIf="user.roles.length > rolesTruncate"
+        >
+          +{{ user.roles.length - rolesTruncate }}
         </mat-chip>
       </mat-chip-list>
     </mat-cell>
@@ -48,7 +57,7 @@
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns"> pog </mat-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"> </mat-row>
 </mat-table>
 
 <mat-paginator

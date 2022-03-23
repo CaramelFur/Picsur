@@ -22,6 +22,8 @@
           type="text"
           [formControl]="model.username"
           name="username"
+          autocorrect="off"
+          autocapitalize="none"
           required
         />
         <mat-error *ngIf="model.username.errors">
@@ -74,6 +76,8 @@
             [matChipInputFor]="chipList"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
             (matChipInputTokenEnd)="addRole($event)"
+            autocorrect="off"
+            autocapitalize="none"
           />
         </mat-chip-list>
         <mat-autocomplete
@@ -113,7 +117,13 @@
         {{ editing ? "Update" : "Add" }}
       </button>
 
-      <button mat-raised-button class="ms-2" color="primary" type="button" (click)="cancel()">
+      <button
+        mat-raised-button
+        class="ms-2"
+        color="primary"
+        type="button"
+        (click)="cancel()"
+      >
         Cancel
       </button>
     </div>
