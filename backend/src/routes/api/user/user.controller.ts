@@ -64,9 +64,16 @@ export class UserController {
   @Get('me')
   @RequiredPermissions(Permission.UserMe)
   async me(@Request() req: AuthFasityRequest): Promise<UserMeResponse> {
+    const user = await this.usersService.findOne(req.user.username);
+
+    if (HasFailed(user)) {
+      this.logger.warn(user.getReason());
+      throw new InternalServerErrorException('Could not get user');
+    }
+
     return {
-      user: req.user,
-      token: await this.authService.createToken(req.user),
+      user,
+      token: await this.authService.createToken(user),
     };
   }
 
