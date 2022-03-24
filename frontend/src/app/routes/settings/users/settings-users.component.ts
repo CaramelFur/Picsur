@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
@@ -10,7 +9,6 @@ import { BehaviorSubject, Subject, throttleTime } from 'rxjs';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { UserManageService } from 'src/app/services/api/usermanage.service';
 import { UtilService } from 'src/app/util/util.service';
-import { DeleteConfirmDialogComponent } from './delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Component({
   templateUrl: './settings-users.component.html',
@@ -30,8 +28,7 @@ export class SettingsUsersComponent implements OnInit {
   constructor(
     private userManageService: UserManageService,
     private utilService: UtilService,
-    private router: Router,
-    private dialog: MatDialog
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -47,20 +44,43 @@ export class SettingsUsersComponent implements OnInit {
     this.router.navigate(['/settings/users/edit', user.username]);
   }
 
-  public deleteUser(user: EUser) {
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
-      data: user,
+  public async deleteUser(user: EUser) {
+    const pressedButton = await this.utilService.showDialog({
+      title: `Are you sure you want to delete ${user.username}?`,
+      description: 'This action cannot be undone.',
+      buttons: [
+        {
+          color: 'red',
+          name: 'delete',
+          text: 'Delete',
+        },
+        {
+          color: 'primary',
+          name: 'cancel',
+          text: 'Cancel',
+        },
+      ],
     });
 
-    dialogRef.afterClosed().subscribe(async () => {
-      const page = this.paginator.pageIndex;
-      const pageSize = this.paginator.pageSize;
-
-      const success = await this.fetchUsers(pageSize, page);
-      if (!success) {
-        this.paginator.firstPage();
+    if (pressedButton === 'delete') {
+      const result = await this.userManageService.deleteUser(user.username);
+      if (HasFailed(result)) {
+        this.utilService.showSnackBar(
+          'Failed to delete user',
+          SnackBarType.Error
+        );
+      } else {
+        this.utilService.showSnackBar('User deleted', SnackBarType.Success);
       }
-    });
+    }
+
+    const success = await this.fetchUsers(
+      this.paginator.pageSize,
+      this.paginator.pageIndex
+    );
+    if (!success) {
+      this.paginator.firstPage();
+    }
   }
 
   @AutoUnsubscribe()

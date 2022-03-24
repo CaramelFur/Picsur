@@ -1,0 +1,15 @@
+<div class="centered">
+  <h2>{{ data.title }}</h2>
+  <p>{{ data.description }}</p>
+  <div class="buttons">
+    <button
+      *ngFor="let button of data.buttons"
+      mat-raised-button
+      color="primary"
+      class="button-{{ button.color }} mx-2"
+      (click)="onButton(button.name)"
+    >
+      {{ button.text }}
+    </button>
+  </div>
+</div>
