@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { SysPreferenceResponse } from 'picsur-shared/dist/dto/api/pref.dto';
+import { SysPreferenceBaseResponse } from 'picsur-shared/dist/dto/api/pref.dto';
 import {
   SysPreferenceFriendlyNames,
   SysPrefValueType
@@ -17,7 +17,7 @@ import { UtilService } from 'src/app/util/util.service';
   styleUrls: ['./settings-syspref-option.component.scss'],
 })
 export class SettingsSysprefOptionComponent implements OnInit {
-  @Input() pref: SysPreferenceResponse;
+  @Input() pref: SysPreferenceBaseResponse;
 
   private updateSubject = new Subject<SysPrefValueType>();
 

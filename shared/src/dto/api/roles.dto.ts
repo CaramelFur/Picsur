@@ -1,15 +1,14 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
-  IsDefined,
-  IsInt, IsPositive,
-  ValidateNested
+  IsDefined, ValidateNested
 } from 'class-validator';
 import {
   ERole,
   RoleNameObject,
   RoleNamePermsObject
 } from '../../entities/role.entity';
+import { IsPosInt } from '../../validators/positive-int.validator';
 
 // RoleInfo
 export class RoleInfoRequest extends RoleNameObject {}
@@ -23,9 +22,7 @@ export class RoleListResponse {
   @Type(() => ERole)
   roles: ERole[];
 
-  @IsInt()
-  @IsPositive()
-  @IsDefined()
+  @IsPosInt()
   total: number;
 }
 

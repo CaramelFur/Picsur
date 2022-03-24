@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import {
+  GetSyspreferenceResponse,
   MultipleSysPreferencesResponse,
-  SysPreferenceResponse,
-  UpdateSysPreferenceRequest
+  SysPreferenceBaseResponse,
+  UpdateSysPreferenceRequest,
+  UpdateSysPreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions';
 import {
@@ -29,7 +31,7 @@ export class SysprefService {
     return this.sysprefObservable;
   }
 
-  private sysprefObservable = new BehaviorSubject<SysPreferenceResponse[]>([]);
+  private sysprefObservable = new BehaviorSubject<SysPreferenceBaseResponse[]>([]);
 
   constructor(
     private api: ApiService,
@@ -38,7 +40,7 @@ export class SysprefService {
     this.onPermissions();
   }
 
-  public async getPreferences(): AsyncFailable<SysPreferenceResponse[]> {
+  public async getPreferences(): AsyncFailable<SysPreferenceBaseResponse[]> {
     if (!this.hasPermission)
       return Fail('You do not have permission to edit system preferences');
 
@@ -57,12 +59,12 @@ export class SysprefService {
 
   public async getPreference(
     key: SysPreferences
-  ): AsyncFailable<SysPreferenceResponse> {
+  ): AsyncFailable<GetSyspreferenceResponse> {
     if (!this.hasPermission)
       return Fail('You do not have permission to edit system preferences');
 
     const response = await this.api.get(
-      SysPreferenceResponse,
+      GetSyspreferenceResponse,
       `/api/pref/sys/${key}`
     );
     if (HasFailed(response)) {
@@ -77,13 +79,13 @@ export class SysprefService {
   public async setPreference(
     key: SysPreferences,
     value: SysPrefValueType
-  ): AsyncFailable<SysPreferenceResponse> {
+  ): AsyncFailable<UpdateSysPreferenceResponse> {
     if (!this.hasPermission)
       return Fail('You do not have permission to edit system preferences');
 
     const response = await this.api.post(
       UpdateSysPreferenceRequest,
-      SysPreferenceResponse,
+      UpdateSysPreferenceResponse,
       `/api/pref/sys/${key}`,
       { value }
     );
@@ -96,7 +98,7 @@ export class SysprefService {
     return response;
   }
 
-  private updatePrefArray(pref: SysPreferenceResponse) {
+  private updatePrefArray(pref: SysPreferenceBaseResponse) {
     const prefArray = this.snapshot;
     // Replace the old pref with the new one
     const index = prefArray.findIndex((i) => pref.key === i.key);
@@ -112,7 +114,7 @@ export class SysprefService {
 
   private sync() {
     this.sysprefObservable.next(
-      ([] as SysPreferenceResponse[]).concat(this.snapshot)
+      ([] as SysPreferenceBaseResponse[]).concat(this.snapshot)
     );
   }
 

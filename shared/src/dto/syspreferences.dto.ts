@@ -1,8 +1,3 @@
-import {
-  registerDecorator,
-  ValidationArguments,
-  ValidationOptions
-} from 'class-validator';
 import tuple from '../types/tuple';
 
 // Syspref keys
@@ -46,24 +41,6 @@ export const SysPreferenceValueTypes: {
 
 // Validators
 
-export function isSysPrefValue(value: any, args: ValidationArguments) {
-  const type = typeof value;
-  return SysPrefValueTypes.includes(type);
-}
-
-export function IsSysPrefValue(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
-    registerDecorator({
-      name: 'isSysPrefValue',
-      target: object.constructor,
-      propertyName: propertyName,
-      options: validationOptions,
-      validator: {
-        validate: isSysPrefValue,
-      },
-    });
-  };
-}
 
 // interfaces
 

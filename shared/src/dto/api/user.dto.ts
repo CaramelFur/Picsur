@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import {
   IsArray, IsDefined,
-  IsEnum, IsString,
+  IsEnum, IsJWT, IsString,
   ValidateNested
 } from 'class-validator';
 import { EUser, NamePassUser } from '../../entities/user.entity';
@@ -15,6 +15,7 @@ export class UserLoginRequest extends NamePassUser {}
 export class UserLoginResponse {
   @IsString()
   @IsDefined()
+  @IsJWT()
   jwt_token: string;
 }
 
@@ -32,6 +33,7 @@ export class UserMeResponse {
 
   @IsString()
   @IsDefined()
+  @IsJWT()
   token: string;
 }
 

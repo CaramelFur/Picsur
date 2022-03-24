@@ -1,4 +1,2 @@
-// Nothing
-const a = 'hello';
+export { };
 
-export default a;

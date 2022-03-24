@@ -1,27 +1,20 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
-  IsDefined,
-  IsInt,
-  IsOptional,
-  IsString,
-  Min,
-  ValidateNested
+  IsDefined, IsOptional,
+  IsString, ValidateNested
 } from 'class-validator';
 import { EUser, NamePassUser, UsernameUser } from '../../entities/user.entity';
+import { IsPosInt } from '../../validators/positive-int.validator';
 import { IsPlainTextPwd } from '../../validators/user.validators';
 import { Roles } from '../roles.dto';
 
 // UserList
 export class UserListRequest {
-  @IsDefined()
-  @IsInt()
-  @Min(0)
+  @IsPosInt()
   count: number;
 
-  @IsDefined()
-  @IsInt()
-  @Min(0)
+  @IsPosInt()
   page: number;
 }
 
@@ -32,14 +25,10 @@ export class UserListResponse {
   @Type(() => EUser)
   users: EUser[];
 
-  @IsDefined()
-  @IsInt()
-  @Min(0)
+  @IsPosInt()
   count: number;
 
-  @IsDefined()
-  @IsInt()
-  @Min(0)
+  @IsPosInt()
   page: number;
 }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { SysPreferenceResponse } from 'picsur-shared/dist/dto/api/pref.dto';
+import { SysPreferenceBaseResponse } from 'picsur-shared/dist/dto/api/pref.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { SysprefService as SysPrefService } from 'src/app/services/api/syspref.service';
@@ -11,7 +11,7 @@ import { UtilService } from 'src/app/util/util.service';
 })
 export class SettingsSysprefComponent implements OnInit {
   render = true;
-  preferences: SysPreferenceResponse[] = [];
+  preferences: SysPreferenceBaseResponse[] = [];
 
   constructor(
     private sysprefService: SysPrefService,
