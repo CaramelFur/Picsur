@@ -36,12 +36,14 @@ export class PrefController {
       throw new InternalServerErrorException('Could not get preferences');
     }
 
-    const returned = new MultipleSysPreferencesResponse();
-    returned.preferences = prefs.map((pref) =>
-      plainToClass(SysPreferenceBaseResponse, pref),
-    );
+    const returned: MultipleSysPreferencesResponse = {
+      preferences: prefs.map((pref) =>
+        plainToClass(SysPreferenceBaseResponse, pref),
+      ),
+      total: prefs.length,
+    };
 
-    return returned;
+    return plainToClass(MultipleSysPreferencesResponse, returned);
   }
 
   @Get('sys/:key')

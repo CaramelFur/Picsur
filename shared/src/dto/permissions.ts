@@ -5,7 +5,7 @@ export enum Permission {
   ImageUpload = 'image-upload',
 
   UserLogin = 'user-login', // Ability to log in
-  UserMe = 'user-me', // Ability to view own user details and refresh token
+  UserKeepLogin = 'user-keep-login', // Ability to view own user details and refresh token
   UserRegister = 'user-register', // Ability to register
 
   Settings = 'settings', // Ability to view (personal) settings
@@ -35,7 +35,7 @@ export const UIFriendlyPermissions: {
   [Permission.ImageUpload]: 'Upload images',
 
   [Permission.UserLogin]: 'Login',
-  [Permission.UserMe]: 'View self',
+  [Permission.UserKeepLogin]: 'Stay Logged In',
   [Permission.UserRegister]: 'Register',
 
   [Permission.Settings]: 'View settings',

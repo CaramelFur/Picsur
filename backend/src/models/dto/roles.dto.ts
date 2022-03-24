@@ -25,7 +25,7 @@ const SystemRoleDefaultsTyped: {
   guest: [Permission.ImageView, Permission.UserLogin],
   user: [
     Permission.ImageView,
-    Permission.UserMe,
+    Permission.UserKeepLogin,
     Permission.UserLogin,
     Permission.Settings,
     Permission.ImageUpload,
