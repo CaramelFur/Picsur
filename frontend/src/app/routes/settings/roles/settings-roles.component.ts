@@ -6,7 +6,6 @@ import {
   Permission,
   UIFriendlyPermissions
 } from 'picsur-shared/dist/dto/permissions';
-import { ImmuteableRolesList, SystemRolesList } from 'picsur-shared/dist/dto/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
@@ -28,6 +27,9 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
   public readonly permissionsTruncate = 5;
 
   public dataSource = new MatTableDataSource<ERole>([]);
+
+  private UndeletableRolesList: string[] = [];
+  private ImmutableRolesList: string[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -91,11 +93,11 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
   }
 
   isSystem(role: ERole) {
-    return SystemRolesList.includes(role.name);
+    return this.UndeletableRolesList.includes(role.name);
   }
 
   isImmutable(role: ERole) {
-    return ImmuteableRolesList.includes(role.name);
+    return this.ImmutableRolesList.includes(role.name);
   }
 
   private async fetchRoles() {
@@ -106,5 +108,17 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
     }
 
     this.dataSource.data = roles;
+
+    const specialRoles = await this.rolesService.getSpecialRoles();
+    if (HasFailed(specialRoles)) {
+      this.utilService.showSnackBar(
+        'Failed to load special roles',
+        SnackBarType.Error
+      );
+      return;
+    }
+
+    this.UndeletableRolesList = specialRoles.UndeletableRoles;
+    this.ImmutableRolesList = specialRoles.ImmutableRoles;
   }
 }

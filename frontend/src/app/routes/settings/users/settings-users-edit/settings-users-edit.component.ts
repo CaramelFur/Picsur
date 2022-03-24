@@ -4,7 +4,6 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UIFriendlyPermissions } from 'picsur-shared/dist/dto/permissions';
-import { DefaultRolesList } from 'picsur-shared/dist/dto/roles.dto';
 import { LockedPermsUsersList } from 'picsur-shared/dist/dto/specialusers.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UpdateUserControl } from 'src/app/models/forms/updateuser.control';
@@ -51,9 +50,15 @@ export class SettingsUsersEditComponent implements OnInit {
 
   private async initUser() {
     const username = this.route.snapshot.paramMap.get('username');
+
+    const { DefaultRoles, SoulBoundRoles } =
+      await this.rolesService.getSpecialRolesOptimistic();
+    this.model.putSoulBoundRoles(SoulBoundRoles);
+
     if (!username) {
       this.mode = EditMode.add;
-      this.model.putRoles(DefaultRolesList);
+
+      this.model.putRoles(DefaultRoles);
       return;
     }
 

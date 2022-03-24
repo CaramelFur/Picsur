@@ -1,4 +1,3 @@
-import { Roles } from 'picsur-shared/dist/dto/roles.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -14,7 +13,7 @@ export class EUserBackend extends EUser {
   override username: string;
 
   @Column('text', { nullable: false, array: true })
-  override roles: Roles;
+  override roles: string[];
 
   @Column({ nullable: false, select: false })
   override password?: string;

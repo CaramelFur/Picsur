@@ -3,11 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { plainToClass } from 'class-transformer';
 import {
-  DefaultRolesList,
-  PermanentRolesList,
-  Roles
-} from 'picsur-shared/dist/dto/roles.dto';
-import {
   LockedLoginUsersList,
   LockedPermsUsersList,
   SystemUsersList
@@ -20,6 +15,10 @@ import {
 } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Repository } from 'typeorm';
+import {
+  DefaultRolesList,
+  SoulBoundRolesList
+} from '../../models/dto/roles.dto';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { GetCols } from '../collectionutils';
 import { RolesService } from '../roledb/roledb.service';
@@ -41,7 +40,7 @@ export class UsersService {
   public async create(
     username: string,
     password: string,
-    roles?: Roles,
+    roles?: string[],
     byPassRoleCheck?: boolean,
   ): AsyncFailable<EUserBackend> {
     if (await this.exists(username)) return Fail('User already exists');
@@ -90,7 +89,7 @@ export class UsersService {
 
   public async setRoles(
     user: string | EUserBackend,
-    roles: Roles,
+    roles: string[],
   ): AsyncFailable<EUserBackend> {
     const userToModify = await this.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
@@ -101,7 +100,7 @@ export class UsersService {
     }
 
     const rolesToKeep = userToModify.roles.filter((role) =>
-      PermanentRolesList.includes(role),
+      SoulBoundRolesList.includes(role),
     );
     const rolesToAdd = this.filterAddedRoles(roles);
 
@@ -216,9 +215,9 @@ export class UsersService {
     }
   }
 
-  private filterAddedRoles(roles: Roles): Roles {
+  private filterAddedRoles(roles: string[]): string[] {
     const filteredRoles = roles.filter(
-      (role) => !PermanentRolesList.includes(role),
+      (role) => !SoulBoundRolesList.includes(role),
     );
 
     return filteredRoles;

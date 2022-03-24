@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
-import { IsArray, IsOptional, IsString } from 'class-validator';
-import { Roles } from '../dto/roles.dto';
+import { IsDefined, IsOptional, IsString } from 'class-validator';
 import { EntityID } from '../validators/entity-id.validator';
+import { IsStringList } from '../validators/string-list.validator';
 import { IsPlainTextPwd, IsUsername } from '../validators/user.validators';
 
 export class UsernameUser {
@@ -17,9 +17,9 @@ export class NamePassUser extends UsernameUser {
 
 // Add a user object with just the username and roles for jwt
 export class NameRolesUser extends UsernameUser {
-  @IsArray()
-  @IsString({ each: true })
-  roles: Roles;
+  @IsDefined()
+  @IsStringList()
+  roles: string[];
 }
 
 // Actual entity that goes in the db

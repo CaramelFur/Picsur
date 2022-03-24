@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Permissions } from 'picsur-shared/dist/dto/permissions';
-import { Roles } from 'picsur-shared/dist/dto/roles.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { RolesService } from '../roledb/roledb.service';
@@ -23,7 +22,7 @@ export class UserRolesService {
 
   public async addRoles(
     user: string | EUserBackend,
-    roles: Roles,
+    roles: string[],
   ): AsyncFailable<EUserBackend> {
     const userToModify = await this.usersService.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
@@ -35,7 +34,7 @@ export class UserRolesService {
 
   public async removeRoles(
     user: string | EUserBackend,
-    roles: Roles,
+    roles: string[],
   ): AsyncFailable<EUserBackend> {
     const userToModify = await this.usersService.resolve(user);
     if (HasFailed(userToModify)) return userToModify;

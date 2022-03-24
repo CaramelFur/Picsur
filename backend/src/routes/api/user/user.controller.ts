@@ -1,30 +1,30 @@
 import {
-  Body,
-  Controller,
-  Get,
-  InternalServerErrorException,
-  Logger,
-  Post,
-  Request
+    Body,
+    Controller,
+    Get,
+    InternalServerErrorException,
+    Logger,
+    Post,
+    Request
 } from '@nestjs/common';
 import {
-  UserLoginResponse,
-  UserMePermissionsResponse,
-  UserMeResponse,
-  UserRegisterRequest,
-  UserRegisterResponse
+    UserLoginResponse,
+    UserMePermissionsResponse,
+    UserMeResponse,
+    UserRegisterRequest,
+    UserRegisterResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import { UserRolesService } from '../../../collections/userdb/userrolesdb.service';
 import {
-  NoPermissions,
-  RequiredPermissions,
-  UseLocalAuth
+    NoPermissions,
+    RequiredPermissions,
+    UseLocalAuth
 } from '../../../decorators/permissions.decorator';
 import { AuthManagerService } from '../../../managers/auth/auth.service';
-import AuthFasityRequest from '../../../models/dto/authrequest.dto';
+import AuthFasityRequest from '../../../models/requests/authrequest.dto';
 
 @Controller('api/user')
 export class UserController {

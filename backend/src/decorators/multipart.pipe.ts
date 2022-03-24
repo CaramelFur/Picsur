@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
-  Injectable,
-  Logger,
-  PipeTransform,
-  Scope
+    BadRequestException,
+    Injectable,
+    Logger,
+    PipeTransform,
+    Scope
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { MultipartFields, MultipartFile } from 'fastify-multipart';
@@ -11,9 +11,9 @@ import { Newable } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { MultipartConfigService } from '../config/multipart.config.service';
 import {
-  MultiPartFieldDto,
-  MultiPartFileDto
-} from '../models/dto/multipart.dto';
+    MultiPartFieldDto,
+    MultiPartFileDto
+} from '../models/requests/multipart.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class MultiPartPipe implements PipeTransform {

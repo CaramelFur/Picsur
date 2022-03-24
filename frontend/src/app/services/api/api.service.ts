@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ClassConstructor, plainToClass } from 'class-transformer';
-import { ApiResponse, ApiSuccessResponse } from 'picsur-shared/dist/dto/api';
+import { ApiResponse, ApiSuccessResponse } from 'picsur-shared/dist/dto/api/api.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Subject } from 'rxjs';

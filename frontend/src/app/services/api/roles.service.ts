@@ -8,18 +8,23 @@ import {
   RoleInfoResponse,
   RoleListResponse,
   RoleUpdateRequest,
-  RoleUpdateResponse
+  RoleUpdateResponse,
+  SpecialRolesResponse
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { RoleModel } from 'src/app/models/forms/role.model';
 import { ApiService } from './api.service';
+import { CacheService } from './cache.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RolesService {
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private cacheService: CacheService
+  ) {}
 
   public async getRoles(): AsyncFailable<ERole[]> {
     const result = await this.apiService.get(
@@ -82,6 +87,40 @@ export class RolesService {
       '/api/roles/delete',
       body
     );
+
+    return result;
+  }
+
+  public async getSpecialRoles(): AsyncFailable<SpecialRolesResponse> {
+    const cached = this.cacheService.get<SpecialRolesResponse>('specialRoles');
+    if (cached !== null) {
+      return cached;
+    }
+
+    const result = await this.apiService.get(
+      SpecialRolesResponse,
+      '/api/roles/special'
+    );
+
+    if (HasFailed(result)) {
+      return result;
+    }
+
+    this.cacheService.set('specialRoles', result);
+
+    return result;
+  }
+
+  public async getSpecialRolesOptimistic(): Promise<SpecialRolesResponse> {
+    const result = await this.getSpecialRoles();
+    if (HasFailed(result)) {
+      return {
+        DefaultRoles: [],
+        ImmutableRoles: [],
+        SoulBoundRoles: [],
+        UndeletableRoles: [],
+      };
+    }
 
     return result;
   }

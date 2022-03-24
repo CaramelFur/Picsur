@@ -18,7 +18,7 @@ import { HasFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart.decorator';
 import { RequiredPermissions } from '../../decorators/permissions.decorator';
 import { ImageManagerService } from '../../managers/imagemanager/imagemanager.service';
-import { ImageUploadDto } from '../../models/dto/imageroute.dto';
+import { ImageUploadDto } from '../../models/requests/imageroute.dto';
 
 @Controller('i')
 @RequiredPermissions(Permission.ImageView)

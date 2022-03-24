@@ -6,6 +6,7 @@ import {
   Logger,
   Post
 } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
 import {
   RoleCreateRequest,
   RoleCreateResponse,
@@ -15,12 +16,19 @@ import {
   RoleInfoResponse,
   RoleListResponse,
   RoleUpdateRequest,
-  RoleUpdateResponse
+  RoleUpdateResponse,
+  SpecialRolesResponse
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { RolesService } from '../../../collections/roledb/roledb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
+import {
+  DefaultRolesList,
+  ImmutableRolesList,
+  SoulBoundRolesList,
+  UndeletableRolesList
+} from '../../../models/dto/roles.dto';
 
 @Controller('api/roles')
 @RequiredPermissions(Permission.RoleManage)
@@ -94,5 +102,17 @@ export class RolesController {
     }
 
     return deletedRole;
+  }
+
+  @Get('special')
+  async getSpecialRoles(): Promise<SpecialRolesResponse> {
+    const result: SpecialRolesResponse = {
+      SoulBoundRoles: SoulBoundRolesList,
+      ImmutableRoles: ImmutableRolesList,
+      UndeletableRoles: UndeletableRolesList,
+      DefaultRoles: DefaultRolesList,
+    };
+
+    return plainToClass(SpecialRolesResponse, result);
   }
 }

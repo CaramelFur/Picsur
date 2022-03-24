@@ -18,7 +18,8 @@
     "typescript": "4.5.5"
   },
   "scripts": {
-    "start": "tsc-watch",
-    "build": "tsc"
+    "clean": "rm -rf ./dist",
+    "start": "yarn clean && tsc-watch",
+    "build": "yarn clean && tsc"
   }
 }

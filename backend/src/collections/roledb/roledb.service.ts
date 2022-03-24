@@ -3,11 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import { Permissions } from 'picsur-shared/dist/dto/permissions';
 import {
-  ImmuteableRolesList,
-  Roles,
-  SystemRolesList
-} from 'picsur-shared/dist/dto/roles.dto';
-import {
   AsyncFailable,
   Fail,
   HasFailed,
@@ -15,6 +10,7 @@ import {
 } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { In, Repository } from 'typeorm';
+import { ImmutableRolesList, UndeletableRolesList } from '../../models/dto/roles.dto';
 import { ERoleBackend } from '../../models/entities/role.entity';
 
 @Injectable()
@@ -51,7 +47,7 @@ export class RolesService {
     const roleToModify = await this.resolve(role);
     if (HasFailed(roleToModify)) return roleToModify;
 
-    if (SystemRolesList.includes(roleToModify.name)) {
+    if (UndeletableRolesList.includes(roleToModify.name)) {
       return Fail('Cannot delete system role');
     }
 
@@ -62,7 +58,7 @@ export class RolesService {
     }
   }
 
-  public async getPermissions(roles: Roles): AsyncFailable<Permissions> {
+  public async getPermissions(roles: string[]): AsyncFailable<Permissions> {
     const permissions: Permissions = [];
     const foundRoles = await Promise.all(
       roles.map((role: string) => this.findOne(role)),
@@ -113,7 +109,7 @@ export class RolesService {
     const roleToModify = await this.resolve(role);
     if (HasFailed(roleToModify)) return roleToModify;
 
-    if (!allowImmutable && ImmuteableRolesList.includes(roleToModify.name)) {
+    if (!allowImmutable && ImmutableRolesList.includes(roleToModify.name)) {
       return Fail('Cannot modify immutable role');
     }
 
@@ -157,7 +153,7 @@ export class RolesService {
     if (!iamsure) return Fail('Nuke aborted');
     try {
       await this.rolesRepository.delete({
-        name: In(SystemRolesList),
+        name: In(UndeletableRolesList),
       });
     } catch (e: any) {
       return Fail(e?.message);

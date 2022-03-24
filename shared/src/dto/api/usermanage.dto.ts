@@ -1,13 +1,13 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
-  IsDefined, IsOptional,
-  IsString, ValidateNested
+  IsDefined,
+  IsOptional, ValidateNested
 } from 'class-validator';
 import { EUser, NamePassUser, UsernameUser } from '../../entities/user.entity';
 import { IsPosInt } from '../../validators/positive-int.validator';
+import { IsStringList } from '../../validators/string-list.validator';
 import { IsPlainTextPwd } from '../../validators/user.validators';
-import { Roles } from '../roles.dto';
 
 // UserList
 export class UserListRequest {
@@ -35,9 +35,8 @@ export class UserListResponse {
 // UserCreate
 export class UserCreateRequest extends NamePassUser {
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  roles?: Roles;
+  @IsStringList()
+  roles?: string[];
 }
 export class UserCreateResponse extends EUser {}
 
@@ -52,9 +51,8 @@ export class UserInfoResponse extends EUser {}
 // UserUpdateRoles
 export class UserUpdateRequest extends UsernameUser {
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  roles?: Roles;
+  @IsStringList()
+  roles?: string[];
 
   @IsPlainTextPwd()
   @IsOptional()

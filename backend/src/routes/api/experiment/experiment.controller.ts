@@ -1,5 +1,5 @@
 import { Controller, Get, Request } from '@nestjs/common';
-import AuthFasityRequest from '../../../models/dto/authrequest.dto';
+import AuthFasityRequest from '../../../models/requests/authrequest.dto';
 
 
 @Controller('api/experiment')

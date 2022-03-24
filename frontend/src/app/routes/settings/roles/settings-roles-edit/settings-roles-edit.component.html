@@ -33,12 +33,10 @@
         <mat-chip-list #chipList aria-label="Permissions Selection">
           <mat-chip
             *ngFor="let permission of model.selectedPermissions"
-            [removable]="model.isRemovable(permission)"
-            [disabled]="!model.isRemovable(permission)"
             (removed)="removePermission(permission)"
           >
             {{ uiFriendlyPermission(permission) }}
-            <button *ngIf="model.isRemovable(permission)" matChipRemove>
+            <button matChipRemove>
               <mat-icon>cancel</mat-icon>
             </button>
           </mat-chip>
@@ -50,14 +48,14 @@
             [matAutocomplete]="auto"
             [matChipInputFor]="chipList"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            (matChipInputTokenEnd)="addRole($event)"
+            (matChipInputTokenEnd)="addPermission($event)"
             autocorrect="off"
             autocapitalize="none"
           />
         </mat-chip-list>
         <mat-autocomplete
           #auto="matAutocomplete"
-          (optionSelected)="selectedRole($event)"
+          (optionSelected)="selectedPermission($event)"
         >
           <mat-option
             *ngFor="let permission of model.selectablePermissions | async"

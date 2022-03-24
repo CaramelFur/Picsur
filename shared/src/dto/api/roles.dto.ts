@@ -1,14 +1,12 @@
 import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsDefined, ValidateNested
-} from 'class-validator';
+import { IsArray, IsDefined, ValidateNested } from 'class-validator';
 import {
   ERole,
   RoleNameObject,
   RoleNamePermsObject
 } from '../../entities/role.entity';
 import { IsPosInt } from '../../validators/positive-int.validator';
+import { IsStringList } from '../../validators/string-list.validator';
 
 // RoleInfo
 export class RoleInfoRequest extends RoleNameObject {}
@@ -37,3 +35,22 @@ export class RoleCreateResponse extends ERole {}
 // RoleDelete
 export class RoleDeleteRequest extends RoleNameObject {}
 export class RoleDeleteResponse extends ERole {}
+
+// SpecialRoles
+export class SpecialRolesResponse {
+  @IsDefined()
+  @IsStringList()
+  SoulBoundRoles: string[];
+
+  @IsDefined()
+  @IsStringList()
+  ImmutableRoles: string[];
+
+  @IsDefined()
+  @IsStringList()
+  UndeletableRoles: string[];
+
+  @IsDefined()
+  @IsStringList()
+  DefaultRoles: string[];
+}

@@ -1,7 +1,6 @@
 import { FormControl } from '@angular/forms';
 import Fuse from 'fuse.js';
 import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
-import { PermanentRolesList } from 'picsur-shared/dist/dto/roles.dto';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { RoleNameValidators } from './role-validators';
 import { RoleModel } from './role.model';
@@ -56,11 +55,6 @@ export class UpdateRoleControl {
       (r) => r !== role
     );
     this.updateSelectablePermissions();
-  }
-
-  public isRemovable(role: Permission) {
-    if (PermanentRolesList.includes(role)) return false;
-    return true;
   }
 
   // Data interaction

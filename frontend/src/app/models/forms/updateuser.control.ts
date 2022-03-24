@@ -1,7 +1,6 @@
 import { FormControl } from '@angular/forms';
 import Fuse from 'fuse.js';
 import { Permissions } from 'picsur-shared/dist/dto/permissions';
-import { PermanentRolesList } from 'picsur-shared/dist/dto/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FullUserModel } from './fulluser.model';
@@ -13,6 +12,9 @@ import {
 } from './user-validators';
 
 export class UpdateUserControl {
+  // Special roles
+  private SoulBoundRolesList: string[] = [];
+
   // Set once
   private fullRoles: ERole[] = [];
   private roles: string[] = [];
@@ -68,7 +70,7 @@ export class UpdateUserControl {
   }
 
   public isRemovable(role: string) {
-    if (PermanentRolesList.includes(role)) return false;
+    if (this.SoulBoundRolesList.includes(role)) return false;
     return true;
   }
 
@@ -106,6 +108,10 @@ export class UpdateUserControl {
     this.updateSelectableRoles();
   }
 
+  public putSoulBoundRoles(roles: string[]) {
+    this.SoulBoundRolesList = roles;
+  }
+
   public getData(): FullUserModel {
     return {
       username: this.username.value,
@@ -119,7 +125,8 @@ export class UpdateUserControl {
   private updateSelectableRoles() {
     const availableRoles = this.roles.filter(
       // Not available if either already selected, or the role is not addable/removable
-      (r) => !(this.selectedRoles.includes(r) || PermanentRolesList.includes(r))
+      (r) =>
+        !(this.selectedRoles.includes(r) || this.SoulBoundRolesList.includes(r))
     );
 
     const searchValue = this.rolesControl.value;

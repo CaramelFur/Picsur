@@ -77,12 +77,12 @@ export class SettingsRolesEditComponent implements OnInit {
     this.model.removePermission(permission);
   }
 
-  addRole(event: MatChipInputEvent) {
+  addPermission(event: MatChipInputEvent) {
     const value = (event.value ?? '').trim();
     this.model.addPermission(value as Permission);
   }
 
-  selectedRole(event: MatAutocompleteSelectedEvent): void {
+  selectedPermission(event: MatAutocompleteSelectedEvent): void {
     this.model.addPermission(event.option.viewValue as Permission);
   }
 

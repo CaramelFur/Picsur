@@ -1,14 +1,9 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {
-  ImmuteableRolesList,
-  SystemRoleDefaults,
-  SystemRoles,
-  SystemRolesList
-} from 'picsur-shared/dist/dto/roles.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { PicsurConfigModule } from '../../config/config.module';
 import { HostConfigService } from '../../config/host.config.service';
+import { ImmutableRolesList, SystemRoleDefaults, UndeletableRolesList } from '../../models/dto/roles.dto';
 import { ERoleBackend } from '../../models/entities/role.entity';
 import { RolesService } from './roledb.service';
 
@@ -43,7 +38,7 @@ export class RolesModule implements OnModuleInit {
   }
 
   private async ensureSystemRolesExist() {
-    for (const systemRole of SystemRolesList as SystemRoles) {
+    for (const systemRole of UndeletableRolesList) {
       this.logger.debug(`Ensuring system role "${systemRole}" exists`);
 
       const exists = await this.rolesService.exists(systemRole);
@@ -63,7 +58,7 @@ export class RolesModule implements OnModuleInit {
   }
 
   private async updateImmutableRoles() {
-    for (const immutableRole of ImmuteableRolesList as SystemRoles) {
+    for (const immutableRole of ImmutableRolesList) {
       this.logger.debug(
         `Updating permissions for immutable role "${immutableRole}"`,
       );
