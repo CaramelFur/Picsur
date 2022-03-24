@@ -6,7 +6,7 @@ import {
   CreateUsernameError,
   PasswordValidators,
   UsernameValidators
-} from './default-validators';
+} from './user-validators';
 import { UserPassModel } from './userpass.model';
 
 export class RegisterControl {

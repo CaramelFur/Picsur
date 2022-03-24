@@ -5,10 +5,12 @@ import { Permission, Permissions, PermissionsList } from './permissions';
 
 // These roles can never be removed or added to a user.
 const PermanentRolesTuple = tuple('guest', 'user');
+
 // These roles can never be modified
 const ImmuteableRolesTuple = tuple('admin');
 // These roles can never be removed from the server
 const SystemRolesTuple = tuple(...PermanentRolesTuple, ...ImmuteableRolesTuple);
+
 // These roles will be applied by default to new users
 export const DefaultRolesList: string[] = ['user'];
 

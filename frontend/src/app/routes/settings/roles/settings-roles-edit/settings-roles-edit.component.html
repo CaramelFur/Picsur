@@ -1,0 +1,90 @@
+<ng-container *ngIf="editing">
+  <h1>Editing {{ model.rolenameValue }}</h1>
+</ng-container>
+<ng-container *ngIf="adding">
+  <h1>Add new role</h1>
+</ng-container>
+
+<form (ngSubmit)="updateUser()">
+  <div class="row" *ngIf="adding">
+    <div class="col-lg-6 col-12">
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>Role name</mat-label>
+        <input
+          matInput
+          type="text"
+          [formControl]="model.rolename"
+          name="rolename"
+          autocorrect="off"
+          autocapitalize="none"
+          required
+        />
+        <mat-error *ngIf="model.rolename.errors">
+          {{ model.rolenameError }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 col-12">
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>Permissions</mat-label>
+        <mat-chip-list #chipList aria-label="Permissions Selection">
+          <mat-chip
+            *ngFor="let permission of model.selectedPermissions"
+            [removable]="model.isRemovable(permission)"
+            [disabled]="!model.isRemovable(permission)"
+            (removed)="removePermission(permission)"
+          >
+            {{ uiFriendlyPermission(permission) }}
+            <button *ngIf="model.isRemovable(permission)" matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input
+            placeholder="Add permission..."
+            #fruitInput
+            [formControl]="model.permissionControl"
+            [value]="model.permissionControl.value"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="addRole($event)"
+            autocorrect="off"
+            autocapitalize="none"
+          />
+        </mat-chip-list>
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="selectedRole($event)"
+        >
+          <mat-option
+            *ngFor="let permission of model.selectablePermissions | async"
+            [value]="permission"
+          >
+            {{ permission }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 py-4">
+      <button mat-raised-button color="accent" type="submit">
+        {{ editing ? "Update" : "Add" }}
+      </button>
+
+      <button
+        mat-raised-button
+        class="ms-2"
+        color="primary"
+        type="button"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</form>

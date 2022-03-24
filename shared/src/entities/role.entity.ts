@@ -1,16 +1,20 @@
-import { IsArray, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsEnum } from 'class-validator';
 import { Permissions, PermissionsList } from '../dto/permissions';
 import { EntityID } from '../validators/entity-id.validator';
+import { IsRoleName } from '../validators/role.validators';
 
-export class ERole {
-  @EntityID()
-  id?: number;
-
-  @IsNotEmpty()
-  @IsString()
+export class RoleNameObject {
+  @IsRoleName()
   name: string;
+}
 
+export class RoleNamePermsObject extends RoleNameObject {
   @IsArray()
   @IsEnum(PermissionsList, { each: true })
   permissions: Permissions;
+}
+
+export class ERole extends RoleNamePermsObject {
+  @EntityID()
+  id?: number;
 }

@@ -7,7 +7,9 @@
   </ng-container>
 
   <ng-container matColumnDef="permissions">
-    <mat-header-cell class="d-none d-md-flex" *matHeaderCellDef>Permissions</mat-header-cell>
+    <mat-header-cell class="d-none d-md-flex" *matHeaderCellDef
+      >Permissions</mat-header-cell
+    >
     <mat-cell class="d-none d-md-flex" *matCellDef="let role">
       <mat-chip-list aria-label="Role Permissions">
         <mat-chip
@@ -38,10 +40,14 @@
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
     <mat-cell *matCellDef="let role">
-      <button mat-icon-button (click)="editRole(role)">
-        <mat-icon fontSet="material-icons-outlined" aria-label="Edit"
-          >edit</mat-icon
-        >
+      <button
+        *ngIf="!isImmutable(role)"
+        mat-icon-button
+        (click)="editRole(role)"
+      >
+        <mat-icon fontSet="material-icons-outlined" aria-label="Edit">
+          edit
+        </mat-icon>
       </button>
       <button
         *ngIf="!isSystem(role)"

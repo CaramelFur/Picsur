@@ -1,15 +1,18 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsDefined, IsEnum, IsInt, IsNotEmpty, IsPositive, IsString, ValidateNested } from 'class-validator';
-import { ERole } from '../../entities/role.entity';
-import { Permissions, PermissionsList } from '../permissions';
+import {
+  IsArray,
+  IsDefined,
+  IsInt, IsPositive,
+  ValidateNested
+} from 'class-validator';
+import {
+  ERole,
+  RoleNameObject,
+  RoleNamePermsObject
+} from '../../entities/role.entity';
 
 // RoleInfo
-export class RoleInfoRequest {
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-}
-
+export class RoleInfoRequest extends RoleNameObject {}
 export class RoleInfoResponse extends ERole {}
 
 // RoleList
@@ -27,15 +30,7 @@ export class RoleListResponse {
 }
 
 // RoleUpdate
-export class RoleUpdateRequest {
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @IsArray()
-  @IsEnum(PermissionsList, { each: true })
-  permissions: Permissions;
-}
+export class RoleUpdateRequest extends RoleNamePermsObject {}
 export class RoleUpdateResponse extends ERole {}
 
 // RoleCreate
@@ -43,8 +38,5 @@ export class RoleCreateRequest extends ERole {}
 export class RoleCreateResponse extends ERole {}
 
 // RoleDelete
-export class RoleDeleteRequest {
-  @IsNotEmpty()
-  name: string;
-}
+export class RoleDeleteRequest extends RoleNameObject {}
 export class RoleDeleteResponse extends ERole {}

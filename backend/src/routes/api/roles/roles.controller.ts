@@ -54,7 +54,7 @@ export class RolesController {
     return role;
   }
 
-  @Post('/permissions')
+  @Post('/update')
   async updateRole(
     @Body() body: RoleUpdateRequest,
   ): Promise<RoleUpdateResponse> {

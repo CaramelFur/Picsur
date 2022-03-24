@@ -1,15 +1,8 @@
 import { ValidationErrors, Validators } from '@angular/forms';
+import { errorsToError } from './util.validator';
 
 // Match this with user entity in shared lib
 // (Security is not handled here, this is only for the user)
-
-function errorsToError(errors: ValidationErrors | null): string {
-  if (errors) {
-    const error = Object.keys(errors)[0];
-    return error;
-  }
-  return 'unkown';
-}
 
 export const UsernameValidators = [
   Validators.minLength(4),
@@ -57,3 +50,4 @@ export const CreatePasswordError = (
       return 'Invalid password';
   }
 };
+

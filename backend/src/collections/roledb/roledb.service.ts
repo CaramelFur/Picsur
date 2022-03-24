@@ -117,7 +117,7 @@ export class RolesService {
       return Fail('Cannot modify immutable role');
     }
 
-    roleToModify.permissions = permissions;
+    roleToModify.permissions = [...new Set(permissions)];
 
     try {
       return await this.rolesRepository.save(roleToModify);

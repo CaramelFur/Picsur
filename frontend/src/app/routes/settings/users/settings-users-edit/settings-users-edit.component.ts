@@ -29,7 +29,6 @@ export class SettingsUsersEditComponent implements OnInit {
   private mode: EditMode = EditMode.edit;
 
   model = new UpdateUserControl();
-  updateFail: boolean = false;
 
   get adding() {
     return this.mode === EditMode.add;

@@ -4,13 +4,13 @@ import { Permissions } from 'picsur-shared/dist/dto/permissions';
 import { PermanentRolesList } from 'picsur-shared/dist/dto/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { FullUserModel } from './fulluser.model';
 import {
   CreatePasswordError,
   CreateUsernameError,
   PasswordValidators,
   UsernameValidators
-} from './default-validators';
-import { FullUserModel } from './fulluser.model';
+} from './user-validators';
 
 export class UpdateUserControl {
   // Set once

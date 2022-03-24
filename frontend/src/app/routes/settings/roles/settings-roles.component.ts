@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import {
   Permission,
   UIFriendlyPermissions
 } from 'picsur-shared/dist/dto/permissions';
+import { ImmuteableRolesList, SystemRolesList } from 'picsur-shared/dist/dto/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
@@ -31,18 +33,72 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
 
   constructor(
     private rolesService: RolesService,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.initRoles().catch(console.error);
+    this.fetchRoles().catch(console.error);
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  async initRoles() {
+  addRole() {
+    this.router.navigate(['/settings/roles/add']);
+  }
+
+  editRole(role: ERole) {
+    this.router.navigate(['/settings/roles/edit', role.name]);
+  }
+
+  async deleteRole(role: ERole) {
+    const pressedButton = await this.utilService.showDialog({
+      title: `Are you sure you want to delete ${role.name}?`,
+      description: 'This action cannot be undone.',
+      buttons: [
+        {
+          color: 'red',
+          name: 'delete',
+          text: 'Delete',
+        },
+        {
+          color: 'primary',
+          name: 'cancel',
+          text: 'Cancel',
+        },
+      ],
+    });
+
+    if (pressedButton === 'delete') {
+      const result = await this.rolesService.deleteRole(role.name);
+      if (HasFailed(result)) {
+        this.utilService.showSnackBar(
+          'Failed to delete user',
+          SnackBarType.Error
+        );
+      } else {
+        this.utilService.showSnackBar('User deleted', SnackBarType.Success);
+      }
+    }
+
+    await this.fetchRoles();
+  }
+
+  uiFriendlyPermission(permission: Permission) {
+    return UIFriendlyPermissions[permission];
+  }
+
+  isSystem(role: ERole) {
+    return SystemRolesList.includes(role.name);
+  }
+
+  isImmutable(role: ERole) {
+    return ImmuteableRolesList.includes(role.name);
+  }
+
+  private async fetchRoles() {
     const roles = await this.rolesService.getRoles();
     if (HasFailed(roles)) {
       this.utilService.showSnackBar('Failed to load roles', SnackBarType.Error);
@@ -50,19 +106,5 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
     }
 
     this.dataSource.data = roles;
-  }
-
-  addRole() {}
-
-  editRole(role: ERole) {}
-
-  deleteRole(role: ERole) {}
-
-  uiFriendlyPermission(permission: Permission) {
-    return UIFriendlyPermissions[permission];
-  }
-
-  isSystem(role: ERole) {
-    return false;
   }
 }
