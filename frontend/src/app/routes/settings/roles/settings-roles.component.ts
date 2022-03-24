@@ -3,11 +3,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import {
-  Permission,
-  UIFriendlyPermissions
+  Permission
 } from 'picsur-shared/dist/dto/permissions';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
+import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { UtilService } from 'src/app/util/util.service';

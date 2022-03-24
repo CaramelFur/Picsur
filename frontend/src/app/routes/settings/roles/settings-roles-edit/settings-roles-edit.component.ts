@@ -5,10 +5,10 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   Permission,
-  PermissionsList,
-  UIFriendlyPermissions
+  PermissionsList
 } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
+import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
 import { UpdateRoleControl } from 'src/app/models/forms/updaterole.control';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { RolesService } from 'src/app/services/api/roles.service';
