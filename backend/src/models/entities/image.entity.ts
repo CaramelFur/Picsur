@@ -1,9 +1,7 @@
-import {
-  SupportedMime,
-  SupportedMimes
-} from 'picsur-shared/dist/dto/mimes.dto';
+import { IsEnum } from 'class-validator';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { SupportedMime, SupportedMimes } from '../dto/mimes.dto';
 
 @Entity()
 export class EImageBackend extends EImage {
@@ -19,5 +17,6 @@ export class EImageBackend extends EImage {
   override data?: Buffer;
 
   @Column({ enum: SupportedMimes, nullable: false })
+  @IsEnum(SupportedMimes)
   override mime: SupportedMime;
 }

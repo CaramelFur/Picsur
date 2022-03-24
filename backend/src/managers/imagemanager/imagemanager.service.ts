@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
-import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { ImageDBService } from '../../collections/imagedb/imagedb.service';
 import { MimesService } from '../../collections/imagedb/mimes.service';
+import { FullMime } from '../../models/dto/mimes.dto';
 import { EImageBackend } from '../../models/entities/image.entity';
 
 @Injectable()

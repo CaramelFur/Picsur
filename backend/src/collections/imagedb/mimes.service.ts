@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Fail, Failable } from 'picsur-shared/dist/types';
-import {
-  FullMime,
-  SupportedAnimMimes,
-  SupportedImageMimes,
-  SupportedMime,
-} from 'picsur-shared/dist/dto/mimes.dto';
+import { FullMime, SupportedAnimMimes, SupportedImageMimes, SupportedMime } from '../../models/dto/mimes.dto';
+
 
 @Injectable()
 export class MimesService {

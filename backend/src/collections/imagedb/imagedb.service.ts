@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import Crypto from 'crypto';
-import { SupportedMime } from 'picsur-shared/dist/dto/mimes.dto';
 import {
   AsyncFailable,
   Fail,
@@ -10,6 +9,7 @@ import {
   HasSuccess
 } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
+import { SupportedMime } from '../../models/dto/mimes.dto';
 import { EImageBackend } from '../../models/entities/image.entity';
 import { GetCols } from '../collectionutils';
 

@@ -1,6 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { IsDefined, IsEnum, IsHash, IsOptional } from 'class-validator';
-import { SupportedMime, SupportedMimes } from '../dto/mimes.dto';
+import { IsHash, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { EntityID } from '../validators/entity-id.validator';
 
 export class EImage {
@@ -15,7 +14,8 @@ export class EImage {
   @Exclude()
   data?: object;
 
-  @IsEnum(SupportedMimes)
-  @IsDefined()
-  mime: SupportedMime;
+  
+  @IsNotEmpty()
+  @IsString()
+  mime: string;
 }

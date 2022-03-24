@@ -1,4 +1,4 @@
-import tuple from '../types/tuple';
+import tuple from 'picsur-shared/dist/types/tuple';
 
 // Config
 
