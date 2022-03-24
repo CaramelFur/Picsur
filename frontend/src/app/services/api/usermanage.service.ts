@@ -115,7 +115,7 @@ export class UserManageService {
       return result;
     }
 
-    this.cacheService.set('specialRoles', result);
+    this.cacheService.set('specialUsers', result);
 
     return result;
   }
