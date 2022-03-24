@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { SystemUsersList } from 'picsur-shared/dist/dto/specialusers.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, Subject, throttleTime } from 'rxjs';
@@ -15,6 +14,8 @@ import { UtilService } from 'src/app/util/util.service';
   styleUrls: ['./settings-users.component.scss'],
 })
 export class SettingsUsersComponent implements OnInit {
+  private UndeletableUsersList: string[] = [];
+
   public readonly displayedColumns: string[] = ['username', 'roles', 'actions'];
   public readonly pageSizeOptions: number[] = [5, 10, 25, 100];
   public readonly startingPageSize = this.pageSizeOptions[2];
@@ -31,9 +32,13 @@ export class SettingsUsersComponent implements OnInit {
     private router: Router
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     this.subscribeToUpdate();
-    this.fetchUsers(this.startingPageSize, 0);
+
+    Promise.all([
+      this.fetchUsers(this.startingPageSize, 0),
+      this.initSpecialUsers(),
+    ]).catch(console.error);
   }
 
   public addUser() {
@@ -123,7 +128,20 @@ export class SettingsUsersComponent implements OnInit {
     return false;
   }
 
+  private async initSpecialUsers() {
+    const specialUsers = await this.userManageService.getSpecialUsers();
+    if (HasFailed(specialUsers)) {
+      this.utilService.showSnackBar(
+        'Failed to fetch special users',
+        SnackBarType.Error
+      );
+      return;
+    }
+
+    this.UndeletableUsersList = specialUsers.UndeletableUsersList;
+  }
+
   isSystem(user: EUser): boolean {
-    return SystemUsersList.includes(user.username);
+    return this.UndeletableUsersList.includes(user.username);
   }
 }

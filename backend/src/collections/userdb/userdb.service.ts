@@ -3,11 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { plainToClass } from 'class-transformer';
 import {
-  LockedLoginUsersList,
-  LockedPermsUsersList,
-  SystemUsersList
-} from 'picsur-shared/dist/dto/specialusers.dto';
-import {
   AsyncFailable,
   Fail,
   HasFailed,
@@ -19,6 +14,7 @@ import {
   DefaultRolesList,
   SoulBoundRolesList
 } from '../../models/dto/roles.dto';
+import { ImmutableUsersList, LockedLoginUsersList, UndeletableUsersList } from '../../models/dto/specialusers.dto';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { GetCols } from '../collectionutils';
 import { RolesService } from '../roledb/roledb.service';
@@ -74,7 +70,7 @@ export class UsersService {
     const userToModify = await this.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
 
-    if (SystemUsersList.includes(userToModify.username)) {
+    if (UndeletableUsersList.includes(userToModify.username)) {
       return Fail('Cannot delete system user');
     }
 
@@ -94,7 +90,7 @@ export class UsersService {
     const userToModify = await this.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
 
-    if (LockedPermsUsersList.includes(userToModify.username)) {
+    if (ImmutableUsersList.includes(userToModify.username)) {
       // Just fail silently
       return userToModify;
     }

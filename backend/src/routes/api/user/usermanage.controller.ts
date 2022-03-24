@@ -6,7 +6,9 @@ import {
   Logger,
   Post
 } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
 import {
+  GetSpecialUsersResponse,
   UserCreateRequest,
   UserCreateResponse,
   UserDeleteRequest,
@@ -22,6 +24,7 @@ import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
+import { ImmutableUsersList, LockedLoginUsersList, UndeletableUsersList } from '../../../models/dto/specialusers.dto';
 
 @Controller('api/user')
 @RequiredPermissions(Permission.UserManage)
@@ -124,5 +127,16 @@ export class UserManageController {
     }
 
     return user;
+  }
+
+  @Get('special')
+  async getSpecial(): Promise<GetSpecialUsersResponse> {
+    const result: GetSpecialUsersResponse = {
+      ImmutableUsersList,
+      LockedLoginUsersList,
+      UndeletableUsersList,
+    };
+
+    return plainToClass(GetSpecialUsersResponse, result);
   }
 }

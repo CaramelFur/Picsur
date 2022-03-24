@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  GetSpecialUsersResponse,
   UserCreateRequest,
   UserCreateResponse,
   UserDeleteRequest,
@@ -15,12 +16,16 @@ import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { FullUserModel } from 'src/app/models/forms/fulluser.model';
 import { ApiService } from './api.service';
+import { CacheService } from './cache.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserManageService {
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private cacheService: CacheService
+  ) {}
 
   public async getUser(username: string): AsyncFailable<EUser> {
     const body = {
@@ -90,6 +95,40 @@ export class UserManageService {
       '/api/user/delete',
       body
     );
+
+    return result;
+  }
+
+  public async getSpecialUsers(): AsyncFailable<GetSpecialUsersResponse> {
+    const cached =
+      this.cacheService.get<GetSpecialUsersResponse>('specialUsers');
+    if (cached !== null) {
+      return cached;
+    }
+
+    const result = await this.apiService.get(
+      GetSpecialUsersResponse,
+      '/api/user/special'
+    );
+
+    if (HasFailed(result)) {
+      return result;
+    }
+
+    this.cacheService.set('specialRoles', result);
+
+    return result;
+  }
+
+  public async getSpecialRolesOptimistic(): Promise<GetSpecialUsersResponse> {
+    const result = await this.getSpecialUsers();
+    if (HasFailed(result)) {
+      return {
+        ImmutableUsersList: [],
+        LockedLoginUsersList: [],
+        UndeletableUsersList: [],
+      };
+    }
 
     return result;
   }

@@ -4,7 +4,6 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UIFriendlyPermissions } from 'picsur-shared/dist/dto/permissions';
-import { LockedPermsUsersList } from 'picsur-shared/dist/dto/specialusers.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UpdateUserControl } from 'src/app/models/forms/updateuser.control';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
@@ -23,6 +22,8 @@ enum EditMode {
   styleUrls: ['./settings-users-edit.component.scss'],
 })
 export class SettingsUsersEditComponent implements OnInit {
+  private ImmutableUsersList: string[] = [];
+
   readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
 
   private mode: EditMode = EditMode.edit;
@@ -73,6 +74,10 @@ export class SettingsUsersEditComponent implements OnInit {
 
     this.model.putUsername(user.username);
     this.model.putRoles(user.roles);
+
+    const { ImmutableUsersList } =
+      await this.userManageService.getSpecialRolesOptimistic();
+    this.ImmutableUsersList = ImmutableUsersList;
   }
 
   private async initRoles() {
@@ -148,7 +153,7 @@ export class SettingsUsersEditComponent implements OnInit {
     if (this.adding) {
       return false;
     } else {
-      return LockedPermsUsersList.includes(this.model.getData().username);
+      return this.ImmutableUsersList.includes(this.model.getData().username);
     }
   }
 }

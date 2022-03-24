@@ -2,7 +2,8 @@ import { Type } from 'class-transformer';
 import {
   IsArray,
   IsDefined,
-  IsOptional, ValidateNested
+  IsOptional,
+  ValidateNested
 } from 'class-validator';
 import { EUser, NamePassUser, UsernameUser } from '../../entities/user.entity';
 import { IsPosInt } from '../../validators/positive-int.validator';
@@ -60,3 +61,18 @@ export class UserUpdateRequest extends UsernameUser {
 }
 
 export class UserUpdateResponse extends EUser {}
+
+// GetSpecialUsers
+export class GetSpecialUsersResponse {
+  @IsDefined()
+  @IsStringList()
+  UndeletableUsersList: string[];
+
+  @IsDefined()
+  @IsStringList()
+  ImmutableUsersList: string[];
+  
+  @IsDefined()
+  @IsStringList()
+  LockedLoginUsersList: string[];
+}
