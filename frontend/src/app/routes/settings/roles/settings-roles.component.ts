@@ -2,9 +2,6 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import {
-  Permission
-} from 'picsur-shared/dist/dto/permissions';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
@@ -88,7 +85,7 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
     await this.fetchRoles();
   }
 
-  uiFriendlyPermission(permission: Permission) {
+  uiFriendlyPermission(permission: string) {
     return UIFriendlyPermissions[permission];
   }
 

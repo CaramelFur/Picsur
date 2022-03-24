@@ -19,16 +19,19 @@ import {
   RoleUpdateResponse,
   SpecialRolesResponse
 } from 'picsur-shared/dist/dto/api/roles.dto';
-import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { RolesService } from '../../../collections/roledb/roledb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
+import {
+  Permission
+} from '../../../models/dto/permissions.dto';
 import {
   DefaultRolesList,
   ImmutableRolesList,
   SoulBoundRolesList,
   UndeletableRolesList
 } from '../../../models/dto/roles.dto';
+import { isPermissionsArray } from '../../../models/util/permissions';
 
 @Controller('api/roles')
 @RequiredPermissions(Permission.RoleManage)
@@ -66,9 +69,14 @@ export class RolesController {
   async updateRole(
     @Body() body: RoleUpdateRequest,
   ): Promise<RoleUpdateResponse> {
+    const permissions = body.permissions;
+    if (!isPermissionsArray(permissions)) {
+      throw new InternalServerErrorException('Invalid permissions array');
+    }
+
     const updatedRole = await this.rolesService.setPermissions(
       body.name,
-      body.permissions,
+      permissions,
     );
     if (HasFailed(updatedRole)) {
       this.logger.warn(updatedRole.getReason());
@@ -82,7 +90,12 @@ export class RolesController {
   async createRole(
     @Body() role: RoleCreateRequest,
   ): Promise<RoleCreateResponse> {
-    const newRole = await this.rolesService.create(role.name, role.permissions);
+    const permissions = role.permissions;
+    if (!isPermissionsArray(permissions)) {
+      throw new InternalServerErrorException('Invalid permissions array');
+    }
+
+    const newRole = await this.rolesService.create(role.name, permissions);
     if (HasFailed(newRole)) {
       this.logger.warn(newRole.getReason());
       throw new InternalServerErrorException('Could not create role');
@@ -104,7 +117,7 @@ export class RolesController {
     return deletedRole;
   }
 
-  @Get('special')
+  @Get('/special')
   async getSpecialRoles(): Promise<SpecialRolesResponse> {
     const result: SpecialRolesResponse = {
       SoulBoundRoles: SoulBoundRolesList,
@@ -115,4 +128,5 @@ export class RolesController {
 
     return plainToClass(SpecialRolesResponse, result);
   }
+
 }

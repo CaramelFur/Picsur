@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { NgxDropzoneChangeEvent } from 'ngx-dropzone';
-import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
+import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UtilService } from 'src/app/util/util.service';
 import { ProcessingViewMetadata } from '../../models/processing-view-metadata';
@@ -12,7 +12,7 @@ import { ProcessingViewMetadata } from '../../models/processing-view-metadata';
   styleUrls: ['./upload.component.scss'],
 })
 export class UploadComponent implements OnInit {
-  private permissions: Permissions = [];
+  private permissions: string[] = [];
 
   // Lets be optimistic here, this makes for a better ux
   public get hasUploadPermission() {

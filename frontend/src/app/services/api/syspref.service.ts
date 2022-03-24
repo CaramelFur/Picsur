@@ -7,7 +7,7 @@ import {
   UpdateSysPreferenceRequest,
   UpdateSysPreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
-import { Permission } from 'picsur-shared/dist/dto/permissions';
+import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import {
   SysPreferences,
   SysPrefValueType
@@ -31,7 +31,9 @@ export class SysprefService {
     return this.sysprefObservable;
   }
 
-  private sysprefObservable = new BehaviorSubject<SysPreferenceBaseResponse[]>([]);
+  private sysprefObservable = new BehaviorSubject<SysPreferenceBaseResponse[]>(
+    []
+  );
 
   constructor(
     private api: ApiService,

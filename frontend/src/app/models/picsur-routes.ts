@@ -1,6 +1,5 @@
 import { ComponentType, Portal } from '@angular/cdk/portal';
 import { Route } from '@angular/router';
-import { Permissions } from 'picsur-shared/dist/dto/permissions';
 
 export type PRouteData = {
   page?: {
@@ -8,7 +7,7 @@ export type PRouteData = {
     icon?: string;
     category?: string;
   };
-  permissions?: Permissions;
+  permissions?: string[];
   noContainer?: boolean;
   sidebar?: ComponentType<unknown>;
   _sidebar_portal?: Portal<unknown>;

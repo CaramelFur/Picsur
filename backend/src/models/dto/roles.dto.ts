@@ -1,5 +1,5 @@
-import { Permission, Permissions, PermissionsList } from 'picsur-shared/dist/dto/permissions';
 import tuple from 'picsur-shared/dist/types/tuple';
+import { Permission, Permissions, PermissionsList } from './permissions.dto';
 
 // Config
 
@@ -8,7 +8,10 @@ const SoulBoundRolesTuple = tuple('guest', 'user');
 // These roles can never be modified
 const ImmutableRolesTuple = tuple('admin');
 // These roles can never be removed from the server
-const UndeletableRolesTuple = tuple(...SoulBoundRolesTuple, ...ImmutableRolesTuple);
+const UndeletableRolesTuple = tuple(
+  ...SoulBoundRolesTuple,
+  ...ImmutableRolesTuple,
+);
 // These roles will be applied by default to new users
 export const DefaultRolesList: string[] = ['user'];
 

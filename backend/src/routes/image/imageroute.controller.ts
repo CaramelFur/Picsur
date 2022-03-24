@@ -13,11 +13,11 @@ import {
 import { isHash } from 'class-validator';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
-import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart.decorator';
 import { RequiredPermissions } from '../../decorators/permissions.decorator';
 import { ImageManagerService } from '../../managers/imagemanager/imagemanager.service';
+import { Permission } from '../../models/dto/permissions.dto';
 import { ImageUploadDto } from '../../models/requests/imageroute.dto';
 
 @Controller('i')

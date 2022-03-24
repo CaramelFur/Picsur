@@ -1,7 +1,7 @@
-import { IsArray, IsEnum } from 'class-validator';
-import { Permissions, PermissionsList } from '../dto/permissions';
+import { IsDefined } from 'class-validator';
 import { EntityID } from '../validators/entity-id.validator';
 import { IsRoleName } from '../validators/role.validators';
+import { IsStringList } from '../validators/string-list.validator';
 
 export class RoleNameObject {
   @IsRoleName()
@@ -9,9 +9,9 @@ export class RoleNameObject {
 }
 
 export class RoleNamePermsObject extends RoleNameObject {
-  @IsArray()
-  @IsEnum(PermissionsList, { each: true })
-  permissions: Permissions;
+  @IsDefined()
+  @IsStringList()
+  permissions: string[];
 }
 
 export class ERole extends RoleNamePermsObject {

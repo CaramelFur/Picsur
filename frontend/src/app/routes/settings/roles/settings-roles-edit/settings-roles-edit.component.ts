@@ -3,14 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  Permission,
-  PermissionsList
-} from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
 import { UpdateRoleControl } from 'src/app/models/forms/updaterole.control';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
+import { PermissionService } from 'src/app/services/api/permission.service';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { UtilService } from 'src/app/util/util.service';
 
@@ -42,7 +39,8 @@ export class SettingsRolesEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private utilService: UtilService,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    private permissionsService: PermissionService
   ) {}
 
   ngOnInit() {
@@ -70,27 +68,36 @@ export class SettingsRolesEditComponent implements OnInit {
   }
 
   private async initPermissions() {
-    this.model.putAllPermissions(PermissionsList);
+    const allPermissions = await this.permissionsService.fetchAllPermission();
+    if (HasFailed(allPermissions)) {
+      this.utilService.showSnackBar(
+        'Failed to fetch permissions',
+        SnackBarType.Error
+      );
+      return;
+    }
+
+    this.model.putAllPermissions(allPermissions);
   }
 
-  removePermission(permission: Permission) {
+  removePermission(permission: string) {
     this.model.removePermission(permission);
   }
 
   addPermission(event: MatChipInputEvent) {
     const value = (event.value ?? '').trim();
-    this.model.addPermission(value as Permission);
+    this.model.addPermission(value);
   }
 
   selectedPermission(event: MatAutocompleteSelectedEvent): void {
-    this.model.addPermission(event.option.viewValue as Permission);
+    this.model.addPermission(event.option.viewValue);
   }
 
   cancel() {
     this.router.navigate(['/settings/roles']);
   }
 
-  uiFriendlyPermission(permission: Permission) {
+  uiFriendlyPermission(permission: string) {
     return UIFriendlyPermissions[permission];
   }
 

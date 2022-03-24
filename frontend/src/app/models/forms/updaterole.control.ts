@@ -1,6 +1,5 @@
 import { FormControl } from '@angular/forms';
 import Fuse from 'fuse.js';
-import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { RoleNameValidators } from './role-validators';
 import { RoleModel } from './role.model';
@@ -8,10 +7,10 @@ import { CreateUsernameError } from './user-validators';
 
 export class UpdateRoleControl {
   // Set once
-  private permissions: Permissions = [];
+  private permissions: string[] = [];
 
   // Variables
-  private selectablePermissionsSubject = new BehaviorSubject<Permissions>([]);
+  private selectablePermissionsSubject = new BehaviorSubject<string[]>([]);
   private permissionsInputSubscription: null | Subscription;
 
   public rolename = new FormControl('', RoleNameValidators);
@@ -19,7 +18,7 @@ export class UpdateRoleControl {
   public permissionControl = new FormControl('', []);
   public selectablePermissions =
     this.selectablePermissionsSubject.asObservable();
-  public selectedPermissions: Permissions = [];
+  public selectedPermissions: string[] = [];
 
   public get rolenameValue() {
     return this.rolename.value;
@@ -43,23 +42,23 @@ export class UpdateRoleControl {
     }
   }
 
-  public addPermission(role: Permission) {
-    if (!this.selectablePermissionsSubject.value.includes(role)) return;
+  public addPermission(permission: string) {
+    if (!this.selectablePermissionsSubject.value.includes(permission)) return;
 
-    this.selectedPermissions.push(role);
+    this.selectedPermissions.push(permission);
     this.clearInput();
   }
 
-  public removePermission(role: Permission) {
+  public removePermission(permission: string) {
     this.selectedPermissions = this.selectedPermissions.filter(
-      (r) => r !== role
+      (r) => r !== permission
     );
     this.updateSelectablePermissions();
   }
 
   // Data interaction
 
-  public putAllPermissions(permissions: Permissions) {
+  public putAllPermissions(permissions: string[]) {
     this.permissions = permissions;
     this.updateSelectablePermissions();
   }
@@ -68,7 +67,7 @@ export class UpdateRoleControl {
     this.rolename.setValue(rolename);
   }
 
-  public putPermissions(permissions: Permissions) {
+  public putPermissions(permissions: string[]) {
     this.selectedPermissions = permissions;
     this.updateSelectablePermissions();
   }

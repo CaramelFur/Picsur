@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
+import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit {
   @Output('onHamburgerClick') onHamburgerClick = new EventEmitter<void>();
 
   private currentUser: EUser | null = null;
-  private permissions: Permissions = [];
+  private permissions: string[] = [];
 
   public get user() {
     return this.currentUser;

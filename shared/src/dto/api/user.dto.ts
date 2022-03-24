@@ -1,11 +1,11 @@
 import { Type } from 'class-transformer';
 import {
-  IsArray, IsDefined,
-  IsEnum, IsJWT, IsString,
+  IsDefined, IsJWT,
+  IsString,
   ValidateNested
 } from 'class-validator';
 import { EUser, NamePassUser } from '../../entities/user.entity';
-import { Permissions, PermissionsList } from '../permissions';
+import { IsStringList } from '../../validators/string-list.validator';
 
 // Api
 
@@ -40,7 +40,6 @@ export class UserMeResponse {
 // UserMePermissions
 export class UserMePermissionsResponse {
   @IsDefined()
-  @IsArray()
-  @IsEnum(PermissionsList, { each: true })
-  permissions: Permissions;
+  @IsStringList()
+  permissions: string[];
 }

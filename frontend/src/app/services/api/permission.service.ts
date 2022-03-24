@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
+import { AllPermissionsResponse } from 'picsur-shared/dist/dto/api/roles.dto';
 import { UserMePermissionsResponse } from 'picsur-shared/dist/dto/api/user.dto';
-import {
-  Permissions,
-  PermissionsList
-} from 'picsur-shared/dist/dto/permissions';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, filter, map, Observable, take } from 'rxjs';
 import { ApiService } from './api.service';
@@ -18,29 +15,29 @@ export class PermissionService {
     this.onUser();
   }
 
-  public get live(): Observable<Permissions> {
+  // TODO: add full permission list as default
+  public get live(): Observable<string[]> {
     return this.permissionsSubject.pipe(
-      map((permissions) => permissions ?? this.defaultPermissions)
+      map((permissions) => permissions ?? [])
     );
   }
 
-  public get snapshot(): Permissions {
-    return this.permissionsSubject.getValue() ?? this.defaultPermissions;
+  public get snapshot(): string[] {
+    return this.permissionsSubject.getValue() ?? [];
   }
 
   // This will not be optimistic, it will instead wait for correct data
-  public loadedSnapshot(): Promise<Permissions> {
+  public loadedSnapshot(): Promise<string[]> {
     return new Promise((resolve) => {
       const filtered = this.permissionsSubject.pipe(
         filter((permissions) => permissions !== null),
         take(1)
       );
-      (filtered as Observable<Permissions>).subscribe(resolve);
+      (filtered as Observable<string[]>).subscribe(resolve);
     });
   }
 
-  private defaultPermissions = PermissionsList as Permissions;
-  private permissionsSubject = new BehaviorSubject<Permissions | null>(null);
+  private permissionsSubject = new BehaviorSubject<string[] | null>(null);
 
   @AutoUnsubscribe()
   private onUser() {
@@ -54,7 +51,7 @@ export class PermissionService {
     });
   }
 
-  private async fetchPermissions(): AsyncFailable<Permissions> {
+  private async fetchPermissions(): AsyncFailable<string[]> {
     const got = await this.api.get(
       UserMePermissionsResponse,
       '/api/user/me/permissions'
@@ -62,5 +59,16 @@ export class PermissionService {
     if (HasFailed(got)) return got;
 
     return got.permissions;
+  }
+
+  public async fetchAllPermission(): AsyncFailable<string[]> {
+    const result = await this.api.get(
+      AllPermissionsResponse,
+      '/api/info/permissions'
+    );
+
+    if (HasFailed(result)) return result;
+
+    return result.Permissions;
   }
 }

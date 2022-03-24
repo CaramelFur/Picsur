@@ -6,8 +6,6 @@ import {
   Router,
   RouterStateSnapshot
 } from '@angular/router';
-import { Permissions } from 'picsur-shared/dist/dto/permissions';
-import { isPermissionsArray } from 'picsur-shared/dist/util/permissions';
 import { PRouteData } from '../models/picsur-routes';
 import { PermissionService } from '../services/api/permission.service';
 
@@ -34,12 +32,13 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
   }
 
   private async can(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const requiredPermissions: Permissions = this.nestedPermissions(route);
-    if (!isPermissionsArray(requiredPermissions)) {
-      throw new Error(
-        `PermissionGuard: route data 'permissions' must be an array of Permission values`
-      );
-    }
+    const requiredPermissions: string[] = this.nestedPermissions(route);
+    // TODO: revive
+    // if (!isPermissionsArray(requiredPermissions)) {
+    //   throw new Error(
+    //     `PermissionGuard: route data 'permissions' must be an array of Permission values`
+    //   );
+    // }
 
     const ourPermissions = await this.permissionService.loadedSnapshot();
 
@@ -53,10 +52,10 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
     return isOk;
   }
 
-  private nestedPermissions(route: ActivatedRouteSnapshot): Permissions {
+  private nestedPermissions(route: ActivatedRouteSnapshot): string[] {
     const data: PRouteData = route.data;
 
-    let permissions: Permissions = [];
+    let permissions: string[] = [];
     if (data?.permissions) {
       permissions = permissions.concat(data.permissions);
     }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Permissions } from 'picsur-shared/dist/dto/permissions';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
+import { Permissions } from '../../models/dto/permissions.dto';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { RolesService } from '../roledb/roledb.service';
 import { UsersService } from './userdb.service';

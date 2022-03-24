@@ -8,15 +8,13 @@ import {
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
-import {
-  Permissions
-} from 'picsur-shared/dist/dto/permissions';
 import { Fail, Failable, HasFailed } from 'picsur-shared/dist/types';
-import { isPermissionsArray } from 'picsur-shared/dist/util/permissions';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import { UserRolesService } from '../../../collections/userdb/userrolesdb.service';
+import { Permissions } from '../../../models/dto/permissions.dto';
 import { EUserBackend } from '../../../models/entities/user.entity';
+import { isPermissionsArray } from '../../../models/util/permissions';
 
 @Injectable()
 export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {

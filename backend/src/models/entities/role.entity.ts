@@ -1,6 +1,6 @@
-import { Permissions } from 'picsur-shared/dist/dto/permissions';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Permissions } from '../dto/permissions.dto';
 
 @Entity()
 export class ERoleBackend extends ERole {

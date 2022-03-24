@@ -54,3 +54,10 @@ export class SpecialRolesResponse {
   @IsStringList()
   DefaultRoles: string[];
 }
+
+// AllPermissions
+export class AllPermissionsResponse {
+  @IsDefined()
+  @IsStringList()
+  Permissions: string[];
+}

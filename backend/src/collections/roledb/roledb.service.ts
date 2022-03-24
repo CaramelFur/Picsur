@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
-import { Permissions } from 'picsur-shared/dist/dto/permissions';
 import {
   AsyncFailable,
   Fail,
@@ -10,6 +9,7 @@ import {
 } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { In, Repository } from 'typeorm';
+import { Permissions } from '../../models/dto/permissions.dto';
 import { ImmutableRolesList, UndeletableRolesList } from '../../models/dto/roles.dto';
 import { ERoleBackend } from '../../models/entities/role.entity';
 

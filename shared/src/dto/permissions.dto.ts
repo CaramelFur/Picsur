@@ -1,5 +1,4 @@
-// Config
-
+// Only add no rename
 export enum Permission {
   ImageView = 'image-view',
   ImageUpload = 'image-upload',
@@ -14,16 +13,3 @@ export enum Permission {
   RoleManage = 'role-manage', // Allow modification of roles
   SysPrefManage = 'syspref-manage',
 }
-
-// Derivatives
-
-export const PermissionsList: Permission[] = Object.values(Permission);
-
-export type Permissions = Permission[];
-
-// Compound permission lists
-export const AdminDashboardPermissions: Permissions = [
-  Permission.UserManage,
-  Permission.RoleManage,
-  Permission.SysPrefManage,
-];

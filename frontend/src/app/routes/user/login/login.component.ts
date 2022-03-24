@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
+import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
 import { PermissionService } from 'src/app/services/api/permission.service';
@@ -17,7 +17,7 @@ import { UserPassModel } from '../../../models/forms/userpass.model';
 export class LoginComponent implements OnInit {
   private readonly logger = console;
 
-  private permissions: Permissions = [];
+  private permissions: string[] = [];
 
   public get showRegister() {
     return this.permissions.includes(Permission.UserRegister);

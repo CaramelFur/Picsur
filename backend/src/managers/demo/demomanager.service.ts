@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { ImageDBService } from '../../collections/imagedb/imagedb.service';
 import { RolesService } from '../../collections/roledb/roledb.service';
+import { Permission } from '../../models/dto/permissions.dto';
 
 @Injectable()
 export class DemoManagerService {

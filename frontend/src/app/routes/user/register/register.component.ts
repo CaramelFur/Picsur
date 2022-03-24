@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { Permission, Permissions } from 'picsur-shared/dist/dto/permissions';
+import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UserPassModel } from 'src/app/models/forms/userpass.model';
 import { SnackBarType } from 'src/app/models/snack-bar-type';
@@ -17,7 +17,7 @@ import { RegisterControl } from '../../../models/forms/register.control';
 export class RegisterComponent implements OnInit {
   private readonly logger = console;
 
-  private permissions: Permissions = [];
+  private permissions: string[] = [];
 
   public get showLogin() {
     return this.permissions.includes(Permission.UserLogin);

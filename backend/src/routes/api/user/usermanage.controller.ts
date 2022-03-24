@@ -20,10 +20,10 @@ import {
   UserUpdateRequest,
   UserUpdateResponse
 } from 'picsur-shared/dist/dto/api/usermanage.dto';
-import { Permission } from 'picsur-shared/dist/dto/permissions';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
+import { Permission } from '../../../models/dto/permissions.dto';
 import { ImmutableUsersList, LockedLoginUsersList, UndeletableUsersList } from '../../../models/dto/specialusers.dto';
 
 @Controller('api/user')

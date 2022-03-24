@@ -1,6 +1,5 @@
 import { FormControl } from '@angular/forms';
 import Fuse from 'fuse.js';
-import { Permissions } from 'picsur-shared/dist/dto/permissions';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FullUserModel } from './fulluser.model';
@@ -74,8 +73,8 @@ export class UpdateUserControl {
     return true;
   }
 
-  public getEffectivePermissions(): Permissions {
-    const permissions: Permissions = [];
+  public getEffectivePermissions(): string[] {
+    const permissions: string[] = [];
     for (const role of this.selectedRoles) {
       const fullRole = this.fullRoles.find((r) => r.name === role);
       if (!fullRole) {
