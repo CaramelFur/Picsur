@@ -1,4 +1,7 @@
 // Only add no rename
+// This enum only makes permissions easier to program,
+// This does not have to be a complete list of all permissions
+// -> the frontend and backend can be somewhat out of sync
 export enum Permission {
   ImageView = 'image-view',
   ImageUpload = 'image-upload',

@@ -1,4 +1,5 @@
 import { IsBoolean, IsDefined, IsSemVer, IsString } from 'class-validator';
+import { IsStringList } from '../../validators/string-list.validator';
 
 export class InfoResponse {
   @IsBoolean()
@@ -13,4 +14,11 @@ export class InfoResponse {
   @IsString()
   @IsSemVer()
   version: string;
+}
+
+// AllPermissions
+export class AllPermissionsResponse {
+  @IsDefined()
+  @IsStringList()
+  Permissions: string[];
 }

@@ -1,5 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { SysPreferences } from '../dto/syspreferences.dto';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { EntityID } from '../validators/entity-id.validator';
 
 export class ESysPreference {
@@ -7,8 +6,8 @@ export class ESysPreference {
   id?: number;
 
   @IsNotEmpty()
-  @IsEnum(SysPreferences)
-  key: SysPreferences;
+  @IsString()
+  key: string;
 
   @IsNotEmpty()
   @IsString()

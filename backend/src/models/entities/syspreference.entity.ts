@@ -1,4 +1,3 @@
-import { SysPreferences } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { ESysPreference } from 'picsur-shared/dist/entities/syspreference.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -8,7 +7,7 @@ export class ESysPreferenceBackend extends ESysPreference {
   override id?: number;
 
   @Column({ nullable: false, unique: true })
-  override key: SysPreferences;
+  override key: string;
 
   @Column({ nullable: false })
   override value: string;

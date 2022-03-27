@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { AllPermissionsResponse } from 'picsur-shared/dist/dto/api/roles.dto';
+import { AllPermissionsResponse } from 'picsur-shared/dist/dto/api/info.dto';
 import { UserMePermissionsResponse } from 'picsur-shared/dist/dto/api/user.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, filter, map, Observable, take } from 'rxjs';

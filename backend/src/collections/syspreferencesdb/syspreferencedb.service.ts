@@ -3,8 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import {
   InternalSysprefRepresentation,
-  SysPreferences,
-  SysPreferenceValueTypes,
+  SysPreference,
   SysPrefValueType
 } from 'picsur-shared/dist/dto/syspreferences.dto';
 import {
@@ -15,6 +14,10 @@ import {
 } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Repository } from 'typeorm';
+import {
+  SysPreferenceList,
+  SysPreferenceValueTypes
+} from '../../models/dto/syspreferences.dto';
 import { ESysPreferenceBackend } from '../../models/entities/syspreference.entity';
 import { SysPreferenceDefaultsService } from './syspreferencedefaults.service';
 
@@ -29,7 +32,7 @@ export class SysPreferenceService {
   ) {}
 
   public async setPreference(
-    key: SysPreferences,
+    key: string,
     value: SysPrefValueType,
   ): AsyncFailable<InternalSysprefRepresentation> {
     // Validate
@@ -50,12 +53,13 @@ export class SysPreferenceService {
     return {
       key: sysPreference.key,
       value,
-      type: SysPreferenceValueTypes[key],
+      // key has to be valid here, we validated it
+      type: SysPreferenceValueTypes[key as SysPreference],
     };
   }
 
   public async getPreference(
-    key: SysPreferences,
+    key: string,
   ): AsyncFailable<InternalSysprefRepresentation> {
     // Validate
     let validatedKey = this.validatePrefKey(key);
@@ -92,7 +96,7 @@ export class SysPreferenceService {
     return this.retrieveConvertedValue(foundSysPreference);
   }
 
-  public async getStringPreference(key: SysPreferences): AsyncFailable<string> {
+  public async getStringPreference(key: string): AsyncFailable<string> {
     const pref = await this.getPreference(key);
     if (HasFailed(pref)) return pref;
     if (pref.type !== 'string') return Fail('Invalid preference type');
@@ -100,7 +104,7 @@ export class SysPreferenceService {
     return pref.value as string;
   }
 
-  public async getNumberPreference(key: SysPreferences): AsyncFailable<number> {
+  public async getNumberPreference(key: string): AsyncFailable<number> {
     const pref = await this.getPreference(key);
     if (HasFailed(pref)) return pref;
     if (pref.type !== 'number') return Fail('Invalid preference type');
@@ -108,9 +112,7 @@ export class SysPreferenceService {
     return pref.value as number;
   }
 
-  public async getBooleanPreference(
-    key: SysPreferences,
-  ): AsyncFailable<boolean> {
+  public async getBooleanPreference(key: string): AsyncFailable<boolean> {
     const pref = await this.getPreference(key);
     if (HasFailed(pref)) return pref;
     if (pref.type !== 'boolean') return Fail('Invalid preference type');
@@ -122,7 +124,7 @@ export class SysPreferenceService {
     InternalSysprefRepresentation[]
   > {
     let internalSysPrefs = await Promise.all(
-      SysPreferences.map((key) => this.getPreference(key as SysPreferences)),
+      SysPreferenceList.map((key) => this.getPreference(key)),
     );
     if (internalSysPrefs.some((pref) => HasFailed(pref))) {
       return Fail('Could not get all preferences');
@@ -133,7 +135,7 @@ export class SysPreferenceService {
   // Private
 
   private async saveDefault(
-    key: SysPreferences,
+    key: SysPreference, // Force enum here because we dont validate
   ): AsyncFailable<InternalSysprefRepresentation> {
     return this.setPreference(key, this.defaultsService.defaults[key]());
   }
@@ -141,7 +143,10 @@ export class SysPreferenceService {
   private retrieveConvertedValue(
     preference: ESysPreferenceBackend,
   ): Failable<InternalSysprefRepresentation> {
-    const type = SysPreferenceValueTypes[preference.key];
+    const key = this.validatePrefKey(preference.key);
+    if (HasFailed(key)) return key;
+
+    const type = SysPreferenceValueTypes[key];
     switch (type) {
       case 'string':
         return {
@@ -190,16 +195,16 @@ export class SysPreferenceService {
     return verifySysPreference;
   }
 
-  private validatePrefKey(key: string): Failable<SysPreferences> {
-    if (!SysPreferences.includes(key)) {
+  private validatePrefKey(key: string): Failable<SysPreference> {
+    if (!SysPreferenceList.includes(key)) {
       return Fail('Invalid preference key');
     }
 
-    return key as SysPreferences;
+    return key as SysPreference;
   }
 
   private validatePrefValue(
-    key: SysPreferences,
+    key: SysPreference,
     value: SysPrefValueType,
   ): Failable<string> {
     const expectedType = SysPreferenceValueTypes[key];

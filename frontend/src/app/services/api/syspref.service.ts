@@ -8,14 +8,12 @@ import {
   UpdateSysPreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
-import {
-  SysPreferences,
-  SysPrefValueType
-} from 'picsur-shared/dist/dto/syspreferences.dto';
+import { SysPrefValueType } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { PermissionService } from './permission.service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -60,7 +58,7 @@ export class SysprefService {
   }
 
   public async getPreference(
-    key: SysPreferences
+    key: string,
   ): AsyncFailable<GetSyspreferenceResponse> {
     if (!this.hasPermission)
       return Fail('You do not have permission to edit system preferences');
@@ -79,7 +77,7 @@ export class SysprefService {
   }
 
   public async setPreference(
-    key: SysPreferences,
+    key: string,
     value: SysPrefValueType
   ): AsyncFailable<UpdateSysPreferenceResponse> {
     if (!this.hasPermission)

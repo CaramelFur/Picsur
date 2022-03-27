@@ -1,51 +1,19 @@
-import tuple from '../types/tuple';
+export enum SysPreference {
+  JwtSecret = 'jwt_secret',
+  JwtExpiresIn = 'jwt_expires_in',
+  TestString = 'test_string',
+  TestNumber = 'test_number',
+  TestBoolean = 'test_boolean',
+}
 
-// Syspref keys
-
-const SysPreferencesTuple = tuple(
-  'jwt_secret',
-  'jwt_expires_in',
-  'test_string',
-  'test_number',
-  'test_boolean',
-);
-
-export const SysPreferences: string[] = SysPreferencesTuple;
-export type SysPreferences = typeof SysPreferencesTuple[number];
-
-export const SysPreferenceFriendlyNames: {
-  [key in SysPreferences]: string;
-} = {
-  jwt_secret: 'JWT Secret',
-  jwt_expires_in: 'JWT Expiry Time',
-  test_string: 'Test String',
-  test_number: 'Test Number',
-  test_boolean: 'Test Boolean',
-};
-
-// Syspref Values
-
+// Variable value type
 export type SysPrefValueType = string | number | boolean;
 export type SysPrefValueTypeStrings = 'string' | 'number' | 'boolean';
 export const SysPrefValueTypes = ['string', 'number', 'boolean'];
 
-export const SysPreferenceValueTypes: {
-  [key in SysPreferences]: SysPrefValueTypeStrings;
-} = {
-  jwt_secret: 'string',
-  jwt_expires_in: 'string',
-  test_string: 'string',
-  test_number: 'number',
-  test_boolean: 'boolean',
-};
-
-// Validators
-
-
-// interfaces
-
+// Interfaces
 export interface InternalSysprefRepresentation {
-  key: SysPreferences;
+  key: string;
   value: SysPrefValueType;
   type: SysPrefValueTypeStrings;
 }

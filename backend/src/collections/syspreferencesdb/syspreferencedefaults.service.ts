@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import {
-  SysPreferences,
+  SysPreference,
   SysPrefValueType
 } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
@@ -13,9 +13,9 @@ export class SysPreferenceDefaultsService {
   constructor(private jwtConfigService: EnvJwtConfigService) {}
 
   public readonly defaults: {
-    [key in SysPreferences]: () => SysPrefValueType;
+    [key in SysPreference]: () => SysPrefValueType;
   } = {
-    jwt_secret: () => {
+    [SysPreference.JwtSecret]: () => {
       const envSecret = this.jwtConfigService.getJwtSecret();
       if (envSecret) {
         return envSecret;
@@ -26,10 +26,10 @@ export class SysPreferenceDefaultsService {
         return generateRandomString(64);
       }
     },
-    jwt_expires_in: () => this.jwtConfigService.getJwtExpiresIn() ?? '7d',
+    [SysPreference.JwtExpiresIn]: () => this.jwtConfigService.getJwtExpiresIn() ?? '7d',
 
-    test_string: () => 'test_string',
-    test_number: () => 123,
-    test_boolean: () => true,
+    [SysPreference.TestString]: () => 'test_string',
+    [SysPreference.TestNumber]: () => 123,
+    [SysPreference.TestBoolean]: () => true,
   };
 }

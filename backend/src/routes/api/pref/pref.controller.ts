@@ -15,7 +15,6 @@ import {
   UpdateSysPreferenceRequest,
   UpdateSysPreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
-import { SysPreferences } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/syspreferencesdb/syspreferencedb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
@@ -50,7 +49,7 @@ export class PrefController {
   async getSysPref(
     @Param('key') key: string,
   ): Promise<GetSyspreferenceResponse> {
-    const pref = await this.prefService.getPreference(key as SysPreferences);
+    const pref = await this.prefService.getPreference(key);
     if (HasFailed(pref)) {
       this.logger.warn(pref.getReason());
       throw new InternalServerErrorException('Could not get preference');
@@ -66,20 +65,18 @@ export class PrefController {
   ): Promise<UpdateSysPreferenceResponse> {
     const value = body.value;
 
-    const pref = await this.prefService.setPreference(
-      key as SysPreferences,
-      value,
-    );
+    const pref = await this.prefService.setPreference(key, value);
     if (HasFailed(pref)) {
       this.logger.warn(pref.getReason());
       throw new InternalServerErrorException('Could not set preference');
     }
 
-    const returned = new UpdateSysPreferenceResponse();
-    returned.key = key as SysPreferences;
-    returned.value = pref.value;
-    returned.type = pref.type;
+    const returned = {
+      key,
+      value: pref.value,
+      type: pref.type,
+    };
 
-    return returned;
+    return plainToClass(UpdateSysPreferenceResponse, returned);
   }
 }

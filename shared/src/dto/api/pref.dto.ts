@@ -1,20 +1,15 @@
 import { Type } from 'class-transformer';
 import {
-  IsArray, IsEnum, IsNotEmpty, ValidateNested
+  IsArray, IsEnum, IsNotEmpty, IsString, ValidateNested
 } from 'class-validator';
 import { IsPosInt } from '../../validators/positive-int.validator';
 import { IsSysPrefValue } from '../../validators/syspref.validator';
-import {
-  SysPreferences,
-  SysPrefValueType,
-  SysPrefValueTypes,
-  SysPrefValueTypeStrings
-} from '../syspreferences.dto';
+import { SysPrefValueType, SysPrefValueTypes, SysPrefValueTypeStrings } from '../syspreferences.dto';
 
 export class SysPreferenceBaseResponse {
   @IsNotEmpty()
-  @IsEnum(SysPreferences)
-  key: SysPreferences;
+  @IsString()
+  key: string;
 
   @IsNotEmpty()
   @IsSysPrefValue()
