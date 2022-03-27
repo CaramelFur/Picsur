@@ -1,3 +1,8 @@
+// This is a simple wrapper for failures
+// It makes it a lot more pleasant to work with errors
+// Since now they dont just come out of nowhere
+//  -> Side effects go brrr
+
 export class Failure {
   constructor(private readonly reason?: string) {}
 

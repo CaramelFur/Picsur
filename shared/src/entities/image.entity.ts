@@ -11,9 +11,8 @@ export class EImage {
 
   // Binary data
   @IsOptional()
-  @Exclude()
+  @Exclude() // Dont send this by default
   data?: object;
-
   
   @IsNotEmpty()
   @IsString()

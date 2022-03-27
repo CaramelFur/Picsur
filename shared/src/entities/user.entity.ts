@@ -4,6 +4,9 @@ import { EntityID } from '../validators/entity-id.validator';
 import { IsStringList } from '../validators/string-list.validator';
 import { IsPlainTextPwd, IsUsername } from '../validators/user.validators';
 
+// This entity is build from multiple smaller enitities
+// Theses smaller entities are used in other places
+
 export class UsernameUser {
   @IsUsername()
   username: string;

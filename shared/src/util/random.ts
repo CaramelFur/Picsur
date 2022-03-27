@@ -6,6 +6,7 @@ const randomCharacters =
 export function generateRandomString(length: number): string {
   let out = '';
   for (let i = 0; i < length; i++) {
+    // Yes this is done synchronously, but it's not a big deal
     out += randomCharacters[crypto.randomInt(0, randomCharacters.length - 1)];
   }
   return out;

@@ -3,6 +3,9 @@ import { EntityID } from '../validators/entity-id.validator';
 import { IsRoleName } from '../validators/role.validators';
 import { IsStringList } from '../validators/string-list.validator';
 
+// This entity is build from multiple smaller enitities
+// Theses smaller entities are used in other places
+
 export class RoleNameObject {
   @IsRoleName()
   name: string;

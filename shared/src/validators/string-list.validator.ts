@@ -3,9 +3,9 @@ import {
   IsNotEmpty,
   IsString
 } from 'class-validator';
-import { ComposeValidators } from './compose.validator';
+import { CombinePDecorators } from '../util/decorator';
 
-export const IsStringList = ComposeValidators(
+export const IsStringList = CombinePDecorators(
   IsArray(),
   IsString({ each: true }),
   IsNotEmpty({ each: true }),

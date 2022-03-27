@@ -1,4 +1,4 @@
 import { IsDefined, IsInt, Min } from 'class-validator';
-import { ComposeValidators } from './compose.validator';
+import { CombinePDecorators } from '../util/decorator';
 
-export const IsPosInt = ComposeValidators(IsInt(), Min(0), IsDefined());
+export const IsPosInt = CombinePDecorators(IsInt(), Min(0), IsDefined());
