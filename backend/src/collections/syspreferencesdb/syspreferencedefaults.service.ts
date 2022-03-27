@@ -6,6 +6,9 @@ import {
 import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { EnvJwtConfigService } from '../../config/jwt.config.service';
 
+// This specific service is used to store default values for system preferences
+// It needs to be in a service because the values depend on the environment
+
 @Injectable()
 export class SysPreferenceDefaultsService {
   private readonly logger = new Logger('SysPreferenceDefaultsService');
@@ -26,8 +29,8 @@ export class SysPreferenceDefaultsService {
         return generateRandomString(64);
       }
     },
-    [SysPreference.JwtExpiresIn]: () => this.jwtConfigService.getJwtExpiresIn() ?? '7d',
-
+    [SysPreference.JwtExpiresIn]: () =>
+      this.jwtConfigService.getJwtExpiresIn() ?? '7d',
     [SysPreference.TestString]: () => 'test_string',
     [SysPreference.TestNumber]: () => 123,
     [SysPreference.TestBoolean]: () => true,

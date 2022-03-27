@@ -8,17 +8,22 @@ import {
   HasFailed,
   HasSuccess
 } from 'picsur-shared/dist/types';
+import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Repository } from 'typeorm';
 import {
   DefaultRolesList,
   SoulBoundRolesList
 } from '../../models/dto/roles.dto';
-import { ImmutableUsersList, LockedLoginUsersList, UndeletableUsersList } from '../../models/dto/specialusers.dto';
+import {
+  ImmutableUsersList,
+  LockedLoginUsersList,
+  UndeletableUsersList
+} from '../../models/dto/specialusers.dto';
 import { EUserBackend } from '../../models/entities/user.entity';
-import { GetCols } from '../collectionutils';
-import { RolesService } from '../roledb/roledb.service';
+import { GetCols } from '../../models/util/collection';
 
+// TODO: make this a configurable value
 const BCryptStrength = 12;
 
 @Injectable()
@@ -28,7 +33,6 @@ export class UsersService {
   constructor(
     @InjectRepository(EUserBackend)
     private usersRepository: Repository<EUserBackend>,
-    private rolesService: RolesService,
   ) {}
 
   // Creation and deletion
@@ -37,6 +41,7 @@ export class UsersService {
     username: string,
     password: string,
     roles?: string[],
+    // Add option to create "invalid" users, should only be used by system
     byPassRoleCheck?: boolean,
   ): AsyncFailable<EUserBackend> {
     if (await this.exists(username)) return Fail('User already exists');
@@ -48,10 +53,11 @@ export class UsersService {
     user.password = hashedPassword;
     if (byPassRoleCheck) {
       const rolesToAdd = roles ?? [];
-      user.roles = [...new Set([...rolesToAdd])];
+      user.roles = makeUnique(rolesToAdd);
     } else {
+      // Strip soulbound roles and add default roles
       const rolesToAdd = this.filterAddedRoles(roles ?? []);
-      user.roles = [...new Set([...DefaultRolesList, ...rolesToAdd])];
+      user.roles = makeUnique([...DefaultRolesList, ...rolesToAdd]);
     }
 
     try {
@@ -60,10 +66,10 @@ export class UsersService {
       return Fail(e?.message);
     }
 
-    return plainToClass(EUserBackend, user); // Strips unwanted data
+    // Strips unwanted data
+    return plainToClass(EUserBackend, user);
   }
 
-  // Returns user object without id
   public async delete(
     user: string | EUserBackend,
   ): AsyncFailable<EUserBackend> {
@@ -92,6 +98,7 @@ export class UsersService {
 
     if (ImmutableUsersList.includes(userToModify.username)) {
       // Just fail silently
+      this.logger.log("Can't modify system user");
       return userToModify;
     }
 
@@ -99,9 +106,7 @@ export class UsersService {
       SoulBoundRolesList.includes(role),
     );
     const rolesToAdd = this.filterAddedRoles(roles);
-
-    const newRoles = [...new Set([...rolesToKeep, ...rolesToAdd])];
-
+    const newRoles = makeUnique([...rolesToKeep, ...rolesToAdd]);
     userToModify.roles = newRoles;
 
     try {
@@ -115,19 +120,20 @@ export class UsersService {
     user: string | EUserBackend,
     password: string,
   ): AsyncFailable<EUserBackend> {
-    const userToModify = await this.resolve(user);
+    let userToModify = await this.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
 
     const hashedPassword = await bcrypt.hash(password, BCryptStrength);
-
     userToModify.password = hashedPassword;
 
     try {
-      const fullUser = await this.usersRepository.save(userToModify);
-      return plainToClass(EUserBackend, fullUser);
+      userToModify = await this.usersRepository.save(userToModify);
     } catch (e: any) {
       return Fail(e?.message);
     }
+
+    // Strips unwanted data
+    return plainToClass(EUserBackend, userToModify);
   }
 
   // Authentication
@@ -140,7 +146,8 @@ export class UsersService {
     if (HasFailed(user)) return user;
 
     if (LockedLoginUsersList.includes(user.username)) {
-      return Fail('Wrong password');
+      // Error should be kept in backend
+      return Fail('Wrong username');
     }
 
     if (!(await bcrypt.compare(password, user.password)))
@@ -153,6 +160,8 @@ export class UsersService {
 
   public async findOne<B extends true | undefined = undefined>(
     username: string,
+    // Also fetch fields that aren't normally sent to the client
+    // (e.g. hashed password)
     getPrivate?: B,
   ): AsyncFailable<
     B extends undefined ? EUserBackend : Required<EUserBackend>

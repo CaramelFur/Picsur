@@ -25,6 +25,6 @@ export class DemoManagerService {
 
   private async executeAsync() {
     this.logger.log('Executing demo cleanup');
-    await this.imagesService.deleteAll();
+    await this.imagesService.deleteAll(true);
   }
 }

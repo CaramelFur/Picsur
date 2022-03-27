@@ -7,10 +7,14 @@ import {
   HasFailed,
   HasSuccess
 } from 'picsur-shared/dist/types';
+import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { In, Repository } from 'typeorm';
 import { Permissions } from '../../models/dto/permissions.dto';
-import { ImmutableRolesList, UndeletableRolesList } from '../../models/dto/roles.dto';
+import {
+  ImmutableRolesList,
+  UndeletableRolesList
+} from '../../models/dto/roles.dto';
 import { ERoleBackend } from '../../models/entities/role.entity';
 
 @Injectable()
@@ -33,12 +37,10 @@ export class RolesService {
     role.permissions = permissions;
 
     try {
-      role = await this.rolesRepository.save(role, { reload: true });
+      return await this.rolesRepository.save(role, { reload: true });
     } catch (e: any) {
       return Fail(e?.message);
     }
-
-    return plainToClass(ERoleBackend, role);
   }
 
   public async delete(
@@ -69,7 +71,7 @@ export class RolesService {
       permissions.push(...foundRole.permissions);
     }
 
-    return [...new Set(...[permissions])];
+    return makeUnique(permissions);
   }
 
   public async addPermissions(
@@ -79,10 +81,10 @@ export class RolesService {
     const roleToModify = await this.resolve(role);
     if (HasFailed(roleToModify)) return roleToModify;
 
-    // This is stupid
-    const newPermissions = [
-      ...new Set([...roleToModify.permissions, ...permissions]),
-    ];
+    const newPermissions = makeUnique([
+      ...roleToModify.permissions,
+      ...permissions,
+    ]);
 
     return this.setPermissions(roleToModify, newPermissions);
   }
@@ -101,9 +103,11 @@ export class RolesService {
     return this.setPermissions(roleToModify, newPermissions);
   }
 
+  // Permission specific validation is done here
   public async setPermissions(
     role: string | ERoleBackend,
     permissions: Permissions,
+    // Extra bypass for internal use
     allowImmutable: boolean = false,
   ): AsyncFailable<ERoleBackend> {
     const roleToModify = await this.resolve(role);
@@ -113,7 +117,7 @@ export class RolesService {
       return Fail('Cannot modify immutable role');
     }
 
-    roleToModify.permissions = [...new Set(permissions)];
+    roleToModify.permissions = makeUnique(permissions);
 
     try {
       return await this.rolesRepository.save(roleToModify);
@@ -129,7 +133,7 @@ export class RolesService {
       });
 
       if (!found) return Fail('Role not found');
-      return found as ERoleBackend;
+      return found;
     } catch (e: any) {
       return Fail(e?.message);
     }
@@ -139,7 +143,7 @@ export class RolesService {
     try {
       const found = await this.rolesRepository.find();
       if (!found) return Fail('No roles found');
-      return found as ERoleBackend[];
+      return found;
     } catch (e: any) {
       return Fail(e?.message);
     }
@@ -149,8 +153,10 @@ export class RolesService {
     return HasSuccess(await this.findOne(username));
   }
 
-  public async nukeSystemRoles(iamsure: boolean = false): AsyncFailable<true> {
-    if (!iamsure) return Fail('Nuke aborted');
+  public async nukeSystemRoles(IAmSure: boolean = false): AsyncFailable<true> {
+    if (!IAmSure)
+      return Fail('You must confirm that you want to delete all roles');
+
     try {
       await this.rolesRepository.delete({
         name: In(UndeletableRolesList),

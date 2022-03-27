@@ -28,36 +28,27 @@ export class UsersModule implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    await this.ensureGuestExists();
-    await this.ensureAdminExists();
-  }
-
-  private async ensureGuestExists() {
-    const username = 'guest';
-    const password = generateRandomString(128);
-    this.logger.debug(`Ensuring guest user exists`);
-
-    const exists = await this.usersService.exists(username);
-    if (exists) return;
-
-    const newUser = await this.usersService.create(
-      username,
-      password,
+    await this.ensureUserExists(
+      'guest',
+      // Guest should never be able to login
+      // It should be prevented even if you know the password
+      // But to be sure, we set it to a random string
+      generateRandomString(128),
       ['guest'],
-      true,
     );
-    if (HasFailed(newUser)) {
-      this.logger.error(
-        `Failed to create guest user because: ${newUser.getReason()}`,
-      );
-      return;
-    }
+    await this.ensureUserExists(
+      'admin',
+      this.authConfigService.getDefaultAdminPassword(),
+      ['user', 'admin'],
+    );
   }
 
-  private async ensureAdminExists() {
-    const username = 'admin';
-    const password = this.authConfigService.getDefaultAdminPassword();
-    this.logger.debug(`Ensuring admin user exists`);
+  private async ensureUserExists(
+    username: string,
+    password: string,
+    roles: string[],
+  ) {
+    this.logger.debug(`Ensuring user "${username}" exists`);
 
     const exists = await this.usersService.exists(username);
     if (exists) return;
@@ -65,12 +56,12 @@ export class UsersModule implements OnModuleInit {
     const newUser = await this.usersService.create(
       username,
       password,
-      ['user', 'admin'],
-      true,
+      roles,
+      false,
     );
     if (HasFailed(newUser)) {
       this.logger.error(
-        `Failed to create admin user because: ${newUser.getReason()}`,
+        `Failed to create user "${username}" because: ${newUser.getReason()}`,
       );
       return;
     }

@@ -41,13 +41,13 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
 
     const permissions = this.extractPermissions(context);
     if (HasFailed(permissions)) {
-      this.logger.warn('222' + permissions.getReason());
+      this.logger.warn('Route Permissions: ' + permissions.getReason());
       throw new InternalServerErrorException();
     }
 
     const userPermissions = await this.userRolesService.getPermissions(user);
     if (HasFailed(userPermissions)) {
-      this.logger.warn('111' + userPermissions.getReason());
+      this.logger.warn('User Permissions: ' + userPermissions.getReason());
       throw new InternalServerErrorException();
     }
 

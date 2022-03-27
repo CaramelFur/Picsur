@@ -21,6 +21,8 @@ export class RolesModule implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
+    // Nuking roles in dev environment makes testing easier
+    // This ensures that the roles are always started with their default permissions
     if (!this.hostConfig.isProduction()) {
       await this.nukeRoles();
     }
@@ -38,6 +40,7 @@ export class RolesModule implements OnModuleInit {
   }
 
   private async ensureSystemRolesExist() {
+    // The UndeletableRolesList is also the list of systemroles
     for (const systemRole of UndeletableRolesList) {
       this.logger.debug(`Ensuring system role "${systemRole}" exists`);
 
@@ -58,6 +61,9 @@ export class RolesModule implements OnModuleInit {
   }
 
   private async updateImmutableRoles() {
+    // Immutable roles can not be updated via the gui
+    // They therefore do have to be kept up to date from the backend
+    
     for (const immutableRole of ImmutableRolesList) {
       this.logger.debug(
         `Updating permissions for immutable role "${immutableRole}"`,

@@ -4,14 +4,12 @@ import { plainToClass } from 'class-transformer';
 import Crypto from 'crypto';
 import {
   AsyncFailable,
-  Fail,
-  HasFailed,
-  HasSuccess
+  Fail, HasSuccess
 } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import { SupportedMime } from '../../models/dto/mimes.dto';
 import { EImageBackend } from '../../models/entities/image.entity';
-import { GetCols } from '../collectionutils';
+import { GetCols } from '../../models/util/collection';
 
 @Injectable()
 export class ImageDBService {
@@ -46,7 +44,9 @@ export class ImageDBService {
   public async findOne<B extends true | undefined = undefined>(
     hash: string,
     getPrivate?: B,
-  ): AsyncFailable<B extends undefined ? EImageBackend : Required<EImageBackend>> {
+  ): AsyncFailable<
+    B extends undefined ? EImageBackend : Required<EImageBackend>
+  > {
     try {
       const found = await this.imageRepository.findOne({
         where: { hash },
@@ -54,21 +54,27 @@ export class ImageDBService {
       });
 
       if (!found) return Fail('Image not found');
-      return found as B extends undefined ? EImageBackend : Required<EImageBackend>;
+      return found as B extends undefined
+        ? EImageBackend
+        : Required<EImageBackend>;
     } catch (e: any) {
       return Fail(e?.message);
     }
   }
 
   public async findMany(
-    startId: number,
-    limit: number,
+    count: number,
+    page: number,
   ): AsyncFailable<EImageBackend[]> {
+    if (count < 1 || page < 0) return Fail('Invalid page');
+    if (count > 100) return Fail('Too many results');
+
     try {
       const found = await this.imageRepository.find({
-        where: { id: { gte: startId } },
-        take: limit,
+        skip: count * page,
+        take: count,
       });
+
       if (found === undefined) return Fail('Images not found');
       return found;
     } catch (e: any) {
@@ -77,18 +83,19 @@ export class ImageDBService {
   }
 
   public async delete(hash: string): AsyncFailable<true> {
-    const image = await this.findOne(hash);
-    if (HasFailed(image)) return image;
-
     try {
-      await this.imageRepository.delete(image);
+      const result = await this.imageRepository.delete({ hash });
+      if (result.affected === 0) return Fail('Image not found');
     } catch (e: any) {
       return Fail(e?.message);
     }
     return true;
   }
 
-  public async deleteAll(): AsyncFailable<true> {
+  public async deleteAll(IAmSure: boolean): AsyncFailable<true> {
+    if (!IAmSure)
+      return Fail('You must confirm that you want to delete all images');
+
     try {
       await this.imageRepository.delete({});
     } catch (e: any) {
