@@ -7,12 +7,9 @@ import {
   Param,
   Post
 } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
 import {
   GetSyspreferenceResponse,
-  MultipleSysPreferencesResponse,
-  SysPreferenceBaseResponse,
-  UpdateSysPreferenceRequest,
+  MultipleSysPreferencesResponse, UpdateSysPreferenceRequest,
   UpdateSysPreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
@@ -35,14 +32,10 @@ export class PrefController {
       throw new InternalServerErrorException('Could not get preferences');
     }
 
-    const returned: MultipleSysPreferencesResponse = {
-      preferences: prefs.map((pref) =>
-        plainToClass(SysPreferenceBaseResponse, pref),
-      ),
+    return {
+      preferences: prefs,
       total: prefs.length,
     };
-
-    return plainToClass(MultipleSysPreferencesResponse, returned);
   }
 
   @Get('sys/:key')
@@ -55,7 +48,7 @@ export class PrefController {
       throw new InternalServerErrorException('Could not get preference');
     }
 
-    return plainToClass(GetSyspreferenceResponse, pref);
+    return pref;
   }
 
   @Post('sys/:key')
@@ -71,12 +64,10 @@ export class PrefController {
       throw new InternalServerErrorException('Could not set preference');
     }
 
-    const returned = {
+    return {
       key,
       value: pref.value,
       type: pref.type,
     };
-
-    return plainToClass(UpdateSysPreferenceResponse, returned);
   }
 }

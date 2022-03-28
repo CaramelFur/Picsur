@@ -1,7 +1,8 @@
 import { Type } from 'class-transformer';
 import { IsDefined, ValidateNested } from 'class-validator';
 import { CombinePDecorators } from 'picsur-shared/dist/util/decorator';
-import { MultiPartFieldDto, MultiPartFileDto } from './multipart.dto';
+import { MultiPartFieldDto, MultiPartFileDto } from '../requests/multipart.dto';
+
 
 export const IsMultiPartFile = CombinePDecorators(
   IsDefined(),

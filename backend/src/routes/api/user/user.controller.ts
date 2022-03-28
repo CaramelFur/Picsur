@@ -39,9 +39,13 @@ export class UserController {
   @Post('login')
   @UseLocalAuth(Permission.UserLogin)
   async login(@Request() req: AuthFasityRequest): Promise<UserLoginResponse> {
-    return {
-      jwt_token: await this.authService.createToken(req.user),
-    };
+    const jwt_token = await this.authService.createToken(req.user);
+    if (HasFailed(jwt_token)) {
+      this.logger.warn(jwt_token.getReason());
+      throw new InternalServerErrorException('Could not get new token');
+    }
+
+    return { jwt_token };
   }
 
   @Post('register')
@@ -71,10 +75,13 @@ export class UserController {
       throw new InternalServerErrorException('Could not get user');
     }
 
-    return {
-      user,
-      token: await this.authService.createToken(user),
-    };
+    const token = await this.authService.createToken(user);
+    if (HasFailed(token)) {
+      this.logger.warn(token.getReason());
+      throw new InternalServerErrorException('Could not get new token');
+    }
+
+    return { user, token };
   }
 
   // You can always check your permissions

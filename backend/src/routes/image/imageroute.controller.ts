@@ -1,17 +1,13 @@
 import {
-  BadRequestException,
   Controller,
   Get,
   InternalServerErrorException,
   Logger,
   NotFoundException,
   Param,
-  Post,
-  Req,
-  Res
+  Post, Res
 } from '@nestjs/common';
-import { isHash } from 'class-validator';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyReply } from 'fastify';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart.decorator';
@@ -19,6 +15,7 @@ import { RequiredPermissions } from '../../decorators/permissions.decorator';
 import { ImageManagerService } from '../../managers/imagemanager/imagemanager.service';
 import { Permission } from '../../models/dto/permissions.dto';
 import { ImageUploadDto } from '../../models/requests/imageroute.dto';
+import { ImageIdValidator } from './imageid.validator';
 
 @Controller('i')
 @RequiredPermissions(Permission.ImageView)
@@ -29,11 +26,11 @@ export class ImageController {
 
   @Get(':hash')
   async getImage(
+    // Usually passthrough is for manually sending the response,
+    // But we need it here to set the mime type
     @Res({ passthrough: true }) res: FastifyReply,
-    @Param('hash') hash: string,
+    @Param('hash', ImageIdValidator) hash: string,
   ): Promise<Buffer> {
-    if (!isHash(hash, 'sha256')) throw new BadRequestException('Invalid hash');
-
     const image = await this.imagesService.retrieveComplete(hash);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
@@ -45,9 +42,9 @@ export class ImageController {
   }
 
   @Get('meta/:hash')
-  async getImageMeta(@Param('hash') hash: string): Promise<ImageMetaResponse> {
-    if (!isHash(hash, 'sha256')) throw new BadRequestException('Invalid hash');
-
+  async getImageMeta(
+    @Param('hash', ImageIdValidator) hash: string,
+  ): Promise<ImageMetaResponse> {
     const image = await this.imagesService.retrieveInfo(hash);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
@@ -60,7 +57,6 @@ export class ImageController {
   @Post()
   @RequiredPermissions(Permission.ImageUpload)
   async uploadImage(
-    @Req() req: FastifyRequest,
     @MultiPart(ImageUploadDto) multipart: ImageUploadDto,
   ): Promise<ImageMetaResponse> {
     const fileBuffer = await multipart.image.toBuffer();

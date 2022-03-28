@@ -6,7 +6,6 @@ import {
   Logger,
   Post
 } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
 import {
   RoleCreateRequest,
   RoleCreateResponse,
@@ -22,16 +21,14 @@ import {
 import { HasFailed } from 'picsur-shared/dist/types';
 import { RolesService } from '../../../collections/roledb/roledb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
-import {
-  Permission
-} from '../../../models/dto/permissions.dto';
+import { Permission } from '../../../models/dto/permissions.dto';
 import {
   DefaultRolesList,
   ImmutableRolesList,
   SoulBoundRolesList,
   UndeletableRolesList
 } from '../../../models/dto/roles.dto';
-import { isPermissionsArray } from '../../../models/util/permissions.validator';
+import { isPermissionsArray } from '../../../models/validators/permissions.validator';
 
 @Controller('api/roles')
 @RequiredPermissions(Permission.RoleManage)
@@ -40,7 +37,7 @@ export class RolesController {
 
   constructor(private rolesService: RolesService) {}
 
-  @Get('/list')
+  @Get('list')
   async getRoles(): Promise<RoleListResponse> {
     const roles = await this.rolesService.findAll();
     if (HasFailed(roles)) {
@@ -54,7 +51,7 @@ export class RolesController {
     };
   }
 
-  @Post('/info')
+  @Post('info')
   async getRole(@Body() body: RoleInfoRequest): Promise<RoleInfoResponse> {
     const role = await this.rolesService.findOne(body.name);
     if (HasFailed(role)) {
@@ -65,13 +62,13 @@ export class RolesController {
     return role;
   }
 
-  @Post('/update')
+  @Post('update')
   async updateRole(
     @Body() body: RoleUpdateRequest,
   ): Promise<RoleUpdateResponse> {
     const permissions = body.permissions;
     if (!isPermissionsArray(permissions)) {
-      throw new InternalServerErrorException('Invalid permissions array');
+      throw new InternalServerErrorException('Invalid permissions');
     }
 
     const updatedRole = await this.rolesService.setPermissions(
@@ -86,7 +83,7 @@ export class RolesController {
     return updatedRole;
   }
 
-  @Post('/create')
+  @Post('create')
   async createRole(
     @Body() role: RoleCreateRequest,
   ): Promise<RoleCreateResponse> {
@@ -104,7 +101,7 @@ export class RolesController {
     return newRole;
   }
 
-  @Post('/delete')
+  @Post('delete')
   async deleteRole(
     @Body() role: RoleDeleteRequest,
   ): Promise<RoleDeleteResponse> {
@@ -117,16 +114,13 @@ export class RolesController {
     return deletedRole;
   }
 
-  @Get('/special')
+  @Get('special')
   async getSpecialRoles(): Promise<SpecialRolesResponse> {
-    const result: SpecialRolesResponse = {
+    return {
       SoulBoundRoles: SoulBoundRolesList,
       ImmutableRoles: ImmutableRolesList,
       UndeletableRoles: UndeletableRolesList,
       DefaultRoles: DefaultRolesList,
     };
-
-    return plainToClass(SpecialRolesResponse, result);
   }
-
 }
