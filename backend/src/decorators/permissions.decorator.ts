@@ -7,9 +7,10 @@ export const RequiredPermissions = (...permissions: Permissions) => {
   return SetMetadata('permissions', permissions);
 };
 
-// Easy to read roles
+// Just a verbose wrapper
 export const NoPermissions = () => RequiredPermissions();
 
+// This still requires permissions, but also allows the client to use user/pass authentication instead of JWT
 export const UseLocalAuth = (...permissions: Permissions) =>
   CombineFCDecorators(
     RequiredPermissions(...permissions),

@@ -28,10 +28,12 @@ export class MultiPartPipe implements PipeTransform {
     req: FastifyRequest;
     data: Newable<T>;
   }) {
+    // Data should be a validatable class constructor
     const dtoClass = new data();
 
     if (!req.isMultipart()) throw new BadRequestException('Invalid file');
 
+    // Fetch all fields from the request
     let fields: MultipartFields | null = null;
     try {
       fields = (
@@ -44,11 +46,15 @@ export class MultiPartPipe implements PipeTransform {
     }
     if (!fields) throw new BadRequestException('Invalid file');
 
+    // Loop over every formfield that was sent
     for (const key of Object.keys(fields)) {
+      // Ignore duplicate fields
       if (Array.isArray(fields[key])) {
         continue;
       }
 
+      // Use the value property to differentiate between a field and a file
+      // And then put the value into the correct property on the validatable class
       if ((fields[key] as any).value) {
         (dtoClass as any)[key] = new MultiPartFieldDto(
           fields[key] as MultipartFile,
@@ -61,6 +67,7 @@ export class MultiPartPipe implements PipeTransform {
       }
     }
 
+    // Now validate the class we made, if any properties were invalid, it will error here
     const errors = await strictValidate(dtoClass);
     if (errors.length > 0) {
       this.logger.warn(errors);

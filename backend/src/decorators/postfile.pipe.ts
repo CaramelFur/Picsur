@@ -18,6 +18,7 @@ export class PostFilePipe implements PipeTransform {
   async transform({ req }: { req: FastifyRequest }) {
     if (!req.isMultipart()) throw new BadRequestException('Invalid file');
 
+    // Only one file is allowed
     const file = await req.file({
       limits: {
         ...this.multipartConfigService.getLimits(),
@@ -26,14 +27,17 @@ export class PostFilePipe implements PipeTransform {
     });
     if (file === undefined) throw new BadRequestException('Invalid file');
 
+    // Remove empty fields
     const allFields: Multipart[] = Object.values(file.fields).filter(
       (entry) => entry,
     ) as any;
 
+    // Remove non-file fields
     const files = allFields.filter((entry) => entry.file !== undefined);
 
     if (files.length !== 1) throw new BadRequestException('Invalid file');
 
+    // Return a buffer of the file
     try {
       return await files[0].toBuffer();
     } catch (e) {
