@@ -13,7 +13,7 @@ import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { UserRolesService } from '../../../collections/userdb/userrolesdb.service';
 import { Permissions } from '../../../models/dto/permissions.dto';
 import { EUserBackend } from '../../../models/entities/user.entity';
-import { isPermissionsArray } from '../../../models/util/permissions';
+import { isPermissionsArray } from '../../../models/util/permissions.validator';
 
 // This guard extends both the jwt authenticator and the guest authenticator
 // The order matters here, because this results in the guest authenticator being used as a fallback

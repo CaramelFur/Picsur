@@ -7,7 +7,6 @@ import {
   Fail, HasSuccess
 } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
-import { SupportedMime } from '../../models/dto/mimes.dto';
 import { EImageBackend } from '../../models/entities/image.entity';
 import { GetCols } from '../../models/util/collection';
 
@@ -20,7 +19,7 @@ export class ImageDBService {
 
   public async create(
     image: Buffer,
-    type: SupportedMime,
+    type: string,
   ): AsyncFailable<EImageBackend> {
     const hash = this.hash(image);
     const find = await this.findOne(hash);

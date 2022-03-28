@@ -31,7 +31,7 @@ import {
   SoulBoundRolesList,
   UndeletableRolesList
 } from '../../../models/dto/roles.dto';
-import { isPermissionsArray } from '../../../models/util/permissions';
+import { isPermissionsArray } from '../../../models/util/permissions.validator';
 
 @Controller('api/roles')
 @RequiredPermissions(Permission.RoleManage)

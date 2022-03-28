@@ -6,8 +6,7 @@ import {
 export type SysPreferences = SysPreference[];
 export const SysPreferenceList: string[] = Object.values(SysPreference);
 
-// Syspref Values
-
+// Syspref Value types
 export const SysPreferenceValueTypes: {
   [key in SysPreference]: SysPrefValueTypeStrings;
 } = {

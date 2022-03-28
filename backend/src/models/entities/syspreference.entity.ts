@@ -1,11 +1,12 @@
 import { ESysPreference } from 'picsur-shared/dist/entities/syspreference.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class ESysPreferenceBackend extends ESysPreference {
   @PrimaryGeneratedColumn()
   override id?: number;
 
+  @Index()
   @Column({ nullable: false, unique: true })
   override key: string;
 

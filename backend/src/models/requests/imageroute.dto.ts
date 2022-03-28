@@ -1,10 +1,8 @@
-import { Type } from 'class-transformer';
-import { IsDefined, ValidateNested } from 'class-validator';
 import { MultiPartFileDto } from './multipart.dto';
+import { IsMultiPartFile } from './multipart.validator';
 
+// A validation class for form based file upload of an image
 export class ImageUploadDto {
-  @IsDefined()
-  @ValidateNested()
-  @Type(() => MultiPartFileDto)
+  @IsMultiPartFile()
   image: MultiPartFileDto;
 }

@@ -1,33 +1,30 @@
-import tuple from 'picsur-shared/dist/types/tuple';
 
 // Config
+export enum ImageMime {
+  JPEG = 'image/jpeg',
+  PNG = 'image/png',
+  WEBP = 'image/webp',
+  TIFF = 'image/tiff',
+  BMP = 'image/bmp',
+  ICO = 'image/x-icon',
+}
 
-const SupportedImageMimesTuple = tuple(
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/tiff',
-  'image/bmp',
-  'image/x-icon',
-);
+export enum AnimMime {
+  APNG = 'image/apng',
+  GIF = 'image/gif',
+}
 
-const SupportedAnimMimesTuple = tuple('image/apng', 'image/gif');
-
-const SupportedMimesTuple = [
-  ...SupportedImageMimesTuple,
-  ...SupportedAnimMimesTuple,
-];
+export const SupportedMime = {...ImageMime, ...AnimMime};
 
 // Derivatives
 
-export const SupportedImageMimes: string[] = SupportedImageMimesTuple;
-export const SupportedAnimMimes: string[] = SupportedAnimMimesTuple;
+export const SupportedImageMimes: string[] = Object.values(ImageMime);
+export const SupportedAnimMimes: string[] = Object.values(AnimMime);
+export const SupportedMimes: string[] = Object.values(SupportedMime);
 
-export const SupportedMimes: string[] = SupportedMimesTuple;
-export type SupportedMime = typeof SupportedMimesTuple[number];
 export type SupportedMimeCategory = 'image' | 'anim';
 
 export interface FullMime {
-  mime: SupportedMime;
+  mime: string;
   type: SupportedMimeCategory;
 }
