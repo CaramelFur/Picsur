@@ -6,7 +6,7 @@ import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
-import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
+import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { UtilService } from 'src/app/util/util.service';
 
@@ -38,7 +38,7 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchRoles().catch(console.error);
+    this.loadRoles().catch(console.error);
   }
 
   ngAfterViewInit() {
@@ -83,7 +83,7 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
       }
     }
 
-    await this.fetchRoles();
+    await this.loadRoles();
   }
 
   uiFriendlyPermission(permission: string) {
@@ -98,16 +98,18 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
     return this.ImmutableRolesList.includes(role.name);
   }
 
-  private async fetchRoles() {
-    const roles = await this.rolesService.getRoles();
+  private async loadRoles() {
+    const [roles, specialRoles] = await Promise.all([
+      this.rolesService.getRoles(),
+      this.rolesService.getSpecialRoles(),
+    ]);
+
     if (HasFailed(roles)) {
       this.utilService.showSnackBar('Failed to load roles', SnackBarType.Error);
       return;
     }
-
     this.dataSource.data = roles;
 
-    const specialRoles = await this.rolesService.getSpecialRoles();
     if (HasFailed(specialRoles)) {
       this.utilService.showSnackBar(
         'Failed to load special roles',
@@ -115,7 +117,6 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
       );
       return;
     }
-
     this.UndeletableRolesList = specialRoles.UndeletableRoles;
     this.ImmutableRolesList = specialRoles.ImmutableRoles;
   }

@@ -1,5 +1,10 @@
 import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -13,7 +18,7 @@ import { Required } from 'src/app/models/decorators/required.decorator';
   templateUrl: './values-picker.component.html',
   styleUrls: ['./values-picker.component.scss'],
 })
-export class ValuesPickerComponent implements OnInit {
+export class ValuesPickerComponent implements OnInit, OnChanges {
   // Static data
   readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
 
@@ -41,6 +46,10 @@ export class ValuesPickerComponent implements OnInit {
   public ngOnInit(): void {
     this.subscribeInputValue();
     this.subscribeMyValue();
+  }
+
+  public ngOnChanges(): void {
+    this.updateSelectable()
   }
 
   public isDisabled(value: string): boolean {

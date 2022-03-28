@@ -11,11 +11,9 @@ enum EditMode {
   edit = 'edit',
   add = 'add',
 }
-
 @Component({
   selector: 'app-settings-roles-edit',
   templateUrl: './settings-roles-edit.component.html',
-  styleUrls: ['./settings-roles-edit.component.scss'],
 })
 export class SettingsRolesEditComponent implements OnInit {
   private mode: EditMode = EditMode.edit;
@@ -78,11 +76,7 @@ export class SettingsRolesEditComponent implements OnInit {
     this.allPermissions = allPermissions;
   }
 
-  cancel() {
-    this.router.navigate(['/settings/roles']);
-  }
-
-  async updateUser() {
+  async updateRole() {
     const data = this.model.getData();
 
     if (this.adding) {
@@ -109,6 +103,10 @@ export class SettingsRolesEditComponent implements OnInit {
       this.utilService.showSnackBar('Role updated', SnackBarType.Success);
     }
 
+    this.router.navigate(['/settings/roles']);
+  }
+
+  cancel() {
     this.router.navigate(['/settings/roles']);
   }
 }

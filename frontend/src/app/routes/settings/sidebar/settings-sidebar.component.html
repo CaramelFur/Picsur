@@ -6,9 +6,10 @@
       mat-list-item
       [routerLink]="'/settings/' + route.path"
       routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
     >
-      <mat-icon fontSet="material-icons-outlined" mat-list-icon>{{ route.data?.page?.icon }}</mat-icon>
+      <mat-icon fontSet="material-icons-outlined" mat-list-icon>
+        {{ route.data?.page?.icon }}
+      </mat-icon>
       <span mat-line>{{ route.data?.page?.title }}</span>
     </a>
   </ng-container>
@@ -24,7 +25,9 @@
       [routerLink]="'/settings/' + route.path"
       routerLinkActive="active"
     >
-      <mat-icon fontSet="material-icons-outlined" mat-list-icon >{{ route.data?.page?.icon }}</mat-icon>
+      <mat-icon fontSet="material-icons-outlined" mat-list-icon>
+        {{ route.data?.page?.icon }}
+      </mat-icon>
       <span mat-line>{{ route.data?.page?.title }}</span>
     </a>
   </ng-container>

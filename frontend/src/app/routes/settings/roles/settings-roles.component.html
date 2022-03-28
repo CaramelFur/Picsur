@@ -7,9 +7,9 @@
   </ng-container>
 
   <ng-container matColumnDef="permissions">
-    <mat-header-cell class="d-none d-md-flex" *matHeaderCellDef
-      >Permissions</mat-header-cell
-    >
+    <mat-header-cell class="d-none d-md-flex" *matHeaderCellDef>
+      Permissions
+    </mat-header-cell>
     <mat-cell class="d-none d-md-flex" *matCellDef="let role">
       <mat-chip-list aria-label="Role Permissions">
         <mat-chip
@@ -85,6 +85,8 @@
     class="fabbutton fullanimate mat-elevation-z6"
     (click)="addRole()"
   >
-    <mat-icon fontSet="material-icons-outlined">add</mat-icon>
+    <mat-icon fontSet="material-icons-outlined" aria-label="Add Role">
+      add
+    </mat-icon>
   </button>
 </div>
