@@ -14,7 +14,7 @@ import {
 } from 'picsur-shared/dist/dto/api/usermanage.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
-import { FullUserModel } from 'src/app/models/forms/fulluser.model';
+import { FullUserModel } from 'src/app/models/dto/fulluser.dto';
 import { ApiService } from './api.service';
 import { CacheService } from './cache.service';
 

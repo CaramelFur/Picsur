@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
 import { UpdateRoleControl } from 'src/app/models/forms/updaterole.control';
@@ -98,7 +99,7 @@ export class SettingsRolesEditComponent implements OnInit {
   }
 
   uiFriendlyPermission(permission: string) {
-    return UIFriendlyPermissions[permission];
+    return UIFriendlyPermissions[permission as Permission] ?? permission;
   }
 
   async updateUser() {

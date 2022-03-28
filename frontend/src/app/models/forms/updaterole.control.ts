@@ -1,9 +1,9 @@
 import { FormControl } from '@angular/forms';
 import Fuse from 'fuse.js';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { RoleNameValidators } from './role-validators';
-import { RoleModel } from './role.model';
-import { CreateUsernameError } from './user-validators';
+import { RoleModel } from '../dto/role.dto';
+import { RoleNameValidators } from '../validators/role.validator';
+import { CreateUsernameError } from '../validators/user.validator';
 
 export class UpdateRoleControl {
   // Set once

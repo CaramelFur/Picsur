@@ -1,13 +1,10 @@
 import { FormControl } from '@angular/forms';
 import { Fail, Failable } from 'picsur-shared/dist/types';
-import { Compare } from './compare.validator';
+import { UserPassModel } from '../dto/userpass.dto';
+import { Compare } from '../validators/compare.validator';
 import {
-  CreatePasswordError,
-  CreateUsernameError,
-  PasswordValidators,
-  UsernameValidators
-} from './user-validators';
-import { UserPassModel } from './userpass.model';
+  CreatePasswordError, CreateUsernameError, PasswordValidators, UsernameValidators
+} from '../validators/user.validator';
 
 export class RegisterControl {
   public username = new FormControl('', UsernameValidators);

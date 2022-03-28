@@ -2,13 +2,13 @@ import { FormControl } from '@angular/forms';
 import Fuse from 'fuse.js';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { FullUserModel } from './fulluser.model';
+import { FullUserModel } from '../dto/fulluser.dto';
 import {
   CreatePasswordError,
   CreateUsernameError,
   PasswordValidators,
   UsernameValidators
-} from './user-validators';
+} from '../validators/user.validator';
 
 export class UpdateUserControl {
   // Special roles

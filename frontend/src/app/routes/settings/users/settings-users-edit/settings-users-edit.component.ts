@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
 import { UpdateUserControl } from 'src/app/models/forms/updateuser.control';
@@ -93,7 +94,10 @@ export class SettingsUsersEditComponent implements OnInit {
   getEffectivePermissions() {
     return this.model
       .getEffectivePermissions()
-      .map((permission) => UIFriendlyPermissions[permission]);
+      .map(
+        (permission) =>
+          UIFriendlyPermissions[permission as Permission] ?? permission
+      );
   }
 
   removeRole(role: string) {
