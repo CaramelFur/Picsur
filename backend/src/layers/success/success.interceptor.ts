@@ -1,9 +1,13 @@
 import {
-  CallHandler, ExecutionContext, Injectable,
+  CallHandler,
+  ExecutionContext,
+  Injectable,
   NestInterceptor
 } from '@nestjs/common';
 import { ApiResponse } from 'picsur-shared/dist/dto/api/api.dto';
 import { map, Observable } from 'rxjs';
+
+// This interceptor will neatly wrap any json response made within nest
 
 @Injectable()
 export class SuccessInterceptor<T> implements NestInterceptor {
@@ -13,6 +17,8 @@ export class SuccessInterceptor<T> implements NestInterceptor {
         if (data instanceof Buffer) {
           return data;
         } else if (typeof data === 'object') {
+          // TODO: mabye validate outgoing requests?
+
           const status = context.switchToHttp().getResponse().statusCode;
           const response: ApiResponse<any> = {
             success: true,

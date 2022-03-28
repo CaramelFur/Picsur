@@ -3,7 +3,7 @@ import { HostConfigService } from '../config/early/host.config.service';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class PicsurLoggerService extends ConsoleLogger {
-  constructor(private hostService: HostConfigService) {
+  constructor(hostService: HostConfigService) {
     super();
 
     if (hostService.isProduction()) {
