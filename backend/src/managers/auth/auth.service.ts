@@ -19,6 +19,8 @@ export class AuthManagerService {
       },
     });
 
+    // Validate to be sure, this makes client experience better
+    // in case of any failures
     const errors = await strictValidate(jwtData);
     if (errors.length > 0) {
       this.logger.warn(errors);

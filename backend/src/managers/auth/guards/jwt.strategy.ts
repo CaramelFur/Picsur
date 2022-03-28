@@ -14,7 +14,8 @@ import { EUserBackend } from '../../../models/entities/user.entity';
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   private readonly logger = new Logger('JwtStrategy');
 
-  constructor(@Inject('JWT_SECRET') private jwtSecret: string) {
+  constructor(@Inject('JWT_SECRET') jwtSecret: string) {
+    // This will validate the jwt token itself
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -25,13 +26,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   async validate(payload: any): Promise<EUserBackend | false> {
     const jwt = plainToClass(JwtDataDto, payload);
 
+    // This then validates the data inside the jwt token
     const errors = await strictValidate(jwt);
-
     if (errors.length > 0) {
       this.logger.warn(errors);
       return false;
     }
 
+    // And return the user
     return jwt.user;
   }
 }

@@ -10,11 +10,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
 import { Fail, Failable, HasFailed } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
-import { UsersService } from '../../../collections/userdb/userdb.service';
 import { UserRolesService } from '../../../collections/userdb/userrolesdb.service';
 import { Permissions } from '../../../models/dto/permissions.dto';
 import { EUserBackend } from '../../../models/entities/user.entity';
 import { isPermissionsArray } from '../../../models/util/permissions';
+
+// This guard extends both the jwt authenticator and the guest authenticator
+// The order matters here, because this results in the guest authenticator being used as a fallback
+// This way a user will get his own account when logged in, but received guest permissions when not
 
 @Injectable()
 export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
@@ -22,13 +25,13 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
 
   constructor(
     private reflector: Reflector,
-    private usersService: UsersService,
     private userRolesService: UserRolesService,
   ) {
     super();
   }
 
   override async canActivate(context: ExecutionContext): Promise<boolean> {
+    // Sanity check
     const result = await super.canActivate(context);
     if (result !== true) {
       this.logger.error('Main Auth has denied access, this should not happen');
@@ -39,12 +42,14 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
       context.switchToHttp().getRequest().user,
     );
 
+    // These are the permissions required to access the route
     const permissions = this.extractPermissions(context);
     if (HasFailed(permissions)) {
       this.logger.warn('Route Permissions: ' + permissions.getReason());
       throw new InternalServerErrorException();
     }
 
+    // These are the permissions the user has
     const userPermissions = await this.userRolesService.getPermissions(user);
     if (HasFailed(userPermissions)) {
       this.logger.warn('User Permissions: ' + userPermissions.getReason());
@@ -58,19 +63,19 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
 
   private extractPermissions(context: ExecutionContext): Failable<Permissions> {
     const handlerName = context.getHandler().name;
+    // Fall back to class permissions if none on function
+    // But function has higher priority than class
     const permissions =
       this.reflector.get<Permissions>('permissions', context.getHandler()) ??
       this.reflector.get<Permissions>('permissions', context.getClass());
 
-    if (permissions === undefined) {
+    if (permissions === undefined)
       return Fail(
         `${handlerName} does not have any permissions defined, denying access`,
       );
-    }
 
-    if (!isPermissionsArray(permissions)) {
+    if (!isPermissionsArray(permissions))
       return Fail(`Permissions for ${handlerName} is not a string array`);
-    }
 
     return permissions;
   }

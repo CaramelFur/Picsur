@@ -23,7 +23,6 @@ export class UsersModule implements OnModuleInit {
 
   constructor(
     private usersService: UsersService,
-    private userRolesService: UserRolesService,
     private authConfigService: AuthConfigService,
   ) {}
 

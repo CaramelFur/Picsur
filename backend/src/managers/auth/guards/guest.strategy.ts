@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
@@ -15,6 +15,7 @@ type ReqType = Request<
 >;
 
 class GuestPassportStrategy extends Strategy {
+  // Will be overridden by the nest implementation
   async validate(req: ReqType): Promise<any> {
     return undefined;
   }
@@ -30,12 +31,11 @@ export class GuestStrategy extends PassportStrategy(
   GuestPassportStrategy,
   'guest',
 ) {
-  private readonly logger = new Logger('GuestStrategy');
-
   constructor(private guestService: GuestService) {
     super();
   }
 
+  // Return the guest user created by the guestservice
   override async validate(payload: any) {
     return await this.guestService.getGuestUser();
   }

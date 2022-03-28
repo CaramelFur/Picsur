@@ -9,8 +9,8 @@ export class GuestService {
 
   constructor(private usersService: UsersService) {
     this.fallBackUser = new EUserBackend();
-    this.fallBackUser.roles = ['guest'];
     this.fallBackUser.username = 'guest';
+    this.fallBackUser.roles = ['guest'];
   }
 
   public async getGuestUser(): Promise<EUserBackend> {

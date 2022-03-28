@@ -11,7 +11,12 @@ export class LocalAuthStrategy extends PassportStrategy(Strategy, 'local') {
     super();
   }
 
-  async validate(username: string, password: string): AsyncFailable<EUserBackend> {
+  async validate(
+    username: string,
+    password: string,
+  ): AsyncFailable<EUserBackend> {
+
+    // All this does is call the usersservice authenticate for authentication
     const user = await this.usersService.authenticate(username, password);
     if (HasFailed(user)) {
       throw new UnauthorizedException();
