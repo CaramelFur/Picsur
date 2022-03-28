@@ -15,8 +15,6 @@ import { UtilService } from 'src/app/util/util.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  private readonly logger = console;
-
   @Input('enableHamburger') enableHamburger: boolean = false;
   @Output('onHamburgerClick') onHamburgerClick = new EventEmitter<void>();
 

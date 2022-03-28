@@ -11,7 +11,7 @@ export class FooterComponent implements OnInit {
   constructor(private infoService: InfoService) {}
 
   isDemo: boolean = false;
-  version: string = 'V0.0.0';
+  version: string = 'Unkown Version';
 
   ngOnInit(): void {
     this.subscribeInfo();

@@ -1,18 +1,19 @@
 <mat-toolbar color="primary">
   <button
     *ngIf="enableHamburger"
-    class="hamburger"
+    class="me-3"
     mat-icon-button
     (click)="onHamburgerClick.emit()"
   >
     <mat-icon>menu</mat-icon>
   </button>
 
-  <a [routerLink]="['/']" class="svg-logo">
-    <img src="/assets/image/logo/picsur.svg" alt="Picsur" />
-  </a>
-  <a [routerLink]="['/']" class="text-link d-none d-sm-block">
-    <span>Picsur</span>
+  <a [routerLink]="['/']" class="logo text-link">
+    <div class="svg-logo">
+      <img src="/assets/image/logo/picsur.svg" alt="Picsur" />
+    </div>
+
+    <span class="ms-3 d-none d-sm-block">Picsur</span>
   </a>
 
   <span class="spacer"></span>
@@ -25,7 +26,7 @@
     Login
   </button>
 
-  <span *ngIf="isLoggedIn" class="username d-none d-sm-block">
+  <span *ngIf="isLoggedIn" class="me-3 d-none d-sm-block">
     {{ user?.username }}
   </span>
   <button *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu">

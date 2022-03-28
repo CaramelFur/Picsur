@@ -9,7 +9,7 @@ import { UtilService } from 'src/app/util/util.service';
   styleUrls: ['./copyfield.component.scss'],
 })
 export class CopyFieldComponent {
-  // Two paramets: name, value
+  // Two parameters: name, value
   @Input() label: string = 'Loading...';
   @Input() value: string = 'Loading...';
 
