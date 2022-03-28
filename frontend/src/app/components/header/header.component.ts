@@ -4,7 +4,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { SnackBarType } from 'src/app/models/snack-bar-type';
+import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UserService } from 'src/app/services/api/user.service';
 import { UtilService } from 'src/app/util/util.service';

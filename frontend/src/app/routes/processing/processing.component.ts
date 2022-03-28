@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { ProcessingViewMetadata } from 'src/app/models/processing-view-metadata';
+import { ProcessingViewMetadata } from 'src/app/models/dto/processing-view-metadata.dto';
 import { ImageService } from 'src/app/services/api/image.service';
 import { UtilService } from 'src/app/util/util.service';
 

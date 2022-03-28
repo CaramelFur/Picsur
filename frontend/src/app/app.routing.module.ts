@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { PRoutes } from './models/picsur-routes';
+import { PRoutes } from './models/dto/picsur-routes.dto';
 import { ErrorsRouteModule } from './routes/errors/errors.module';
 import { ProcessingRouteModule } from './routes/processing/processing.module';
 import { SettingsRouteModule } from './routes/settings/settings.module';

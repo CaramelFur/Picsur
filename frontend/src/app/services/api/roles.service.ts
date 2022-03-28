@@ -13,7 +13,7 @@ import {
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
-import { RoleModel } from 'src/app/models/dto/role.dto';
+import { RoleModel } from 'src/app/models/forms-dto/role.dto';
 import { ApiService } from './api.service';
 import { CacheService } from './cache.service';
 

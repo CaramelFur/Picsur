@@ -4,8 +4,8 @@ import { ApiResponse, ApiSuccessResponse } from 'picsur-shared/dist/dto/api/api.
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Subject } from 'rxjs';
-import { ApiError } from 'src/app/models/api-error';
-import { MultiPartRequest } from '../../models/multi-part-request';
+import { ApiError } from 'src/app/models/dto/api-error.dto';
+import { MultiPartRequest } from '../../models/dto/multi-part-request.dto';
 import { KeyService } from './key.service';
 
 @Injectable({

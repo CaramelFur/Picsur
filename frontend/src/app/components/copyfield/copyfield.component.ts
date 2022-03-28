@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input } from '@angular/core';
-import { SnackBarType } from 'src/app/models/snack-bar-type';
+import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
 import { UtilService } from 'src/app/util/util.service';
 
 @Component({

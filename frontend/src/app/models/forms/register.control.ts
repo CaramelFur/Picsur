@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { Fail, Failable } from 'picsur-shared/dist/types';
-import { UserPassModel } from '../dto/userpass.dto';
+import { UserPassModel } from '../forms-dto/userpass.dto';
 import { Compare } from '../validators/compare.validator';
 import {
   CreatePasswordError, CreateUsernameError, PasswordValidators, UsernameValidators

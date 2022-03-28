@@ -1,7 +1,7 @@
 import { FormControl } from '@angular/forms';
 import Fuse from 'fuse.js';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { RoleModel } from '../dto/role.dto';
+import { RoleModel } from '../forms-dto/role.dto';
 import { RoleNameValidators } from '../validators/role.validator';
 import { CreateUsernameError } from '../validators/user.validator';
 

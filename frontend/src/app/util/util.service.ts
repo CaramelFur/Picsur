@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { SnackBarType } from '../models/snack-bar-type';
+import { SnackBarType } from '../models/dto/snack-bar-type.dto';
 import {
   ConfirmDialogComponent,
   DialogData

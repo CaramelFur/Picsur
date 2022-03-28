@@ -9,7 +9,7 @@ import {
   Router
 } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { PRouteData } from './models/picsur-routes';
+import { PRouteData } from './models/dto/picsur-routes.dto';
 
 @Component({
   selector: 'app-root',

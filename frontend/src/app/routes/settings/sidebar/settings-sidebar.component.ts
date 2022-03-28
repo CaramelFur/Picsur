@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { PRoutes } from 'src/app/models/picsur-routes';
+import { PRoutes } from 'src/app/models/dto/picsur-routes.dto';
 import { PermissionService } from 'src/app/services/api/permission.service';
 
 @Component({

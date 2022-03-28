@@ -2,7 +2,7 @@ import { FormControl } from '@angular/forms';
 import Fuse from 'fuse.js';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { FullUserModel } from '../dto/fulluser.dto';
+import { FullUserModel } from '../forms-dto/fulluser.dto';
 import {
   CreatePasswordError,
   CreateUsernameError,

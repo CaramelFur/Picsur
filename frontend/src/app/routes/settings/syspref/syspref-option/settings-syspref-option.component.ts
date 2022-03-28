@@ -5,7 +5,7 @@ import { SysPreference, SysPrefValueType } from 'picsur-shared/dist/dto/sysprefe
 import { HasFailed } from 'picsur-shared/dist/types';
 import { Subject, throttleTime } from 'rxjs';
 import { SysPreferenceFriendlyNames } from 'src/app/i18n/syspref.i18n';
-import { SnackBarType } from 'src/app/models/snack-bar-type';
+import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
 import { SysprefService } from 'src/app/services/api/syspref.service';
 import { UtilService } from 'src/app/util/util.service';
 

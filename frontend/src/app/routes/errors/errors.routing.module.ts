@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { PRoutes } from 'src/app/models/picsur-routes';
+import { PRoutes } from 'src/app/models/dto/picsur-routes.dto';
 import { E401Component } from './401.component';
 import { E404Component } from './404.component';
 

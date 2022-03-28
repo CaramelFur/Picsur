@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { isPermissionsArray } from 'picsur-shared/dist/validators/permissions.validator';
-import { PRouteData } from '../models/picsur-routes';
+import { PRouteData } from '../models/dto/picsur-routes.dto';
 import { PermissionService } from '../services/api/permission.service';
 import { Logger } from '../services/logger/logger.service';
 

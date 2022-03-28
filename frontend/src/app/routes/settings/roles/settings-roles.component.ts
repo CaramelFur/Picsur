@@ -6,7 +6,7 @@ import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
-import { SnackBarType } from 'src/app/models/snack-bar-type';
+import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
 import { RolesService } from 'src/app/services/api/roles.service';
 import { UtilService } from 'src/app/util/util.service';
 

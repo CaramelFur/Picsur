@@ -5,7 +5,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, Subject, throttleTime } from 'rxjs';
-import { SnackBarType } from 'src/app/models/snack-bar-type';
+import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
 import { UserManageService } from 'src/app/services/api/usermanage.service';
 import { UtilService } from 'src/app/util/util.service';
 

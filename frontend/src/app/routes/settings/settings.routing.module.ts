@@ -2,7 +2,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { PermissionGuard } from 'src/app/guards/permission.guard';
-import { PRoutes } from 'src/app/models/picsur-routes';
+import { PRoutes } from 'src/app/models/dto/picsur-routes.dto';
 import { SidebarResolverService } from 'src/app/services/sidebar-resolver/sidebar-resolver.service';
 import { SettingsGeneralRouteModule } from './general/settings-general.module';
 import { SettingsRolesRouteModule } from './roles/settings-roles.module';

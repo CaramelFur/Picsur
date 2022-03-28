@@ -1,7 +1,7 @@
 import { ComponentPortal, Portal } from '@angular/cdk/portal';
 import { Injectable, Injector } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { PRouteData } from 'src/app/models/picsur-routes';
+import { PRouteData } from 'src/app/models/dto/picsur-routes.dto';
 
 @Injectable({
   providedIn: 'any',

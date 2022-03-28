@@ -1,4 +1,4 @@
-import { MultiPartRequest } from './multi-part-request';
+import { MultiPartRequest } from './multi-part-request.dto';
 
 export class ImageUploadRequest implements MultiPartRequest {
   constructor(private image: File) {}

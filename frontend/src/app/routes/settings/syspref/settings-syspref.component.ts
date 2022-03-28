@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { SysPreferenceBaseResponse } from 'picsur-shared/dist/dto/api/pref.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { SnackBarType } from 'src/app/models/snack-bar-type';
+import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
 import { SysprefService as SysPrefService } from 'src/app/services/api/syspref.service';
 import { UtilService } from 'src/app/util/util.service';
 
