@@ -5,7 +5,7 @@ import {
   ServeStaticModuleOptionsFactory
 } from '@nestjs/serve-static';
 import { join } from 'path';
-import { EnvPrefix, PackageRoot } from './config.static';
+import { EnvPrefix, PackageRoot } from '../config.static';
 
 @Injectable()
 export class ServeStaticConfigService

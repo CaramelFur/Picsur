@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { EntityList } from '../models/entities';
-import { DefaultName, EnvPrefix } from './config.static';
+import { EntityList } from '../../models/entities';
+import { DefaultName, EnvPrefix } from '../config.static';
 import { HostConfigService } from './host.config.service';
 
 @Injectable()

@@ -1,12 +1,12 @@
 import { Logger, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ImageDBModule } from '../../collections/imagedb/imagedb.module';
 import { RolesModule } from '../../collections/roledb/roledb.module';
-import { PicsurConfigModule } from '../../config/config.module';
-import { HostConfigService } from '../../config/host.config.service';
+import { EarlyConfigModule } from '../../config/early/earlyconfig.module';
+import { HostConfigService } from '../../config/early/host.config.service';
 import { DemoManagerService } from './demomanager.service';
 
 @Module({
-  imports: [ImageDBModule, PicsurConfigModule, RolesModule],
+  imports: [ImageDBModule, EarlyConfigModule, RolesModule],
   providers: [DemoManagerService],
 })
 export class DemoManagerModule implements OnModuleInit, OnModuleDestroy {

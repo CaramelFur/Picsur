@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { Multipart } from 'fastify-multipart';
-import { MultipartConfigService } from '../config/multipart.config.service';
+import { MultipartConfigService } from '../config/early/multipart.config.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class PostFilePipe implements PipeTransform {

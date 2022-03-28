@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthConfigService } from './auth.config.service';
+import { EarlyJwtConfigService } from './earlyjwt.config.service';
 import { HostConfigService } from './host.config.service';
-import { EnvJwtConfigService } from './jwt.config.service';
 import { MultipartConfigService } from './multipart.config.service';
 import { ServeStaticConfigService } from './servestatic.config.service';
 import { TypeOrmConfigService } from './typeorm.config.service';
@@ -15,7 +15,7 @@ import { TypeOrmConfigService } from './typeorm.config.service';
     }),
   ],
   providers: [
-    EnvJwtConfigService,
+    EarlyJwtConfigService,
     TypeOrmConfigService,
     ServeStaticConfigService,
     HostConfigService,
@@ -24,7 +24,7 @@ import { TypeOrmConfigService } from './typeorm.config.service';
   ],
   exports: [
     ConfigModule,
-    EnvJwtConfigService,
+    EarlyJwtConfigService,
     TypeOrmConfigService,
     ServeStaticConfigService,
     HostConfigService,
@@ -32,4 +32,4 @@ import { TypeOrmConfigService } from './typeorm.config.service';
     MultipartConfigService,
   ],
 })
-export class PicsurConfigModule {}
+export class EarlyConfigModule {}

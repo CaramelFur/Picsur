@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PicsurConfigModule } from '../config/config.module';
+import { EarlyConfigModule } from '../config/early/earlyconfig.module';
 import { PicsurLoggerService } from './logger.service';
 
 @Module({
-  imports: [PicsurConfigModule],
+  imports: [EarlyConfigModule],
   providers: [PicsurLoggerService],
   exports: [PicsurLoggerService],
 })

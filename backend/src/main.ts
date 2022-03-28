@@ -9,7 +9,7 @@ import { ValidateOptions } from 'picsur-shared/dist/util/validate';
 import { AppModule } from './app.module';
 import { UsersService } from './collections/userdb/userdb.service';
 import { UserRolesService } from './collections/userdb/userrolesdb.service';
-import { HostConfigService } from './config/host.config.service';
+import { HostConfigService } from './config/early/host.config.service';
 import { MainExceptionFilter } from './layers/httpexception/httpexception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
 import { PicsurLoggerService } from './logger/logger.service';

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { PicsurConfigModule } from '../config/config.module';
+import { EarlyConfigModule } from '../config/early/earlyconfig.module';
 import { MultiPartPipe } from './multipart.pipe';
 import { PostFilePipe } from './postfile.pipe';
 
 @Module({
-  imports: [PicsurConfigModule],
+  imports: [EarlyConfigModule],
   providers: [MultiPartPipe, PostFilePipe],
-  exports: [MultiPartPipe, PostFilePipe, PicsurConfigModule],
+  exports: [MultiPartPipe, PostFilePipe, EarlyConfigModule],
 })
 export class DecoratorsModule {
 }

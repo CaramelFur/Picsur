@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { EnvPrefix } from './config.static';
+import { EnvPrefix } from '../config.static';
 
 @Injectable()
-export class EnvJwtConfigService {
+export class EarlyJwtConfigService {
   constructor(private configService: ConfigService) {}
 
   public getJwtSecret(): string | undefined {

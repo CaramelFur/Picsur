@@ -2,8 +2,8 @@ import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
-import { AuthConfigService } from '../../config/auth.config.service';
-import { PicsurConfigModule } from '../../config/config.module';
+import { AuthConfigService } from '../../config/early/auth.config.service';
+import { EarlyConfigModule } from '../../config/early/earlyconfig.module';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { RolesModule } from '../roledb/roledb.module';
 import { UsersService } from './userdb.service';
@@ -11,7 +11,7 @@ import { UserRolesService } from './userrolesdb.service';
 
 @Module({
   imports: [
-    PicsurConfigModule,
+    EarlyConfigModule,
     RolesModule,
     TypeOrmModule.forFeature([EUserBackend]),
   ],

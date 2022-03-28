@@ -4,7 +4,7 @@ import {
   SysPrefValueType
 } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
-import { EnvJwtConfigService } from '../../config/jwt.config.service';
+import { EarlyJwtConfigService } from '../../config/early/earlyjwt.config.service';
 
 // This specific service is used to store default values for system preferences
 // It needs to be in a service because the values depend on the environment
@@ -13,7 +13,7 @@ import { EnvJwtConfigService } from '../../config/jwt.config.service';
 export class SysPreferenceDefaultsService {
   private readonly logger = new Logger('SysPreferenceDefaultsService');
 
-  constructor(private jwtConfigService: EnvJwtConfigService) {}
+  constructor(private jwtConfigService: EarlyJwtConfigService) {}
 
   public readonly defaults: {
     [key in SysPreference]: () => SysPrefValueType;

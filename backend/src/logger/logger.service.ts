@@ -1,5 +1,5 @@
 import { ConsoleLogger, Injectable, Scope } from '@nestjs/common';
-import { HostConfigService } from '../config/host.config.service';
+import { HostConfigService } from '../config/early/host.config.service';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class PicsurLoggerService extends ConsoleLogger {
