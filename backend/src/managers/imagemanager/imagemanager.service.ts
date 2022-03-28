@@ -6,6 +6,10 @@ import { MimesService } from '../../collections/imagedb/mimes.service';
 import { FullMime } from '../../models/dto/mimes.dto';
 import { EImageBackend } from '../../models/entities/image.entity';
 
+// Right now this service is mostly a wrapper for the imagedbservice.
+// But in the future the actual image logic will happend here
+// And the image storing part will stay in the imagedbservice
+
 @Injectable()
 export class ImageManagerService {
   constructor(
@@ -18,6 +22,7 @@ export class ImageManagerService {
   }
 
   // Image data buffer is not included by default, this also returns that buffer
+  // Dont send to client, keep in backend
   public async retrieveComplete(hash: string): AsyncFailable<Required<EImageBackend>> {
     return await this.imagesService.findOne(hash, true);
   }
@@ -38,6 +43,7 @@ export class ImageManagerService {
   }
 
   private async process(image: Buffer, mime: FullMime): Promise<Buffer> {
+    // nothing happens right now
     return image;
   }
 
