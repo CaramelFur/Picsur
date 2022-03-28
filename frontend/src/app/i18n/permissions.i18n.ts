@@ -1,16 +1,18 @@
+import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
+
 export const UIFriendlyPermissions: {
-  [key in string]: string;
+  [key in Permission]: string;
 } = {
-  'image-view': 'View Images',
-  'image-upload': 'Upload Images',
+  [Permission.ImageView]: 'View Images',
+  [Permission.ImageUpload]: 'Upload Images',
 
-  'user-login': 'Login',
-  'user-keep-login': 'Stay Logged In',
-  'user-register': 'Register',
+  [Permission.UserLogin]: 'Login',
+  [Permission.UserKeepLogin]: 'Stay Logged In',
+  [Permission.UserRegister]: 'Register',
 
-  settings: 'View settings',
+  [Permission.Settings]: 'View settings',
 
-  'user-manage': 'Manage users',
-  'role-manage': 'Manage roles',
-  'syspref-manage': 'Manage system',
+  [Permission.UserManage]: 'Manage users',
+  [Permission.RoleManage]: 'Manage roles',
+  [Permission.SysPrefManage]: 'Manage system',
 };
