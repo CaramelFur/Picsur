@@ -1,12 +1,10 @@
-import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
+import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
-import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
+import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UpdateUserControl } from 'src/app/models/forms/updateuser.control';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { UserManageService } from 'src/app/services/api/usermanage.service';
@@ -24,12 +22,14 @@ enum EditMode {
 })
 export class SettingsUsersEditComponent implements OnInit {
   private ImmutableUsersList: string[] = [];
-
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
-
   private mode: EditMode = EditMode.edit;
 
   model = new UpdateUserControl();
+  allFullRoles: ERole[] = [];
+  get allRoles(): string[] {
+    return this.allFullRoles.map((role) => role.name);
+  }
+  soulBoundRoles: string[] = [];
 
   get adding() {
     return this.mode === EditMode.add;
@@ -53,14 +53,21 @@ export class SettingsUsersEditComponent implements OnInit {
   private async initUser() {
     const username = this.route.snapshot.paramMap.get('username');
 
-    const { DefaultRoles, SoulBoundRoles } =
-      await this.rolesService.getSpecialRolesOptimistic();
-    this.model.putSoulBoundRoles(SoulBoundRoles);
+    const SpecialRoles = await this.rolesService.getSpecialRoles();
+    if (HasFailed(SpecialRoles)) {
+      this.utilService.showSnackBar(
+        'Failed to get special roles',
+        SnackBarType.Error
+      );
+      return;
+    }
+
+    this.soulBoundRoles = SpecialRoles.SoulBoundRoles;
 
     if (!username) {
       this.mode = EditMode.add;
 
-      this.model.putRoles(DefaultRoles);
+      this.model.putRoles(SpecialRoles.DefaultRoles);
       return;
     }
 
@@ -88,29 +95,25 @@ export class SettingsUsersEditComponent implements OnInit {
       return;
     }
 
-    this.model.putAllRoles(roles);
+    this.allFullRoles = roles;
   }
 
-  getEffectivePermissions() {
-    return this.model
-      .getEffectivePermissions()
-      .map(
-        (permission) =>
-          UIFriendlyPermissions[permission as Permission] ?? permission
+  public getEffectivePermissions(): string[] {
+    const permissions: string[] = [];
+
+    for (const role of this.model.selectedRoles) {
+      const fullRole = this.allFullRoles.find((r) => r.name === role);
+      if (!fullRole) {
+        console.warn(`Role ${role} not found`);
+        continue;
+      }
+
+      permissions.push(
+        ...fullRole.permissions.filter((p) => !permissions.includes(p))
       );
-  }
+    }
 
-  removeRole(role: string) {
-    this.model.removeRole(role);
-  }
-
-  addRole(event: MatChipInputEvent) {
-    const value = (event.value ?? '').trim();
-    this.model.addRole(value);
-  }
-
-  selectedRole(event: MatAutocompleteSelectedEvent): void {
-    this.model.addRole(event.option.viewValue);
+    return permissions.map((p) => UIFriendlyPermissions[p as Permission] ?? p);
   }
 
   cancel() {

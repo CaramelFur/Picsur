@@ -3,7 +3,10 @@ import { Fail, Failable } from 'picsur-shared/dist/types';
 import { UserPassModel } from '../forms-dto/userpass.dto';
 import { Compare } from '../validators/compare.validator';
 import {
-  CreatePasswordError, CreateUsernameError, PasswordValidators, UsernameValidators
+  CreatePasswordError,
+  CreateUsernameError,
+  PasswordValidators,
+  UsernameValidators
 } from '../validators/user.validator';
 
 export class RegisterControl {
@@ -26,6 +29,7 @@ export class RegisterControl {
     return CreatePasswordError(this.passwordConfirm.errors);
   }
 
+  // This getter firstly verifies the form, RawData does not
   public getData(): Failable<UserPassModel> {
     if (
       this.username.errors ||

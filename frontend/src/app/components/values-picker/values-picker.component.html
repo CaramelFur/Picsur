@@ -1,0 +1,39 @@
+<mat-form-field class="value-picker" appearance="outline" color="accent">
+  <mat-label>{{ nameCapMul }}</mat-label>
+  <mat-chip-list #chipList>
+    <mat-chip
+      *ngFor="let item of this.myControl.value"
+      [removable]="!isDisabled(item)"
+      [disabled]="isDisabled(item)"
+      (removed)="removeItem(item)"
+    >
+      {{ item }}
+      <button *ngIf="!isDisabled(item)" matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+    <input
+      placeholder="Add {{name}}..."
+      #fruitInput
+      [formControl]="inputControl"
+      [value]="inputControl.value"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="addItemInput($event)"
+      autocorrect="off"
+      autocapitalize="none"
+    />
+  </mat-chip-list>
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="addItemSelect($event)"
+  >
+    <mat-option
+      *ngFor="let item of selectable | async"
+      [value]="item"
+    >
+      {{ item }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

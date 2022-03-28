@@ -1,12 +1,7 @@
-import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
-import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
+import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UpdateRoleControl } from 'src/app/models/forms/updaterole.control';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { RolesService } from 'src/app/services/api/roles.service';
@@ -23,11 +18,10 @@ enum EditMode {
   styleUrls: ['./settings-roles-edit.component.scss'],
 })
 export class SettingsRolesEditComponent implements OnInit {
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
-
   private mode: EditMode = EditMode.edit;
 
   model = new UpdateRoleControl();
+  allPermissions: string[] = [];
 
   get adding() {
     return this.mode === EditMode.add;
@@ -49,26 +43,29 @@ export class SettingsRolesEditComponent implements OnInit {
   }
 
   private async initRole() {
+    // Check if adding or editing
     const rolename = this.route.snapshot.paramMap.get('role');
     if (!rolename) {
       this.mode = EditMode.add;
       return;
     }
 
+    // Set data thats already known
     this.mode = EditMode.edit;
     this.model.putRoleName(rolename);
 
+    // Fetch data and populate form
     const role = await this.rolesService.getRole(rolename);
     if (HasFailed(role)) {
       this.utilService.showSnackBar('Failed to get role', SnackBarType.Error);
       return;
     }
-
     this.model.putRoleName(role.name);
     this.model.putPermissions(role.permissions);
   }
 
   private async initPermissions() {
+    // Get a list of all permissions so that we can select them
     const allPermissions = await this.permissionsService.fetchAllPermission();
     if (HasFailed(allPermissions)) {
       this.utilService.showSnackBar(
@@ -78,28 +75,11 @@ export class SettingsRolesEditComponent implements OnInit {
       return;
     }
 
-    this.model.putAllPermissions(allPermissions);
-  }
-
-  removePermission(permission: string) {
-    this.model.removePermission(permission);
-  }
-
-  addPermission(event: MatChipInputEvent) {
-    const value = (event.value ?? '').trim();
-    this.model.addPermission(value);
-  }
-
-  selectedPermission(event: MatAutocompleteSelectedEvent): void {
-    this.model.addPermission(event.option.viewValue);
+    this.allPermissions = allPermissions;
   }
 
   cancel() {
     this.router.navigate(['/settings/roles']);
-  }
-
-  uiFriendlyPermission(permission: string) {
-    return UIFriendlyPermissions[permission as Permission] ?? permission;
   }
 
   async updateUser() {
