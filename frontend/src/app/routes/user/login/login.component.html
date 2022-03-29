@@ -4,11 +4,7 @@
       <div class="col-12 py-2">
         <h1>Login</h1>
       </div>
-      <div class="col-12 py-2" *ngIf="loginFail">
-        <mat-error>
-          Failed to login. Please check your username and password.
-        </mat-error>
-      </div>
+
       <div class="col-12 py-2">
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Username</mat-label>
@@ -26,6 +22,7 @@
           </mat-error>
         </mat-form-field>
       </div>
+
       <div class="col-12 py-2">
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Password</mat-label>
@@ -41,6 +38,7 @@
           </mat-error>
         </mat-form-field>
       </div>
+
       <div class="col-12 py-2">
         <button mat-raised-button color="accent" class="mx-2" type="submit">
           Login

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { NgxDropzoneChangeEvent } from 'ngx-dropzone';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
+import { debounceTime } from 'rxjs';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UtilService } from 'src/app/util/util.service';
 import { ProcessingViewMetadata } from '../../models/dto/processing-view-metadata.dto';
@@ -12,12 +13,7 @@ import { ProcessingViewMetadata } from '../../models/dto/processing-view-metadat
   styleUrls: ['./upload.component.scss'],
 })
 export class UploadComponent implements OnInit {
-  private permissions: string[] = [];
-
-  // Lets be optimistic here, this makes for a better ux
-  public get hasUploadPermission() {
-    return this.permissions.includes(Permission.ImageUpload);
-  }
+  canUpload = true;
 
   constructor(
     private utilService: UtilService,
@@ -31,9 +27,11 @@ export class UploadComponent implements OnInit {
 
   @AutoUnsubscribe()
   onPermission() {
-    return this.permissionService.live.subscribe((permissions) => {
-      this.permissions = permissions;
-    });
+    return this.permissionService.live
+      .pipe(debounceTime(100))
+      .subscribe((permissions) => {
+        this.canUpload = permissions.includes(Permission.ImageUpload);
+      });
   }
 
   onSelect(event: NgxDropzoneChangeEvent) {

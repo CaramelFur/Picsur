@@ -15,16 +15,9 @@ import { LoginControl } from '../../../models/forms/login.control';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  private readonly logger = console;
-
-  private permissions: string[] = [];
-
-  public get showRegister() {
-    return this.permissions.includes(Permission.UserRegister);
-  }
+  showRegister = false;
 
   model = new LoginControl();
-  loginFail = false;
 
   constructor(
     private userService: UserService,
@@ -46,7 +39,7 @@ export class LoginComponent implements OnInit {
   @AutoUnsubscribe()
   onPermissions() {
     return this.permissionService.live.subscribe((permissions) => {
-      this.permissions = permissions;
+      this.showRegister = permissions.includes(Permission.UserRegister);
     });
   }
 
@@ -58,8 +51,11 @@ export class LoginComponent implements OnInit {
 
     const user = await this.userService.login(data.username, data.password);
     if (HasFailed(user)) {
-      this.logger.warn(user);
-      this.loginFail = true;
+      console.warn(user);
+      this.utilService.showSnackBar(
+        'Login failed, please try again',
+        SnackBarType.Error
+      );
       return;
     }
 

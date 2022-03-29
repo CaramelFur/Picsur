@@ -4,9 +4,7 @@
       <div class="col-12 py-2">
         <h1>Register</h1>
       </div>
-      <div class="col-12 py-2" *ngIf="registerFail">
-        <mat-error> Failed to register. </mat-error>
-      </div>
+
       <div class="col-12 py-2">
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Username</mat-label>
@@ -24,6 +22,7 @@
           </mat-error>
         </mat-form-field>
       </div>
+
       <div class="col-12 py-2">
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Password</mat-label>
@@ -39,6 +38,7 @@
           </mat-error>
         </mat-form-field>
       </div>
+
       <div class="col-12 py-2">
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Confirm Password</mat-label>
@@ -54,6 +54,7 @@
           </mat-error>
         </mat-form-field>
       </div>
+
       <div class="col-12 py-2">
         <button mat-raised-button color="accent" class="mx-2" type="submit">
           Register

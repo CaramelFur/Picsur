@@ -120,7 +120,7 @@ export class UserManageService {
     return result;
   }
 
-  public async getSpecialRolesOptimistic(): Promise<GetSpecialUsersResponse> {
+  public async getSpecialUsersOptimistic(): Promise<GetSpecialUsersResponse> {
     const result = await this.getSpecialUsers();
     if (HasFailed(result)) {
       return {

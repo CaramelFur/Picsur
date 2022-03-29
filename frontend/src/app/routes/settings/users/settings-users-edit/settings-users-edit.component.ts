@@ -47,12 +47,17 @@ export class SettingsUsersEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    Promise.all([this.initUser(), this.initRoles()]).catch(console.error);
+    Promise.all([
+      this.initUser(),
+      this.initRoles(),
+      this.initImmutableUsersList(),
+    ]).catch(console.error);
   }
 
   private async initUser() {
     const username = this.route.snapshot.paramMap.get('username');
 
+    // Get special roles
     const SpecialRoles = await this.rolesService.getSpecialRoles();
     if (HasFailed(SpecialRoles)) {
       this.utilService.showSnackBar(
@@ -61,9 +66,9 @@ export class SettingsUsersEditComponent implements OnInit {
       );
       return;
     }
-
     this.soulBoundRoles = SpecialRoles.SoulBoundRoles;
 
+    // Check if edit or add
     if (!username) {
       this.mode = EditMode.add;
 
@@ -71,21 +76,33 @@ export class SettingsUsersEditComponent implements OnInit {
       return;
     }
 
+    // Set known data
     this.mode = EditMode.edit;
     this.model.putUsername(username);
 
+    // Fetch more data
     const user = await this.userManageService.getUser(username);
     if (HasFailed(user)) {
       this.utilService.showSnackBar('Failed to get user', SnackBarType.Error);
       return;
     }
 
+    // Set that data instead
     this.model.putUsername(user.username);
     this.model.putRoles(user.roles);
+  }
 
-    const { ImmutableUsersList } =
-      await this.userManageService.getSpecialRolesOptimistic();
-    this.ImmutableUsersList = ImmutableUsersList;
+  private async initImmutableUsersList() {
+    const SpecialUsers = await this.userManageService.getSpecialUsers();
+    if (HasFailed(SpecialUsers)) {
+      this.utilService.showSnackBar(
+        'Failed to get special users',
+        SnackBarType.Error
+      );
+      return;
+    }
+
+    this.ImmutableUsersList = SpecialUsers.ImmutableUsersList;
   }
 
   private async initRoles() {

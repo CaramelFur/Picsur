@@ -15,16 +15,9 @@ import { RegisterControl } from '../../../models/forms/register.control';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  private readonly logger = console;
-
-  private permissions: string[] = [];
-
-  public get showLogin() {
-    return this.permissions.includes(Permission.UserLogin);
-  }
+  showLogin = false;
 
   model = new RegisterControl();
-  registerFail = false;
 
   constructor(
     private userService: UserService,
@@ -46,7 +39,7 @@ export class RegisterComponent implements OnInit {
   @AutoUnsubscribe()
   onPermissions() {
     return this.permissionService.live.subscribe((permissions) => {
-      this.permissions = permissions;
+      this.showLogin = permissions.includes(Permission.UserLogin);
     });
   }
 
@@ -58,19 +51,28 @@ export class RegisterComponent implements OnInit {
 
     const user = await this.userService.register(data.username, data.password);
     if (HasFailed(user)) {
-      this.logger.warn(user);
-      this.registerFail = true;
+      console.warn(user);
+      this.utilService.showSnackBar(
+        'Register failed, please try again',
+        SnackBarType.Error
+      );
       return;
     }
-
-    this.utilService.showSnackBar('Register successful', SnackBarType.Success);
 
     if (!this.userService.isLoggedIn) {
       const loginResult = this.userService.login(data.username, data.password);
       if (HasFailed(loginResult)) {
-        this.logger.warn(loginResult);
-        this.utilService.showSnackBar('Failed to login', SnackBarType.Error);
+        console.warn(loginResult);
+        this.utilService.showSnackBar(
+          'Failed to login after register',
+          SnackBarType.Error
+        );
       }
+    } else {
+      this.utilService.showSnackBar(
+        'Register successful',
+        SnackBarType.Success
+      );
     }
 
     this.router.navigate(['/']);
