@@ -11,9 +11,10 @@ import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { SysPrefValueType } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
+import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
+import { UtilService } from 'src/app/util/util.service';
 import { ApiService } from './api.service';
 import { PermissionService } from './permission.service';
-
 
 @Injectable({
   providedIn: 'root',
@@ -35,9 +36,22 @@ export class SysprefService {
 
   constructor(
     private api: ApiService,
-    private permissionsService: PermissionService
+    private permissionsService: PermissionService,
+    private utilService: UtilService
   ) {
-    this.onPermissions();
+    this.subscribePermissions();
+    this.init().catch(console.error);
+  }
+
+  private async init() {
+    const result = await this.getPreferences();
+    if (HasFailed(result)) {
+      this.utilService.showSnackBar(
+        "Couldn't load system preferences",
+        SnackBarType.Error
+      );
+      this.flush();
+    }
   }
 
   public async getPreferences(): AsyncFailable<SysPreferenceBaseResponse[]> {
@@ -58,7 +72,7 @@ export class SysprefService {
   }
 
   public async getPreference(
-    key: string,
+    key: string
   ): AsyncFailable<GetSyspreferenceResponse> {
     if (!this.hasPermission)
       return Fail('You do not have permission to edit system preferences');
@@ -123,7 +137,7 @@ export class SysprefService {
   }
 
   @AutoUnsubscribe()
-  private onPermissions() {
+  private subscribePermissions() {
     return this.permissionsService.live.subscribe((permissions) => {
       this.hasPermission = permissions.includes(Permission.SysPrefManage);
       if (!this.hasPermission) {
