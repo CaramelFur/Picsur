@@ -11,6 +11,11 @@ import { ViewRouteModule } from './routes/view/view.module';
 const routes: PRoutes = [
   {
     path: '',
+    pathMatch: 'full',
+    redirectTo: 'upload',
+  },
+  {
+    path: 'upload',
     loadChildren: () => UploadRouteModule,
   },
   {
@@ -36,9 +41,7 @@ const routes: PRoutes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes),
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

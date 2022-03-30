@@ -9,12 +9,14 @@ import {
   Router
 } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
+import { RouteTransitionAnimations } from './app.animation';
 import { PRouteData } from './models/dto/picsur-routes.dto';
-
+let b = 0;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  animations: [RouteTransitionAnimations],
 })
 export class AppComponent implements OnInit {
   readonly logger = console;
@@ -32,6 +34,13 @@ export class AppComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private breakPointObserver: BreakpointObserver
   ) {}
+
+  public getRouteAnimData() {
+    // Everyone is doing shit with the activated route
+    // This seems so much cleaner tho
+    // Am I just missing something, or is everyone else missing something?
+    return this.router.url;
+  }
 
   public ngOnInit() {
     this.subscribeRouter();

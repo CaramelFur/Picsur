@@ -18,7 +18,6 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -37,7 +36,8 @@
               "debug",
               "buffer/",
               "sha.js"
-            ]
+            ],
+            "optimization": true
           },
           "configurations": {
             "production": {

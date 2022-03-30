@@ -22,6 +22,12 @@ html {
   box-sizing: inherit;
 }
 
+router-outlet ~ * {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
 :not(input) {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -30,9 +36,8 @@ html {
 }
 
 .mat-icon {
-  // Yes yes, !important is here, deal with it
+  // Yes yes, !important is here, god damn css
   // If someone wants to properly figure out why icons are escaping their 24px box, feel free to
   height: initial !important;
   width: initial !important;
 }
-
