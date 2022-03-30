@@ -20,6 +20,7 @@ import {
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { RolesService } from '../../../collections/roledb/roledb.service';
+import { UserRolesService } from '../../../collections/userdb/userrolesdb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Permission } from '../../../models/dto/permissions.dto';
 import {
@@ -35,7 +36,10 @@ import { isPermissionsArray } from '../../../models/validators/permissions.valid
 export class RolesController {
   private readonly logger = new Logger('RolesController');
 
-  constructor(private rolesService: RolesService) {}
+  constructor(
+    private rolesService: RolesService,
+    private userRolesService: UserRolesService,
+  ) {}
 
   @Get('list')
   async getRoles(): Promise<RoleListResponse> {
@@ -109,6 +113,13 @@ export class RolesController {
     if (HasFailed(deletedRole)) {
       this.logger.warn(deletedRole.getReason());
       throw new InternalServerErrorException('Could not delete role');
+    }
+
+    const success = await this.userRolesService.removeRoleEveryone(role.name);
+    if (HasFailed(success)) {
+      throw new InternalServerErrorException(
+        'Could not remove role from users',
+      );
     }
 
     return deletedRole;

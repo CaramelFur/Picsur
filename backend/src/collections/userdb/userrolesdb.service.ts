@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
+import { Repository } from 'typeorm';
 import { Permissions } from '../../models/dto/permissions.dto';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { RolesService } from '../roledb/roledb.service';
@@ -10,7 +12,12 @@ import { UsersService } from './userdb.service';
 
 @Injectable()
 export class UserRolesService {
+  private readonly logger = new Logger('UserRolesService');
+
   constructor(
+    @InjectRepository(EUserBackend)
+    private usersRepository: Repository<EUserBackend>,
+
     private usersService: UsersService,
     private rolesService: RolesService,
   ) {}
@@ -47,5 +54,23 @@ export class UserRolesService {
     const newRoles = userToModify.roles.filter((role) => !roles.includes(role));
 
     return this.usersService.setRoles(userToModify, newRoles);
+  }
+
+  public async removeRoleEveryone(role: string): AsyncFailable<true> {
+    try {
+      await this.usersRepository
+        .createQueryBuilder('user')
+        .update()
+        .set({
+          roles: () => 'ARRAY_REMOVE(roles, :role)',
+        })
+        .where('roles @> ARRAY[:role]', { role })
+        .execute();
+    } catch (e) {
+      this.logger.error(e);
+      return Fail("Couldn't remove role from everyone");
+    }
+
+    return true;
   }
 }
