@@ -8,6 +8,7 @@ import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { RolesService } from 'src/app/services/api/roles.service';
+import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { UtilService } from 'src/app/util/util.service';
 
 @Component({
@@ -34,6 +35,7 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
   constructor(
     private rolesService: RolesService,
     private utilService: UtilService,
+    private staticInfo: StaticInfoService,
     private router: Router
   ) {}
 
@@ -101,23 +103,15 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
   private async loadRoles() {
     const [roles, specialRoles] = await Promise.all([
       this.rolesService.getRoles(),
-      this.rolesService.getSpecialRoles(),
+      this.staticInfo.getSpecialRoles(),
     ]);
+    this.UndeletableRolesList = specialRoles.UndeletableRoles;
+    this.ImmutableRolesList = specialRoles.ImmutableRoles;
 
     if (HasFailed(roles)) {
       this.utilService.showSnackBar('Failed to load roles', SnackBarType.Error);
       return;
     }
     this.dataSource.data = roles;
-
-    if (HasFailed(specialRoles)) {
-      this.utilService.showSnackBar(
-        'Failed to load special roles',
-        SnackBarType.Error
-      );
-      return;
-    }
-    this.UndeletableRolesList = specialRoles.UndeletableRoles;
-    this.ImmutableRolesList = specialRoles.ImmutableRoles;
   }
 }

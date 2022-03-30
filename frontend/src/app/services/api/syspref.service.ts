@@ -22,17 +22,17 @@ import { PermissionService } from './permission.service';
 export class SysprefService {
   private hasPermission = false;
 
+  private sysprefObservable = new BehaviorSubject<SysPreferenceBaseResponse[]>(
+    []
+  );
+
   public get snapshot() {
     return this.sysprefObservable.getValue();
   }
 
   public get live() {
-    return this.sysprefObservable;
+    return this.sysprefObservable.asObservable();
   }
-
-  private sysprefObservable = new BehaviorSubject<SysPreferenceBaseResponse[]>(
-    []
-  );
 
   constructor(
     private api: ApiService,
@@ -62,10 +62,7 @@ export class SysprefService {
       MultipleSysPreferencesResponse,
       '/api/pref/sys'
     );
-    if (HasFailed(response)) {
-      this.sync();
-      return response;
-    }
+    if (HasFailed(response)) return response;
 
     this.sysprefObservable.next(response.preferences);
     return response.preferences;
@@ -81,12 +78,8 @@ export class SysprefService {
       GetSyspreferenceResponse,
       `/api/pref/sys/${key}`
     );
-    if (HasFailed(response)) {
-      this.sync();
-      return response;
-    }
 
-    this.updatePrefArray(response);
+    if (!HasFailed(response)) this.updatePrefArray(response);
     return response;
   }
 
@@ -103,12 +96,8 @@ export class SysprefService {
       `/api/pref/sys/${key}`,
       { value }
     );
-    if (HasFailed(response)) {
-      this.sync();
-      return response;
-    }
 
-    this.updatePrefArray(response);
+    if (!HasFailed(response)) this.updatePrefArray(response);
     return response;
   }
 
@@ -126,16 +115,11 @@ export class SysprefService {
     }
   }
 
-  private sync() {
-    this.sysprefObservable.next(
-      ([] as SysPreferenceBaseResponse[]).concat(this.snapshot)
-    );
-  }
-
   private flush() {
     this.sysprefObservable.next([]);
   }
 
+  // We want to flush on logout, because the syspreferences can contain sensitive information
   @AutoUnsubscribe()
   private subscribePermissions() {
     return this.permissionsService.live.subscribe((permissions) => {

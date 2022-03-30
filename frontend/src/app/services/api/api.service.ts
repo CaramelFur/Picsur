@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ClassConstructor, plainToClass } from 'class-transformer';
-import { ApiResponse, ApiSuccessResponse } from 'picsur-shared/dist/dto/api/api.dto';
+import {
+  ApiResponse,
+  ApiSuccessResponse
+} from 'picsur-shared/dist/dto/api/api.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Subject } from 'rxjs';
 import { ApiError } from 'src/app/models/dto/api-error.dto';
 import { MultiPartRequest } from '../../models/dto/multi-part-request.dto';
-import { KeyService } from './key.service';
+import { KeyService } from '../storage/key.service';
+
+/*
+  Proud of this, it works so smoooth
+*/
 
 @Injectable({
   providedIn: 'root',

@@ -13,17 +13,18 @@ import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { BehaviorSubject } from 'rxjs';
+import { KeyService } from '../storage/key.service';
 import { ApiService } from './api.service';
-import { KeyService } from './key.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private readonly logger = console;
+  private userSubject = new BehaviorSubject<EUser | null>(null);
 
   public get live() {
-    return this.userSubject;
+    return this.userSubject.asObservable();
   }
 
   public get snapshot() {
@@ -34,10 +35,31 @@ export class UserService {
     return this.userSubject.getValue() !== null;
   }
 
-  private userSubject = new BehaviorSubject<EUser | null>(null);
-
   constructor(private api: ApiService, private key: KeyService) {
     this.init().catch(this.logger.error);
+  }
+
+  private async init() {
+    const apikey = await this.key.get();
+    if (!apikey) return;
+
+    const user = await this.extractUser(apikey);
+    if (HasFailed(user)) {
+      this.logger.warn(user.getReason());
+      await this.logout();
+      return;
+    }
+
+    this.userSubject.next(user);
+
+    const fetchedUser = await this.fetchUser();
+    if (HasFailed(fetchedUser)) {
+      this.logger.warn(fetchedUser.getReason());
+      await this.logout();
+      return;
+    }
+
+    this.userSubject.next(fetchedUser);
   }
 
   public async login(username: string, password: string): AsyncFailable<EUser> {
@@ -52,8 +74,9 @@ export class UserService {
       '/api/user/login',
       request
     );
-
     if (HasFailed(response)) return response;
+
+    // Set the key so the apiservice can use it
     this.key.set(response.jwt_token);
 
     const user = await this.fetchUser();
@@ -83,10 +106,11 @@ export class UserService {
   }
 
   public async logout(): AsyncFailable<EUser> {
-    console.log('logging out');
-    const value = this.userSubject.getValue();
+    const value = this.snapshot;
+
     this.key.clear();
     this.userSubject.next(null);
+
     if (value === null) {
       return Fail('Not logged in');
     } else {
@@ -94,29 +118,7 @@ export class UserService {
     }
   }
 
-  private async init() {
-    const apikey = await this.key.get();
-    if (!apikey) return;
-
-    const user = await this.extractUser(apikey);
-    if (HasFailed(user)) {
-      this.logger.warn(user.getReason());
-      await this.logout();
-      return;
-    }
-
-    this.userSubject.next(user);
-
-    const fetchedUser = await this.fetchUser();
-    if (HasFailed(fetchedUser)) {
-      this.logger.warn(fetchedUser.getReason());
-      await this.logout();
-      return;
-    }
-
-    this.userSubject.next(fetchedUser);
-  }
-
+  // This extracts the available userdata from the jwt token
   private async extractUser(token: string): AsyncFailable<EUser> {
     let decoded: any;
     try {
@@ -135,6 +137,7 @@ export class UserService {
     return jwtData.user;
   }
 
+  // This actually fetches up to date information from the server
   private async fetchUser(): AsyncFailable<EUser> {
     const got = await this.api.get(UserMeResponse, '/api/user/me');
     if (HasFailed(got)) return got;

@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UpdateRoleControl } from 'src/app/models/forms/updaterole.control';
-import { PermissionService } from 'src/app/services/api/permission.service';
 import { RolesService } from 'src/app/services/api/roles.service';
+import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { UtilService } from 'src/app/util/util.service';
 
 enum EditMode {
@@ -34,7 +34,7 @@ export class SettingsRolesEditComponent implements OnInit {
     private router: Router,
     private utilService: UtilService,
     private rolesService: RolesService,
-    private permissionsService: PermissionService
+    private staticInfo: StaticInfoService
   ) {}
 
   ngOnInit() {
@@ -65,16 +65,7 @@ export class SettingsRolesEditComponent implements OnInit {
 
   private async initPermissions() {
     // Get a list of all permissions so that we can select them
-    const allPermissions = await this.permissionsService.fetchAllPermission();
-    if (HasFailed(allPermissions)) {
-      this.utilService.showSnackBar(
-        'Failed to fetch permissions',
-        SnackBarType.Error
-      );
-      return;
-    }
-
-    this.allPermissions = allPermissions;
+    this.allPermissions = await this.staticInfo.getAllPermissions();
   }
 
   async updateRole() {

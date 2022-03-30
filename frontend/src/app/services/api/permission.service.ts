@@ -1,33 +1,31 @@
 import { Injectable } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { AllPermissionsResponse } from 'picsur-shared/dist/dto/api/info.dto';
 import { UserMePermissionsResponse } from 'picsur-shared/dist/dto/api/user.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, filter, map, Observable, take } from 'rxjs';
 import { ApiService } from './api.service';
+import { StaticInfoService } from './static-info.service';
 import { UserService } from './user.service';
 
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
   private readonly logger = console;
 
-  constructor(private userService: UserService, private api: ApiService) {
-    this.onUser();
-  }
+  private allPermissions: string[] = [];
+  private permissionsSubject = new BehaviorSubject<string[] | null>(null);
 
-  // TODO: add full permission list as default
   public get live(): Observable<string[]> {
     return this.permissionsSubject.pipe(
-      map((permissions) => permissions ?? [])
+      map((permissions) => permissions ?? this.allPermissions)
     );
   }
 
   public get snapshot(): string[] {
-    return this.permissionsSubject.getValue() ?? [];
+    return this.permissionsSubject.getValue() ?? this.allPermissions;
   }
 
   // This will not be optimistic, it will instead wait for correct data
-  public loadedSnapshot(): Promise<string[]> {
+  public getLoadedSnapshot(): Promise<string[]> {
     return new Promise((resolve) => {
       const filtered = this.permissionsSubject.pipe(
         filter((permissions) => permissions !== null),
@@ -37,38 +35,42 @@ export class PermissionService {
     });
   }
 
-  private permissionsSubject = new BehaviorSubject<string[] | null>(null);
+  constructor(
+    private userService: UserService,
+    private api: ApiService,
+    private staticInfo: StaticInfoService
+  ) {
+    this.subscribeUser();
+    this.loadAllPermissions().catch(this.logger.error);
+  }
+
+  private async loadAllPermissions() {
+    this.allPermissions = await this.staticInfo.getAllPermissions();
+
+    if (this.snapshot === null) {
+      this.permissionsSubject.next(null);
+    }
+  }
 
   @AutoUnsubscribe()
-  private onUser() {
+  private subscribeUser() {
     return this.userService.live.subscribe(async (user) => {
-      const permissions = await this.fetchPermissions();
+      const permissions = await this.updatePermissions();
       if (HasFailed(permissions)) {
         this.logger.warn(permissions.getReason());
         return;
       }
-      this.permissionsSubject.next(permissions);
     });
   }
 
-  private async fetchPermissions(): AsyncFailable<string[]> {
+  private async updatePermissions(): AsyncFailable<true> {
     const got = await this.api.get(
       UserMePermissionsResponse,
       '/api/user/me/permissions'
     );
     if (HasFailed(got)) return got;
 
-    return got.permissions;
-  }
-
-  public async fetchAllPermission(): AsyncFailable<string[]> {
-    const result = await this.api.get(
-      AllPermissionsResponse,
-      '/api/info/permissions'
-    );
-
-    if (HasFailed(result)) return result;
-
-    return result.Permissions;
+    this.permissionsSubject.next(got.permissions);
+    return true;
   }
 }

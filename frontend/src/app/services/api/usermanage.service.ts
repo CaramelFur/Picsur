@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  GetSpecialUsersResponse,
   UserCreateRequest,
   UserCreateResponse,
   UserDeleteRequest,
@@ -16,23 +15,19 @@ import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { FullUserModel } from 'src/app/models/forms-dto/fulluser.dto';
 import { ApiService } from './api.service';
-import { CacheService } from './cache.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserManageService {
-  constructor(
-    private apiService: ApiService,
-    private cacheService: CacheService
-  ) {}
+  constructor(private api: ApiService) {}
 
   public async getUser(username: string): AsyncFailable<EUser> {
     const body = {
       username,
     };
 
-    const result = await this.apiService.post(
+    const result = await this.api.post(
       UserInfoRequest,
       UserInfoResponse,
       'api/user/info',
@@ -48,7 +43,7 @@ export class UserManageService {
       page,
     };
 
-    const result = await this.apiService.post(
+    const result = await this.api.post(
       UserListRequest,
       UserListResponse,
       '/api/user/list',
@@ -63,7 +58,7 @@ export class UserManageService {
   }
 
   public async createUser(user: FullUserModel): AsyncFailable<EUser> {
-    const result = await this.apiService.post(
+    const result = await this.api.post(
       UserCreateRequest,
       UserCreateResponse,
       '/api/user/create',
@@ -74,7 +69,7 @@ export class UserManageService {
   }
 
   public async updateUser(user: FullUserModel): AsyncFailable<EUser> {
-    const result = await this.apiService.post(
+    const result = await this.api.post(
       UserUpdateRequest,
       UserUpdateResponse,
       '/api/user/update',
@@ -89,46 +84,12 @@ export class UserManageService {
       username,
     };
 
-    const result = await this.apiService.post(
+    const result = await this.api.post(
       UserDeleteRequest,
       UserDeleteResponse,
       '/api/user/delete',
       body
     );
-
-    return result;
-  }
-
-  public async getSpecialUsers(): AsyncFailable<GetSpecialUsersResponse> {
-    const cached =
-      this.cacheService.get<GetSpecialUsersResponse>('specialUsers');
-    if (cached !== null) {
-      return cached;
-    }
-
-    const result = await this.apiService.get(
-      GetSpecialUsersResponse,
-      '/api/user/special'
-    );
-
-    if (HasFailed(result)) {
-      return result;
-    }
-
-    this.cacheService.set('specialUsers', result);
-
-    return result;
-  }
-
-  public async getSpecialUsersOptimistic(): Promise<GetSpecialUsersResponse> {
-    const result = await this.getSpecialUsers();
-    if (HasFailed(result)) {
-      return {
-        ImmutableUsersList: [],
-        LockedLoginUsersList: [],
-        UndeletableUsersList: [],
-      };
-    }
 
     return result;
   }

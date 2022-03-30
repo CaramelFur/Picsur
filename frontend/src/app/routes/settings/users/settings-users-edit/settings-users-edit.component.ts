@@ -7,6 +7,7 @@ import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UpdateUserControl } from 'src/app/models/forms/updateuser.control';
 import { RolesService } from 'src/app/services/api/roles.service';
+import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { UserManageService } from 'src/app/services/api/usermanage.service';
 import { UtilService } from 'src/app/util/util.service';
 
@@ -43,7 +44,8 @@ export class SettingsUsersEditComponent implements OnInit {
     private router: Router,
     private userManageService: UserManageService,
     private utilService: UtilService,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    private staticInfo: StaticInfoService
   ) {}
 
   ngOnInit() {
@@ -58,14 +60,7 @@ export class SettingsUsersEditComponent implements OnInit {
     const username = this.route.snapshot.paramMap.get('username');
 
     // Get special roles
-    const SpecialRoles = await this.rolesService.getSpecialRoles();
-    if (HasFailed(SpecialRoles)) {
-      this.utilService.showSnackBar(
-        'Failed to get special roles',
-        SnackBarType.Error
-      );
-      return;
-    }
+    const SpecialRoles = await this.staticInfo.getSpecialRoles();
     this.soulBoundRoles = SpecialRoles.SoulBoundRoles;
 
     // Check if edit or add
@@ -93,15 +88,7 @@ export class SettingsUsersEditComponent implements OnInit {
   }
 
   private async initImmutableUsersList() {
-    const SpecialUsers = await this.userManageService.getSpecialUsers();
-    if (HasFailed(SpecialUsers)) {
-      this.utilService.showSnackBar(
-        'Failed to get special users',
-        SnackBarType.Error
-      );
-      return;
-    }
-
+    const SpecialUsers = await this.staticInfo.getSpecialUsers();
     this.ImmutableUsersList = SpecialUsers.ImmutableUsersList;
   }
 

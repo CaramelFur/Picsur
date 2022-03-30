@@ -6,10 +6,10 @@ import {
   Router,
   RouterStateSnapshot
 } from '@angular/router';
-import { HasFailed } from 'picsur-shared/dist/types';
 import { isPermissionsArray } from 'picsur-shared/dist/validators/permissions.validator';
 import { PRouteData } from '../models/dto/picsur-routes.dto';
 import { PermissionService } from '../services/api/permission.service';
+import { StaticInfoService } from '../services/api/static-info.service';
 import { Logger } from '../services/logger/logger.service';
 
 @Injectable({
@@ -21,18 +21,14 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
 
   constructor(
     private permissionService: PermissionService,
+    private staticInfo: StaticInfoService,
     private router: Router
   ) {
     this.setupAllPermissions().catch(this.logger.error);
   }
 
   private async setupAllPermissions() {
-    const permissions = await this.permissionService.fetchAllPermission();
-    if (HasFailed(permissions)) {
-      return this.logger.error(`Could not fetch all permissions`);
-    }
-
-    this.allPermissionsArray = permissions;
+    this.allPermissionsArray = await this.staticInfo.getAllPermissions();
   }
 
   async canActivateChild(
@@ -61,7 +57,7 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
       return false;
     }
 
-    const ourPermissions = await this.permissionService.loadedSnapshot();
+    const ourPermissions = await this.permissionService.getLoadedSnapshot();
     const weHavePermission = requiredPermissions.every((permission) =>
       ourPermissions.includes(permission)
     );

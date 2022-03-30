@@ -5,7 +5,8 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, Subject, throttleTime } from 'rxjs';
-import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
+import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
+import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { UserManageService } from 'src/app/services/api/usermanage.service';
 import { UtilService } from 'src/app/util/util.service';
 
@@ -29,6 +30,7 @@ export class SettingsUsersComponent implements OnInit {
   constructor(
     private userManageService: UserManageService,
     private utilService: UtilService,
+    private staticInfo: StaticInfoService,
     private router: Router
   ) {}
 
@@ -129,15 +131,7 @@ export class SettingsUsersComponent implements OnInit {
   }
 
   private async initSpecialUsers() {
-    const specialUsers = await this.userManageService.getSpecialUsers();
-    if (HasFailed(specialUsers)) {
-      this.utilService.showSnackBar(
-        'Failed to fetch special users',
-        SnackBarType.Error
-      );
-      return;
-    }
-
+    const specialUsers = await this.staticInfo.getSpecialUsers();
     this.UndeletableUsersList = specialUsers.UndeletableUsersList;
   }
 
