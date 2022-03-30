@@ -11,7 +11,7 @@ import {
   RoleUpdateResponse
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
-import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable, Open } from 'picsur-shared/dist/types';
 import { RoleModel } from 'src/app/models/forms-dto/role.dto';
 import { ApiService } from './api.service';
 
@@ -22,67 +22,48 @@ export class RolesService {
   constructor(private api: ApiService) {}
 
   public async getRoles(): AsyncFailable<ERole[]> {
-    const result = await this.api.get(
-      RoleListResponse,
-      '/api/roles/list'
-    );
+    const result = await this.api.get(RoleListResponse, '/api/roles/list');
 
-    if (HasFailed(result)) {
-      return result;
-    }
-
-    return result.roles;
+    return Open(result, 'roles');
   }
 
   public async getRole(name: string): AsyncFailable<ERole> {
-    const body = {
-      name,
-    };
-
-    const result = await this.api.post(
+    return await this.api.post(
       RoleInfoRequest,
       RoleInfoResponse,
       '/api/roles/info',
-      body
+      {
+        name,
+      }
     );
-
-    return result;
   }
 
   public async createRole(role: RoleModel): AsyncFailable<ERole> {
-    const result = await this.api.post(
+    return await this.api.post(
       RoleCreateRequest,
       RoleCreateResponse,
       '/api/roles/create',
       role
     );
-
-    return result;
   }
 
   public async updateRole(role: RoleModel): AsyncFailable<ERole> {
-    const result = await this.api.post(
+    return await this.api.post(
       RoleUpdateRequest,
       RoleUpdateResponse,
       '/api/roles/update',
       role
     );
-
-    return result;
   }
 
   public async deleteRole(name: string): AsyncFailable<ERole> {
-    const body = {
-      name,
-    };
-
-    const result = await this.api.post(
+    return await this.api.post(
       RoleDeleteRequest,
       RoleDeleteResponse,
       '/api/roles/delete',
-      body
+      {
+        name,
+      }
     );
-
-    return result;
   }
 }

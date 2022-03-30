@@ -28,3 +28,13 @@ export function HasSuccess<T>(failable: Failable<T>): failable is T {
   if (failable instanceof Promise) throw new Error('Invalid use of HasSuccess');
   return !(failable instanceof Failure);
 }
+
+export function Map<T, U>(failable: Failable<T>, mapper: (value: T) => U): Failable<U> {
+  if (HasFailed(failable)) return failable;
+  return mapper(failable);
+}
+
+export function Open<T, U extends keyof T>(failable: Failable<T>, key: U): Failable<T[U]> {
+  if (HasFailed(failable)) return failable;
+  return failable[key];
+}

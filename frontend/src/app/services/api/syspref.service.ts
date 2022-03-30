@@ -9,7 +9,7 @@ import {
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { SysPrefValueType } from 'picsur-shared/dist/dto/syspreferences.dto';
-import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, HasFailed, Map } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UtilService } from 'src/app/util/util.service';
@@ -65,10 +65,11 @@ export class SysprefService {
       MultipleSysPreferencesResponse,
       '/api/pref/sys'
     );
-    if (HasFailed(response)) return response;
 
-    this.sysprefObservable.next(response.preferences);
-    return response.preferences;
+    return Map(response, (pref) => {
+      this.sysprefObservable.next(pref.preferences)
+      return pref.preferences;
+    });
   }
 
   public async getPreference(

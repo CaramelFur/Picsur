@@ -20,5 +20,5 @@ export class InfoResponse {
 export class AllPermissionsResponse {
   @IsDefined()
   @IsStringList()
-  Permissions: string[];
+  permissions: string[];
 }

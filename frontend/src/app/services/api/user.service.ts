@@ -64,16 +64,14 @@ export class UserService {
   }
 
   public async login(username: string, password: string): AsyncFailable<EUser> {
-    const request: UserLoginRequest = {
-      username,
-      password,
-    };
-
     const response = await this.api.post(
       UserLoginRequest,
       UserLoginResponse,
       '/api/user/login',
-      request
+      {
+        username,
+        password,
+      }
     );
     if (HasFailed(response)) return response;
 
@@ -91,19 +89,15 @@ export class UserService {
     username: string,
     password: string
   ): AsyncFailable<EUser> {
-    const request: UserRegisterRequest = {
-      username,
-      password,
-    };
-
-    const response = await this.api.post(
+    return await this.api.post(
       UserRegisterRequest,
       UserRegisterResponse,
       '/api/user/register',
-      request
+      {
+        username,
+        password,
+      }
     );
-
-    return response;
   }
 
   public async logout(): AsyncFailable<EUser> {

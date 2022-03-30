@@ -41,7 +41,7 @@ export class ApiService {
     sendType: ClassConstructor<T>,
     receiveType: ClassConstructor<W>,
     url: string,
-    data: object
+    data: T
   ): AsyncFailable<W> {
     const sendClass = plainToClass(sendType, data);
     const errors = await strictValidate(sendClass);

@@ -26,7 +26,7 @@ export class InfoController {
   @Get('permissions')
   async getPermissions(): Promise<AllPermissionsResponse> {
     const result: AllPermissionsResponse = {
-      Permissions: PermissionsList,
+      permissions: PermissionsList,
     };
 
     return plainToClass(AllPermissionsResponse, result);

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AllPermissionsResponse } from 'picsur-shared/dist/dto/api/info.dto';
 import { SpecialRolesResponse } from 'picsur-shared/dist/dto/api/roles.dto';
 import { GetSpecialUsersResponse } from 'picsur-shared/dist/dto/api/usermanage.dto';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { Open } from 'picsur-shared/dist/types';
 import { CacheService } from '../storage/cache.service';
 import { ApiService } from './api.service';
 
@@ -47,8 +47,7 @@ export class StaticInfoService {
           AllPermissionsResponse,
           '/api/info/permissions'
         );
-        if (HasFailed(res)) return res;
-        return res.Permissions;
+        return Open(res, 'permissions');
       }
     );
   }

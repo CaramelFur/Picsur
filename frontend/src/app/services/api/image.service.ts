@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
-import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable } from 'picsur-shared/dist/types';
+import { Open } from 'picsur-shared/dist/types/failable';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -18,9 +18,7 @@ export class ImageService {
       new ImageUploadRequest(image)
     );
 
-    if (HasFailed(result)) return result;
-
-    return result.hash;
+    return Open(result, 'hash');
   }
 
   public async GetImageMeta(image: string): AsyncFailable<EImage> {
