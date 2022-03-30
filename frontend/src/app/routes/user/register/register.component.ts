@@ -7,6 +7,7 @@ import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UserPassModel } from 'src/app/models/forms-dto/userpass.dto';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UserService } from 'src/app/services/api/user.service';
+import { Logger } from 'src/app/services/logger/logger.service';
 import { UtilService } from 'src/app/util/util.service';
 import { RegisterControl } from '../../../models/forms/register.control';
 
@@ -15,6 +16,8 @@ import { RegisterControl } from '../../../models/forms/register.control';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
+  private readonly logger = new Logger('RegisterComponent');
+
   showLogin = false;
 
   model = new RegisterControl();
@@ -51,7 +54,7 @@ export class RegisterComponent implements OnInit {
 
     const user = await this.userService.register(data.username, data.password);
     if (HasFailed(user)) {
-      console.warn(user);
+      this.logger.warn(user.getReason());
       this.utilService.showSnackBar(
         'Register failed, please try again',
         SnackBarType.Error
@@ -62,7 +65,7 @@ export class RegisterComponent implements OnInit {
     if (!this.userService.isLoggedIn) {
       const loginResult = this.userService.login(data.username, data.password);
       if (HasFailed(loginResult)) {
-        console.warn(loginResult);
+        this.logger.warn(loginResult.getReason());
         this.utilService.showSnackBar(
           'Failed to login after register',
           SnackBarType.Error

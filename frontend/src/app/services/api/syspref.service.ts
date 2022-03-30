@@ -13,6 +13,7 @@ import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UtilService } from 'src/app/util/util.service';
+import { Logger } from '../logger/logger.service';
 import { ApiService } from './api.service';
 import { PermissionService } from './permission.service';
 
@@ -20,6 +21,8 @@ import { PermissionService } from './permission.service';
   providedIn: 'root',
 })
 export class SysprefService {
+  private readonly logger = new Logger('SysprefService');
+
   private hasPermission = false;
 
   private sysprefObservable = new BehaviorSubject<SysPreferenceBaseResponse[]>(
@@ -40,7 +43,7 @@ export class SysprefService {
     private utilService: UtilService
   ) {
     this.subscribePermissions();
-    this.init().catch(console.error);
+    this.init().catch(this.logger.error);
   }
 
   private async init() {

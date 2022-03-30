@@ -8,6 +8,7 @@ import { BehaviorSubject, Subject, throttleTime } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { UserManageService } from 'src/app/services/api/usermanage.service';
+import { Logger } from 'src/app/services/logger/logger.service';
 import { UtilService } from 'src/app/util/util.service';
 
 @Component({
@@ -15,6 +16,8 @@ import { UtilService } from 'src/app/util/util.service';
   styleUrls: ['./settings-users.component.scss'],
 })
 export class SettingsUsersComponent implements OnInit {
+  private readonly logger = new Logger('SettingsUsersComponent');
+
   private UndeletableUsersList: string[] = [];
 
   public readonly displayedColumns: string[] = ['username', 'roles', 'actions'];
@@ -40,7 +43,7 @@ export class SettingsUsersComponent implements OnInit {
     Promise.all([
       this.fetchUsers(this.startingPageSize, 0),
       this.initSpecialUsers(),
-    ]).catch(console.error);
+    ]).catch(this.logger.error);
   }
 
   public addUser() {

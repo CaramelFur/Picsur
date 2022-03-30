@@ -73,7 +73,6 @@ export class ValuesPickerComponent implements OnInit, OnChanges {
   }
 
   private addItem(value: string) {
-    console.log('adding', value);
     const selectable = this.selectableSubject.getValue();
     if (this.isDisabled(value) || !selectable.includes(value)) return;
 

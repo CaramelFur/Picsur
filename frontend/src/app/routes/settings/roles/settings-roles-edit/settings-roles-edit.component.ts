@@ -5,6 +5,7 @@ import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UpdateRoleControl } from 'src/app/models/forms/updaterole.control';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
+import { Logger } from 'src/app/services/logger/logger.service';
 import { UtilService } from 'src/app/util/util.service';
 
 enum EditMode {
@@ -17,6 +18,8 @@ enum EditMode {
   styleUrls: ['./settings-roles-edit.component.scss'],
 })
 export class SettingsRolesEditComponent implements OnInit {
+  private readonly logger = new Logger('SettingsRolesEditComponent');
+
   private mode: EditMode = EditMode.edit;
 
   model = new UpdateRoleControl();
@@ -38,7 +41,7 @@ export class SettingsRolesEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    Promise.all([this.initRole(), this.initPermissions()]).catch(console.error);
+    Promise.all([this.initRole(), this.initPermissions()]).catch(this.logger.error);
   }
 
   private async initRole() {

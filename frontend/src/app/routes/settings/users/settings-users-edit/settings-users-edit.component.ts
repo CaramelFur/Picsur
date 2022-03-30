@@ -9,6 +9,7 @@ import { UpdateUserControl } from 'src/app/models/forms/updateuser.control';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { UserManageService } from 'src/app/services/api/usermanage.service';
+import { Logger } from 'src/app/services/logger/logger.service';
 import { UtilService } from 'src/app/util/util.service';
 
 enum EditMode {
@@ -22,6 +23,8 @@ enum EditMode {
   styleUrls: ['./settings-users-edit.component.scss'],
 })
 export class SettingsUsersEditComponent implements OnInit {
+  private readonly logger = new Logger('SettingsUsersEditComponent');
+
   private ImmutableUsersList: string[] = [];
   private mode: EditMode = EditMode.edit;
 
@@ -53,7 +56,7 @@ export class SettingsUsersEditComponent implements OnInit {
       this.initUser(),
       this.initRoles(),
       this.initImmutableUsersList(),
-    ]).catch(console.error);
+    ]).catch(this.logger.error);
   }
 
   private async initUser() {
@@ -108,7 +111,7 @@ export class SettingsUsersEditComponent implements OnInit {
     for (const role of this.model.selectedRoles) {
       const fullRole = this.allFullRoles.find((r) => r.name === role);
       if (!fullRole) {
-        console.warn(`Role ${role} not found`);
+        this.logger.warn(`Role ${role} not found`);
         continue;
       }
 

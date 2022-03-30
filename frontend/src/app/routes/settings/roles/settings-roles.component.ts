@@ -9,6 +9,7 @@ import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
+import { Logger } from 'src/app/services/logger/logger.service';
 import { UtilService } from 'src/app/util/util.service';
 
 @Component({
@@ -16,6 +17,8 @@ import { UtilService } from 'src/app/util/util.service';
   styleUrls: ['./settings-roles.component.scss'],
 })
 export class SettingsRolesComponent implements OnInit, AfterViewInit {
+  private readonly logger = new Logger("SettingsRolesComponent");
+
   public readonly displayedColumns: string[] = [
     'name',
     'permissions',
@@ -40,7 +43,7 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadRoles().catch(console.error);
+    this.loadRoles().catch(this.logger.error);
   }
 
   ngAfterViewInit() {

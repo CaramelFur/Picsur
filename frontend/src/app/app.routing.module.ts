@@ -37,9 +37,7 @@ const routes: PRoutes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {
-      errorHandler: (error) => console.warn(error.message),
-    }),
+    RouterModule.forRoot(routes),
   ],
   exports: [RouterModule],
 })

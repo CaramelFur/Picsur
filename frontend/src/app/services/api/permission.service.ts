@@ -3,13 +3,14 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { UserMePermissionsResponse } from 'picsur-shared/dist/dto/api/user.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, filter, map, Observable, take } from 'rxjs';
+import { Logger } from '../logger/logger.service';
 import { ApiService } from './api.service';
 import { StaticInfoService } from './static-info.service';
 import { UserService } from './user.service';
 
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
-  private readonly logger = console;
+  private readonly logger = new Logger('PermissionService');
 
   private allPermissions: string[] = [];
   private permissionsSubject = new BehaviorSubject<string[] | null>(null);

@@ -9,6 +9,7 @@ import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Subject } from 'rxjs';
 import { ApiError } from 'src/app/models/dto/api-error.dto';
 import { MultiPartRequest } from '../../models/dto/multi-part-request.dto';
+import { Logger } from '../logger/logger.service';
 import { KeyService } from '../storage/key.service';
 
 /*
@@ -19,7 +20,7 @@ import { KeyService } from '../storage/key.service';
   providedIn: 'root',
 })
 export class ApiService {
-  private readonly logger = console;
+  private readonly logger = new Logger('ApiService');
 
   private errorSubject = new Subject<ApiError>();
 

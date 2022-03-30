@@ -13,6 +13,7 @@ import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { BehaviorSubject } from 'rxjs';
+import { Logger } from '../logger/logger.service';
 import { KeyService } from '../storage/key.service';
 import { ApiService } from './api.service';
 
@@ -20,7 +21,7 @@ import { ApiService } from './api.service';
   providedIn: 'root',
 })
 export class UserService {
-  private readonly logger = console;
+  private readonly logger = new Logger('UserService');
   private userSubject = new BehaviorSubject<EUser | null>(null);
 
   public get live() {

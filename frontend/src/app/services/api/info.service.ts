@@ -4,13 +4,14 @@ import { InfoResponse } from 'picsur-shared/dist/dto/api/info.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { ServerInfo } from '../../models/dto/server-info.dto';
+import { Logger } from '../logger/logger.service';
 import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InfoService {
-  private readonly logger = console;
+  private readonly logger = new Logger('InfoService');
 
   public get live() {
     return this.infoSubject;
