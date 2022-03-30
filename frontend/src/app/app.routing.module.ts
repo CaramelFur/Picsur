@@ -7,12 +7,7 @@ import { SettingsRouteModule } from './routes/settings/settings.module';
 import { UploadRouteModule } from './routes/upload/upload.module';
 import { UserRouteModule } from './routes/user/user.module';
 import { ViewRouteModule } from './routes/view/view.module';
-// PageNotFoundRouteModule,
-// UploadRouteModule,
-// ProcessingRouteModule,
-// ViewRouteModule,
-// UserRouteModule,
-// SettingsRouteModule,
+
 const routes: PRoutes = [
   {
     path: '',

@@ -1,6 +1,6 @@
 <app-header
   [enableHamburger]="hasSidebar && !isDesktop"
-  (onHamburgerClick)="onHamburgerClick()"
+  (onHamburgerClick)="sidebar.toggle()"
 ></app-header>
 
 <mat-sidenav-container class="grow-full">
@@ -9,9 +9,9 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div class="sidenav-content" [class.container]="containerWrap">
+    <div class="sidenav-content" [class.container]="wrapContentWithContainer">
       <div class="header-spacer"></div>
-      <div class="grow-full" [class.container]="containerWrap">
+      <div class="grow-full" [class.container]="wrapContentWithContainer">
         <router-outlet></router-outlet>
       </div>
       <app-footer></app-footer>

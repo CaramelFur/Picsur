@@ -1,6 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Portal } from '@angular/cdk/portal';
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import {
   ActivatedRoute,
@@ -21,36 +21,19 @@ export class AppComponent implements OnInit {
 
   @ViewChild(MatSidenav) sidebar: MatSidenav;
 
-  containerWrap: boolean = true;
+  wrapContentWithContainer: boolean = true;
   sidebarPortal: Portal<any> | undefined = undefined;
 
   isDesktop: boolean = false;
   hasSidebar: boolean = false;
 
-  constructor(
+  public constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private breakPointObserver: BreakpointObserver,
-    private injector: Injector
+    private breakPointObserver: BreakpointObserver
   ) {}
 
-  private get routeData(): PRouteData {
-    let currentRoute: ActivatedRoute | null = this.activatedRoute;
-    let accumulate: PRouteData = {};
-    while (currentRoute !== null) {
-      const data = currentRoute.snapshot.data;
-      if (data !== undefined) {
-        accumulate = {
-          ...accumulate,
-          ...data,
-        };
-      }
-      currentRoute = currentRoute.firstChild;
-    }
-    return accumulate;
-  }
-
-  ngOnInit() {
+  public ngOnInit() {
     this.subscribeRouter();
     this.subscribeMobile();
   }
@@ -73,11 +56,8 @@ export class AppComponent implements OnInit {
       });
   }
 
-  onHamburgerClick() {
-    this.sidebar.toggle();
-  }
-
   private async onNavigationError(event: NavigationError) {
+    // 404 handler
     const error: Error = event.error;
     if (error.message.startsWith('Cannot match any routes'))
       this.router.navigate(['/error/404'], { replaceUrl: true });
@@ -85,7 +65,7 @@ export class AppComponent implements OnInit {
 
   private async onNavigationEnd(event: NavigationEnd) {
     const data = this.routeData;
-    this.containerWrap = !data.noContainer;
+    this.wrapContentWithContainer = !data.noContainer;
 
     if (data._sidebar_portal !== undefined) {
       this.sidebarPortal = data._sidebar_portal;
@@ -108,5 +88,22 @@ export class AppComponent implements OnInit {
     } else {
       this.sidebar.opened = true;
     }
+  }
+
+  // Recusively collect and merge all route data
+  private get routeData(): PRouteData {
+    let currentRoute: ActivatedRoute | null = this.activatedRoute;
+    let accumulate: PRouteData = {};
+    while (currentRoute !== null) {
+      const data = currentRoute.snapshot.data;
+      if (data !== undefined) {
+        accumulate = {
+          ...accumulate,
+          ...data,
+        };
+      }
+      currentRoute = currentRoute.firstChild;
+    }
+    return accumulate;
   }
 }
