@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { plainToClass } from 'class-transformer';
+import { SysPreference } from 'picsur-shared/dist/dto/syspreferences.dto';
 import {
   AsyncFailable,
   Fail,
@@ -24,9 +25,7 @@ import {
 import { EUserBackend } from '../../models/entities/user.entity';
 import { GetCols } from '../../models/util/collection';
 import { RolesService } from '../roledb/roledb.service';
-
-// TODO: make this a configurable value
-const BCryptStrength = 12;
+import { SysPreferenceService } from '../syspreferencesdb/syspreferencedb.service';
 
 @Injectable()
 export class UsersService {
@@ -36,6 +35,7 @@ export class UsersService {
     @InjectRepository(EUserBackend)
     private usersRepository: Repository<EUserBackend>,
     private rolesService: RolesService,
+    private prefService: SysPreferenceService,
   ) {}
 
   // Creation and deletion
@@ -49,7 +49,8 @@ export class UsersService {
   ): AsyncFailable<EUserBackend> {
     if (await this.exists(username)) return Fail('User already exists');
 
-    const hashedPassword = await bcrypt.hash(password, BCryptStrength);
+    const strength = await this.getBCryptStrength();
+    const hashedPassword = await bcrypt.hash(password, strength);
 
     let user = new EUserBackend();
     user.username = username;
@@ -153,7 +154,8 @@ export class UsersService {
     let userToModify = await this.resolve(user);
     if (HasFailed(userToModify)) return userToModify;
 
-    const hashedPassword = await bcrypt.hash(password, BCryptStrength);
+    const strength = await this.getBCryptStrength();
+    const hashedPassword = await bcrypt.hash(password, strength);
     userToModify.password = hashedPassword;
 
     try {
@@ -256,5 +258,15 @@ export class UsersService {
     );
 
     return filteredRoles;
+  }
+
+  private async getBCryptStrength(): Promise<number> {
+    const result = await this.prefService.getNumberPreference(
+      SysPreference.BCryptStrength,
+    );
+    if (HasFailed(result)) {
+      return 12;
+    }
+    return result;
   }
 }

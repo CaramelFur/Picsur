@@ -12,6 +12,7 @@ export const SysPreferenceValueTypes: {
 } = {
   [SysPreference.JwtSecret]: 'string',
   [SysPreference.JwtExpiresIn]: 'string',
+  [SysPreference.BCryptStrength]: 'number',
   [SysPreference.TestString]: 'string',
   [SysPreference.TestNumber]: 'number',
   [SysPreference.TestBoolean]: 'boolean',

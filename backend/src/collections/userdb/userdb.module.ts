@@ -6,12 +6,14 @@ import { AuthConfigService } from '../../config/early/auth.config.service';
 import { EarlyConfigModule } from '../../config/early/earlyconfig.module';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { RolesModule } from '../roledb/roledb.module';
+import { SysPreferenceModule } from '../syspreferencesdb/syspreferencedb.module';
 import { UsersService } from './userdb.service';
 
 @Module({
   imports: [
     EarlyConfigModule,
     RolesModule,
+    SysPreferenceModule,
     TypeOrmModule.forFeature([EUserBackend]),
   ],
   providers: [UsersService],

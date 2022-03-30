@@ -31,6 +31,8 @@ export class SysPreferenceDefaultsService {
     },
     [SysPreference.JwtExpiresIn]: () =>
       this.jwtConfigService.getJwtExpiresIn() ?? '7d',
+    [SysPreference.BCryptStrength]: () => 12,
+    
     [SysPreference.TestString]: () => 'test_string',
     [SysPreference.TestNumber]: () => 123,
     [SysPreference.TestBoolean]: () => true,

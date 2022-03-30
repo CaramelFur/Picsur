@@ -5,6 +5,7 @@ export const SysPreferenceFriendlyNames: {
 } = {
   [SysPreference.JwtSecret]: 'JWT Secret',
   [SysPreference.JwtExpiresIn]: 'JWT Expiry Time',
+  [SysPreference.BCryptStrength]: 'BCrypt Strength',
   [SysPreference.TestString]: 'Test String',
   [SysPreference.TestNumber]: 'Test Number',
   [SysPreference.TestBoolean]: 'Test Boolean',
