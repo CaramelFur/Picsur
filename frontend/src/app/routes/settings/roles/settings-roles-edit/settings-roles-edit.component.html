@@ -30,6 +30,7 @@
     <div class="col-lg-6 col-12">
       <values-picker
         name="permission"
+        [value-mapper]="UIFriendlyPermission"
         [control]="model.permissions"
         [selection-list]="allPermissions"
       ></values-picker>

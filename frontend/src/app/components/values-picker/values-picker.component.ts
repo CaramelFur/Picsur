@@ -1,10 +1,5 @@
-import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit
-} from '@angular/core';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -20,7 +15,7 @@ import { Required } from 'src/app/models/decorators/required.decorator';
 })
 export class ValuesPickerComponent implements OnInit, OnChanges {
   // Static data
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   // Ui niceties
   @Input('name') @Required name: string = '';
@@ -37,10 +32,14 @@ export class ValuesPickerComponent implements OnInit, OnChanges {
 
   @Input('disabled-list') disabledSelection: string[] = [];
 
+  @Input('value-mapper')
+  valueMapper: (value: string) => string = (value) => 'poopoo';
+
   // Selection
   private selectableSubject = new BehaviorSubject<string[]>([]);
+  private foundSubject = new BehaviorSubject<string[]>([]);
 
-  public selectable = this.selectableSubject.asObservable();
+  public found = this.foundSubject.asObservable();
   public inputControl = new FormControl('');
 
   public ngOnInit(): void {
@@ -49,7 +48,7 @@ export class ValuesPickerComponent implements OnInit, OnChanges {
   }
 
   public ngOnChanges(): void {
-    this.updateSelectable()
+    this.updateSelectable();
   }
 
   public isDisabled(value: string): boolean {
@@ -69,7 +68,7 @@ export class ValuesPickerComponent implements OnInit, OnChanges {
   }
 
   public addItemSelect(event: MatAutocompleteSelectedEvent): void {
-    this.addItem(event.option.viewValue);
+    this.addItem(event.option.value);
   }
 
   private addItem(value: string) {
@@ -89,14 +88,20 @@ export class ValuesPickerComponent implements OnInit, OnChanges {
       (s) => !this.isDisabled(s) && !selected.includes(s)
     );
 
+    this.selectableSubject.next(available);
+
     const searchValue = this.inputControl.value;
     if (searchValue && available.length > 0) {
-      const fuse = new Fuse(available);
-      const result = fuse.search(searchValue).map((r) => r.item);
+      const fuse = new Fuse(available.map(this.valueMapper));
+      const result = fuse
+        .search(searchValue, {
+          limit: 10,
+        })
+        .map((r) => available[r.refIndex]);
 
-      this.selectableSubject.next(result);
+      this.foundSubject.next(result);
     } else {
-      this.selectableSubject.next(available);
+      this.foundSubject.next(available);
     }
   }
 

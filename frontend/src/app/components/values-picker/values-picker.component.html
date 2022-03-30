@@ -7,13 +7,13 @@
       [disabled]="isDisabled(item)"
       (removed)="removeItem(item)"
     >
-      {{ item }}
+      {{ valueMapper(item) }}
       <button *ngIf="!isDisabled(item)" matChipRemove>
-        <mat-icon>cancel</mat-icon>
+        <mat-icon fontSet="material-icons-outlined">cancel</mat-icon>
       </button>
     </mat-chip>
     <input
-      placeholder="Add {{name}}..."
+      placeholder="Add {{ name }}..."
       [formControl]="inputControl"
       [value]="inputControl.value"
       [matAutocomplete]="auto"
@@ -28,11 +28,8 @@
     #auto="matAutocomplete"
     (optionSelected)="addItemSelect($event)"
   >
-    <mat-option
-      *ngFor="let item of selectable | async"
-      [value]="item"
-    >
-      {{ item }}
+    <mat-option *ngFor="let item of found | async" [value]="item">
+      {{ valueMapper(item) }}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>

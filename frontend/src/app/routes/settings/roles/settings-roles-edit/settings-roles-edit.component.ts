@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
+import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UpdateRoleControl } from 'src/app/models/forms/updaterole.control';
 import { RolesService } from 'src/app/services/api/roles.service';
@@ -41,7 +43,9 @@ export class SettingsRolesEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    Promise.all([this.initRole(), this.initPermissions()]).catch(this.logger.error);
+    Promise.all([this.initRole(), this.initPermissions()]).catch(
+      this.logger.error
+    );
   }
 
   private async initRole() {
@@ -103,5 +107,9 @@ export class SettingsRolesEditComponent implements OnInit {
 
   cancel() {
     this.router.navigate(['/settings/roles']);
+  }
+
+  public UIFriendlyPermission(name: string) {
+    return UIFriendlyPermissions[name as Permission] ?? name;
   }
 }
