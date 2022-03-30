@@ -7,7 +7,6 @@ import { EarlyConfigModule } from '../../config/early/earlyconfig.module';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { RolesModule } from '../roledb/roledb.module';
 import { UsersService } from './userdb.service';
-import { UserRolesService } from './userrolesdb.service';
 
 @Module({
   imports: [
@@ -15,8 +14,8 @@ import { UserRolesService } from './userrolesdb.service';
     RolesModule,
     TypeOrmModule.forFeature([EUserBackend]),
   ],
-  providers: [UsersService, UserRolesService],
-  exports: [UsersService, UserRolesService],
+  providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule implements OnModuleInit {
   private readonly logger = new Logger('UsersModule');

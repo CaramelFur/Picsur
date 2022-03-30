@@ -7,7 +7,7 @@ import {
 import * as multipart from 'fastify-multipart';
 import { ValidateOptions } from 'picsur-shared/dist/util/validate';
 import { AppModule } from './app.module';
-import { UserRolesService } from './collections/userdb/userrolesdb.service';
+import { UsersService } from './collections/userdb/userdb.service';
 import { HostConfigService } from './config/early/host.config.service';
 import { MainExceptionFilter } from './layers/httpexception/httpexception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
@@ -36,7 +36,7 @@ async function bootstrap() {
   app.useGlobalGuards(
     new MainAuthGuard(
       app.get(Reflector),
-      app.get(UserRolesService),
+      app.get(UsersService),
     ),
   );
 

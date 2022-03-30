@@ -10,7 +10,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
 import { Fail, Failable, HasFailed } from 'picsur-shared/dist/types';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
-import { UserRolesService } from '../../../collections/userdb/userrolesdb.service';
+import { UsersService } from '../../../collections/userdb/userdb.service';
 import { Permissions } from '../../../models/dto/permissions.dto';
 import { EUserBackend } from '../../../models/entities/user.entity';
 import { isPermissionsArray } from '../../../models/validators/permissions.validator';
@@ -25,7 +25,7 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
 
   constructor(
     private reflector: Reflector,
-    private userRolesService: UserRolesService,
+    private usersService: UsersService,
   ) {
     super();
   }
@@ -50,7 +50,7 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
     }
 
     // These are the permissions the user has
-    const userPermissions = await this.userRolesService.getPermissions(user);
+    const userPermissions = await this.usersService.getPermissions(user);
     if (HasFailed(userPermissions)) {
       this.logger.warn('User Permissions: ' + userPermissions.getReason());
       throw new InternalServerErrorException();

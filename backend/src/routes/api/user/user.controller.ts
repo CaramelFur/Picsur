@@ -16,7 +16,6 @@ import {
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
-import { UserRolesService } from '../../../collections/userdb/userrolesdb.service';
 import {
   NoPermissions,
   RequiredPermissions,
@@ -32,7 +31,6 @@ export class UserController {
 
   constructor(
     private usersService: UsersService,
-    private userRolesSerivce: UserRolesService,
     private authService: AuthManagerService,
   ) {}
 
@@ -90,7 +88,7 @@ export class UserController {
   async refresh(
     @Request() req: AuthFasityRequest,
   ): Promise<UserMePermissionsResponse> {
-    const permissions = await this.userRolesSerivce.getPermissions(req.user);
+    const permissions = await this.usersService.getPermissions(req.user);
     if (HasFailed(permissions)) {
       this.logger.warn(permissions.getReason());
       throw new InternalServerErrorException('Could not get permissions');

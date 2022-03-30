@@ -11,6 +11,7 @@ import {
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Repository } from 'typeorm';
+import { Permissions } from '../../models/dto/permissions.dto';
 import {
   DefaultRolesList,
   SoulBoundRolesList
@@ -22,6 +23,7 @@ import {
 } from '../../models/dto/specialusers.dto';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { GetCols } from '../../models/util/collection';
+import { RolesService } from '../roledb/roledb.service';
 
 // TODO: make this a configurable value
 const BCryptStrength = 12;
@@ -33,6 +35,7 @@ export class UsersService {
   constructor(
     @InjectRepository(EUserBackend)
     private usersRepository: Repository<EUserBackend>,
+    private rolesService: RolesService,
   ) {}
 
   // Creation and deletion
@@ -114,6 +117,33 @@ export class UsersService {
     } catch (e: any) {
       return Fail(e?.message);
     }
+  }
+
+  public async removeRoleEveryone(role: string): AsyncFailable<true> {
+    try {
+      await this.usersRepository
+        .createQueryBuilder('user')
+        .update()
+        .set({
+          roles: () => 'ARRAY_REMOVE(roles, :role)',
+        })
+        .where('roles @> ARRAY[:role]', { role })
+        .execute();
+    } catch (e) {
+      this.logger.error(e);
+      return Fail("Couldn't remove role from everyone");
+    }
+
+    return true;
+  }
+
+  public async getPermissions(
+    user: string | EUserBackend,
+  ): AsyncFailable<Permissions> {
+    const userToModify = await this.resolve(user);
+    if (HasFailed(userToModify)) return userToModify;
+
+    return await this.rolesService.getPermissions(userToModify.roles);
   }
 
   public async updatePassword(
@@ -204,7 +234,7 @@ export class UsersService {
 
   // Internal resolver
 
-  public async resolve(
+  private async resolve(
     user: string | EUserBackend,
   ): AsyncFailable<EUserBackend> {
     if (typeof user === 'string') {
