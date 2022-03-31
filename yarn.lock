@@ -4029,6 +4029,14 @@ fastify-formbody@5.2.0:
   dependencies:
     fastify-plugin "^3.0.0"
 
+fastify-helmet@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/fastify-helmet/-/fastify-helmet-7.0.1.tgz#506c288dc5a5bea4d7332c1b5aed8f69a3fe383b"
+  integrity sha512-/PSKDJZkBhJ0ioY1swOUfYNYQRfRnXD5X2eKD9TSVBuPKbH+OYg/IYBxad33uaOGlWn28MNOd+kw5sQKSWY1yA==
+  dependencies:
+    fastify-plugin "^3.0.0"
+    helmet "^5.0.1"
+
 fastify-multipart@^5.3.1:
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/fastify-multipart/-/fastify-multipart-5.3.1.tgz#05254d8aa43dc02af6ce01f4e513a6c30bea2886"
@@ -4461,6 +4469,11 @@ hdr-histogram-percentiles-obj@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/hdr-histogram-percentiles-obj/-/hdr-histogram-percentiles-obj-3.0.0.tgz#9409f4de0c2dda78e61de2d9d78b1e9f3cba283c"
   integrity sha512-7kIufnBqdsBGcSZLPJwqHT3yhk1QTsSlFsVD3kx5ixH/AlgBs9yM1q6DPhXZ8f8gtdqgh7N7/5btRLpQsS2gHw==
+
+helmet@^5.0.1:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/helmet/-/helmet-5.0.2.tgz#3264ec6bab96c82deaf65e3403c369424cb2366c"
+  integrity sha512-QWlwUZZ8BtlvwYVTSDTBChGf8EOcQ2LkGMnQJxSzD1mUu8CCjXJZq/BXP8eWw4kikRnzlhtYo3lCk0ucmYA3Vg==
 
 hexoid@^1.0.0:
   version "1.0.0"

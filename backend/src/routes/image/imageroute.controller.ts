@@ -17,6 +17,7 @@ import { Permission } from '../../models/dto/permissions.dto';
 import { ImageUploadDto } from '../../models/requests/imageroute.dto';
 import { ImageIdValidator } from './imageid.validator';
 
+// This is the only controller with CORS enabled
 @Controller('i')
 @RequiredPermissions(Permission.ImageView)
 export class ImageController {

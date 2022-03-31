@@ -4,6 +4,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication
 } from '@nestjs/platform-fastify';
+import fastifyHelmet from 'fastify-helmet';
 import * as multipart from 'fastify-multipart';
 import { ValidateOptions } from 'picsur-shared/dist/util/validate';
 import { AppModule } from './app.module';
@@ -13,12 +14,14 @@ import { MainExceptionFilter } from './layers/httpexception/httpexception.filter
 import { SuccessInterceptor } from './layers/success/success.interceptor';
 import { PicsurLoggerService } from './logger/logger.service';
 import { MainAuthGuard } from './managers/auth/guards/main.guard';
+import { HelmetOptions } from './security';
 
 async function bootstrap() {
   // Create fasify
   const fastifyAdapter = new FastifyAdapter();
   // TODO: generic error messages
-  fastifyAdapter.register(multipart as any);
+  await fastifyAdapter.register(multipart as any);
+  await fastifyAdapter.register(fastifyHelmet, HelmetOptions);
 
   // Create nest app
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -28,16 +31,16 @@ async function bootstrap() {
       bufferLogs: true,
     },
   );
+  // app.enableCors({
+  //   origin: 'self'
+  // });
 
   // Configure nest app
   app.useGlobalFilters(new MainExceptionFilter());
   app.useGlobalInterceptors(new SuccessInterceptor());
   app.useGlobalPipes(new ValidationPipe(ValidateOptions));
   app.useGlobalGuards(
-    new MainAuthGuard(
-      app.get(Reflector),
-      app.get(UsersService),
-    ),
+    new MainAuthGuard(app.get(Reflector), app.get(UsersService)),
   );
 
   // Configure logger
