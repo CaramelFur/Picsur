@@ -1361,6 +1361,21 @@
   dependencies:
     text-decoding "^1.0.0"
 
+"@fontsource/material-icons-outlined@^4.5.4":
+  version "4.5.4"
+  resolved "https://registry.yarnpkg.com/@fontsource/material-icons-outlined/-/material-icons-outlined-4.5.4.tgz#23ce468b7c569d1c717061cb8c5a69b3cb3fba12"
+  integrity sha512-2SLQe/pAlOzoE2Kd5cBxqTgI9U63hf3a7RrCF8GFvgPkYhF6WOcIzFzsLc1Fdf+UhcYS+Hgpp6o8peguwZGK9Q==
+
+"@fontsource/material-icons@^4.5.4":
+  version "4.5.4"
+  resolved "https://registry.yarnpkg.com/@fontsource/material-icons/-/material-icons-4.5.4.tgz#bfedde9352c36dbbacb6b49d190a1ce1e5917756"
+  integrity sha512-YGmXkkEdu6EIgpFKNmB/nIXzZocwSmbI01Ninpmml8x8BT0M6RR++V1KqOfpzZ6Cw/FQ2/KYonQ3x4IY/4VRRA==
+
+"@fontsource/roboto@^4.5.5":
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.5.5.tgz#4ecc38e690469378e2ec2a97f9c12282c654cc93"
+  integrity sha512-Pe1p+gAO6K0aLxBXlLoJRHVx352tVc/v/7DOnvM3t+FYXb+KUga9aCD1NpnDfd0kKnWXqrZyAXguyyFWDDuphw==
+
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
@@ -5499,7 +5514,17 @@ minimatch@^3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@1.2.5, minimist@^1.2.0, minimist@^1.2.6, "minimist@npm:minimist-lite":
+minimist@1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
+  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+
+minimist@^1.2.0, minimist@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
+  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
+
+"minimist@npm:minimist-lite":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/minimist-lite/-/minimist-lite-2.2.1.tgz#abb71db2c9b454d7cf4496868c03e9802de9934d"
   integrity sha512-RSrWIRWGYoM2TDe102s7aIyeSipXMIXKb1fSHYx1tAbxAV0z4g2xR6ra3oPzkTqFb0EIUz1H3A/qvYYeDd+/qQ==
