@@ -67,12 +67,12 @@ export class SysPreferenceService {
     if (HasFailed(validatedKey)) return validatedKey;
 
     // Fetch
-    let foundSysPreference: ESysPreferenceBackend | undefined;
+    let foundSysPreference: ESysPreferenceBackend | null;
     try {
-      foundSysPreference = await this.sysPreferenceRepository.findOne(
-        { key: validatedKey },
-        { cache: 60000 }, // Enable cache for 1 minute
-      );
+      foundSysPreference = await this.sysPreferenceRepository.findOne({
+        where: { key: validatedKey },
+        cache: 60000,
+      });
     } catch (e: any) {
       this.logger.warn(e);
       return Fail('Could not get preference');
