@@ -4,7 +4,7 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class EImageBackend extends EImage {
   @PrimaryGeneratedColumn("uuid")
-  override id?: string;
+  override id: string;
 
   @Index()
   @Column({ unique: true, nullable: false })

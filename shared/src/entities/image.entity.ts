@@ -4,7 +4,7 @@ import { EntityID } from '../validators/entity-id.validator';
 
 export class EImage {
   @EntityID()
-  id?: string;
+  id: string;
 
   @IsHash('sha256')
   hash: string;

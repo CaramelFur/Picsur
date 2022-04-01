@@ -4,11 +4,10 @@ import { isSemVer } from 'class-validator';
 import { InfoResponse } from 'picsur-shared/dist/dto/api/info.dto';
 import {
   AsyncFailable,
-  Fail,
-  Failable,
-  HasFailed
+  Fail, HasFailed
 } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
+import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UtilService } from 'src/app/util/util.service';
 import pkg from '../../../../package.json';
 import { ServerInfo } from '../../models/dto/server-info.dto';
@@ -28,12 +27,7 @@ export class InfoService {
   private infoSubject = new BehaviorSubject<ServerInfo>(new ServerInfo());
 
   constructor(private api: ApiService, private utilService: UtilService) {
-    this.init().catch(this.logger.error);
-  }
-
-  private async init() {
-    await this.pollInfo();
-    this.checkCompatibility();
+    this.checkCompatibility().catch(this.logger.error);
   }
 
   public async pollInfo(): AsyncFailable<ServerInfo> {
@@ -52,8 +46,8 @@ export class InfoService {
 
   // If either version starts with 0. it has to be exactly the same
   // If both versions start with something else, they have to match the first part
-  public isCompatibleWithServer(): Failable<boolean> {
-    const info = this.infoSubject.getValue();
+  public async isCompatibleWithServer(): AsyncFailable<boolean> {
+    const info = await this.pollInfo();
     if (HasFailed(info)) return info;
 
     const serverVersion = info.version;
@@ -81,10 +75,18 @@ export class InfoService {
     }
   }
 
-  private checkCompatibility(): void {
-    const isCompatible = this.isCompatibleWithServer();
+  private async checkCompatibility() {
+    const isCompatible = await this.isCompatibleWithServer();
 
-    if (HasFailed(isCompatible) || !isCompatible) {
+    if (HasFailed(isCompatible)) {
+      this.utilService.showSnackBar(
+        'There was an error checking compatibility',
+        SnackBarType.Warning
+      );
+      return;
+    }
+
+    if (!isCompatible) {
       this.utilService
         .showDialog({
           title: 'Server is not compatible',

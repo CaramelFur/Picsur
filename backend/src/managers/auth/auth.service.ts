@@ -14,10 +14,7 @@ export class AuthManagerService {
 
   async createToken(user: EUserBackend): AsyncFailable<string> {
     const jwtData: JwtDataDto = plainToClass(JwtDataDto, {
-      user: {
-        username: user.username,
-        roles: user.roles,
-      },
+      user,
     });
 
     // Validate to be sure, this makes client experience better

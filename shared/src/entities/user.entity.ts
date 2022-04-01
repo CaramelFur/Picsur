@@ -28,7 +28,7 @@ export class NameRolesUser extends UsernameUser {
 // Actual entity that goes in the db
 export class EUser extends NameRolesUser {
   @EntityID()
-  id?: string;
+  id: string;
 
   @IsOptional()
   @Exclude()

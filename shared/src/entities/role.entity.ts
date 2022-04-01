@@ -19,5 +19,5 @@ export class RoleNamePermsObject extends RoleNameObject {
 
 export class ERole extends RoleNamePermsObject {
   @EntityID()
-  id?: string;
+  id: string;
 }

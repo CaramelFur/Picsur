@@ -3,7 +3,7 @@ import { Column, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 export class EUsrPreferenceBackend extends EUsrPreference {
   @PrimaryGeneratedColumn("uuid")
-  override id?: string;
+  override id: string;
 
   @Index()
   @Column({ nullable: false, unique: true })

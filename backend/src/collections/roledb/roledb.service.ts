@@ -43,10 +43,8 @@ export class RolesService {
     }
   }
 
-  public async delete(
-    role: string | ERoleBackend,
-  ): AsyncFailable<ERoleBackend> {
-    const roleToModify = await this.resolve(role);
+  public async delete(name: string): AsyncFailable<ERoleBackend> {
+    const roleToModify = await this.findOne(name);
     if (HasFailed(roleToModify)) return roleToModify;
 
     if (UndeletableRolesList.includes(roleToModify.name)) {
@@ -75,10 +73,10 @@ export class RolesService {
   }
 
   public async addPermissions(
-    role: string | ERoleBackend,
+    name: string,
     permissions: Permissions,
   ): AsyncFailable<ERoleBackend> {
-    const roleToModify = await this.resolve(role);
+    const roleToModify = await this.findOne(name);
     if (HasFailed(roleToModify)) return roleToModify;
 
     const newPermissions = makeUnique([
@@ -90,10 +88,10 @@ export class RolesService {
   }
 
   public async removePermissions(
-    role: string | ERoleBackend,
+    name: string,
     permissions: Permissions,
   ): AsyncFailable<ERoleBackend> {
-    const roleToModify = await this.resolve(role);
+    const roleToModify = await this.findOne(name);
     if (HasFailed(roleToModify)) return roleToModify;
 
     const newPermissions = roleToModify.permissions.filter(
@@ -149,8 +147,8 @@ export class RolesService {
     }
   }
 
-  public async exists(username: string): Promise<boolean> {
-    return HasSuccess(await this.findOne(username));
+  public async exists(name: string): Promise<boolean> {
+    return HasSuccess(await this.findOne(name));
   }
 
   public async nukeSystemRoles(IAmSure: boolean = false): AsyncFailable<true> {
@@ -168,18 +166,18 @@ export class RolesService {
   }
 
   private async resolve(
-    user: string | ERoleBackend,
+    role: string | ERoleBackend,
   ): AsyncFailable<ERoleBackend> {
-    if (typeof user === 'string') {
-      return await this.findOne(user);
+    if (typeof role === 'string') {
+      return await this.findOne(role);
     } else {
-      user = plainToClass(ERoleBackend, user);
-      const errors = await strictValidate(user);
+      role = plainToClass(ERoleBackend, role);
+      const errors = await strictValidate(role);
       if (errors.length > 0) {
         this.logger.warn(errors);
         return Fail('Invalid role');
       }
-      return user;
+      return role;
     }
   }
 }

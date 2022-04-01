@@ -55,8 +55,6 @@ export class SettingsRolesEditComponent implements OnInit {
       this.mode = EditMode.add;
       return;
     }
-
-    // Set data thats already known
     this.mode = EditMode.edit;
     this.model.putRoleName(rolename);
 
