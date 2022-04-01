@@ -1,10 +1,10 @@
 import { IsDefined, IsNotEmpty, IsString } from 'class-validator';
-import { EntityID } from '../validators/entity-id.validator';
+import { EntityIDOptional } from '../validators/entity-id.validator';
 import { IsPosInt } from '../validators/positive-int.validator';
 
 export class EUsrPreference {
-  @EntityID()
-  id: string;
+  @EntityIDOptional()
+  id?: string;
 
   @IsNotEmpty()
   @IsString()

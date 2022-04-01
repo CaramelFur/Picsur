@@ -66,7 +66,10 @@ export class SettingsSysprefOptionComponent implements OnInit {
   }
 
   numberUpdateWrapper(e: Event) {
-    this.update((e.target as HTMLInputElement).valueAsNumber);
+    const value = (e.target as HTMLInputElement).valueAsNumber;
+    if (isNaN(value)) return;
+
+    this.update(value);
   }
 
   private async updatePreference(value: PrefValueType) {

@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { EntityID } from '../validators/entity-id.validator';
+import { EntityIDOptional } from '../validators/entity-id.validator';
 
 export class ESysPreference {
-  @EntityID()
-  id: string;
+  @EntityIDOptional()
+  id?: string;
 
   @IsNotEmpty()
   @IsString()
