@@ -3,7 +3,7 @@ import { EntityID } from '../validators/entity-id.validator';
 
 export class ESysPreference {
   @EntityID()
-  id?: number;
+  id?: string;
 
   @IsNotEmpty()
   @IsString()

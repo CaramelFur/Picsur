@@ -3,8 +3,8 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class ESysPreferenceBackend extends ESysPreference {
-  @PrimaryGeneratedColumn()
-  override id?: number;
+  @PrimaryGeneratedColumn("uuid")
+  override id?: string;
 
   @Index()
   @Column({ nullable: false, unique: true })

@@ -33,7 +33,7 @@ export class ValuesPickerComponent implements OnInit, OnChanges {
   @Input('disabled-list') disabledSelection: string[] = [];
 
   @Input('value-mapper')
-  valueMapper: (value: string) => string = (value) => 'poopoo';
+  valueMapper: (value: string) => string = (value) => value;
 
   // Selection
   private selectableSubject = new BehaviorSubject<string[]>([]);

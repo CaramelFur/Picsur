@@ -4,7 +4,7 @@ import { IsPosInt } from '../validators/positive-int.validator';
 
 export class EUsrPreference {
   @EntityID()
-  id?: number;
+  id?: string;
 
   @IsNotEmpty()
   @IsString()

@@ -5,8 +5,8 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class EUserBackend extends EUser {
-  @PrimaryGeneratedColumn()
-  override id?: number;
+  @PrimaryGeneratedColumn("uuid")
+  override id?: string;
 
   @Index()
   @Column({ nullable: false, unique: true })

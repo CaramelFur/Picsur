@@ -3,8 +3,8 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class EImageBackend extends EImage {
-  @PrimaryGeneratedColumn()
-  override id?: number;
+  @PrimaryGeneratedColumn("uuid")
+  override id?: string;
 
   @Index()
   @Column({ unique: true, nullable: false })
