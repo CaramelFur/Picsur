@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { FullUserModel } from '../forms-dto/fulluser.dto';
+import { UserCreateRequest, UserUpdateRequest } from 'picsur-shared/dist/dto/api/usermanage.dto';
 import {
   CreatePasswordError,
   CreateUsernameError,
@@ -8,6 +8,7 @@ import {
 } from '../validators/user.validator';
 
 export class UpdateUserControl {
+  private id: string = '';
   public username = new FormControl('', UsernameValidators);
   public password = new FormControl('', PasswordValidators);
   public roles = new FormControl([]);
@@ -30,6 +31,10 @@ export class UpdateUserControl {
 
   // Data interaction
 
+  public putId(id: string) {
+    this.id = id;
+  }
+
   public putUsername(username: string) {
     this.username.setValue(username);
   }
@@ -38,11 +43,18 @@ export class UpdateUserControl {
     this.roles.setValue(roles);
   }
 
-  public getData(): FullUserModel {
+  public getDataCreate(): UserCreateRequest {
     return {
       username: this.username.value,
       password: this.password.value,
       roles: this.selectedRoles,
+    };
+  }
+
+  public getDataUpdate(): UserUpdateRequest {
+    return {
+      ...this.getDataCreate(),
+      id: this.id,
     };
   }
 }

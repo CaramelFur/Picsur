@@ -60,14 +60,14 @@ export class SettingsUsersEditComponent implements OnInit {
   }
 
   private async initUser() {
-    const username = this.route.snapshot.paramMap.get('username');
+    const uuid = this.route.snapshot.paramMap.get('uuid');
 
     // Get special roles
     const SpecialRoles = await this.staticInfo.getSpecialRoles();
     this.soulBoundRoles = SpecialRoles.SoulBoundRoles;
 
     // Check if edit or add
-    if (!username) {
+    if (!uuid) {
       this.mode = EditMode.add;
 
       this.model.putRoles(SpecialRoles.DefaultRoles);
@@ -76,10 +76,10 @@ export class SettingsUsersEditComponent implements OnInit {
 
     // Set known data
     this.mode = EditMode.edit;
-    this.model.putUsername(username);
+    this.model.putId(uuid);
 
     // Fetch more data
-    const user = await this.userManageService.getUser(username);
+    const user = await this.userManageService.getUser(uuid);
     if (HasFailed(user)) {
       this.utilService.showSnackBar('Failed to get user', SnackBarType.Error);
       return;
@@ -128,9 +128,8 @@ export class SettingsUsersEditComponent implements OnInit {
   }
 
   async updateUser() {
-    const data = this.model.getData();
-
     if (this.adding) {
+      const data = this.model.getDataCreate();
       const resultUser = await this.userManageService.createUser(data);
       if (HasFailed(resultUser)) {
         this.utilService.showSnackBar(
@@ -142,13 +141,10 @@ export class SettingsUsersEditComponent implements OnInit {
 
       this.utilService.showSnackBar('User created', SnackBarType.Success);
     } else {
-      const updateData = data.password
-        ? data
-        : { username: data.username, roles: data.roles };
+      const data = this.model.getDataUpdate();
+      if (!data.password) delete data.password;
 
-      const resultUser = await this.userManageService.updateUser(
-        updateData as any
-      );
+      const resultUser = await this.userManageService.updateUser(data);
       if (HasFailed(resultUser)) {
         this.utilService.showSnackBar(
           'Failed to update user',
@@ -167,7 +163,9 @@ export class SettingsUsersEditComponent implements OnInit {
     if (this.adding) {
       return false;
     } else {
-      return this.ImmutableUsersList.includes(this.model.getData().username);
+      return this.ImmutableUsersList.includes(
+        this.model.getDataCreate().username
+      );
     }
   }
 }

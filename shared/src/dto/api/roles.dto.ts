@@ -29,7 +29,7 @@ export class RoleUpdateRequest extends RoleNamePermsObject {}
 export class RoleUpdateResponse extends ERole {}
 
 // RoleCreate
-export class RoleCreateRequest extends ERole {}
+export class RoleCreateRequest extends RoleNamePermsObject {}
 export class RoleCreateResponse extends ERole {}
 
 // RoleDelete

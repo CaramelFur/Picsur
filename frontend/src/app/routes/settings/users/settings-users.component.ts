@@ -51,7 +51,7 @@ export class SettingsUsersComponent implements OnInit {
   }
 
   public editUser(user: EUser) {
-    this.router.navigate(['/settings/users/edit', user.username]);
+    this.router.navigate(['/settings/users/edit', user.id]);
   }
 
   public async deleteUser(user: EUser) {
@@ -73,7 +73,7 @@ export class SettingsUsersComponent implements OnInit {
     });
 
     if (pressedButton === 'delete') {
-      const result = await this.userManageService.deleteUser(user.username);
+      const result = await this.userManageService.deleteUser(user.id);
       if (HasFailed(result)) {
         this.utilService.showSnackBar(
           'Failed to delete user',

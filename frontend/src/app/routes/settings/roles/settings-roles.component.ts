@@ -80,11 +80,11 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
       const result = await this.rolesService.deleteRole(role.name);
       if (HasFailed(result)) {
         this.utilService.showSnackBar(
-          'Failed to delete user',
+          'Failed to delete role',
           SnackBarType.Error
         );
       } else {
-        this.utilService.showSnackBar('User deleted', SnackBarType.Success);
+        this.utilService.showSnackBar('Role deleted', SnackBarType.Success);
       }
     }
 

@@ -50,7 +50,7 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
     }
 
     // These are the permissions the user has
-    const userPermissions = await this.usersService.getPermissions(user);
+    const userPermissions = await this.usersService.getPermissions(user.id);
     if (HasFailed(userPermissions)) {
       this.logger.warn('User Permissions: ' + userPermissions.getReason());
       throw new InternalServerErrorException();

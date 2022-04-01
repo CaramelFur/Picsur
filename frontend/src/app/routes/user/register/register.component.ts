@@ -63,7 +63,7 @@ export class RegisterComponent implements OnInit {
     }
 
     if (!this.userService.isLoggedIn) {
-      const loginResult = this.userService.login(data.username, data.password);
+      const loginResult = await this.userService.login(data.username, data.password);
       if (HasFailed(loginResult)) {
         this.logger.warn(loginResult.getReason());
         this.utilService.showSnackBar(
@@ -71,9 +71,14 @@ export class RegisterComponent implements OnInit {
           SnackBarType.Error
         );
       }
-    } else {
+
       this.utilService.showSnackBar(
         'Register successful',
+        SnackBarType.Success
+      );
+    } else {
+      this.utilService.showSnackBar(
+        'Register successful, did not log in',
         SnackBarType.Success
       );
     }

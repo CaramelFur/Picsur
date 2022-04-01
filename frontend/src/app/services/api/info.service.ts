@@ -53,8 +53,6 @@ export class InfoService {
     const serverVersion = info.version;
     const clientVersion = this.getFrontendVersion();
 
-    console.log(serverVersion, clientVersion);
-
     if (!isSemVer(serverVersion) || !isSemVer(clientVersion)) {
       return Fail(`Not a valid semver: ${serverVersion} or ${clientVersion}`);
     }

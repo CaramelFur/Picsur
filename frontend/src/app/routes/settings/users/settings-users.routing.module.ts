@@ -10,7 +10,7 @@ const routes: PRoutes = [
     component: SettingsUsersComponent,
   },
   {
-    path: 'edit/:username',
+    path: 'edit/:uuid',
     component: SettingsUsersEditComponent,
   },
   {

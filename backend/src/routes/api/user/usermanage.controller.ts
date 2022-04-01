@@ -78,9 +78,9 @@ export class UserManageController {
 
   @Post('delete')
   async delete(
-    @Body() deleteData: UserDeleteRequest,
+    @Body() body: UserDeleteRequest,
   ): Promise<UserDeleteResponse> {
-    const user = await this.usersService.delete(deleteData.username);
+    const user = await this.usersService.delete(body.id);
     if (HasFailed(user)) {
       this.logger.warn(user.getReason());
       throw new InternalServerErrorException('Could not delete user');
@@ -91,7 +91,7 @@ export class UserManageController {
 
   @Post('info')
   async getUser(@Body() body: UserInfoRequest): Promise<UserInfoResponse> {
-    const user = await this.usersService.findOne(body.username);
+    const user = await this.usersService.findOne(body.id);
     if (HasFailed(user)) {
       this.logger.warn(user.getReason());
       throw new InternalServerErrorException('Could not find user');
@@ -104,14 +104,14 @@ export class UserManageController {
   async setPermissions(
     @Body() body: UserUpdateRequest,
   ): Promise<UserUpdateResponse> {
-    let user = await this.usersService.findOne(body.username);
+    let user = await this.usersService.findOne(body.id);
     if (HasFailed(user)) {
       this.logger.warn(user.getReason());
       throw new InternalServerErrorException('Could not find user');
     }
 
     if (body.roles) {
-      user = await this.usersService.setRoles(user, body.roles);
+      user = await this.usersService.setRoles(user.id, body.roles);
       if (HasFailed(user)) {
         this.logger.warn(user.getReason());
         throw new InternalServerErrorException('Could not update user');
@@ -119,7 +119,7 @@ export class UserManageController {
     }
 
     if (body.password) {
-      user = await this.usersService.updatePassword(user, body.password);
+      user = await this.usersService.updatePassword(user.id, body.password);
       if (HasFailed(user)) {
         this.logger.warn(user.getReason());
         throw new InternalServerErrorException('Could not update user');

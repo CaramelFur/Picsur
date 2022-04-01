@@ -10,7 +10,6 @@ import {
   HasSuccess
 } from 'picsur-shared/dist/types';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
-import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Repository } from 'typeorm';
 import { Permissions } from '../../models/dto/permissions.dto';
 import {
@@ -74,10 +73,8 @@ export class UsersService {
     return plainToClass(EUserBackend, user);
   }
 
-  public async delete(
-    user: string | EUserBackend,
-  ): AsyncFailable<EUserBackend> {
-    const userToModify = await this.resolve(user);
+  public async delete(uuid: string): AsyncFailable<EUserBackend> {
+    const userToModify = await this.findOne(uuid);
     if (HasFailed(userToModify)) return userToModify;
 
     if (UndeletableUsersList.includes(userToModify.username)) {
@@ -85,7 +82,10 @@ export class UsersService {
     }
 
     try {
-      return await this.usersRepository.remove(userToModify);
+      // Makes sure we can return the id
+      const cloned = plainToClass(EUserBackend, userToModify);
+      await this.usersRepository.remove(userToModify);
+      return cloned;
     } catch (e: any) {
       return Fail(e?.message);
     }
@@ -94,10 +94,10 @@ export class UsersService {
   // Updating
 
   public async setRoles(
-    user: string | EUserBackend,
+    uuid: string,
     roles: string[],
   ): AsyncFailable<EUserBackend> {
-    const userToModify = await this.resolve(user);
+    const userToModify = await this.findOne(uuid);
     if (HasFailed(userToModify)) return userToModify;
 
     if (ImmutableUsersList.includes(userToModify.username)) {
@@ -138,20 +138,18 @@ export class UsersService {
     return true;
   }
 
-  public async getPermissions(
-    user: string | EUserBackend,
-  ): AsyncFailable<Permissions> {
-    const userToModify = await this.resolve(user);
+  public async getPermissions(uuid: string): AsyncFailable<Permissions> {
+    const userToModify = await this.findOne(uuid);
     if (HasFailed(userToModify)) return userToModify;
 
     return await this.rolesService.getPermissions(userToModify.roles);
   }
 
   public async updatePassword(
-    user: string | EUserBackend,
+    uuid: string,
     password: string,
   ): AsyncFailable<EUserBackend> {
-    let userToModify = await this.resolve(user);
+    let userToModify = await this.findOne(uuid);
     if (HasFailed(userToModify)) return userToModify;
 
     const strength = await this.getBCryptStrength();
@@ -174,7 +172,7 @@ export class UsersService {
     username: string,
     password: string,
   ): AsyncFailable<EUserBackend> {
-    const user = await this.findOne(username, true);
+    const user = await this.findByUsername(username, true);
     if (HasFailed(user)) return user;
 
     if (LockedLoginUsersList.includes(user.username)) {
@@ -185,12 +183,12 @@ export class UsersService {
     if (!(await bcrypt.compare(password, user.password)))
       return Fail('Wrong password');
 
-    return await this.findOne(username);
+    return await this.findOne(user.id);
   }
 
   // Listing
 
-  public async findOne<B extends true | undefined = undefined>(
+  public async findByUsername<B extends true | undefined = undefined>(
     username: string,
     // Also fetch fields that aren't normally sent to the client
     // (e.g. hashed password)
@@ -208,6 +206,19 @@ export class UsersService {
       return found as B extends undefined
         ? EUserBackend
         : Required<EUserBackend>;
+    } catch (e: any) {
+      return Fail(e?.message);
+    }
+  }
+
+  public async findOne(uuid: string): AsyncFailable<EUserBackend> {
+    try {
+      const found = await this.usersRepository.findOne({
+        where: { id: uuid },
+      });
+
+      if (!found) return Fail('User not found');
+      return found as EUserBackend;
     } catch (e: any) {
       return Fail(e?.message);
     }
@@ -231,26 +242,10 @@ export class UsersService {
   }
 
   public async exists(username: string): Promise<boolean> {
-    return HasSuccess(await this.findOne(username));
+    return HasSuccess(await this.findByUsername(username));
   }
 
-  // Internal resolver
-
-  private async resolve(
-    user: string | EUserBackend,
-  ): AsyncFailable<EUserBackend> {
-    if (typeof user === 'string') {
-      return await this.findOne(user);
-    } else {
-      user = plainToClass(EUserBackend, user);
-      const errors = await strictValidate(user);
-      if (errors.length > 0) {
-        this.logger.warn(errors);
-        return Fail('Invalid user');
-      }
-      return user;
-    }
-  }
+  // Internal
 
   private filterAddedRoles(roles: string[]): string[] {
     const filteredRoles = roles.filter(

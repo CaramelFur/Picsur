@@ -66,7 +66,7 @@ export class UserController {
   @Get('me')
   @RequiredPermissions(Permission.UserKeepLogin)
   async me(@Request() req: AuthFasityRequest): Promise<UserMeResponse> {
-    const user = await this.usersService.findOne(req.user.username);
+    const user = await this.usersService.findOne(req.user.id);
 
     if (HasFailed(user)) {
       this.logger.warn(user.getReason());
@@ -88,7 +88,7 @@ export class UserController {
   async refresh(
     @Request() req: AuthFasityRequest,
   ): Promise<UserMePermissionsResponse> {
-    const permissions = await this.usersService.getPermissions(req.user);
+    const permissions = await this.usersService.getPermissions(req.user.id);
     if (HasFailed(permissions)) {
       this.logger.warn(permissions.getReason());
       throw new InternalServerErrorException('Could not get permissions');

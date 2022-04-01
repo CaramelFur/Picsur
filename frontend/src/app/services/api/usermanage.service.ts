@@ -13,7 +13,6 @@ import {
 } from 'picsur-shared/dist/dto/api/usermanage.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, Open } from 'picsur-shared/dist/types';
-import { FullUserModel } from 'src/app/models/forms-dto/fulluser.dto';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -22,12 +21,12 @@ import { ApiService } from './api.service';
 export class UserManageService {
   constructor(private api: ApiService) {}
 
-  public async getUser(username: string): AsyncFailable<EUser> {
+  public async getUser(id: string): AsyncFailable<EUser> {
     return await this.api.post(
       UserInfoRequest,
       UserInfoResponse,
       'api/user/info',
-      { username }
+      { id }
     );
   }
 
@@ -45,7 +44,7 @@ export class UserManageService {
     return Open(result, 'users');
   }
 
-  public async createUser(user: FullUserModel): AsyncFailable<EUser> {
+  public async createUser(user: UserCreateRequest): AsyncFailable<EUser> {
     return await this.api.post(
       UserCreateRequest,
       UserCreateResponse,
@@ -54,7 +53,7 @@ export class UserManageService {
     );
   }
 
-  public async updateUser(user: FullUserModel): AsyncFailable<EUser> {
+  public async updateUser(user: UserUpdateRequest): AsyncFailable<EUser> {
     return await this.api.post(
       UserUpdateRequest,
       UserUpdateResponse,
@@ -63,12 +62,12 @@ export class UserManageService {
     );
   }
 
-  public async deleteUser(username: string): AsyncFailable<EUser> {
+  public async deleteUser(id: string): AsyncFailable<EUser> {
     return await this.api.post(
       UserDeleteRequest,
       UserDeleteResponse,
       '/api/user/delete',
-      { username }
+      { id }
     );
   }
 }
