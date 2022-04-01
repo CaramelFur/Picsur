@@ -18,7 +18,7 @@ import {
   SysPreferenceValueTypes
 } from '../../models/dto/syspreferences.dto';
 import { ESysPreferenceBackend } from '../../models/entities/syspreference.entity';
-import { SysPreferenceDefaultsService } from './syspreferencedefaults.service';
+import { PreferenceDefaultsService } from './syspreferencedefaults.service';
 
 @Injectable()
 export class SysPreferenceService {
@@ -27,7 +27,7 @@ export class SysPreferenceService {
   constructor(
     @InjectRepository(ESysPreferenceBackend)
     private sysPreferenceRepository: Repository<ESysPreferenceBackend>,
-    private defaultsService: SysPreferenceDefaultsService,
+    private defaultsService: PreferenceDefaultsService,
   ) {}
 
   public async setPreference(
@@ -135,7 +135,7 @@ export class SysPreferenceService {
   private async saveDefault(
     key: SysPreference, // Force enum here because we dont validate
   ): AsyncFailable<InternalSysPrefRepresentation> {
-    return this.setPreference(key, this.defaultsService.defaults[key]());
+    return this.setPreference(key, this.defaultsService.sysDefaults[key]());
   }
 
   // This converts the raw string representation of the value to the correct type
