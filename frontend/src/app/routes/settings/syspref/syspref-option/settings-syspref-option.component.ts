@@ -1,10 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { SysPreferenceBaseResponse } from 'picsur-shared/dist/dto/api/pref.dto';
-import {
-  SysPreference,
-  SysPrefValueType
-} from 'picsur-shared/dist/dto/syspreferences.dto';
+import { SysPreferenceBaseResponse } from 'picsur-shared/dist/dto/api/syspref.dto';
+import { PrefValueType } from 'picsur-shared/dist/dto/preferences.dto';
+import { SysPreference } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { Subject, throttleTime } from 'rxjs';
 import { SysPreferenceFriendlyNames } from 'src/app/i18n/syspref.i18n';
@@ -20,7 +18,7 @@ import { UtilService } from 'src/app/util/util.service';
 export class SettingsSysprefOptionComponent implements OnInit {
   @Input() pref: SysPreferenceBaseResponse;
 
-  private updateSubject = new Subject<SysPrefValueType>();
+  private updateSubject = new Subject<PrefValueType>();
 
   constructor(
     private sysprefService: SysprefService,
@@ -71,7 +69,7 @@ export class SettingsSysprefOptionComponent implements OnInit {
     this.update((e.target as HTMLInputElement).valueAsNumber);
   }
 
-  private async updatePreference(value: SysPrefValueType) {
+  private async updatePreference(value: PrefValueType) {
     const result = await this.sysprefService.setPreference(
       this.pref.key,
       value

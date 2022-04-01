@@ -4,7 +4,7 @@ import {
 } from 'class-validator';
 import { IsPosInt } from '../../validators/positive-int.validator';
 import { IsSysPrefValue } from '../../validators/syspref.validator';
-import { SysPrefValueType, SysPrefValueTypes, SysPrefValueTypeStrings } from '../syspreferences.dto';
+import { PrefValueType, PrefValueTypes, PrefValueTypeStrings } from '../preferences.dto';
 
 export class SysPreferenceBaseResponse {
   @IsNotEmpty()
@@ -13,11 +13,11 @@ export class SysPreferenceBaseResponse {
 
   @IsNotEmpty()
   @IsSysPrefValue()
-  value: SysPrefValueType;
+  value: PrefValueType;
 
   @IsNotEmpty()
-  @IsEnum(SysPrefValueTypes)
-  type: SysPrefValueTypeStrings;
+  @IsEnum(PrefValueTypes)
+  type: PrefValueTypeStrings;
 }
 
 // Get Syspreference
@@ -40,7 +40,7 @@ export class MultipleSysPreferencesResponse {
 export class UpdateSysPreferenceRequest {
   @IsNotEmpty()
   @IsSysPrefValue()
-  value: SysPrefValueType;
+  value: PrefValueType;
 }
 export class UpdateSysPreferenceResponse extends SysPreferenceBaseResponse {}
 

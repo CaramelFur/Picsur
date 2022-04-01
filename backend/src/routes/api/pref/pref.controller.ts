@@ -11,7 +11,7 @@ import {
   GetSyspreferenceResponse,
   MultipleSysPreferencesResponse, UpdateSysPreferenceRequest,
   UpdateSysPreferenceResponse
-} from 'picsur-shared/dist/dto/api/pref.dto';
+} from 'picsur-shared/dist/dto/api/syspref.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/syspreferencesdb/syspreferencedb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';

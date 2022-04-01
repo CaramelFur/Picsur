@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { PrefValueType } from 'picsur-shared/dist/dto/preferences.dto';
 import {
-  SysPreference,
-  SysPrefValueType
+  SysPreference
 } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { EarlyJwtConfigService } from '../../config/early/earlyjwt.config.service';
@@ -16,7 +16,7 @@ export class SysPreferenceDefaultsService {
   constructor(private jwtConfigService: EarlyJwtConfigService) {}
 
   public readonly defaults: {
-    [key in SysPreference]: () => SysPrefValueType;
+    [key in SysPreference]: () => PrefValueType;
   } = {
     [SysPreference.JwtSecret]: () => {
       const envSecret = this.jwtConfigService.getJwtSecret();

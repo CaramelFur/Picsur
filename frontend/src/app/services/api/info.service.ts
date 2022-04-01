@@ -28,11 +28,12 @@ export class InfoService {
   private infoSubject = new BehaviorSubject<ServerInfo>(new ServerInfo());
 
   constructor(private api: ApiService, private utilService: UtilService) {
-    this.pollInfo()
-      .then(() => {
-        this.checkCompatibility();
-      })
-      .catch(this.logger.error);
+    this.init().catch(this.logger.error);
+  }
+
+  private async init() {
+    await this.pollInfo();
+    this.checkCompatibility();
   }
 
   public async pollInfo(): AsyncFailable<ServerInfo> {

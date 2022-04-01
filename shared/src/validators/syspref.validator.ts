@@ -1,9 +1,9 @@
 import { registerDecorator, ValidationArguments, ValidationOptions } from 'class-validator';
-import { SysPrefValueTypes } from '../dto/syspreferences.dto';
+import { PrefValueTypes } from '../dto/preferences.dto';
 
 export function isSysPrefValue(value: any, args: ValidationArguments) {
   const type = typeof value;
-  return SysPrefValueTypes.includes(type);
+  return PrefValueTypes.includes(type);
 }
 
 export function IsSysPrefValue(validationOptions?: ValidationOptions) {

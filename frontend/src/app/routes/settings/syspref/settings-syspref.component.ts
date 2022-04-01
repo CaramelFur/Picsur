@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SysPreferenceBaseResponse } from 'picsur-shared/dist/dto/api/pref.dto';
+import { SysPreferenceBaseResponse } from 'picsur-shared/dist/dto/api/syspref.dto';
 import { Observable } from 'rxjs';
 import { SysprefService as SysPrefService } from 'src/app/services/api/syspref.service';
 
