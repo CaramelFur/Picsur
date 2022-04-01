@@ -25,10 +25,12 @@ export class UtilService {
 
   public showSnackBar(
     message: string,
-    type: SnackBarType = SnackBarType.Default
+    type: SnackBarType = SnackBarType.Default,
+    duration: number | undefined | null = null
   ) {
     this.snackBar.open(message, '', {
       panelClass: ['mat-toolbar', 'snackbar', type],
+      ...(duration !== null ? { duration } : {}),
     });
   }
 
