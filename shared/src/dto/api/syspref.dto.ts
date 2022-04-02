@@ -1,36 +1,21 @@
-import { Type } from 'class-transformer';
 import {
-  IsArray, IsEnum, IsNotEmpty, IsString, ValidateNested
+  IsArray
 } from 'class-validator';
+import { IsNested } from '../../validators/nested.validator';
 import { IsPosInt } from '../../validators/positive-int.validator';
-import { IsSysPrefValue } from '../../validators/syspref.validator';
-import { PrefValueType, PrefValueTypes, PrefValueTypeStrings } from '../preferences.dto';
+import { IsPrefValue } from '../../validators/pref-value.validator';
+import { DecodedSysPref, PrefValueType } from '../preferences.dto';
 
-export class SysPreferenceBaseResponse {
-  @IsNotEmpty()
-  @IsString()
-  key: string;
-
-  @IsNotEmpty()
-  @IsSysPrefValue()
-  value: PrefValueType;
-
-  @IsNotEmpty()
-  @IsEnum(PrefValueTypes)
-  type: PrefValueTypeStrings;
-}
 
 // Get Syspreference
 // Request is done via url parameters
-export class GetSyspreferenceResponse extends SysPreferenceBaseResponse {}
+export class GetSyspreferenceResponse extends DecodedSysPref {}
 
 // Get syspreferences
 export class MultipleSysPreferencesResponse {
   @IsArray()
-  @IsNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => SysPreferenceBaseResponse)
-  preferences: SysPreferenceBaseResponse[];
+  @IsNested(DecodedSysPref)
+  preferences: DecodedSysPref[];
 
   @IsPosInt()
   total: number;
@@ -38,10 +23,9 @@ export class MultipleSysPreferencesResponse {
 
 // Update Syspreference
 export class UpdateSysPreferenceRequest {
-  @IsNotEmpty()
-  @IsSysPrefValue()
+  @IsPrefValue()
   value: PrefValueType;
 }
-export class UpdateSysPreferenceResponse extends SysPreferenceBaseResponse {}
+export class UpdateSysPreferenceResponse extends DecodedSysPref {}
 
 

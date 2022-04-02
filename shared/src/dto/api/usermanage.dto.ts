@@ -1,14 +1,10 @@
-import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsDefined,
-  IsOptional,
-  ValidateNested
-} from 'class-validator';
-import { EUser, NamePassUser } from '../../entities/user.entity';
+import { IsArray, IsOptional } from 'class-validator';
+import { EUser, SimpleUser } from '../../entities/user.entity';
+import { Newable } from '../../types';
+import { IsEntityID } from '../../validators/entity-id.validator';
+import { IsNested } from '../../validators/nested.validator';
 import { IsPosInt } from '../../validators/positive-int.validator';
 import { IsStringList } from '../../validators/string-list.validator';
-import { IsPlainTextPwd, IsUsername } from '../../validators/user.validators';
 import { EntityIDObject } from '../idobject.dto';
 
 // UserList
@@ -22,9 +18,7 @@ export class UserListRequest {
 
 export class UserListResponse {
   @IsArray()
-  @IsDefined()
-  @ValidateNested()
-  @Type(() => EUser)
+  @IsNested(EUser)
   users: EUser[];
 
   @IsPosInt()
@@ -35,11 +29,7 @@ export class UserListResponse {
 }
 
 // UserCreate
-export class UserCreateRequest extends NamePassUser {
-  @IsOptional()
-  @IsStringList()
-  roles?: string[];
-}
+export class UserCreateRequest extends SimpleUser {}
 export class UserCreateResponse extends EUser {}
 
 // UserDelete
@@ -51,33 +41,31 @@ export class UserInfoRequest extends EntityIDObject {}
 export class UserInfoResponse extends EUser {}
 
 // UserUpdate
-export class UserUpdateRequest extends EntityIDObject {
-  @IsOptional()
-  @IsUsername()
-  username?: string;
+export class UserUpdateRequest extends (SimpleUser as Newable<
+  Partial<SimpleUser>
+>) {
+  @IsEntityID()
+  id: string;
 
   @IsOptional()
-  @IsStringList()
-  roles?: string[];
+  override username?: string;
 
-  @IsPlainTextPwd()
   @IsOptional()
-  password?: string;
+  override password?: string;
+
+  @IsOptional()
+  override roles?: string[];
 }
-
 export class UserUpdateResponse extends EUser {}
 
 // GetSpecialUsers
 export class GetSpecialUsersResponse {
-  @IsDefined()
   @IsStringList()
   UndeletableUsersList: string[];
 
-  @IsDefined()
   @IsStringList()
   ImmutableUsersList: string[];
-  
-  @IsDefined()
+
   @IsStringList()
   LockedLoginUsersList: string[];
 }

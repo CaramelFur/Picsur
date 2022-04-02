@@ -1,10 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PrefValueType, PrefValueTypeStrings } from 'picsur-shared/dist/dto/preferences.dto';
 import {
-  InternalSysPrefRepresentation,
-  SysPreference
-} from 'picsur-shared/dist/dto/syspreferences.dto';
+  DecodedSysPref,
+  PrefValueType,
+  PrefValueTypeStrings
+} from 'picsur-shared/dist/dto/preferences.dto';
+import { SysPreference } from 'picsur-shared/dist/dto/syspreferences.dto';
 import {
   AsyncFailable,
   Fail,
@@ -33,7 +34,7 @@ export class SysPreferenceService {
   public async setPreference(
     key: string,
     value: PrefValueType,
-  ): AsyncFailable<InternalSysPrefRepresentation> {
+  ): AsyncFailable<DecodedSysPref> {
     // Validate
     let sysPreference = await this.validatePref(key, value);
     if (HasFailed(sysPreference)) return sysPreference;
@@ -58,9 +59,7 @@ export class SysPreferenceService {
     };
   }
 
-  public async getPreference(
-    key: string,
-  ): AsyncFailable<InternalSysPrefRepresentation> {
+  public async getPreference(key: string): AsyncFailable<DecodedSysPref> {
     // Validate
     let validatedKey = this.validatePrefKey(key);
     if (HasFailed(validatedKey)) return validatedKey;
@@ -116,9 +115,7 @@ export class SysPreferenceService {
     return pref.value;
   }
 
-  public async getAllPreferences(): AsyncFailable<
-    InternalSysPrefRepresentation[]
-  > {
+  public async getAllPreferences(): AsyncFailable<DecodedSysPref[]> {
     // TODO: We are fetching each value invidually, we should fetch all at once
     let internalSysPrefs = await Promise.all(
       SysPreferenceList.map((key) => this.getPreference(key)),
@@ -127,21 +124,21 @@ export class SysPreferenceService {
       return Fail('Could not get all preferences');
     }
 
-    return internalSysPrefs as InternalSysPrefRepresentation[];
+    return internalSysPrefs as DecodedSysPref[];
   }
 
   // Private
 
   private async saveDefault(
     key: SysPreference, // Force enum here because we dont validate
-  ): AsyncFailable<InternalSysPrefRepresentation> {
+  ): AsyncFailable<DecodedSysPref> {
     return this.setPreference(key, this.defaultsService.sysDefaults[key]());
   }
 
   // This converts the raw string representation of the value to the correct type
   private retrieveConvertedValue(
     preference: ESysPreferenceBackend,
-  ): Failable<InternalSysPrefRepresentation> {
+  ): Failable<DecodedSysPref> {
     const key = this.validatePrefKey(preference.key);
     if (HasFailed(key)) return key;
 

@@ -53,7 +53,7 @@ export class UsersService {
 
     let user = new EUserBackend();
     user.username = username;
-    user.password = hashedPassword;
+    user.hashedPassword = hashedPassword;
     if (byPassRoleCheck) {
       const rolesToAdd = roles ?? [];
       user.roles = makeUnique(rolesToAdd);
@@ -64,13 +64,10 @@ export class UsersService {
     }
 
     try {
-      user = await this.usersRepository.save(user, { reload: true });
+      return await this.usersRepository.save(user);
     } catch (e: any) {
       return Fail(e?.message);
     }
-
-    // Strips unwanted data
-    return plainToClass(EUserBackend, user);
   }
 
   public async delete(uuid: string): AsyncFailable<EUserBackend> {
@@ -153,8 +150,7 @@ export class UsersService {
     if (HasFailed(userToModify)) return userToModify;
 
     const strength = await this.getBCryptStrength();
-    const hashedPassword = await bcrypt.hash(password, strength);
-    userToModify.password = hashedPassword;
+    userToModify.hashedPassword = await bcrypt.hash(password, strength);
 
     try {
       userToModify = await this.usersRepository.save(userToModify);
@@ -180,7 +176,7 @@ export class UsersService {
       return Fail('Wrong username');
     }
 
-    if (!(await bcrypt.compare(password, user.password)))
+    if (!(await bcrypt.compare(password, user.hashedPassword)))
       return Fail('Wrong password');
 
     return await this.findOne(user.id);
@@ -199,7 +195,11 @@ export class UsersService {
     try {
       const found = await this.usersRepository.findOne({
         where: { username },
-        select: getPrivate ? GetCols(this.usersRepository) : undefined,
+        ...(getPrivate
+          ? {
+              select: GetCols(this.usersRepository),
+            }
+          : {}),
       });
 
       if (!found) return Fail('User not found');

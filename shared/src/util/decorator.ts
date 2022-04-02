@@ -3,7 +3,7 @@ type FCDecorator = MethodDecorator & ClassDecorator;
 export function CombineFCDecorators(...decorators: FCDecorator[]) {
   return (target: any, key: string, descriptor: PropertyDescriptor) => {
     decorators.forEach(decorator => {
-      decorator(target, key, descriptor);
+      decorator(target, key, descriptor as any);
     });
   }
 }

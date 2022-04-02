@@ -1,3 +1,4 @@
+import { IsOptional, IsString } from 'class-validator';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -6,7 +7,7 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class EUserBackend extends EUser {
   @PrimaryGeneratedColumn("uuid")
-  override id: string;
+  override id?: string;
 
   @Index()
   @Column({ nullable: false, unique: true })
@@ -16,5 +17,9 @@ export class EUserBackend extends EUser {
   override roles: string[];
 
   @Column({ nullable: false, select: false })
-  override password?: string;
+  @IsOptional()
+  @IsString()
+  // @ts-ignore
+  override hashedPassword?: string;
 }
+

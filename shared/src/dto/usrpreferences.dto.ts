@@ -1,4 +1,3 @@
-import { PrefValueType, PrefValueTypeStrings } from './preferences.dto';
 
 // This enum is only here to make accessing the values easier, and type checking in the backend
 export enum UsrPreference {
@@ -7,10 +6,3 @@ export enum UsrPreference {
   TestBoolean = 'test_boolean',
 }
 
-// Interfaces
-export interface InternalUsrPrefRepresentation {
-  key: string;
-  value: PrefValueType;
-  type: PrefValueTypeStrings;
-  user: number;
-}

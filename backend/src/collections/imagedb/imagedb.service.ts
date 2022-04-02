@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { plainToClass } from 'class-transformer';
 import Crypto from 'crypto';
 import {
   AsyncFailable,
@@ -36,8 +35,7 @@ export class ImageDBService {
       return Fail(e?.message);
     }
 
-    // Strips unwanted data
-    return plainToClass(EImageBackend, imageEntity);
+    return imageEntity;
   }
 
   public async findOne<B extends true | undefined = undefined>(

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { SysPreferenceBaseResponse } from 'picsur-shared/dist/dto/api/syspref.dto';
-import { PrefValueType } from 'picsur-shared/dist/dto/preferences.dto';
+import { DecodedSysPref, PrefValueType } from 'picsur-shared/dist/dto/preferences.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { Subject, throttleTime } from 'rxjs';
@@ -16,7 +15,7 @@ import { UtilService } from 'src/app/util/util.service';
   styleUrls: ['./settings-syspref-option.component.scss'],
 })
 export class SettingsSysprefOptionComponent implements OnInit {
-  @Input() pref: SysPreferenceBaseResponse;
+  @Input() pref: DecodedSysPref;
 
   private updateSubject = new Subject<PrefValueType>();
 

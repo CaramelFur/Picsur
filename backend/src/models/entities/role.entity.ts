@@ -5,7 +5,7 @@ import { Permissions } from '../dto/permissions.dto';
 @Entity()
 export class ERoleBackend extends ERole {
   @PrimaryGeneratedColumn("uuid")
-  override id: string;
+  override id?: string;
 
   @Index()
   @Column({ nullable: false, unique: true })

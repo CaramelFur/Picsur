@@ -41,6 +41,10 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
     const user = await this.validateUser(
       context.switchToHttp().getRequest().user,
     );
+    if (!user.id) {
+      this.logger.error('User has no id, this should not happen');
+      throw new InternalServerErrorException();
+    }
 
     // These are the permissions required to access the route
     const permissions = this.extractPermissions(context);

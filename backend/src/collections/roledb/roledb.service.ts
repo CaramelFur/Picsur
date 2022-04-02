@@ -52,10 +52,7 @@ export class RolesService {
     }
 
     try {
-      // Makes sure we can return the id
-      const cloned = plainToClass(ERoleBackend, roleToModify);
-      await this.rolesRepository.remove(roleToModify);
-      return cloned;
+      return await this.rolesRepository.remove(roleToModify);
     } catch (e: any) {
       return Fail(e?.message);
     }

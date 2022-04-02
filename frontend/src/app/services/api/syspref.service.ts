@@ -3,12 +3,11 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import {
   GetSyspreferenceResponse,
   MultipleSysPreferencesResponse,
-  SysPreferenceBaseResponse,
   UpdateSysPreferenceRequest,
   UpdateSysPreferenceResponse
 } from 'picsur-shared/dist/dto/api/syspref.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
-import { PrefValueType } from 'picsur-shared/dist/dto/preferences.dto';
+import { DecodedSysPref, PrefValueType } from 'picsur-shared/dist/dto/preferences.dto';
 import { AsyncFailable, Fail, HasFailed, Map } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
@@ -25,7 +24,7 @@ export class SysprefService {
 
   private hasPermission = false;
 
-  private sysprefObservable = new BehaviorSubject<SysPreferenceBaseResponse[]>(
+  private sysprefObservable = new BehaviorSubject<DecodedSysPref[]>(
     []
   );
 
@@ -57,7 +56,7 @@ export class SysprefService {
     }
   }
 
-  public async getPreferences(): AsyncFailable<SysPreferenceBaseResponse[]> {
+  public async getPreferences(): AsyncFailable<DecodedSysPref[]> {
     if (!this.hasPermission)
       return Fail('You do not have permission to edit system preferences');
 
@@ -105,7 +104,7 @@ export class SysprefService {
     return response;
   }
 
-  private updatePrefArray(pref: SysPreferenceBaseResponse) {
+  private updatePrefArray(pref: DecodedSysPref) {
     const prefArray = this.snapshot;
     // Replace the old pref with the new one
     const index = prefArray.findIndex((i) => pref.key === i.key);

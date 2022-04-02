@@ -73,7 +73,7 @@ export class SettingsUsersComponent implements OnInit {
     });
 
     if (pressedButton === 'delete') {
-      const result = await this.userManageService.deleteUser(user.id);
+      const result = await this.userManageService.deleteUser(user.id ?? '');
       if (HasFailed(result)) {
         this.utilService.showSnackBar(
           'Failed to delete user',

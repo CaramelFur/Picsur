@@ -1,11 +1,12 @@
 import {
-  Controller,
-  Get,
-  InternalServerErrorException,
-  Logger,
-  NotFoundException,
-  Param,
-  Post, Res
+    Controller,
+    Get,
+    InternalServerErrorException,
+    Logger,
+    NotFoundException,
+    Param,
+    Post,
+    Res
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
@@ -15,6 +16,7 @@ import { RequiredPermissions } from '../../decorators/permissions.decorator';
 import { ImageManagerService } from '../../managers/imagemanager/imagemanager.service';
 import { Permission } from '../../models/dto/permissions.dto';
 import { ImageUploadDto } from '../../models/requests/imageroute.dto';
+import { EImageBackend2EImage } from '../../models/transformers/image.transformer';
 import { ImageIdValidator } from './imageid.validator';
 
 // This is the only controller with CORS enabled
@@ -52,7 +54,7 @@ export class ImageController {
       throw new NotFoundException('Could not find image');
     }
 
-    return image;
+    return EImageBackend2EImage(image);
   }
 
   @Post()
@@ -67,6 +69,6 @@ export class ImageController {
       throw new InternalServerErrorException('Could not upload image');
     }
 
-    return image;
+    return EImageBackend2EImage(image);
   }
 }

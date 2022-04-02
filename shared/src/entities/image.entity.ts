@@ -1,20 +1,19 @@
-import { Exclude } from 'class-transformer';
-import { IsHash, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { EntityID } from '../validators/entity-id.validator';
+import { IsHash, IsOptional, IsString } from 'class-validator';
+import { IsEntityID } from '../validators/entity-id.validator';
+import { IsNotDefined } from '../validators/not-defined.validator';
 
 export class EImage {
-  @EntityID()
-  id: string;
+  @IsOptional()
+  @IsEntityID()
+  id?: string;
 
   @IsHash('sha256')
   hash: string;
 
-  // Binary data
-  @IsOptional()
-  @Exclude() // Dont send this by default
-  data?: object;
-  
-  @IsNotEmpty()
+  // Because typescript does not support exact types, we have to do this stupidness
+  @IsNotDefined()
+  data: undefined;
+
   @IsString()
   mime: string;
 }

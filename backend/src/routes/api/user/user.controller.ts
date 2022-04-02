@@ -24,6 +24,7 @@ import {
 import { AuthManagerService } from '../../../managers/auth/auth.service';
 import { Permission } from '../../../models/dto/permissions.dto';
 import AuthFasityRequest from '../../../models/requests/authrequest.dto';
+import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 
 @Controller('api/user')
 export class UserController {
@@ -60,12 +61,14 @@ export class UserController {
       throw new InternalServerErrorException('Could not register user');
     }
 
-    return user;
+    return EUserBackend2EUser(user);
   }
 
   @Get('me')
   @RequiredPermissions(Permission.UserKeepLogin)
   async me(@Request() req: AuthFasityRequest): Promise<UserMeResponse> {
+    if (!req.user.id) throw new InternalServerErrorException('User is corrupt');
+
     const user = await this.usersService.findOne(req.user.id);
 
     if (HasFailed(user)) {
@@ -79,7 +82,7 @@ export class UserController {
       throw new InternalServerErrorException('Could not get new token');
     }
 
-    return { user, token };
+    return { user: EUserBackend2EUser(user), token };
   }
 
   // You can always check your permissions
@@ -88,6 +91,8 @@ export class UserController {
   async refresh(
     @Request() req: AuthFasityRequest,
   ): Promise<UserMePermissionsResponse> {
+    if (!req.user.id) throw new InternalServerErrorException('User is corrupt');
+
     const permissions = await this.usersService.getPermissions(req.user.id);
     if (HasFailed(permissions)) {
       this.logger.warn(permissions.getReason());

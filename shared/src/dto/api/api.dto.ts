@@ -1,7 +1,5 @@
 import {
-  IsBoolean,
-  IsDefined,
-  IsInt,
+  IsBoolean, IsInt,
   IsNotEmpty,
   IsString,
   Max,
@@ -10,21 +8,17 @@ import {
 
 class BaseApiResponse<T extends Object, W extends boolean> {
   @IsBoolean()
-  @IsDefined()
   success: W;
 
   @IsInt()
   @Min(0)
   @Max(1000)
-  @IsDefined()
   statusCode: number;
 
   @IsString()
-  @IsNotEmpty()
   timestamp: string;
 
-  //@ValidateNested()
-  @IsDefined()
+  @IsNotEmpty()
   data: T;
 }
 
@@ -35,7 +29,6 @@ export class ApiSuccessResponse<T extends Object> extends BaseApiResponse<
 
 export class ApiErrorData {
   @IsString()
-  @IsNotEmpty()
   message: string;
 }
 export class ApiErrorResponse extends BaseApiResponse<ApiErrorData, false> {}

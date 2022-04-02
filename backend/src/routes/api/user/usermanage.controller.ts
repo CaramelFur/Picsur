@@ -24,7 +24,12 @@ import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Permission } from '../../../models/dto/permissions.dto';
-import { ImmutableUsersList, LockedLoginUsersList, UndeletableUsersList } from '../../../models/dto/specialusers.dto';
+import {
+  ImmutableUsersList,
+  LockedLoginUsersList,
+  UndeletableUsersList
+} from '../../../models/dto/specialusers.dto';
+import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 
 @Controller('api/user')
 @RequiredPermissions(Permission.UserManage)
@@ -53,7 +58,7 @@ export class UserManageController {
     }
 
     return {
-      users,
+      users: users.map(EUserBackend2EUser),
       count: users.length,
       page: body.page,
     };
@@ -73,20 +78,18 @@ export class UserManageController {
       throw new InternalServerErrorException('Could not create user');
     }
 
-    return user;
+    return EUserBackend2EUser(user);
   }
 
   @Post('delete')
-  async delete(
-    @Body() body: UserDeleteRequest,
-  ): Promise<UserDeleteResponse> {
+  async delete(@Body() body: UserDeleteRequest): Promise<UserDeleteResponse> {
     const user = await this.usersService.delete(body.id);
     if (HasFailed(user)) {
       this.logger.warn(user.getReason());
       throw new InternalServerErrorException('Could not delete user');
     }
 
-    return user;
+    return EUserBackend2EUser(user);
   }
 
   @Post('info')
@@ -97,7 +100,7 @@ export class UserManageController {
       throw new InternalServerErrorException('Could not find user');
     }
 
-    return user;
+    return EUserBackend2EUser(user);
   }
 
   @Post('update')
@@ -111,7 +114,7 @@ export class UserManageController {
     }
 
     if (body.roles) {
-      user = await this.usersService.setRoles(user.id, body.roles);
+      user = await this.usersService.setRoles(body.id, body.roles);
       if (HasFailed(user)) {
         this.logger.warn(user.getReason());
         throw new InternalServerErrorException('Could not update user');
@@ -119,14 +122,14 @@ export class UserManageController {
     }
 
     if (body.password) {
-      user = await this.usersService.updatePassword(user.id, body.password);
+      user = await this.usersService.updatePassword(body.id, body.password);
       if (HasFailed(user)) {
         this.logger.warn(user.getReason());
         throw new InternalServerErrorException('Could not update user');
       }
     }
 
-    return user;
+    return EUserBackend2EUser(user);
   }
 
   @Get('special')
