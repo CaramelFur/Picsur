@@ -9,9 +9,8 @@
   "type": "module",
   "main": "./dist/index.js",
   "dependencies": {
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.13.2",
-    "tsc-watch": "^4.6.2"
+    "tsc-watch": "^4.6.2",
+    "zod": "^3.14.3"
   },
   "devDependencies": {
     "@types/node": "^17.0.23",

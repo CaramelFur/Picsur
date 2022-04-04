@@ -8,8 +8,7 @@ import {
   Request
 } from '@nestjs/common';
 import {
-  UserLoginResponse,
-  UserMePermissionsResponse,
+  UserLoginResponse, UserMePermissionsResponse,
   UserMeResponse,
   UserRegisterRequest,
   UserRegisterResponse
@@ -21,6 +20,7 @@ import {
   RequiredPermissions,
   UseLocalAuth
 } from '../../../decorators/permissions.decorator';
+import { Returns } from '../../../decorators/returns.decorator';
 import { AuthManagerService } from '../../../managers/auth/auth.service';
 import { Permission } from '../../../models/dto/permissions.dto';
 import AuthFasityRequest from '../../../models/requests/authrequest.dto';
@@ -36,6 +36,7 @@ export class UserController {
   ) {}
 
   @Post('login')
+  @Returns(UserLoginResponse)
   @UseLocalAuth(Permission.UserLogin)
   async login(@Request() req: AuthFasityRequest): Promise<UserLoginResponse> {
     const jwt_token = await this.authService.createToken(req.user);
@@ -48,6 +49,7 @@ export class UserController {
   }
 
   @Post('register')
+  @Returns(UserRegisterResponse)
   @RequiredPermissions(Permission.UserRegister)
   async register(
     @Body() register: UserRegisterRequest,
@@ -65,16 +67,19 @@ export class UserController {
   }
 
   @Get('me')
+  @Returns(UserMeResponse)
   @RequiredPermissions(Permission.UserKeepLogin)
   async me(@Request() req: AuthFasityRequest): Promise<UserMeResponse> {
     if (!req.user.id) throw new InternalServerErrorException('User is corrupt');
 
-    const user = await this.usersService.findOne(req.user.id);
+    const backenduser = await this.usersService.findOne(req.user.id);
 
-    if (HasFailed(user)) {
-      this.logger.warn(user.getReason());
+    if (HasFailed(backenduser)) {
+      this.logger.warn(backenduser.getReason());
       throw new InternalServerErrorException('Could not get user');
     }
+
+    const user = EUserBackend2EUser(backenduser);
 
     const token = await this.authService.createToken(user);
     if (HasFailed(token)) {
@@ -82,11 +87,12 @@ export class UserController {
       throw new InternalServerErrorException('Could not get new token');
     }
 
-    return { user: EUserBackend2EUser(user), token };
+    return { user, token };
   }
 
   // You can always check your permissions
   @Get('me/permissions')
+  @Returns(UserMePermissionsResponse)
   @NoPermissions()
   async refresh(
     @Request() req: AuthFasityRequest,

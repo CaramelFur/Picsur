@@ -6,13 +6,13 @@ import {
   PrefValueTypeStrings
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/syspreferences.dto';
+import { ESysPreferenceSchema } from 'picsur-shared/dist/entities/syspreference.entity';
 import {
   AsyncFailable,
   Fail,
   Failable,
   HasFailed
 } from 'picsur-shared/dist/types';
-import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { Repository } from 'typeorm';
 import {
   SysPreferenceList,
@@ -82,14 +82,14 @@ export class SysPreferenceService {
     }
 
     // Validate
-    const errors = await strictValidate(foundSysPreference);
-    if (errors.length > 0) {
-      this.logger.warn(errors);
+    const result = ESysPreferenceSchema.safeParse(foundSysPreference);
+    if (!result.success) {
+      this.logger.warn(result.error);
       return Fail('Invalid preference');
     }
 
     // Return
-    return this.retrieveConvertedValue(foundSysPreference);
+    return this.retrieveConvertedValue(result.data);
   }
 
   public async getStringPreference(key: string): AsyncFailable<string> {
@@ -182,13 +182,13 @@ export class SysPreferenceService {
     verifySysPreference.value = validatedValue;
 
     // It should already be valid, but these two validators might go out of sync
-    const errors = await strictValidate(verifySysPreference);
-    if (errors.length > 0) {
-      this.logger.warn(errors);
+    const result = ESysPreferenceSchema.safeParse(verifySysPreference);
+    if (!result.success) {
+      this.logger.warn(result.error);
       return Fail('Invalid preference');
     }
 
-    return verifySysPreference;
+    return result.data;
   }
 
   private validatePrefKey(key: string): Failable<SysPreference> {

@@ -1,4 +1,3 @@
-import { ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -6,12 +5,12 @@ import {
 } from '@nestjs/platform-fastify';
 import fastifyHelmet from 'fastify-helmet';
 import * as multipart from 'fastify-multipart';
-import { ValidateOptions } from 'picsur-shared/dist/util/validate';
 import { AppModule } from './app.module';
 import { UsersService } from './collections/userdb/userdb.service';
 import { HostConfigService } from './config/early/host.config.service';
 import { MainExceptionFilter } from './layers/httpexception/httpexception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
+import { ZodValidationPipe } from './layers/validate/zod-validator.pipe';
 import { PicsurLoggerService } from './logger/logger.service';
 import { MainAuthGuard } from './managers/auth/guards/main.guard';
 import { HelmetOptions } from './security';
@@ -31,14 +30,11 @@ async function bootstrap() {
       bufferLogs: true,
     },
   );
-  // app.enableCors({
-  //   origin: 'self'
-  // });
 
   // Configure nest app
   app.useGlobalFilters(new MainExceptionFilter());
-  app.useGlobalInterceptors(new SuccessInterceptor());
-  app.useGlobalPipes(new ValidationPipe(ValidateOptions));
+  app.useGlobalInterceptors(new SuccessInterceptor(app.get(Reflector)));
+  app.useGlobalPipes(new ZodValidationPipe());
   app.useGlobalGuards(
     new MainAuthGuard(app.get(Reflector), app.get(UsersService)),
   );

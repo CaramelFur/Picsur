@@ -1,36 +1,28 @@
-import {
-  IsBoolean, IsInt,
-  IsNotEmpty,
-  IsString,
-  Max,
-  Min
-} from 'class-validator';
+import z from 'zod';
 
-class BaseApiResponse<T extends Object, W extends boolean> {
-  @IsBoolean()
-  success: W;
+const ApiResponseBase = z.object({
+  statusCode: z.number().min(0).max(600),
+  timestamp: z.string(),
+});
 
-  @IsInt()
-  @Min(0)
-  @Max(1000)
-  statusCode: number;
+const ApiSuccessResponse = <T extends z.AnyZodObject>(data: T) =>
+  ApiResponseBase.merge(
+    z.object({
+      success: z.literal(true),
+      data,
+    }),
+  );
 
-  @IsString()
-  timestamp: string;
+const ApiErrorResponse = ApiResponseBase.merge(
+  z.object({
+    success: z.literal(false),
+    data: z.object({
+      message: z.string(),
+    }),
+  }),
+);
 
-  @IsNotEmpty()
-  data: T;
-}
+export const ApiResponseSchema = <T extends z.AnyZodObject>(data: T) =>
+  ApiErrorResponse.or(ApiSuccessResponse(data));
 
-export class ApiSuccessResponse<T extends Object> extends BaseApiResponse<
-  T,
-  true
-> {}
-
-export class ApiErrorData {
-  @IsString()
-  message: string;
-}
-export class ApiErrorResponse extends BaseApiResponse<ApiErrorData, false> {}
-
-export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
+export type ApiErrorResponse = z.infer<typeof ApiErrorResponse>;

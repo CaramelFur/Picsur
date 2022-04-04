@@ -1,71 +1,60 @@
-import { IsArray, IsOptional } from 'class-validator';
-import { EUser, SimpleUser } from '../../entities/user.entity';
-import { Newable } from '../../types';
-import { IsEntityID } from '../../validators/entity-id.validator';
-import { IsNested } from '../../validators/nested.validator';
+import { z } from 'zod';
+import {
+  EUserSchema, SimpleUserSchema
+} from '../../entities/user.entity';
+import { createZodDto } from '../../util/create-zod-dto';
 import { IsPosInt } from '../../validators/positive-int.validator';
 import { IsStringList } from '../../validators/string-list.validator';
-import { EntityIDObject } from '../idobject.dto';
+import { EntityIDObjectSchema } from '../idobject.dto';
 
 // UserList
-export class UserListRequest {
-  @IsPosInt()
-  count: number;
+export const UserListRequestSchema = z.object({
+  count: IsPosInt(),
+  page: IsPosInt(),
+});
+export class UserListRequest extends createZodDto(UserListRequestSchema) {}
 
-  @IsPosInt()
-  page: number;
-}
-
-export class UserListResponse {
-  @IsArray()
-  @IsNested(EUser)
-  users: EUser[];
-
-  @IsPosInt()
-  count: number;
-
-  @IsPosInt()
-  page: number;
-}
+export const UserListResponseSchema = z.object({
+  users: z.array(EUserSchema),
+  count: IsPosInt(),
+  page: IsPosInt(),
+});
+export class UserListResponse extends createZodDto(UserListResponseSchema) {}
 
 // UserCreate
-export class UserCreateRequest extends SimpleUser {}
-export class UserCreateResponse extends EUser {}
+export const UserCreateRequestSchema = SimpleUserSchema;
+export class UserCreateRequest extends createZodDto(UserCreateRequestSchema) {}
+
+export const UserCreateResponseSchema = EUserSchema;
+export class UserCreateResponse extends createZodDto(UserCreateResponseSchema) {}
 
 // UserDelete
-export class UserDeleteRequest extends EntityIDObject {}
-export class UserDeleteResponse extends EUser {}
+export const UserDeleteRequestSchema = EntityIDObjectSchema;
+export class UserDeleteRequest extends createZodDto(UserDeleteRequestSchema) {}
+
+export const UserDeleteResponseSchema = EUserSchema;
+export class UserDeleteResponse extends createZodDto(UserDeleteResponseSchema) {}
 
 // UserInfo
-export class UserInfoRequest extends EntityIDObject {}
-export class UserInfoResponse extends EUser {}
+export const UserInfoRequestSchema = EntityIDObjectSchema;
+export class UserInfoRequest extends createZodDto(UserInfoRequestSchema) {}
+
+export const UserInfoResponseSchema = EUserSchema;
+export class UserInfoResponse extends createZodDto(UserInfoResponseSchema) {}
 
 // UserUpdate
-export class UserUpdateRequest extends (SimpleUser as Newable<
-  Partial<SimpleUser>
->) {
-  @IsEntityID()
-  id: string;
+export const UserUpdateRequestSchema = EntityIDObjectSchema.merge(
+  SimpleUserSchema.partial(),
+);
+export class UserUpdateRequest extends createZodDto(UserUpdateRequestSchema) {}
 
-  @IsOptional()
-  override username?: string;
-
-  @IsOptional()
-  override password?: string;
-
-  @IsOptional()
-  override roles?: string[];
-}
-export class UserUpdateResponse extends EUser {}
+export const UserUpdateResponseSchema = EUserSchema;
+export class UserUpdateResponse extends createZodDto(UserUpdateResponseSchema) {}
 
 // GetSpecialUsers
-export class GetSpecialUsersResponse {
-  @IsStringList()
-  UndeletableUsersList: string[];
-
-  @IsStringList()
-  ImmutableUsersList: string[];
-
-  @IsStringList()
-  LockedLoginUsersList: string[];
-}
+export const GetSpecialUsersResponseSchema = z.object({
+  UndeletableUsersList: IsStringList(),
+  ImmutableUsersList: IsStringList(),
+  LockedLoginUsersList: IsStringList(),
+});
+export class GetSpecialUsersResponse extends createZodDto(GetSpecialUsersResponseSchema) {}

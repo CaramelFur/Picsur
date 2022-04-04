@@ -1,10 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { instanceToPlain, plainToClass } from 'class-transformer';
-import { JwtDataDto } from 'picsur-shared/dist/dto/jwt.dto';
+import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
-import { strictValidate } from 'picsur-shared/dist/util/validate';
-import { EUserBackend } from '../../models/entities/user.entity';
 
 @Injectable()
 export class AuthManagerService {
@@ -12,20 +10,20 @@ export class AuthManagerService {
 
   constructor(private jwtService: JwtService) {}
 
-  async createToken(user: EUserBackend): AsyncFailable<string> {
-    const jwtData: JwtDataDto = plainToClass(JwtDataDto, {
+  async createToken(user: EUser): AsyncFailable<string> {
+    const jwtData = {
       user,
-    });
+    };
 
     // Validate to be sure, this makes client experience better
     // in case of any failures
-    const errors = await strictValidate(jwtData);
-    if (errors.length > 0) {
-      return Fail('Invalid JWT: ' + errors);
+    const result = JwtDataSchema.safeParse(jwtData);
+    if (!result.success) {
+      return Fail('Invalid JWT: ' + result.error);
     }
 
     try {
-      return await this.jwtService.signAsync(instanceToPlain(jwtData));
+      return await this.jwtService.signAsync(result.data);
     } catch (e) {
       return Fail("Couldn't create JWT: " + e);
     }

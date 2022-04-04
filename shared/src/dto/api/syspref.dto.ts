@@ -1,31 +1,29 @@
-import {
-  IsArray
-} from 'class-validator';
-import { IsNested } from '../../validators/nested.validator';
+import { z } from 'zod';
+import { createZodDto } from '../../util/create-zod-dto';
 import { IsPosInt } from '../../validators/positive-int.validator';
 import { IsPrefValue } from '../../validators/pref-value.validator';
-import { DecodedSysPref, PrefValueType } from '../preferences.dto';
+import { DecodedSysPrefSchema } from '../preferences.dto';
 
 
 // Get Syspreference
 // Request is done via url parameters
-export class GetSyspreferenceResponse extends DecodedSysPref {}
+export const GetSysPreferenceResponseSchema = DecodedSysPrefSchema;
+export class GetSysPreferenceResponse extends createZodDto(GetSysPreferenceResponseSchema) {}
 
 // Get syspreferences
-export class MultipleSysPreferencesResponse {
-  @IsArray()
-  @IsNested(DecodedSysPref)
-  preferences: DecodedSysPref[];
-
-  @IsPosInt()
-  total: number;
-}
+export const MultipleSysPreferencesResponseSchema = z.object({
+  preferences: z.array(DecodedSysPrefSchema),
+  total: IsPosInt(),
+});
+export class MultipleSysPreferencesResponse extends createZodDto(MultipleSysPreferencesResponseSchema) {}
 
 // Update Syspreference
-export class UpdateSysPreferenceRequest {
-  @IsPrefValue()
-  value: PrefValueType;
-}
-export class UpdateSysPreferenceResponse extends DecodedSysPref {}
+export const UpdateSysPreferenceRequestSchema = z.object({
+  value: IsPrefValue(),
+});
+export class UpdateSysPreferenceRequest extends createZodDto(UpdateSysPreferenceRequestSchema) {}
+
+export const UpdateSysPreferenceResponseSchema = DecodedSysPrefSchema;
+export class UpdateSysPreferenceResponse extends createZodDto(UpdateSysPreferenceResponseSchema) {}
 
 

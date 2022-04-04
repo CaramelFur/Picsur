@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { plainToClass } from 'class-transformer';
+import { ERoleSchema } from 'picsur-shared/dist/entities/role.entity';
 import {
   AsyncFailable,
   Fail,
@@ -8,7 +8,6 @@ import {
   HasSuccess
 } from 'picsur-shared/dist/types';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
-import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { In, Repository } from 'typeorm';
 import { Permissions } from '../../models/dto/permissions.dto';
 import {
@@ -171,13 +170,13 @@ export class RolesService {
     if (typeof role === 'string') {
       return await this.findOne(role);
     } else {
-      role = plainToClass(ERoleBackend, role);
-      const errors = await strictValidate(role);
-      if (errors.length > 0) {
-        this.logger.warn(errors);
+      const result = ERoleSchema.safeParse(role);
+      if (!result.success) {
+        this.logger.warn(result.error);
         return Fail('Invalid role');
       }
-      return role;
+      // This is safe
+      return result.data as ERoleBackend;
     }
   }
 }

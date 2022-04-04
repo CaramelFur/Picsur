@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ClassConstructor, plainToClass } from 'class-transformer';
-import {
-  ApiResponse,
-  ApiSuccessResponse
-} from 'picsur-shared/dist/dto/api/api.dto';
+import { ApiResponseSchema } from 'picsur-shared/dist/dto/api/api.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
-import { strictValidate } from 'picsur-shared/dist/util/validate';
+import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { Subject } from 'rxjs';
 import { ApiError } from 'src/app/models/dto/api-error.dto';
+import { z } from 'zod';
 import { MultiPartRequest } from '../../models/dto/multi-part-request.dto';
 import { Logger } from '../logger/logger.service';
 import { KeyService } from '../storage/key.service';
@@ -30,72 +27,64 @@ export class ApiService {
 
   constructor(private keyService: KeyService) {}
 
-  public async get<T extends Object>(
-    type: ClassConstructor<T>,
+  public async get<T extends z.AnyZodObject>(
+    type: ZodDtoStatic<T>,
     url: string
-  ): AsyncFailable<T> {
+  ): AsyncFailable<z.infer<T>> {
     return this.fetchSafeJson(type, url, { method: 'GET' });
   }
 
-  public async post<T extends Object, W extends Object>(
-    sendType: ClassConstructor<T>,
-    receiveType: ClassConstructor<W>,
+  public async post<T extends z.AnyZodObject, W extends z.AnyZodObject>(
+    sendType: ZodDtoStatic<T>,
+    receiveType: ZodDtoStatic<W>,
     url: string,
-    data: T
-  ): AsyncFailable<W> {
-    const sendClass = plainToClass(sendType, data);
-    const errors = await strictValidate(sendClass);
-    if (errors.length > 0) {
-      this.logger.warn(errors);
+    data: z.infer<T>
+  ): AsyncFailable<z.infer<W>> {
+    const sendSchema = sendType.zodSchema;
+
+    const validateResult = sendSchema.safeParse(data);
+    if (!validateResult.success) {
+      this.logger.warn(validateResult.error);
       return Fail('Something went wrong');
     }
 
     return this.fetchSafeJson(receiveType, url, {
       method: 'POST',
-      body: JSON.stringify(sendClass),
+      body: JSON.stringify(validateResult.data),
     });
   }
 
-  public async postForm<T extends Object>(
-    receiveType: ClassConstructor<T>,
+  public async postForm<T extends z.AnyZodObject>(
+    receiveType: ZodDtoStatic<T>,
     url: string,
     data: MultiPartRequest
-  ): AsyncFailable<T> {
+  ): AsyncFailable<z.infer<T>> {
     return this.fetchSafeJson(receiveType, url, {
       method: 'POST',
       body: data.createFormData(),
     });
   }
 
-  private async fetchSafeJson<T extends Object>(
-    type: ClassConstructor<T>,
+  private async fetchSafeJson<T extends z.AnyZodObject>(
+    type: ZodDtoStatic<T>,
     url: RequestInfo,
     options: RequestInit
-  ): AsyncFailable<T> {
-    let result = await this.fetchJsonAs<ApiResponse<T>>(url, options);
+  ): AsyncFailable<z.infer<T>> {
+    const resultSchema = ApiResponseSchema(type.zodSchema as z.AnyZodObject);
+    type resultType = z.infer<typeof resultSchema>;
+
+    let result = await this.fetchJsonAs<resultType>(url, options);
     if (HasFailed(result)) return result;
 
-    if (result.success === false) return Fail(result.data.message);
-
-    const resultClass = plainToClass<
-      ApiSuccessResponse<T>,
-      ApiSuccessResponse<T>
-    >(ApiSuccessResponse, result);
-
-    const resultErrors = await strictValidate(resultClass);
-    if (resultErrors.length > 0) {
-      this.logger.warn('result', resultErrors);
+    const validateResult = resultSchema.safeParse(result);
+    if (!validateResult.success) {
+      this.logger.warn('result', validateResult.error);
       return Fail('Something went wrong');
     }
 
-    const dataClass = plainToClass(type, result.data);
-    const dataErrors = await strictValidate(dataClass);
-    if (dataErrors.length > 0) {
-      this.logger.warn('data', dataErrors);
-      return Fail('Something went wrong');
-    }
+    if (validateResult.data.success === false) return Fail(result.data.message);
 
-    return result.data;
+    return validateResult.data.data;
   }
 
   private async fetchJsonAs<T>(

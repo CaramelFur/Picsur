@@ -1,47 +1,40 @@
-import {
-  IsJWT
-} from 'class-validator';
-import { EUser } from '../../entities/user.entity';
-import { IsNested } from '../../validators/nested.validator';
+import { z } from 'zod';
+import { EUserSchema } from '../../entities/user.entity';
+import { createZodDto } from '../../util/create-zod-dto';
 import { IsStringList } from '../../validators/string-list.validator';
 import { IsPlainTextPwd, IsUsername } from '../../validators/user.validators';
 
 // Api
+const UserPassSchema = z.object({
+  username: IsUsername(),
+  password: IsPlainTextPwd(),
+});
 
 // UserLogin
-export class UserLoginRequest {
-  @IsUsername()
-  username: string;
+export const UserLoginRequestSchema = UserPassSchema;
+export class UserLoginRequest extends createZodDto(UserLoginRequestSchema) {}
 
-  @IsPlainTextPwd()
-  password: string;
-}
-export class UserLoginResponse {
-  @IsJWT()
-  jwt_token: string;
-}
+export const UserLoginResponseSchema = z.object({
+  jwt_token: z.string(),
+});
+export class UserLoginResponse extends createZodDto(UserLoginResponseSchema) {}
 
 // UserRegister
-export class UserRegisterRequest {
-  @IsUsername()
-  username: string;
+export const UserRegisterRequestSchema = UserPassSchema;
+export class UserRegisterRequest extends createZodDto(UserRegisterRequestSchema) {}
 
-  @IsPlainTextPwd()
-  password: string;
-}
-export class UserRegisterResponse extends EUser {}
+export const UserRegisterResponseSchema = EUserSchema;
+export class UserRegisterResponse extends createZodDto(UserRegisterResponseSchema) {}
 
 // UserMe
-export class UserMeResponse {
-  @IsNested(EUser)
-  user: EUser;
-
-  @IsJWT()
-  token: string;
-}
+export const UserMeResponseSchema = z.object({
+  user: EUserSchema,
+  token: z.string(),
+});
+export class UserMeResponse extends createZodDto(UserMeResponseSchema) {}
 
 // UserMePermissions
-export class UserMePermissionsResponse {
-  @IsStringList()
-  permissions: string[];
-}
+export const UserMePermissionsResponseSchema = z.object({
+  permissions: IsStringList(),
+});
+export class UserMePermissionsResponse extends createZodDto(UserMePermissionsResponseSchema) {}

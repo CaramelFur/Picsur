@@ -1,14 +1,9 @@
-import { IsOptional, IsString } from 'class-validator';
+import { z } from 'zod';
 import { IsEntityID } from '../validators/entity-id.validator';
 
-export class ESysPreference {
-  @IsOptional()
-  @IsEntityID()
-  id?: string;
-
-  @IsString()
-  key: string;
-
-  @IsString()
-  value: string;
-}
+export const ESysPreferenceSchema = z.object({
+  id: IsEntityID().optional(),
+  key: z.string(),
+  value: z.string(),
+});
+export type ESysPreference = z.infer<typeof ESysPreferenceSchema>;

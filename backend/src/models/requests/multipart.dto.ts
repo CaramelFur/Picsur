@@ -1,64 +1,48 @@
-import { BusboyFileStream } from '@fastify/busboy';
 import { HttpException } from '@nestjs/common';
-import { IsDefined, IsNotEmpty, IsString } from 'class-validator';
 import { MultipartFile } from 'fastify-multipart';
+import { z } from 'zod';
 
-export class MultiPartFileDto {
-  @IsString()
-  @IsNotEmpty()
-  fieldname: string;
+export const MultiPartFileDtoSchema = z.object({
+  fieldname: z.string(),
+  encoding: z.string(),
+  filename: z.string(),
+  mimetype: z.string(),
+  toBuffer: z.function(undefined, z.any()),
+  file: z.any(),
+});
+export type MultiPartFileDto = z.infer<typeof MultiPartFileDtoSchema>;
 
-  @IsString()
-  @IsNotEmpty()
-  encoding: string;
-
-  @IsString()
-  @IsNotEmpty()
-  filename: string;
-
-  @IsString()
-  @IsNotEmpty()
-  mimetype: string;
-
-  @IsDefined()
-  toBuffer: () => Promise<Buffer>;
-
-  @IsDefined()
-  file: BusboyFileStream;
-
-  constructor(file: MultipartFile, exceptionOnFail: HttpException) {
-    this.fieldname = file.fieldname;
-    this.encoding = file.encoding;
-    this.filename = file.filename;
-    this.mimetype = file.mimetype;
-    this.toBuffer = async () => {
+export function CreateMultiPartFileDto(
+  file: MultipartFile,
+  exceptionOnFail: HttpException,
+): MultiPartFileDto {
+  return {
+    fieldname: file.fieldname,
+    encoding: file.encoding,
+    filename: file.filename,
+    mimetype: file.mimetype,
+    toBuffer: async () => {
       try {
         return await file.toBuffer();
       } catch (e) {
         throw exceptionOnFail;
       }
-    };
-
-    this.file = file.file;
-  }
+    },
+    file: file.file,
+  };
 }
 
-export class MultiPartFieldDto {
-  @IsString()
-  @IsNotEmpty()
-  fieldname: string;
+export const MultiPartFieldDtoSchema = z.object({
+  fieldname: z.string(),
+  encoding: z.string(),
+  value: z.string(),
+});
+export type MultiPartFieldDto = z.infer<typeof MultiPartFieldDtoSchema>;
 
-  @IsString()
-  @IsNotEmpty()
-  encoding: string;
-
-  @IsString()
-  @IsNotEmpty()
-  value: string;
-
-  constructor(file: MultipartFile) {
-    this.fieldname = file.fieldname;
-    this.encoding = file.encoding;
-    this.value = (file as any).value;
-  }
+export function CreateMultiPartFieldDto(file: MultipartFile): MultiPartFieldDto {
+  return {
+    fieldname: file.fieldname,
+    encoding: file.encoding,
+    value: (file as any).value,
+  };
 }

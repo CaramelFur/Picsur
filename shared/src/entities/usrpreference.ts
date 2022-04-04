@@ -1,18 +1,11 @@
-import { IsOptional, IsString } from 'class-validator';
+import { z } from 'zod';
 import { IsEntityID } from '../validators/entity-id.validator';
 import { IsPosInt } from '../validators/positive-int.validator';
 
-export class EUsrPreference {
-  @IsOptional()
-  @IsEntityID()
-  id?: string;
-
-  @IsString()
-  key: string;
-
-  @IsString()
-  value: string;
-
-  @IsPosInt()
-  userId: number;
-}
+export const EUsrPreferenceSchema = z.object({
+  id: IsEntityID().optional(),
+  key: z.string(),
+  value: z.string(),
+  userId: IsPosInt(),
+})
+export type EUsrPreference = z.infer<typeof EUsrPreferenceSchema>;

@@ -1,18 +1,19 @@
 import {
+  ArgumentMetadata,
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   PipeTransform,
   Scope
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { MultipartFields, MultipartFile } from 'fastify-multipart';
-import { Newable } from 'picsur-shared/dist/types';
-import { strictValidate } from 'picsur-shared/dist/util/validate';
+import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { MultipartConfigService } from '../config/early/multipart.config.service';
 import {
-  MultiPartFieldDto,
-  MultiPartFileDto
+  CreateMultiPartFieldDto,
+  CreateMultiPartFileDto
 } from '../models/requests/multipart.dto';
 
 @Injectable({ scope: Scope.REQUEST })
@@ -21,16 +22,17 @@ export class MultiPartPipe implements PipeTransform {
 
   constructor(private multipartConfigService: MultipartConfigService) {}
 
-  async transform<T extends Object>({
-    req,
-    data,
-  }: {
-    req: FastifyRequest;
-    data: Newable<T>;
-  }) {
-    // Data should be a validatable class constructor
-    const dtoClass = new data();
+  async transform<T extends Object>(
+    req: FastifyRequest,
+    metadata: ArgumentMetadata,
+  ) {
+    let zodSchema = (metadata?.metatype as ZodDtoStatic)?.zodSchema;
+    if (!zodSchema) {
+      this.logger.warn('Invalid scheme on multipart body');
+      throw new InternalServerErrorException('Invalid scheme on backend');
+    }
 
+    let multipartData = {};
     if (!req.isMultipart()) throw new BadRequestException('Invalid file');
 
     // Fetch all fields from the request
@@ -56,11 +58,11 @@ export class MultiPartPipe implements PipeTransform {
       // Use the value property to differentiate between a field and a file
       // And then put the value into the correct property on the validatable class
       if ((fields[key] as any).value) {
-        (dtoClass as any)[key] = new MultiPartFieldDto(
+        (multipartData as any)[key] = CreateMultiPartFieldDto(
           fields[key] as MultipartFile,
         );
       } else {
-        (dtoClass as any)[key] = new MultiPartFileDto(
+        (multipartData as any)[key] = CreateMultiPartFileDto(
           fields[key] as MultipartFile,
           new BadRequestException('Invalid file'),
         );
@@ -68,12 +70,12 @@ export class MultiPartPipe implements PipeTransform {
     }
 
     // Now validate the class we made, if any properties were invalid, it will error here
-    const errors = await strictValidate(dtoClass);
-    if (errors.length > 0) {
-      this.logger.warn(errors);
+    const result = zodSchema.safeParse(multipartData);
+    if (!result.success) {
+      this.logger.warn(result.error);
       throw new BadRequestException('Invalid file');
     }
 
-    return dtoClass;
+    return result.data;
   }
 }

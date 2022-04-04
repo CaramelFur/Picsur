@@ -1,19 +1,11 @@
-import { IsHash, IsOptional, IsString } from 'class-validator';
+import { z } from 'zod';
+import { SHA256 } from '../util/common-regex';
 import { IsEntityID } from '../validators/entity-id.validator';
-import { IsNotDefined } from '../validators/not-defined.validator';
 
-export class EImage {
-  @IsOptional()
-  @IsEntityID()
-  id?: string;
-
-  @IsHash('sha256')
-  hash: string;
-
-  // Because typescript does not support exact types, we have to do this stupidness
-  @IsNotDefined()
-  data: undefined;
-
-  @IsString()
-  mime: string;
-}
+export const EImageSchema = z.object({
+  id: IsEntityID().optional(),
+  hash: z.string().regex(SHA256),
+  data: z.undefined(),
+  mime: z.string(),
+});
+export type EImage = z.infer<typeof EImageSchema>;

@@ -1,53 +1,59 @@
-import { IsArray } from 'class-validator';
-import { ERole, SimpleRole } from '../../entities/role.entity';
-import { IsNested } from '../../validators/nested.validator';
+import { z } from 'zod';
+import {
+  ERoleSchema, SimpleRoleSchema
+} from '../../entities/role.entity';
+import { createZodDto } from '../../util/create-zod-dto';
 import { IsPosInt } from '../../validators/positive-int.validator';
 import { IsRoleName } from '../../validators/role.validators';
 import { IsStringList } from '../../validators/string-list.validator';
 
 // RoleInfo
-export class RoleInfoRequest {
-  @IsRoleName()
-  name: string;
-}
-export class RoleInfoResponse extends ERole {}
+export const RoleInfoRequestSchema = z.object({
+  name: IsRoleName(),
+});
+export class RoleInfoRequest extends createZodDto(RoleInfoRequestSchema) {}
+
+export const RoleInfoResponseSchema = ERoleSchema;
+export class RoleInfoResponse extends createZodDto(RoleInfoResponseSchema) {}
 
 // RoleList
-export class RoleListResponse {
-  @IsArray()
-  @IsNested(ERole)
-  roles: ERole[];
-
-  @IsPosInt()
-  total: number;
-}
+export const RoleListResponseSchema = z.object({
+  roles: z.array(ERoleSchema),
+  total: IsPosInt(),
+});
+export class RoleListResponse extends createZodDto(RoleListResponseSchema) {}
 
 // RoleUpdate
-export class RoleUpdateRequest extends SimpleRole {}
-export class RoleUpdateResponse extends ERole {}
+export const RoleUpdateRequestSchema = SimpleRoleSchema.partial({
+  permissions: true,
+});
+export class RoleUpdateRequest extends createZodDto(RoleUpdateRequestSchema) {}
+
+export const RoleUpdateResponseSchema = ERoleSchema;
+export class RoleUpdateResponse extends createZodDto(RoleUpdateResponseSchema) {}
 
 // RoleCreate
-export class RoleCreateRequest extends SimpleRole {}
-export class RoleCreateResponse extends ERole {}
+export const RoleCreateRequestSchema = SimpleRoleSchema;
+export class RoleCreateRequest extends createZodDto(RoleCreateRequestSchema) {}
+
+export const RoleCreateResponseSchema = ERoleSchema;
+export class RoleCreateResponse extends createZodDto(RoleCreateResponseSchema) {}
 
 // RoleDelete
-export class RoleDeleteRequest {
-  @IsRoleName()
-  name: string;
-}
-export class RoleDeleteResponse extends ERole {}
+export const RoleDeleteRequestSchema = z.object({
+  name: IsRoleName(),
+});
+export class RoleDeleteRequest extends createZodDto(RoleDeleteRequestSchema) {}
+
+export const RoleDeleteResponseSchema = ERoleSchema;
+export class RoleDeleteResponse extends createZodDto(RoleDeleteResponseSchema) {}
 
 // SpecialRoles
-export class SpecialRolesResponse {
-  @IsStringList()
-  SoulBoundRoles: string[];
 
-  @IsStringList()
-  ImmutableRoles: string[];
-
-  @IsStringList()
-  UndeletableRoles: string[];
-
-  @IsStringList()
-  DefaultRoles: string[];
-}
+export const SpecialRolesResponseSchema = z.object({
+  SoulBoundRoles: IsStringList(),
+  ImmutableRoles: IsStringList(),
+  UndeletableRoles: IsStringList(),
+  DefaultRoles: IsStringList(),
+});
+export class SpecialRolesResponse extends createZodDto(SpecialRolesResponseSchema) {}

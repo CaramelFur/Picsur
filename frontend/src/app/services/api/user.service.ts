@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { plainToClass } from 'class-transformer';
 import jwt_decode from 'jwt-decode';
 import {
   UserLoginRequest,
@@ -8,10 +7,9 @@ import {
   UserRegisterRequest,
   UserRegisterResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
-import { JwtDataDto } from 'picsur-shared/dist/dto/jwt.dto';
+import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
-import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '../logger/logger.service';
 import { KeyService } from '../storage/key.service';
@@ -122,14 +120,13 @@ export class UserService {
       return Fail('Invalid token');
     }
 
-    const jwtData = plainToClass(JwtDataDto, decoded);
-    const errors = await strictValidate(jwtData);
-    if (errors.length > 0) {
-      this.logger.warn(errors);
+    const result = JwtDataSchema.safeParse(decoded);
+    if (!result.success) {
+      this.logger.warn(result.error);
       return Fail('Invalid token data');
     }
 
-    return jwtData.user;
+    return result.data.user;
   }
 
   // This actually fetches up to date information from the server

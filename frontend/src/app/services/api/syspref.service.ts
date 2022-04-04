@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import {
-  GetSyspreferenceResponse,
+  GetSysPreferenceResponse,
   MultipleSysPreferencesResponse,
   UpdateSysPreferenceRequest,
   UpdateSysPreferenceResponse
@@ -73,12 +73,12 @@ export class SysprefService {
 
   public async getPreference(
     key: string
-  ): AsyncFailable<GetSyspreferenceResponse> {
+  ): AsyncFailable<GetSysPreferenceResponse> {
     if (!this.hasPermission)
       return Fail('You do not have permission to edit system preferences');
 
     const response = await this.api.get(
-      GetSyspreferenceResponse,
+      GetSysPreferenceResponse,
       `/api/pref/sys/${key}`
     );
 

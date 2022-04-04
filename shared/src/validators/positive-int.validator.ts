@@ -1,4 +1,3 @@
-import { IsInt, Min } from 'class-validator';
-import { CombinePDecorators } from '../util/decorator';
+import { z } from 'zod';
 
-export const IsPosInt = CombinePDecorators(IsInt(), Min(0));
+export const IsPosInt = () => z.number().int().nonnegative();

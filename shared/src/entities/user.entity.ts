@@ -1,32 +1,19 @@
-import { IsOptional } from 'class-validator';
+import { z } from 'zod';
 import { IsEntityID } from '../validators/entity-id.validator';
-import { IsNotDefined } from '../validators/not-defined.validator';
 import { IsStringList } from '../validators/string-list.validator';
 import { IsPlainTextPwd, IsUsername } from '../validators/user.validators';
 
-export class SimpleUser {
-  @IsUsername()
-  username: string;
+export const SimpleUserSchema = z.object({
+  username: IsUsername(),
+  password: IsPlainTextPwd(),
+  roles: IsStringList(),
+});
+export type SimpleUser = z.infer<typeof SimpleUserSchema>;
 
-  @IsPlainTextPwd()
-  password: string;
-
-  @IsStringList()
-  roles: string[];
-}
-
-export class EUser {
-  @IsOptional()
-  @IsEntityID()
-  id?: string;
-
-  @IsUsername()
-  username: string;
-
-  @IsStringList()
-  roles: string[];
-
-  // Because typescript does not support exact types, we have to do this stupidness
-  @IsNotDefined()
-  hashedPassword: undefined;
-}
+export const EUserSchema = z.object({
+  id: IsEntityID().optional(),
+  username: IsUsername(),
+  roles: IsStringList(),
+  hashedPassword: z.undefined(),
+});
+export type EUser = z.infer<typeof EUserSchema>;

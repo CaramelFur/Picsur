@@ -1,23 +1,27 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
-import { EImage } from 'picsur-shared/dist/entities/image.entity';
+import { EImageSchema } from 'picsur-shared/dist/entities/image.entity';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { z } from 'zod';
+
+const OverriddenEImageSchema = EImageSchema.omit({ data: true }).merge(
+  z.object({
+    data: z.any(),
+  }),
+);
+type OverriddenEImage = z.infer<typeof OverriddenEImageSchema>;
 
 @Entity()
-export class EImageBackend extends EImage {
+export class EImageBackend implements OverriddenEImage {
   @PrimaryGeneratedColumn('uuid')
-  override id?: string;
+  id?: string;
 
   @Index()
   @Column({ unique: true, nullable: false })
-  override hash: string;
+  hash: string;
 
   @Column({ nullable: false })
-  override mime: string;
+  mime: string;
 
   // Binary data
   @Column({ type: 'bytea', nullable: false, select: false })
-  @IsOptional()
-  @IsNotEmpty()
-  // @ts-ignore
-  override data?: Buffer;
+  data?: Buffer;
 }

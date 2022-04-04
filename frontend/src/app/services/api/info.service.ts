@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { plainToClass } from 'class-transformer';
-import { isSemVer } from 'class-validator';
 import { InfoResponse } from 'picsur-shared/dist/dto/api/info.dto';
 import {
   AsyncFailable,
   Fail, HasFailed
 } from 'picsur-shared/dist/types';
+import { SemVer } from 'picsur-shared/dist/util/common-regex';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UtilService } from 'src/app/util/util.service';
@@ -34,10 +33,8 @@ export class InfoService {
     const response = await this.api.get(InfoResponse, '/api/info');
     if (HasFailed(response)) return response;
 
-    const info = plainToClass(ServerInfo, response);
-
-    this.infoSubject.next(info);
-    return info;
+    this.infoSubject.next(response);
+    return response;
   }
 
   public getFrontendVersion(): string {
@@ -53,7 +50,7 @@ export class InfoService {
     const serverVersion = info.version;
     const clientVersion = this.getFrontendVersion();
 
-    if (!isSemVer(serverVersion) || !isSemVer(clientVersion)) {
+    if (!SemVer.test(serverVersion) || !SemVer.test(clientVersion)) {
       return Fail(`Not a valid semver: ${serverVersion} or ${clientVersion}`);
     }
 

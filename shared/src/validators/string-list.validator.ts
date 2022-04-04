@@ -1,9 +1,3 @@
-import {
-  IsArray, IsString
-} from 'class-validator';
-import { CombinePDecorators } from '../util/decorator';
+import { z } from 'zod';
 
-export const IsStringList = CombinePDecorators(
-  IsArray(),
-  IsString({ each: true }),
-);
+export const IsStringList = () => z.array(z.string());

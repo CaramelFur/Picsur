@@ -22,6 +22,7 @@ import { HasFailed } from 'picsur-shared/dist/types';
 import { RolesService } from '../../../collections/roledb/roledb.service';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
+import { Returns } from '../../../decorators/returns.decorator';
 import { Permission } from '../../../models/dto/permissions.dto';
 import {
   DefaultRolesList,
@@ -42,6 +43,7 @@ export class RolesController {
   ) {}
 
   @Get('list')
+  @Returns(RoleListResponse)
   async getRoles(): Promise<RoleListResponse> {
     const roles = await this.rolesService.findAll();
     if (HasFailed(roles)) {
@@ -56,6 +58,7 @@ export class RolesController {
   }
 
   @Post('info')
+  @Returns(RoleInfoResponse)
   async getRole(@Body() body: RoleInfoRequest): Promise<RoleInfoResponse> {
     const role = await this.rolesService.findOne(body.name);
     if (HasFailed(role)) {
@@ -67,6 +70,7 @@ export class RolesController {
   }
 
   @Post('update')
+  @Returns(RoleUpdateResponse)
   async updateRole(
     @Body() body: RoleUpdateRequest,
   ): Promise<RoleUpdateResponse> {
@@ -88,6 +92,7 @@ export class RolesController {
   }
 
   @Post('create')
+  @Returns(RoleCreateResponse)
   async createRole(
     @Body() role: RoleCreateRequest,
   ): Promise<RoleCreateResponse> {
@@ -106,6 +111,7 @@ export class RolesController {
   }
 
   @Post('delete')
+  @Returns(RoleDeleteResponse)
   async deleteRole(
     @Body() role: RoleDeleteRequest,
   ): Promise<RoleDeleteResponse> {
@@ -126,6 +132,7 @@ export class RolesController {
   }
 
   @Get('special')
+  @Returns(SpecialRolesResponse)
   async getSpecialRoles(): Promise<SpecialRolesResponse> {
     return {
       SoulBoundRoles: SoulBoundRolesList,

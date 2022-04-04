@@ -1,14 +1,8 @@
-import {
-  Inject,
-  Injectable,
-  Logger
-} from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { plainToClass } from 'class-transformer';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { JwtDataDto } from 'picsur-shared/dist/dto/jwt.dto';
-import { strictValidate } from 'picsur-shared/dist/util/validate';
-import { EUserBackend } from '../../../models/entities/user.entity';
+import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -23,17 +17,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(payload: any): Promise<EUserBackend | false> {
-    const jwt = plainToClass(JwtDataDto, payload);
-
-    // This then validates the data inside the jwt token
-    const errors = await strictValidate(jwt);
-    if (errors.length > 0) {
-      this.logger.warn(errors);
+  async validate(payload: any): Promise<EUser | false> {
+    const result = JwtDataSchema.safeParse(payload);
+    if (!result.success) {
+      this.logger.error('JWT could not be parsed: ' + result.error);
       return false;
     }
 
     // And return the user
-    return jwt.user;
+    return result.data.user;
   }
 }

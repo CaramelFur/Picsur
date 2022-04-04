@@ -6,7 +6,6 @@ import {
   Logger,
   Post
 } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
 import {
   GetSpecialUsersResponse,
   UserCreateRequest,
@@ -23,6 +22,7 @@ import {
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
+import { Returns } from '../../../decorators/returns.decorator';
 import { Permission } from '../../../models/dto/permissions.dto';
 import {
   ImmutableUsersList,
@@ -39,15 +39,16 @@ export class UserManageController {
   constructor(private usersService: UsersService) {}
 
   @Get('list')
+  @Returns(UserListResponse)
   async listUsers(): Promise<UserListResponse> {
-    const body = new UserListRequest();
-    body.count = 20;
-    body.page = 0;
-
-    return this.listUsersPaged(body);
+    return this.listUsersPaged({
+      count: 20,
+      page: 0,
+    });
   }
 
   @Post('list')
+  @Returns(UserListResponse)
   async listUsersPaged(
     @Body() body: UserListRequest,
   ): Promise<UserListResponse> {
@@ -65,6 +66,7 @@ export class UserManageController {
   }
 
   @Post('create')
+  @Returns(UserCreateResponse)
   async register(
     @Body() create: UserCreateRequest,
   ): Promise<UserCreateResponse> {
@@ -82,6 +84,7 @@ export class UserManageController {
   }
 
   @Post('delete')
+  @Returns(UserDeleteResponse)
   async delete(@Body() body: UserDeleteRequest): Promise<UserDeleteResponse> {
     const user = await this.usersService.delete(body.id);
     if (HasFailed(user)) {
@@ -93,6 +96,7 @@ export class UserManageController {
   }
 
   @Post('info')
+  @Returns(UserInfoResponse)
   async getUser(@Body() body: UserInfoRequest): Promise<UserInfoResponse> {
     const user = await this.usersService.findOne(body.id);
     if (HasFailed(user)) {
@@ -104,6 +108,7 @@ export class UserManageController {
   }
 
   @Post('update')
+  @Returns(UserUpdateResponse)
   async setPermissions(
     @Body() body: UserUpdateRequest,
   ): Promise<UserUpdateResponse> {
@@ -133,13 +138,12 @@ export class UserManageController {
   }
 
   @Get('special')
+  @Returns(GetSpecialUsersResponse)
   async getSpecial(): Promise<GetSpecialUsersResponse> {
-    const result: GetSpecialUsersResponse = {
+    return {
       ImmutableUsersList,
       LockedLoginUsersList,
       UndeletableUsersList,
     };
-
-    return plainToClass(GetSpecialUsersResponse, result);
   }
 }

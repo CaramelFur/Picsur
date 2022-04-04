@@ -1,4 +1,3 @@
-import { IsUUID } from 'class-validator';
-import { CombinePDecorators } from '../util/decorator';
+import { z } from 'zod';
 
-export const IsEntityID = CombinePDecorators(IsUUID('4'));
+export const IsEntityID = () => z.string().uuid();

@@ -7,12 +7,10 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { plainToClass } from 'class-transformer';
+import { EUser, EUserSchema } from 'picsur-shared/dist/entities/user.entity';
 import { Fail, Failable, HasFailed } from 'picsur-shared/dist/types';
-import { strictValidate } from 'picsur-shared/dist/util/validate';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import { Permissions } from '../../../models/dto/permissions.dto';
-import { EUserBackend } from '../../../models/entities/user.entity';
 import { isPermissionsArray } from '../../../models/validators/permissions.validator';
 
 // This guard extends both the jwt authenticator and the guest authenticator
@@ -84,16 +82,15 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
     return permissions;
   }
 
-  private async validateUser(user: EUserBackend): Promise<EUserBackend> {
-    const userClass = plainToClass(EUserBackend, user);
-    const errors = await strictValidate(userClass);
-
-    if (errors.length > 0) {
-      this.logger.error(
-        'Invalid user object, where it should always be valid: ' + errors,
+  private async validateUser(user: EUser): Promise<EUser> {
+    const result = EUserSchema.safeParse(user);
+    if (!result.success) {
+      this.logger.warn(
+        `Invalid user object, where it should always be valid: ${result.error}`,
       );
       throw new InternalServerErrorException();
     }
-    return userClass;
+
+    return result.data;
   }
 }

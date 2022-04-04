@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { plainToClass } from 'class-transformer';
 import { SysPreference } from 'picsur-shared/dist/dto/syspreferences.dto';
 import {
   AsyncFailable,
@@ -79,10 +78,7 @@ export class UsersService {
     }
 
     try {
-      // Makes sure we can return the id
-      const cloned = plainToClass(EUserBackend, userToModify);
-      await this.usersRepository.remove(userToModify);
-      return cloned;
+      return await this.usersRepository.remove(userToModify);
     } catch (e: any) {
       return Fail(e?.message);
     }
@@ -158,8 +154,7 @@ export class UsersService {
       return Fail(e?.message);
     }
 
-    // Strips unwanted data
-    return plainToClass(EUserBackend, userToModify);
+    return userToModify;
   }
 
   // Authentication
@@ -176,36 +171,28 @@ export class UsersService {
       return Fail('Wrong username');
     }
 
-    if (!(await bcrypt.compare(password, user.hashedPassword)))
+    if (!(await bcrypt.compare(password, user.hashedPassword ?? '')))
       return Fail('Wrong password');
 
-    return await this.findOne(user.id);
+    return await this.findOne(user.id ?? '');
   }
 
   // Listing
 
-  public async findByUsername<B extends true | undefined = undefined>(
+  public async findByUsername(
     username: string,
     // Also fetch fields that aren't normally sent to the client
     // (e.g. hashed password)
-    getPrivate?: B,
-  ): AsyncFailable<
-    B extends undefined ? EUserBackend : Required<EUserBackend>
-  > {
+    getPrivate: boolean = false,
+  ): AsyncFailable<EUserBackend> {
     try {
       const found = await this.usersRepository.findOne({
         where: { username },
-        ...(getPrivate
-          ? {
-              select: GetCols(this.usersRepository),
-            }
-          : {}),
+        select: getPrivate ? GetCols(this.usersRepository) : undefined,
       });
 
       if (!found) return Fail('User not found');
-      return found as B extends undefined
-        ? EUserBackend
-        : Required<EUserBackend>;
+      return found;
     } catch (e: any) {
       return Fail(e?.message);
     }
