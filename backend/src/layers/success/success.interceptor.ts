@@ -8,6 +8,7 @@ import {
   Optional
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { ApiAnySuccessResponse } from 'picsur-shared/dist/dto/api/api.dto';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { map, Observable } from 'rxjs';
 
@@ -31,7 +32,7 @@ export class SuccessInterceptor<T> implements NestInterceptor {
     this.strict = options?.strict ?? true;
   }
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     return next.handle().pipe(
       map((data) => {
         if (data instanceof Buffer) {
@@ -47,7 +48,7 @@ export class SuccessInterceptor<T> implements NestInterceptor {
     );
   }
 
-  private validate(context: ExecutionContext, data: any): any {
+  private validate(context: ExecutionContext, data: unknown): unknown {
     const schemaStatic = this.reflector.get<ZodDtoStatic>(
       'returns',
       context.getHandler(),
@@ -75,10 +76,10 @@ export class SuccessInterceptor<T> implements NestInterceptor {
     return parseResult.data;
   }
 
-  private createResponse(context: ExecutionContext, data: any): any {
+  private createResponse(context: ExecutionContext, data: unknown): ApiAnySuccessResponse {
     const status = context.switchToHttp().getResponse().statusCode;
     const response = {
-      success: true,
+      success: true as true, // really typescript
       statusCode: status,
       timestamp: new Date().toISOString(),
 

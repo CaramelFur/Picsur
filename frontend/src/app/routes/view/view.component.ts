@@ -19,7 +19,7 @@ export class ViewComponent implements OnInit {
   ) {}
 
   public imageUrl: string = '';
-  public imageLinks: ImageLinks = new ImageLinks();
+  public imageLinks = new ImageLinks();
 
   async ngOnInit() {
     const params = this.route.snapshot.paramMap;

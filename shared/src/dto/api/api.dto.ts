@@ -26,3 +26,12 @@ export const ApiResponseSchema = <T extends z.AnyZodObject>(data: T) =>
   ApiErrorResponse.or(ApiSuccessResponse(data));
 
 export type ApiErrorResponse = z.infer<typeof ApiErrorResponse>;
+
+const ApiAnySuccessResponseSchema = ApiSuccessResponse(z.object({}))
+  .omit({ data: true })
+  .merge(
+    z.object({
+      data: z.any(),
+    }),
+  );
+export type ApiAnySuccessResponse = z.infer<typeof ApiAnySuccessResponseSchema>;
