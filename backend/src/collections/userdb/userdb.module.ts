@@ -5,7 +5,7 @@ import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { AuthConfigService } from '../../config/early/auth.config.service';
 import { EarlyConfigModule } from '../../config/early/earlyconfig.module';
 import { EUserBackend } from '../../models/entities/user.entity';
-import { SysPreferenceModule } from '../preferencesdb/preferencedb.module';
+import { PreferenceModule } from '../preferencesdb/preferencedb.module';
 import { RolesModule } from '../roledb/roledb.module';
 import { UsersService } from './userdb.service';
 
@@ -13,7 +13,7 @@ import { UsersService } from './userdb.service';
   imports: [
     EarlyConfigModule,
     RolesModule,
-    SysPreferenceModule,
+    PreferenceModule,
     TypeOrmModule.forFeature([EUserBackend]),
   ],
   providers: [UsersService],

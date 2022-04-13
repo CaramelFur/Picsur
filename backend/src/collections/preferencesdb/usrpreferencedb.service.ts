@@ -43,7 +43,7 @@ export class UsrPreferenceService {
     try {
       // Upsert here, because we want to create a new record if it does not exist
       await this.usrPreferenceRepository.upsert(usrPreference, {
-        conflictPaths: ['key', 'user'],
+        conflictPaths: ['key', 'userId'],
       });
     } catch (e: any) {
       this.logger.warn(e);

@@ -1,5 +1,5 @@
 import { IsEntityID } from 'picsur-shared/dist/validators/entity-id.validator';
-import { Column, Index, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import z from 'zod';
 
 export const EUsrPreferenceSchema = z.object({
@@ -10,6 +10,7 @@ export const EUsrPreferenceSchema = z.object({
 });
 type EUsrPreference = z.infer<typeof EUsrPreferenceSchema>;
 
+@Entity()
 @Unique(['key', 'userId'])
 export class EUsrPreferenceBackend implements EUsrPreference {
   @PrimaryGeneratedColumn('uuid')

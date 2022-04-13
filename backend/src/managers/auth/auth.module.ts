@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { SysPreferenceModule } from '../../collections/preferencesdb/preferencedb.module';
+import { PreferenceModule } from '../../collections/preferencesdb/preferencedb.module';
 import { UsersModule } from '../../collections/userdb/userdb.module';
 import { JwtConfigService, JwtSecretProvider } from '../../config/late/jwt.config.service';
 import { LateConfigModule } from '../../config/late/lateconfig.module';
@@ -15,7 +15,7 @@ import { GuestService } from './guest.service';
   imports: [
     UsersModule,
     PassportModule,
-    SysPreferenceModule,
+    PreferenceModule,
     LateConfigModule,
     JwtModule.registerAsync({
       useExisting: JwtConfigService,

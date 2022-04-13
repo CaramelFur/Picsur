@@ -4,15 +4,16 @@ import {
   Get,
   InternalServerErrorException,
   Logger,
-  Post,
-  Request
+  Post
 } from '@nestjs/common';
 import {
-  UserLoginResponse, UserMePermissionsResponse,
+  UserLoginResponse,
+  UserMePermissionsResponse,
   UserMeResponse,
   UserRegisterRequest,
   UserRegisterResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
 import {
@@ -20,10 +21,10 @@ import {
   RequiredPermissions,
   UseLocalAuth
 } from '../../../decorators/permissions.decorator';
+import { ReqUser, ReqUserID } from '../../../decorators/request-user.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
 import { AuthManagerService } from '../../../managers/auth/auth.service';
 import { Permission } from '../../../models/dto/permissions.dto';
-import AuthFasityRequest from '../../../models/requests/authrequest.dto';
 import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 
 @Controller('api/user')
@@ -38,8 +39,8 @@ export class UserController {
   @Post('login')
   @Returns(UserLoginResponse)
   @UseLocalAuth(Permission.UserLogin)
-  async login(@Request() req: AuthFasityRequest): Promise<UserLoginResponse> {
-    const jwt_token = await this.authService.createToken(req.user);
+  async login(@ReqUser() user: EUser): Promise<UserLoginResponse> {
+    const jwt_token = await this.authService.createToken(user);
     if (HasFailed(jwt_token)) {
       this.logger.warn(jwt_token.getReason());
       throw new InternalServerErrorException('Could not get new token');
@@ -69,10 +70,8 @@ export class UserController {
   @Get('me')
   @Returns(UserMeResponse)
   @RequiredPermissions(Permission.UserKeepLogin)
-  async me(@Request() req: AuthFasityRequest): Promise<UserMeResponse> {
-    if (!req.user.id) throw new InternalServerErrorException('User is corrupt');
-
-    const backenduser = await this.usersService.findOne(req.user.id);
+  async me(@ReqUserID() userid: string): Promise<UserMeResponse> {
+    const backenduser = await this.usersService.findOne(userid);
 
     if (HasFailed(backenduser)) {
       this.logger.warn(backenduser.getReason());
@@ -95,11 +94,9 @@ export class UserController {
   @Returns(UserMePermissionsResponse)
   @NoPermissions()
   async refresh(
-    @Request() req: AuthFasityRequest,
+    @ReqUserID() userid: string,
   ): Promise<UserMePermissionsResponse> {
-    if (!req.user.id) throw new InternalServerErrorException('User is corrupt');
-
-    const permissions = await this.usersService.getPermissions(req.user.id);
+    const permissions = await this.usersService.getPermissions(userid);
     if (HasFailed(permissions)) {
       this.logger.warn(permissions.getReason());
       throw new InternalServerErrorException('Could not get permissions');
