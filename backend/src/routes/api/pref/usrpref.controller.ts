@@ -8,11 +8,11 @@ import {
   Post
 } from '@nestjs/common';
 import {
-  GetSysPreferenceResponse,
-  MultipleSysPreferencesResponse,
-  UpdateSysPreferenceRequest,
-  UpdateSysPreferenceResponse
-} from 'picsur-shared/dist/dto/api/syspref.dto';
+  GetPreferenceResponse,
+  MultiplePreferencesResponse,
+  UpdatePreferenceRequest,
+  UpdatePreferenceResponse
+} from 'picsur-shared/dist/dto/api/pref.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsrPreferenceService } from '../../../collections/preferencesdb/usrpreferencedb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
@@ -28,8 +28,8 @@ export class UsrPrefController {
   constructor(private prefService: UsrPreferenceService) {}
 
   @Get()
-  @Returns(MultipleSysPreferencesResponse)
-  async getAllSysPrefs(@ReqUserID() userid: string): Promise<MultipleSysPreferencesResponse> {
+  @Returns(MultiplePreferencesResponse)
+  async getAllSysPrefs(@ReqUserID() userid: string): Promise<MultiplePreferencesResponse> {
     const prefs = await this.prefService.getAllPreferences(userid);
     if (HasFailed(prefs)) {
       this.logger.warn(prefs.getReason());
@@ -43,11 +43,11 @@ export class UsrPrefController {
   }
 
   @Get(':key')
-  @Returns(GetSysPreferenceResponse)
+  @Returns(GetPreferenceResponse)
   async getSysPref(
     @Param('key') key: string,
     @ReqUserID() userid: string
-  ): Promise<GetSysPreferenceResponse> {
+  ): Promise<GetPreferenceResponse> {
     const pref = await this.prefService.getPreference(userid, key);
     if (HasFailed(pref)) {
       this.logger.warn(pref.getReason());
@@ -58,12 +58,12 @@ export class UsrPrefController {
   }
 
   @Post(':key')
-  @Returns(UpdateSysPreferenceResponse)
+  @Returns(UpdatePreferenceResponse)
   async setSysPref(
     @Param('key') key: string,
     @ReqUserID() userid: string,
-    @Body() body: UpdateSysPreferenceRequest,
-  ): Promise<UpdateSysPreferenceResponse> {
+    @Body() body: UpdatePreferenceRequest,
+  ): Promise<UpdatePreferenceResponse> {
     const value = body.value;
 
     const pref = await this.prefService.setPreference(userid, key, value);

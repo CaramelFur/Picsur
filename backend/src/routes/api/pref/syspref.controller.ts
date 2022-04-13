@@ -8,11 +8,11 @@ import {
   Post
 } from '@nestjs/common';
 import {
-  GetSysPreferenceResponse,
-  MultipleSysPreferencesResponse,
-  UpdateSysPreferenceRequest,
-  UpdateSysPreferenceResponse
-} from 'picsur-shared/dist/dto/api/syspref.dto';
+  GetPreferenceResponse,
+  MultiplePreferencesResponse,
+  UpdatePreferenceRequest,
+  UpdatePreferenceResponse
+} from 'picsur-shared/dist/dto/api/pref.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/preferencesdb/syspreferencedb.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
@@ -27,8 +27,8 @@ export class SysPrefController {
   constructor(private prefService: SysPreferenceService) {}
 
   @Get()
-  @Returns(MultipleSysPreferencesResponse)
-  async getAllSysPrefs(): Promise<MultipleSysPreferencesResponse> {
+  @Returns(MultiplePreferencesResponse)
+  async getAllSysPrefs(): Promise<MultiplePreferencesResponse> {
     const prefs = await this.prefService.getAllPreferences();
     if (HasFailed(prefs)) {
       this.logger.warn(prefs.getReason());
@@ -42,10 +42,10 @@ export class SysPrefController {
   }
 
   @Get(':key')
-  @Returns(GetSysPreferenceResponse)
+  @Returns(GetPreferenceResponse)
   async getSysPref(
     @Param('key') key: string,
-  ): Promise<GetSysPreferenceResponse> {
+  ): Promise<GetPreferenceResponse> {
     const pref = await this.prefService.getPreference(key);
     if (HasFailed(pref)) {
       this.logger.warn(pref.getReason());
@@ -56,11 +56,11 @@ export class SysPrefController {
   }
 
   @Post(':key')
-  @Returns(UpdateSysPreferenceResponse)
+  @Returns(UpdatePreferenceResponse)
   async setSysPref(
     @Param('key') key: string,
-    @Body() body: UpdateSysPreferenceRequest,
-  ): Promise<UpdateSysPreferenceResponse> {
+    @Body() body: UpdatePreferenceRequest,
+  ): Promise<UpdatePreferenceResponse> {
     const value = body.value;
 
     const pref = await this.prefService.setPreference(key, value);
