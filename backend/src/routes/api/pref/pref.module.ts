@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SysPreferenceModule } from '../../../collections/syspreferencesdb/syspreferencedb.module';
+import { SysPreferenceModule } from '../../../collections/preferencesdb/preferencedb.module';
 import { PrefController } from './pref.controller';
 
 @Module({

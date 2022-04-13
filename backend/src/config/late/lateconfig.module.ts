@@ -1,6 +1,6 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
-import { SysPreferenceModule } from '../../collections/syspreferencesdb/syspreferencedb.module';
-import { SysPreferenceService } from '../../collections/syspreferencesdb/syspreferencedb.service';
+import { SysPreferenceModule } from '../../collections/preferencesdb/preferencedb.module';
+import { SysPreferenceService } from '../../collections/preferencesdb/syspreferencedb.service';
 import { EarlyConfigModule } from '../early/earlyconfig.module';
 import { EarlyJwtConfigService } from '../early/earlyjwt.config.service';
 import { JwtConfigService } from './jwt.config.service';

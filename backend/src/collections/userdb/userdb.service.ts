@@ -22,8 +22,8 @@ import {
 } from '../../models/dto/specialusers.dto';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { GetCols } from '../../models/util/collection';
+import { SysPreferenceService } from '../preferencesdb/syspreferencedb.service';
 import { RolesService } from '../roledb/roledb.service';
-import { SysPreferenceService } from '../syspreferencesdb/syspreferencedb.service';
 
 @Injectable()
 export class UsersService {

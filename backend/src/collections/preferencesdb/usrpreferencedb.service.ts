@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  DecodedSysPref,
+  DecodedUsrPref,
   PrefValueType,
   PrefValueTypeStrings
 } from 'picsur-shared/dist/dto/preferences.dto';
-import { SysPreference } from 'picsur-shared/dist/dto/syspreferences.dto';
-import { ESysPreferenceSchema } from 'picsur-shared/dist/entities/syspreference.entity';
+import { UsrPreference } from 'picsur-shared/dist/dto/usrpreferences.dto';
+import { EUsrPreferenceSchema } from 'picsur-shared/dist/entities/usrpreference';
 import {
   AsyncFailable,
   Fail,
@@ -15,26 +15,26 @@ import {
 } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
-  SysPreferenceList,
-  SysPreferenceValueTypes
-} from '../../models/dto/syspreferences.dto';
-import { ESysPreferenceBackend } from '../../models/entities/syspreference.entity';
-import { PreferenceDefaultsService } from './syspreferencedefaults.service';
+  UsrPreferenceList,
+  UsrPreferenceValueTypes
+} from '../../models/dto/usrpreferences.dto';
+import { EUsrPreferenceBackend } from '../../models/entities/usrpreference.entity';
+import { PreferenceDefaultsService } from './preferencedefaults.service';
 
 @Injectable()
-export class SysPreferenceService {
-  private readonly logger = new Logger('SysPreferenceService');
+export class UsrPreferenceService {
+  private readonly logger = new Logger('UsrPreferenceService');
 
   constructor(
-    @InjectRepository(ESysPreferenceBackend)
-    private sysPreferenceRepository: Repository<ESysPreferenceBackend>,
+    @InjectRepository(EUsrPreferenceBackend)
+    private sysPreferenceRepository: Repository<EUsrPreferenceBackend>,
     private defaultsService: PreferenceDefaultsService,
   ) {}
 
   public async setPreference(
     key: string,
     value: PrefValueType,
-  ): AsyncFailable<DecodedSysPref> {
+  ): AsyncFailable<DecodedUsrPref> {
     // Validate
     let sysPreference = await this.validatePref(key, value);
     if (HasFailed(sysPreference)) return sysPreference;
@@ -55,17 +55,18 @@ export class SysPreferenceService {
       key: sysPreference.key,
       value,
       // key has to be valid here, we validated it
-      type: SysPreferenceValueTypes[key as SysPreference],
+      type: UsrPreferenceValueTypes[key as UsrPreference],
+      user: '',
     };
   }
 
-  public async getPreference(key: string): AsyncFailable<DecodedSysPref> {
+  public async getPreference(key: string): AsyncFailable<DecodedUsrPref> {
     // Validate
     let validatedKey = this.validatePrefKey(key);
     if (HasFailed(validatedKey)) return validatedKey;
 
     // Fetch
-    let foundSysPreference: ESysPreferenceBackend | null;
+    let foundSysPreference: EUsrPreferenceBackend | null;
     try {
       foundSysPreference = await this.sysPreferenceRepository.findOne({
         where: { key: validatedKey },
@@ -82,7 +83,7 @@ export class SysPreferenceService {
     }
 
     // Validate
-    const result = ESysPreferenceSchema.safeParse(foundSysPreference);
+    const result = EUsrPreferenceSchema.safeParse(foundSysPreference);
     if (!result.success) {
       this.logger.warn(result.error);
       return Fail('Invalid preference');
@@ -115,52 +116,55 @@ export class SysPreferenceService {
     return pref.value;
   }
 
-  public async getAllPreferences(): AsyncFailable<DecodedSysPref[]> {
+  public async getAllPreferences(): AsyncFailable<DecodedUsrPref[]> {
     // TODO: We are fetching each value invidually, we should fetch all at once
     let internalSysPrefs = await Promise.all(
-      SysPreferenceList.map((key) => this.getPreference(key)),
+      UsrPreferenceList.map((key) => this.getPreference(key)),
     );
     if (internalSysPrefs.some((pref) => HasFailed(pref))) {
       return Fail('Could not get all preferences');
     }
 
-    return internalSysPrefs as DecodedSysPref[];
+    return internalSysPrefs as DecodedUsrPref[];
   }
 
   // Private
 
   private async saveDefault(
-    key: SysPreference, // Force enum here because we dont validate
-  ): AsyncFailable<DecodedSysPref> {
+    key: UsrPreference, // Force enum here because we dont validate
+  ): AsyncFailable<DecodedUsrPref> {
     return this.setPreference(key, this.defaultsService.sysDefaults[key]());
   }
 
   // This converts the raw string representation of the value to the correct type
   private retrieveConvertedValue(
-    preference: ESysPreferenceBackend,
-  ): Failable<DecodedSysPref> {
+    preference: EUsrPreferenceBackend,
+  ): Failable<DecodedUsrPref> {
     const key = this.validatePrefKey(preference.key);
     if (HasFailed(key)) return key;
 
-    const type = SysPreferenceValueTypes[key];
+    const type = UsrPreferenceValueTypes[key];
     switch (type) {
       case 'string':
         return {
           key: preference.key,
           value: preference.value,
           type: 'string',
+          user: '',
         };
       case 'number':
         return {
           key: preference.key,
           value: parseInt(preference.value, 10),
           type: 'number',
+          user: '',
         };
       case 'boolean':
         return {
           key: preference.key,
           value: preference.value == 'true',
           type: 'boolean',
+          user: '',
         };
     }
 
@@ -170,19 +174,19 @@ export class SysPreferenceService {
   private async validatePref(
     key: string,
     value: PrefValueType,
-  ): AsyncFailable<ESysPreferenceBackend> {
+  ): AsyncFailable<EUsrPreferenceBackend> {
     const validatedKey = this.validatePrefKey(key);
     if (HasFailed(validatedKey)) return validatedKey;
 
     const validatedValue = this.validatePrefValue(validatedKey, value);
     if (HasFailed(validatedValue)) return validatedValue;
 
-    let verifySysPreference = new ESysPreferenceBackend();
+    let verifySysPreference = new EUsrPreferenceBackend();
     verifySysPreference.key = validatedKey;
     verifySysPreference.value = validatedValue;
 
     // It should already be valid, but these two validators might go out of sync
-    const result = ESysPreferenceSchema.safeParse(verifySysPreference);
+    const result = EUsrPreferenceSchema.safeParse(verifySysPreference);
     if (!result.success) {
       this.logger.warn(result.error);
       return Fail('Invalid preference');
@@ -191,18 +195,18 @@ export class SysPreferenceService {
     return result.data;
   }
 
-  private validatePrefKey(key: string): Failable<SysPreference> {
-    if (!SysPreferenceList.includes(key)) return Fail('Invalid preference key');
+  private validatePrefKey(key: string): Failable<UsrPreference> {
+    if (!UsrPreferenceList.includes(key)) return Fail('Invalid preference key');
 
-    return key as SysPreference;
+    return key as UsrPreference;
   }
 
   private validatePrefValue(
     // Key is required, because the type of the value depends on the key
-    key: SysPreference,
+    key: UsrPreference,
     value: PrefValueType,
   ): Failable<string> {
-    const expectedType = SysPreferenceValueTypes[key];
+    const expectedType = UsrPreferenceValueTypes[key];
 
     const type = typeof value;
     if (type != expectedType) {
