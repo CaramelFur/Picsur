@@ -22,19 +22,19 @@ import { PermissionService } from './permission.service';
 @Injectable({
   providedIn: 'root',
 })
-export class SysPrefService {
-  private readonly logger = new Logger('SysPrefService');
+export class UsrPrefService {
+  private readonly logger = new Logger('UsrPrefService');
 
   private hasPermission = false;
 
-  private sysprefObservable = new BehaviorSubject<DecodedPref[]>([]);
+  private usrprefObservable = new BehaviorSubject<DecodedPref[]>([]);
 
   public get snapshot() {
-    return this.sysprefObservable.getValue();
+    return this.usrprefObservable.getValue();
   }
 
   public get live() {
-    return this.sysprefObservable.asObservable();
+    return this.usrprefObservable.asObservable();
   }
 
   constructor(
@@ -50,7 +50,7 @@ export class SysPrefService {
     const result = await this.getPreferences();
     if (HasFailed(result)) {
       this.utilService.showSnackBar(
-        "Couldn't load system preferences",
+        "Couldn't load user preferences",
         SnackBarType.Error
       );
       this.flush();
@@ -59,15 +59,15 @@ export class SysPrefService {
 
   public async getPreferences(): AsyncFailable<DecodedPref[]> {
     if (!this.hasPermission)
-      return Fail('You do not have permission to edit system preferences');
+      return Fail('You do not have permission to edit user preferences');
 
     const response = await this.api.get(
       MultiplePreferencesResponse,
-      '/api/pref/sys'
+      '/api/pref/usr'
     );
 
     return Map(response, (pref) => {
-      this.sysprefObservable.next(pref.preferences);
+      this.usrprefObservable.next(pref.preferences);
       return pref.preferences;
     });
   }
@@ -76,11 +76,11 @@ export class SysPrefService {
     key: string
   ): AsyncFailable<GetPreferenceResponse> {
     if (!this.hasPermission)
-      return Fail('You do not have permission to edit system preferences');
+      return Fail('You do not have permission to edit user preferences');
 
     const response = await this.api.get(
       GetPreferenceResponse,
-      `/api/pref/sys/${key}`
+      `/api/pref/usr/${key}`
     );
 
     if (!HasFailed(response)) this.updatePrefArray(response);
@@ -92,12 +92,12 @@ export class SysPrefService {
     value: PrefValueType
   ): AsyncFailable<UpdatePreferenceResponse> {
     if (!this.hasPermission)
-      return Fail('You do not have permission to edit system preferences');
+      return Fail('You do not have permission to edit user preferences');
 
     const response = await this.api.post(
       UpdatePreferenceRequest,
       UpdatePreferenceResponse,
-      `/api/pref/sys/${key}`,
+      `/api/pref/usr/${key}`,
       { value }
     );
 
@@ -111,26 +111,24 @@ export class SysPrefService {
     const index = prefArray.findIndex((i) => pref.key === i.key);
     if (index === -1) {
       const newArray = [...prefArray, pref];
-      this.sysprefObservable.next(newArray);
+      this.usrprefObservable.next(newArray);
     } else {
       const newArray = [...prefArray];
       newArray[index] = pref;
-      this.sysprefObservable.next(newArray);
+      this.usrprefObservable.next(newArray);
     }
   }
 
   private flush() {
-    this.sysprefObservable.next([]);
+    this.usrprefObservable.next([]);
   }
 
   // We want to flush on logout, because the syspreferences can contain sensitive information
   @AutoUnsubscribe()
   private subscribePermissions() {
     return this.permissionsService.live.subscribe((permissions) => {
-      this.hasPermission = permissions.includes(Permission.SysPrefManage);
-      if (!this.hasPermission) {
-        this.flush();
-      }
+      this.hasPermission = permissions.includes(Permission.Settings);
+      if (!this.hasPermission) this.flush();
     });
   }
 }

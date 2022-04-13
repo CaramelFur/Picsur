@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DecodedSysPref } from 'picsur-shared/dist/dto/preferences.dto';
 import { Observable } from 'rxjs';
-import { SysprefService as SysPrefService } from 'src/app/services/api/syspref.service';
+import { SysPrefService } from 'src/app/services/api/syspref.service';
 
 @Component({
   templateUrl: './settings-syspref.component.html',
