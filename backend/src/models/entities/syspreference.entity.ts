@@ -1,5 +1,13 @@
-import { ESysPreference } from 'picsur-shared/dist/entities/syspreference.entity';
+import { IsEntityID } from 'picsur-shared/dist/validators/entity-id.validator';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import z from 'zod';
+
+export const ESysPreferenceSchema = z.object({
+  id: IsEntityID().optional(),
+  key: z.string(),
+  value: z.string(),
+});
+type ESysPreference = z.infer<typeof ESysPreferenceSchema>;
 
 @Entity()
 export class ESysPreferenceBackend implements ESysPreference {
