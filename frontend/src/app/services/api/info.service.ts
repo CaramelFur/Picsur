@@ -59,13 +59,11 @@ export class InfoService {
 
     if (serverDecoded[0] === '0' || clientDecoded[0] === '0') {
       if (serverVersion !== clientVersion) {
-        console.log('a');
         return false;
       } else {
         return true;
       }
     } else {
-      console.log('b');
       return serverDecoded[0] === clientDecoded[0];
     }
   }

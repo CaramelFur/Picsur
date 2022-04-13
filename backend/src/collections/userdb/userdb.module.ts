@@ -57,7 +57,7 @@ export class UsersModule implements OnModuleInit {
       username,
       password,
       roles,
-      false,
+      true,
     );
     if (HasFailed(newUser)) {
       this.logger.error(

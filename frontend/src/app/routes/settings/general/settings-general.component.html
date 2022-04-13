@@ -1,6 +1,8 @@
 <h1>Settings</h1>
 
-<p *ngFor="let setting of userPref.live | async">
-  <span>{{setting.key}}</span>
-  <span>{{setting.value}}</span>
-</p>
+<ng-container *ngFor="let pref of preferences | async">
+  <pref-option
+    [pref]="pref"
+    [update]="usrPrefService.setPreference.bind(usrPrefService)"
+  ></pref-option>
+</ng-container>

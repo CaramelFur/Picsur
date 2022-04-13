@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { BehaviorSubject, Subject, throttleTime } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { UserManageService } from 'src/app/services/api/usermanage.service';
 import { Logger } from 'src/app/services/logger/logger.service';
+import { Throttle } from 'src/app/util/throttle';
 import { UtilService } from 'src/app/util/util.service';
 
 @Component({
@@ -96,7 +97,7 @@ export class SettingsUsersComponent implements OnInit {
   @AutoUnsubscribe()
   private subscribeToUpdate() {
     return this.updateSubject
-      .pipe(throttleTime(500, undefined, { leading: true, trailing: true }))
+      .pipe(Throttle(500))
       .subscribe(async (pageEvent: PageEvent) => {
         let success = await this.fetchUsers(
           pageEvent.pageSize,

@@ -30,6 +30,7 @@ export class PreferenceDefaultsService {
       if (envSecret) {
         return envSecret;
       } else {
+        console.trace(`what`);
         this.logger.warn(
           'Since no JWT secret was provided, a random one will be generated and saved',
         );

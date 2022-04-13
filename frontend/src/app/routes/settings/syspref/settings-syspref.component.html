@@ -1,5 +1,8 @@
 <h1>System Settings</h1>
 
 <ng-container *ngFor="let pref of preferences | async">
-  <syspref-option [pref]="pref"></syspref-option>
+  <pref-option
+    [pref]="pref"
+    [update]="sysPrefService.setPreference.bind(sysPrefService)"
+  ></pref-option>
 </ng-container>

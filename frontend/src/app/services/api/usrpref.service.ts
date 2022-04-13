@@ -14,6 +14,7 @@ import {
 import { AsyncFailable, Fail, HasFailed, Map } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
+import { Throttle } from 'src/app/util/throttle';
 import { UtilService } from 'src/app/util/util.service';
 import { Logger } from '../logger/logger.service';
 import { ApiService } from './api.service';
@@ -43,10 +44,9 @@ export class UsrPrefService {
     private utilService: UtilService
   ) {
     this.subscribePermissions();
-    this.init().catch(this.logger.error);
   }
 
-  private async init() {
+  private async refresh() {
     const result = await this.getPreferences();
     if (HasFailed(result)) {
       this.utilService.showSnackBar(
@@ -126,9 +126,12 @@ export class UsrPrefService {
   // We want to flush on logout, because the syspreferences can contain sensitive information
   @AutoUnsubscribe()
   private subscribePermissions() {
-    return this.permissionsService.live.subscribe((permissions) => {
-      this.hasPermission = permissions.includes(Permission.Settings);
-      if (!this.hasPermission) this.flush();
-    });
+    return this.permissionsService.live
+      .pipe(Throttle(300))
+      .subscribe((permissions) => {
+        this.hasPermission = permissions.includes(Permission.Settings);
+        if (!this.hasPermission) this.flush();
+        else this.refresh().catch(this.logger.error);
+      });
   }
 }

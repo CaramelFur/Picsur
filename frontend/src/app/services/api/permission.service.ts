@@ -3,6 +3,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { UserMePermissionsResponse } from 'picsur-shared/dist/dto/api/user.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, filter, map, Observable, take } from 'rxjs';
+import { Throttle } from 'src/app/util/throttle';
 import { Logger } from '../logger/logger.service';
 import { ApiService } from './api.service';
 import { StaticInfoService } from './static-info.service';
@@ -55,7 +56,7 @@ export class PermissionService {
 
   @AutoUnsubscribe()
   private subscribeUser() {
-    return this.userService.live.subscribe(async (user) => {
+    return this.userService.live.pipe(Throttle(300)).subscribe(async (user) => {
       const permissions = await this.updatePermissions();
       if (HasFailed(permissions)) {
         this.logger.warn(permissions.getReason());

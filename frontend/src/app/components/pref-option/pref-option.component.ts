@@ -1,21 +1,30 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { DecodedSysPref, PrefValueType } from 'picsur-shared/dist/dto/preferences.dto';
+import {
+  DecodedSysPref,
+  PrefValueType
+} from 'picsur-shared/dist/dto/preferences.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/syspreferences.dto';
-import { HasFailed } from 'picsur-shared/dist/types';
-import { Subject, throttleTime } from 'rxjs';
+import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
+import { Subject } from 'rxjs';
 import { SysPreferenceFriendlyNames } from 'src/app/i18n/syspref.i18n';
+import { Required } from 'src/app/models/decorators/required.decorator';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { SysPrefService } from 'src/app/services/api/syspref.service';
+import { Throttle } from 'src/app/util/throttle';
 import { UtilService } from 'src/app/util/util.service';
 
 @Component({
-  selector: 'syspref-option',
-  templateUrl: './settings-syspref-option.component.html',
-  styleUrls: ['./settings-syspref-option.component.scss'],
+  selector: 'pref-option',
+  templateUrl: './pref-option.component.html',
+  styleUrls: ['./pref-option.component.scss'],
 })
-export class SettingsSysprefOptionComponent implements OnInit {
-  @Input() pref: DecodedSysPref;
+export class PrefOptionComponent implements OnInit {
+  @Input() @Required pref: DecodedSysPref;
+  @Input('update') @Required updateFunction: (
+    key: string,
+    pref: PrefValueType
+  ) => AsyncFailable<any>;
 
   private updateSubject = new Subject<PrefValueType>();
 
@@ -72,10 +81,7 @@ export class SettingsSysprefOptionComponent implements OnInit {
   }
 
   private async updatePreference(value: PrefValueType) {
-    const result = await this.sysprefService.setPreference(
-      this.pref.key,
-      value
-    );
+    const result = await this.updateFunction(this.pref.key, value);
     if (!HasFailed(result)) {
       this.utilService.showSnackBar(
         `Updated ${this.name}`,
@@ -92,7 +98,7 @@ export class SettingsSysprefOptionComponent implements OnInit {
   @AutoUnsubscribe()
   subscribeUpdate() {
     return this.updateSubject
-      .pipe(throttleTime(300, undefined, { leading: true, trailing: true }))
+      .pipe(Throttle(300))
       .subscribe(this.updatePreference.bind(this));
   }
 }

@@ -1,18 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { PrefOptionModule } from 'src/app/components/pref-option/pref-option.module';
 import { SettingsSysprefComponent } from './settings-syspref.component';
 import { SettingsSysprefRoutingModule } from './settings-syspref.routing.module';
-import { SettingsSysprefOptionComponent } from './syspref-option/settings-syspref-option.component';
 
 @NgModule({
-  declarations: [SettingsSysprefComponent, SettingsSysprefOptionComponent],
+  declarations: [SettingsSysprefComponent],
   imports: [
     CommonModule,
     SettingsSysprefRoutingModule,
-    MatSlideToggleModule,
-    MatInputModule,
+    PrefOptionModule,
   ],
 })
 export class SettingsSysprefRouteModule {}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DecodedSysPref } from 'picsur-shared/dist/dto/preferences.dto';
+import { DecodedPref } from 'picsur-shared/dist/dto/preferences.dto';
 import { Observable } from 'rxjs';
 import { SysPrefService } from 'src/app/services/api/syspref.service';
 
@@ -7,9 +7,9 @@ import { SysPrefService } from 'src/app/services/api/syspref.service';
   templateUrl: './settings-syspref.component.html',
 })
 export class SettingsSysprefComponent {
-  preferences: Observable<DecodedSysPref[]>;
+  preferences: Observable<DecodedPref[]>;
 
-  constructor(sysprefService: SysPrefService) {
-    this.preferences = sysprefService.live;
+  constructor(public sysPrefService: SysPrefService) {
+    this.preferences = sysPrefService.live;
   }
 }
