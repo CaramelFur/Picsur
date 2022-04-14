@@ -17,9 +17,7 @@ export class PreferenceDefaultsService {
   public readonly usrDefaults: {
     [key in UsrPreference]: () => PrefValueType;
   } = {
-    [UsrPreference.TestString]: () => 'test_string',
-    [UsrPreference.TestNumber]: () => 123,
-    [UsrPreference.TestBoolean]: () => true,
+    [UsrPreference.ExifStripping]: () => true,
   };
 
   public readonly sysDefaults: {
@@ -39,9 +37,5 @@ export class PreferenceDefaultsService {
     [SysPreference.JwtExpiresIn]: () =>
       this.jwtConfigService.getJwtExpiresIn() ?? '7d',
     [SysPreference.BCryptStrength]: () => 12,
-
-    [SysPreference.TestString]: () => 'test_string',
-    [SysPreference.TestNumber]: () => 123,
-    [SysPreference.TestBoolean]: () => true,
   };
 }

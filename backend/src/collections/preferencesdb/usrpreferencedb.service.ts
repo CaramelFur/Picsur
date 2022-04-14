@@ -3,18 +3,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   DecodedUsrPref,
   PrefValueType,
-  PrefValueTypeStrings,
+  PrefValueTypeStrings
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { UsrPreference } from 'picsur-shared/dist/dto/usrpreferences.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
   UsrPreferenceList,
-  UsrPreferenceValueTypes,
+  UsrPreferenceValueTypes
 } from '../../models/dto/usrpreferences.dto';
 import {
   EUsrPreferenceBackend,
-  EUsrPreferenceSchema,
+  EUsrPreferenceSchema
 } from '../../models/entities/usrpreference.entity';
 import { FallBackMutex } from '../../models/util/FallBackMutex';
 import { PreferenceCommonService } from './preferencecommon.service';
@@ -173,7 +173,7 @@ export class UsrPreferenceService {
     return this.setPreference(
       userid,
       key,
-      this.defaultsService.sysDefaults[key](),
+      this.defaultsService.usrDefaults[key](),
     );
   }
 

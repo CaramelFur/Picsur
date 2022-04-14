@@ -1,16 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import {
-  DecodedSysPref,
+  DecodedPref,
   PrefValueType
 } from 'picsur-shared/dist/dto/preferences.dto';
-import { SysPreference } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { Subject } from 'rxjs';
-import { SysPreferenceFriendlyNames } from 'src/app/i18n/syspref.i18n';
 import { Required } from 'src/app/models/decorators/required.decorator';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
-import { SysPrefService } from 'src/app/services/api/syspref.service';
 import { Throttle } from 'src/app/util/throttle';
 import { UtilService } from 'src/app/util/util.service';
 
@@ -20,28 +17,25 @@ import { UtilService } from 'src/app/util/util.service';
   styleUrls: ['./pref-option.component.scss'],
 })
 export class PrefOptionComponent implements OnInit {
-  @Input() @Required pref: DecodedSysPref;
+  @Input() @Required pref: DecodedPref;
   @Input('update') @Required updateFunction: (
     key: string,
     pref: PrefValueType
   ) => AsyncFailable<any>;
+  @Input() @Required translator: {
+    [key in string]: string;
+  };
 
   private updateSubject = new Subject<PrefValueType>();
 
-  constructor(
-    private sysprefService: SysPrefService,
-    private utilService: UtilService
-  ) {}
+  constructor(private utilService: UtilService) {}
 
   ngOnInit(): void {
     this.subscribeUpdate();
   }
 
   get name(): string {
-    return (
-      SysPreferenceFriendlyNames[this.pref.key as SysPreference] ??
-      this.pref.key
-    );
+    return this.translator[this.pref.key] ?? this.pref.key;
   }
 
   get valString(): string {
@@ -83,8 +77,18 @@ export class PrefOptionComponent implements OnInit {
   private async updatePreference(value: PrefValueType) {
     const result = await this.updateFunction(this.pref.key, value);
     if (!HasFailed(result)) {
+      const message =
+        this.pref.type === 'string'
+          ? `Updated ${this.name}`
+          : this.pref.type === 'number'
+          ? `Updated ${this.name}`
+          : this.pref.type === 'boolean'
+          ? value
+            ? `Enabled ${this.name}`
+            : `Disabled ${this.name}`
+          : '';
       this.utilService.showSnackBar(
-        `Updated ${this.name}`,
+        message,
         SnackBarType.Success
       );
     } else {
