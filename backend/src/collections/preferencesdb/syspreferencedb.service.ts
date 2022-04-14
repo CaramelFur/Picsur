@@ -3,16 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   DecodedSysPref,
   PrefValueType,
-  PrefValueTypeStrings
+  PrefValueTypeStrings,
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/syspreferences.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
   SysPreferenceList,
-  SysPreferenceValueTypes
+  SysPreferenceValueTypes,
 } from '../../models/dto/syspreferences.dto';
-import { ESysPreferenceBackend, ESysPreferenceSchema } from '../../models/entities/syspreference.entity';
+import {
+  ESysPreferenceBackend,
+  ESysPreferenceSchema,
+} from '../../models/entities/syspreference.entity';
+import { FallBackMutex } from '../../models/util/FallBackMutex';
 import { PreferenceCommonService } from './preferencecommon.service';
 import { PreferenceDefaultsService } from './preferencedefaults.service';
 
@@ -57,27 +61,23 @@ export class SysPreferenceService {
 
   public async getPreference(key: string): AsyncFailable<DecodedSysPref> {
     // Validate
-    let validatedKey = this.prefCommon.validatePrefKey(
-      key,
-      SysPreference,
-    );
+    let validatedKey = this.prefCommon.validatePrefKey(key, SysPreference);
     if (HasFailed(validatedKey)) return validatedKey;
 
-    // Fetch
-    let foundSysPreference: ESysPreferenceBackend | null;
+    let foundSysPreference: ESysPreferenceBackend;
     try {
-      foundSysPreference = await this.sysPreferenceRepository.findOne({
-        where: { key: validatedKey },
-        cache: 60000,
-      });
+      foundSysPreference = await FallBackMutex(
+        'fetchSysPrefrence',
+        () =>
+          this.sysPreferenceRepository.findOne({
+            where: { key: validatedKey as SysPreference },
+            cache: 60000,
+          }),
+        () => this.saveDefault(validatedKey as SysPreference),
+      );
     } catch (e: any) {
       this.logger.warn(e);
       return Fail('Could not get preference');
-    }
-
-    // Fallback
-    if (!foundSysPreference) {
-      return this.saveDefault(validatedKey);
     }
 
     // Validate

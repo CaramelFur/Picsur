@@ -4,7 +4,7 @@ import {
   Get,
   InternalServerErrorException,
   Logger,
-  Post
+  Post,
 } from '@nestjs/common';
 import {
   GetSpecialUsersResponse,
@@ -17,7 +17,7 @@ import {
   UserListRequest,
   UserListResponse,
   UserUpdateRequest,
-  UserUpdateResponse
+  UserUpdateResponse,
 } from 'picsur-shared/dist/dto/api/usermanage.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/userdb/userdb.service';
@@ -27,7 +27,7 @@ import { Permission } from '../../../models/dto/permissions.dto';
 import {
   ImmutableUsersList,
   LockedLoginUsersList,
-  UndeletableUsersList
+  UndeletableUsersList,
 } from '../../../models/dto/specialusers.dto';
 import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 

@@ -3,19 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   DecodedUsrPref,
   PrefValueType,
-  PrefValueTypeStrings
+  PrefValueTypeStrings,
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { UsrPreference } from 'picsur-shared/dist/dto/usrpreferences.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
   UsrPreferenceList,
-  UsrPreferenceValueTypes
+  UsrPreferenceValueTypes,
 } from '../../models/dto/usrpreferences.dto';
 import {
   EUsrPreferenceBackend,
-  EUsrPreferenceSchema
+  EUsrPreferenceSchema,
 } from '../../models/entities/usrpreference.entity';
+import { FallBackMutex } from '../../models/util/FallBackMutex';
 import { PreferenceCommonService } from './preferencecommon.service';
 import { PreferenceDefaultsService } from './preferencedefaults.service';
 
@@ -68,21 +69,20 @@ export class UsrPreferenceService {
     let validatedKey = this.prefCommon.validatePrefKey(key, UsrPreference);
     if (HasFailed(validatedKey)) return validatedKey;
 
-    // Fetch
-    let foundUsrPreference: EUsrPreferenceBackend | null;
+    let foundUsrPreference: EUsrPreferenceBackend;
     try {
-      foundUsrPreference = await this.usrPreferenceRepository.findOne({
-        where: { key: validatedKey, userId: userid },
-        cache: 60000,
-      });
+      foundUsrPreference = await FallBackMutex(
+        'fetchUsrPrefrence',
+        () =>
+          this.usrPreferenceRepository.findOne({
+            where: { key: validatedKey as UsrPreference, userId: userid },
+            cache: 60000,
+          }),
+        () => this.saveDefault(userid, validatedKey as UsrPreference),
+      );
     } catch (e: any) {
       this.logger.warn(e);
       return Fail('Could not get preference');
-    }
-
-    // Fallback
-    if (!foundUsrPreference) {
-      return this.saveDefault(userid, validatedKey);
     }
 
     // Validate
