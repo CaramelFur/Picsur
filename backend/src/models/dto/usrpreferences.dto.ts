@@ -8,5 +8,5 @@ export const UsrPreferenceList: string[] = Object.values(UsrPreference);
 export const UsrPreferenceValueTypes: {
   [key in UsrPreference]: PrefValueTypeStrings;
 } = {
-  [UsrPreference.ExifStripping]: 'boolean',
+  [UsrPreference.KeepOriginal]: 'boolean',
 };

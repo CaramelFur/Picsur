@@ -33,6 +33,7 @@
     "fastify-multipart": "^5.3.1",
     "fastify-static": "^4.6.1",
     "file-type": "^17.1.1",
+    "ico-to-png": "^0.2.1",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -42,6 +43,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.5",
+    "sharp": "^0.30.3",
     "typeorm": "0.3.4",
     "zod": "^3.14.3"
   },
@@ -55,6 +57,7 @@
     "@types/passport-jwt": "^3.0.6",
     "@types/passport-local": "^1.0.34",
     "@types/passport-strategy": "^0.2.35",
+    "@types/sharp": "^0.30.2",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",

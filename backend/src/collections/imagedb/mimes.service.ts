@@ -3,17 +3,18 @@ import { Fail, Failable } from 'picsur-shared/dist/types';
 import {
   FullMime,
   SupportedAnimMimes,
-  SupportedImageMimes
+  SupportedImageMimes,
+  SupportedMimeCategory
 } from '../../models/dto/mimes.dto';
 
 @Injectable()
 export class MimesService {
   public getFullMime(mime: string): Failable<FullMime> {
     if (SupportedImageMimes.includes(mime)) {
-      return { mime, type: 'image' };
+      return { mime, type: SupportedMimeCategory.Image };
     }
     if (SupportedAnimMimes.includes(mime)) {
-      return { mime, type: 'anim' };
+      return { mime, type: SupportedMimeCategory.Animation };
     }
     return Fail('Unsupported mime type');
   }

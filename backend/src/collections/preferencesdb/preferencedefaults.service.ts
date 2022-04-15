@@ -17,7 +17,7 @@ export class PreferenceDefaultsService {
   public readonly usrDefaults: {
     [key in UsrPreference]: () => PrefValueType;
   } = {
-    [UsrPreference.ExifStripping]: () => true,
+    [UsrPreference.KeepOriginal]: () => true,
   };
 
   public readonly sysDefaults: {

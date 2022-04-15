@@ -1,4 +1,3 @@
-
 // Config
 export enum ImageMime {
   JPEG = 'image/jpeg',
@@ -14,7 +13,7 @@ export enum AnimMime {
   GIF = 'image/gif',
 }
 
-export const SupportedMime = {...ImageMime, ...AnimMime};
+export const SupportedMime = { ...ImageMime, ...AnimMime };
 
 // Derivatives
 
@@ -22,7 +21,10 @@ export const SupportedImageMimes: string[] = Object.values(ImageMime);
 export const SupportedAnimMimes: string[] = Object.values(AnimMime);
 export const SupportedMimes: string[] = Object.values(SupportedMime);
 
-export type SupportedMimeCategory = 'image' | 'anim';
+export enum SupportedMimeCategory {
+  Image = 'image',
+  Animation = 'anim',
+}
 
 export interface FullMime {
   mime: string;

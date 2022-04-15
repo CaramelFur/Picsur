@@ -13,12 +13,11 @@ import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart.decorator';
 import { RequiredPermissions } from '../../decorators/permissions.decorator';
+import { ReqUserID } from '../../decorators/request-user.decorator';
 import { Returns } from '../../decorators/returns.decorator';
 import { ImageManagerService } from '../../managers/imagemanager/imagemanager.service';
 import { Permission } from '../../models/dto/permissions.dto';
-import {
-  ImageUploadDto
-} from '../../models/requests/imageroute.dto';
+import { ImageUploadDto } from '../../models/requests/imageroute.dto';
 import { EImageBackend2EImage } from '../../models/transformers/image.transformer';
 import { ImageIdValidator } from './imageid.validator';
 
@@ -66,9 +65,10 @@ export class ImageController {
   @RequiredPermissions(Permission.ImageUpload)
   async uploadImage(
     @MultiPart() multipart: ImageUploadDto,
+    @ReqUserID() userid: string,
   ): Promise<ImageMetaResponse> {
     const fileBuffer = await multipart.image.toBuffer();
-    const image = await this.imagesService.upload(fileBuffer);
+    const image = await this.imagesService.upload(fileBuffer, userid);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
       throw new InternalServerErrorException('Could not upload image');
