@@ -11,7 +11,7 @@ export class UpdateUserControl {
   private id: string = '';
   public username = new FormControl('', UsernameValidators);
   public password = new FormControl('', PasswordValidators);
-  public roles = new FormControl([]);
+  public roles = new FormControl<string[]>([]);
 
   public get usernameValue() {
     return this.username.value;
@@ -26,7 +26,7 @@ export class UpdateUserControl {
   }
 
   public get selectedRoles(): string[] {
-    return this.roles.value;
+    return this.roles.value ?? [];
   }
 
   // Data interaction
@@ -45,8 +45,8 @@ export class UpdateUserControl {
 
   public getDataCreate(): UserCreateRequest {
     return {
-      username: this.username.value,
-      password: this.password.value,
+      username: this.username.value ?? '',
+      password: this.password.value ?? '',
       roles: this.selectedRoles,
     };
   }

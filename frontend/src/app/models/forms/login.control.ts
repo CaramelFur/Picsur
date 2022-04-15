@@ -29,8 +29,8 @@ export class LoginControl {
 
   public getRawData(): UserPassModel {
     return {
-      username: this.username.value,
-      password: this.password.value,
+      username: this.username.value ?? '',
+      password: this.password.value ?? '',
     };
   }
 

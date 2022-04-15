@@ -5,7 +5,7 @@ import { CreateUsernameError } from '../validators/user.validator';
 
 export class UpdateRoleControl {
   public rolename = new FormControl('', RoleNameValidators);
-  public permissions = new FormControl([]);
+  public permissions = new FormControl<string[]>([]);
 
   public get rolenameValue() {
     return this.rolename.value;
@@ -31,8 +31,8 @@ export class UpdateRoleControl {
 
   public getData(): RoleModel {
     return {
-      name: this.rolenameValue,
-      permissions: this.selectedPermissions,
+      name: this.rolenameValue ?? '',
+      permissions: this.selectedPermissions ?? [],
     };
   }
 }
