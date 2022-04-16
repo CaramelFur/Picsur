@@ -7,7 +7,7 @@ import {
   SupportedMimeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
-import { QOIColorSpace, QOIencode } from 'qoi-img';
+import { QOIColorSpace, QOIdecode, QOIencode } from 'qoi-img';
 import sharp from 'sharp';
 import { UsrPreferenceService } from '../../collections/preferencesdb/usrpreferencedb.service';
 
@@ -50,10 +50,12 @@ export class ImageProcessorService {
       sharpImage = this.icoSharp(image);
     } else if (mime.mime === ImageMime.BMP) {
       sharpImage = this.bmpSharp(image);
+    } else if (mime.mime === ImageMime.QOI) {
+      sharpImage = this.qoiSharp(image);
     } else {
       sharpImage = sharp(image);
     }
-    mime.mime = ImageMime.PNG;
+    mime.mime = ImageMime.QOI;
 
     sharpImage = sharpImage.toColorspace('srgb');
 
@@ -108,6 +110,18 @@ export class ImageProcessorService {
         width: best.width,
         height: best.height,
         channels: 4,
+      },
+    });
+  }
+
+  private qoiSharp(image: Buffer) {
+    const result = QOIdecode(image);
+
+    return sharp(result.pixels, {
+      raw: {
+        width: result.width,
+        height: result.height,
+        channels: result.channels,
       },
     });
   }

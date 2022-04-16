@@ -2,7 +2,8 @@ import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
-  HttpException
+  HttpException,
+  Logger
 } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ApiErrorResponse } from 'picsur-shared/dist/dto/api/api.dto';
@@ -11,13 +12,26 @@ import { ApiErrorResponse } from 'picsur-shared/dist/dto/api/api.dto';
 // (As long as its within nest, the earlier fastify stages are not handled here)
 // It neatly wraps the error for easier handling on the client
 
-@Catch(HttpException)
+@Catch()
 export class MainExceptionFilter implements ExceptionFilter {
-  catch(exception: HttpException, host: ArgumentsHost) {
+  private static readonly logger = new Logger('MainExceptionFilter');
+
+  catch(exception: unknown, host: ArgumentsHost) {
+    if (exception instanceof Error) {
+      MainExceptionFilter.logger.error(exception.message, exception.stack);
+    } else {
+      MainExceptionFilter.logger.error(exception);
+    }
+
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
     const request = ctx.getRequest<FastifyRequest>();
-    const status = exception.getStatus();
+    const status =
+      exception instanceof HttpException ? exception.getStatus() : 500;
+    const message =
+      exception instanceof HttpException
+        ? exception.message
+        : 'Internal server error';
 
     const toSend: ApiErrorResponse = {
       success: false,
@@ -25,7 +39,7 @@ export class MainExceptionFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
 
       data: {
-        message: exception.message,
+        message,
       },
     };
 

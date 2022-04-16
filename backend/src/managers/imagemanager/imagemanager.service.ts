@@ -3,6 +3,7 @@ import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
+import { IsQOI } from 'qoi-img';
 import { ImageDBService } from '../../collections/imagedb/imagedb.service';
 import { EImageBackend } from '../../models/entities/image.entity';
 import { ImageProcessorService } from './imageprocessor.service';
@@ -66,11 +67,18 @@ export class ImageManagerService {
   }
 
   private async getFullMimeFromBuffer(image: Buffer): AsyncFailable<FullMime> {
-    const mime: FileTypeResult | undefined = await fileTypeFromBuffer(image);
+    const filetypeResult: FileTypeResult | undefined = await fileTypeFromBuffer(
+      image,
+    );
 
-    console.log(mime);
+    let mime: string | undefined;
+    if (filetypeResult === undefined) {
+      if (IsQOI(image)) mime = 'image/qoi';
+    } else {
+      mime = filetypeResult.mime;
+    }
 
-    const fullMime = ParseMime(mime?.mime ?? 'extra/discard');
+    const fullMime = ParseMime(mime ?? 'extra/discard');
     return fullMime;
   }
 }

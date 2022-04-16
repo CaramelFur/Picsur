@@ -6,7 +6,9 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { SupportedMimeCategory } from 'picsur-shared/dist/dto/mimes.dto';
+import {
+  SupportedMime
+} from 'picsur-shared/dist/dto/mimes.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { URLRegex } from 'picsur-shared/dist/util/common-regex';
 import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
@@ -51,7 +53,7 @@ export class PicsurImgComponent implements OnChanges {
       return;
     }
 
-    if (mime.type === SupportedMimeCategory.Image) {
+    if (mime.mime === SupportedMime.QOI) {
       const result = await this.qoiWorker.decode(url);
 
       const canvas = this.canvas.nativeElement;
@@ -60,10 +62,8 @@ export class PicsurImgComponent implements OnChanges {
       canvas.getContext('2d')?.putImageData(result.data, 0, 0);
 
       this.state = PicsurImgState.Canvas;
-    } else if (mime.type === SupportedMimeCategory.Animation) {
-      this.state = PicsurImgState.Image;
     } else {
-      this.logger.error(`Unsupported mime type: ${mime.type}`);
+      this.state = PicsurImgState.Image;
     }
   }
 
