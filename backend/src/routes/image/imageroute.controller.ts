@@ -30,14 +30,14 @@ export class ImageController {
 
   constructor(private readonly imagesService: ImageManagerService) {}
 
-  @Get(':hash')
+  @Get(':id')
   async getImage(
     // Usually passthrough is for manually sending the response,
     // But we need it here to set the mime type
     @Res({ passthrough: true }) res: FastifyReply,
-    @Param('hash', ImageIdValidator) hash: string,
+    @Param('id', ImageIdValidator) id: string,
   ): Promise<Buffer> {
-    const image = await this.imagesService.retrieveComplete(hash);
+    const image = await this.imagesService.retrieveComplete(id);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
       throw new NotFoundException('Could not find image');
@@ -47,12 +47,12 @@ export class ImageController {
     return image.data;
   }
 
-  @Head(':hash')
+  @Head(':id')
   async headImage(
     @Res({ passthrough: true }) res: FastifyReply,
-    @Param('hash', ImageIdValidator) hash: string,
+    @Param('id', ImageIdValidator) id: string,
   ) {
-    const image = await this.imagesService.retrieveInfo(hash);
+    const image = await this.imagesService.retrieveInfo(id);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
       throw new NotFoundException('Could not find image');
@@ -61,12 +61,12 @@ export class ImageController {
     res.type(image.mime);
   }
 
-  @Get('meta/:hash')
+  @Get('meta/:id')
   @Returns(ImageMetaResponse)
   async getImageMeta(
-    @Param('hash', ImageIdValidator) hash: string,
+    @Param('id', ImageIdValidator) id: string,
   ): Promise<ImageMetaResponse> {
-    const image = await this.imagesService.retrieveInfo(hash);
+    const image = await this.imagesService.retrieveInfo(id);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
       throw new NotFoundException('Could not find image');

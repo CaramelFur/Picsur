@@ -19,7 +19,7 @@ export class ImageService {
       new ImageUploadRequest(image)
     );
 
-    return Open(result, 'hash');
+    return Open(result, 'id');
   }
 
   public async GetImageMeta(image: string): AsyncFailable<EImage> {

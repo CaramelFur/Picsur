@@ -19,16 +19,16 @@ export class ImageManagerService {
     private readonly processService: ImageProcessorService,
   ) {}
 
-  public async retrieveInfo(hash: string): AsyncFailable<EImageBackend> {
-    return await this.imagesService.findOne(hash);
+  public async retrieveInfo(id: string): AsyncFailable<EImageBackend> {
+    return await this.imagesService.findOne(id);
   }
 
   // Image data buffer is not included by default, this also returns that buffer
   // Dont send to client, keep in backend
   public async retrieveComplete(
-    hash: string,
+    id: string,
   ): AsyncFailable<Required<EImageBackend>> {
-    return await this.imagesService.findOne(hash, true);
+    return await this.imagesService.findOne(id, true);
   }
 
   public async upload(

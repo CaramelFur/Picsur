@@ -23,11 +23,11 @@ export class ProcessingComponent implements OnInit {
 
     history.replaceState(null, '');
 
-    const hash = await this.imageService.UploadImage(state.imageFile);
-    if (HasFailed(hash)) {
-      return this.utilService.quitError(hash.getReason());
+    const id = await this.imageService.UploadImage(state.imageFile);
+    if (HasFailed(id)) {
+      return this.utilService.quitError(id.getReason());
     }
 
-    this.router.navigate([`/view/`, hash], { replaceUrl: true });
+    this.router.navigate([`/view/`, id], { replaceUrl: true });
   }
 }

@@ -1,5 +1,5 @@
 import { EImageSchema } from 'picsur-shared/dist/entities/image.entity';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { z } from 'zod';
 
 const OverriddenEImageSchema = EImageSchema.omit({ data: true }).merge(
@@ -12,11 +12,7 @@ type OverriddenEImage = z.infer<typeof OverriddenEImageSchema>;
 @Entity()
 export class EImageBackend implements OverriddenEImage {
   @PrimaryGeneratedColumn('uuid')
-  id?: string;
-
-  @Index()
-  @Column({ unique: true, nullable: false })
-  hash: string;
+  id: string;
 
   @Column({ nullable: false })
   mime: string;
@@ -24,4 +20,7 @@ export class EImageBackend implements OverriddenEImage {
   // Binary data
   @Column({ type: 'bytea', nullable: false, select: false })
   data?: Buffer;
+
+  @Column({ type: 'bytea', nullable: true, select: false })
+  originaldata?: Buffer;
 }

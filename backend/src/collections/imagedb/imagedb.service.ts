@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import Crypto from 'crypto';
 import {
   AsyncFailable,
-  Fail, HasSuccess
+  Fail
 } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import { EImageBackend } from '../../models/entities/image.entity';
@@ -20,14 +19,9 @@ export class ImageDBService {
     image: Buffer,
     type: string,
   ): AsyncFailable<EImageBackend> {
-    const hash = this.hash(image);
-    const find = await this.findOne(hash);
-    if (HasSuccess(find)) return find;
-
     let imageEntity = new EImageBackend();
     imageEntity.data = image;
     imageEntity.mime = type;
-    imageEntity.hash = hash;
 
     try {
       imageEntity = await this.imageRepository.save(imageEntity);
@@ -39,14 +33,14 @@ export class ImageDBService {
   }
 
   public async findOne<B extends true | undefined = undefined>(
-    hash: string,
+    id: string,
     getPrivate?: B,
   ): AsyncFailable<
     B extends undefined ? EImageBackend : Required<EImageBackend>
   > {
     try {
       const found = await this.imageRepository.findOne({
-        where: { hash },
+        where: { id },
         select: getPrivate ? GetCols(this.imageRepository) : undefined,
       });
 
@@ -79,9 +73,9 @@ export class ImageDBService {
     }
   }
 
-  public async delete(hash: string): AsyncFailable<true> {
+  public async delete(id: string): AsyncFailable<true> {
     try {
-      const result = await this.imageRepository.delete({ hash });
+      const result = await this.imageRepository.delete({ id });
       if (result.affected === 0) return Fail('Image not found');
     } catch (e: any) {
       return Fail(e?.message);
@@ -99,9 +93,5 @@ export class ImageDBService {
       return Fail(e?.message);
     }
     return true;
-  }
-
-  private hash(image: Buffer): string {
-    return Crypto.createHash('sha256').update(image).digest('hex');
   }
 }
