@@ -4,7 +4,7 @@ import {
   AsyncFailable,
   Fail, HasFailed
 } from 'picsur-shared/dist/types';
-import { SemVer } from 'picsur-shared/dist/util/common-regex';
+import { SemVerRegex } from 'picsur-shared/dist/util/common-regex';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UtilService } from 'src/app/util/util.service';
@@ -50,7 +50,7 @@ export class InfoService {
     const serverVersion = info.version;
     const clientVersion = this.getFrontendVersion();
 
-    if (!SemVer.test(serverVersion) || !SemVer.test(clientVersion)) {
+    if (!SemVerRegex.test(serverVersion) || !SemVerRegex.test(clientVersion)) {
       return Fail(`Not a valid semver: ${serverVersion} or ${clientVersion}`);
     }
 
