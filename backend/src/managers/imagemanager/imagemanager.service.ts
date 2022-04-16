@@ -35,15 +35,8 @@ export class ImageManagerService {
     image: Buffer,
     userid: string,
   ): AsyncFailable<EImageBackend> {
-    let startTime = Date.now();
-
-    console.log('Uploading image');
-
     const fullMime = await this.getFullMimeFromBuffer(image);
     if (HasFailed(fullMime)) return fullMime;
-
-    console.log('Got full mime after ' + (Date.now() - startTime) + 'ms');
-    startTime = Date.now();
 
     const processedImage = await this.processService.process(
       image,
@@ -52,16 +45,11 @@ export class ImageManagerService {
     );
     if (HasFailed(processedImage)) return processedImage;
 
-    console.log('Processed image after ' + (Date.now() - startTime) + 'ms');
-    startTime = Date.now();
-
     const imageEntity = await this.imagesService.create(
       processedImage,
       fullMime.mime,
     );
     if (HasFailed(imageEntity)) return imageEntity;
-
-    console.log('Created image after ' + (Date.now() - startTime) + 'ms');
 
     return imageEntity;
   }
