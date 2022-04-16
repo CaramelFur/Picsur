@@ -1,22 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import * as bmp from '@vingle/bmp-js';
-import icoToPng from 'ico-to-png';
-import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
-import sharp from 'sharp';
-import { UsrPreferenceService } from '../../collections/preferencesdb/usrpreferencedb.service';
+import decodeico from 'decode-ico';
 import {
   FullMime,
   ImageMime,
   SupportedMimeCategory
-} from '../../models/dto/mimes.dto';
+} from 'picsur-shared/dist/dto/mimes.dto';
+import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
+import { QOIColorSpace, QOIencode } from 'qoi-img';
+import sharp from 'sharp';
+import { UsrPreferenceService } from '../../collections/preferencesdb/usrpreferencedb.service';
 
 @Injectable()
 export class ImageProcessorService {
-  private readonly PngOptions = {
-    compressionLevel: 9,
-    effort: 10,
-  };
-
   constructor(private readonly userPref: UsrPreferenceService) {}
 
   public async process(
@@ -48,22 +44,38 @@ export class ImageProcessorService {
     mime: FullMime,
     options: {},
   ): AsyncFailable<Buffer> {
-    let processedImage = image;
+    let sharpImage: sharp.Sharp;
 
     if (mime.mime === ImageMime.ICO) {
-      processedImage = await icoToPng(processedImage, 512);
+      sharpImage = this.icoSharp(image);
     } else if (mime.mime === ImageMime.BMP) {
-      processedImage = await this.bmpSharp(processedImage)
-        .png(this.PngOptions)
-        .toBuffer();
+      sharpImage = this.bmpSharp(image);
     } else {
-      processedImage = await sharp(processedImage)
-        .png(this.PngOptions)
-        .toBuffer();
+      sharpImage = sharp(image);
     }
     mime.mime = ImageMime.PNG;
 
-    return processedImage;
+    sharpImage = sharpImage.toColorspace('srgb');
+
+    const metadata = await sharpImage.metadata();
+    const pixels = await sharpImage.raw().toBuffer();
+
+    if (
+      metadata.hasAlpha === undefined ||
+      metadata.width === undefined ||
+      metadata.height === undefined
+    )
+      return Fail('Invalid image');
+
+    // Png can be more efficient than QOI, but its just sooooooo slow
+    const qoiImage = QOIencode(pixels, {
+      channels: metadata.hasAlpha ? 4 : 3,
+      colorSpace: QOIColorSpace.SRGB,
+      height: metadata.height,
+      width: metadata.width,
+    });
+
+    return qoiImage;
   }
 
   private async processAnimation(
@@ -81,6 +93,20 @@ export class ImageProcessorService {
       raw: {
         width: bitmap.width,
         height: bitmap.height,
+        channels: 4,
+      },
+    });
+  }
+
+  private icoSharp(image: Buffer) {
+    const result = decodeico(image);
+    // Get biggest image
+    const best = result.sort((a, b) => b.width - a.width)[0];
+
+    return sharp(best.data, {
+      raw: {
+        width: best.width,
+        height: best.height,
         channels: 4,
       },
     });

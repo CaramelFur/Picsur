@@ -6,11 +6,14 @@
       </div>
 
       <div class="col-12 py-3">
-        <img class="uploadedimage" src="{{ imageUrl }}" als="Uploaded" />
+        <picsur-img
+          class="uploadedimage"
+          [src]="imageLinks.source"
+        ></picsur-img>
       </div>
 
       <div class="col-12">
-        <copyfield label="Image URL" [value]="imageUrl"></copyfield>
+        <copyfield label="Image URL" [value]="imageLinks.source"></copyfield>
       </div>
       <div class="col-md-6 col-12">
         <copyfield label="Markdown" [value]="imageLinks.markdown"></copyfield>
@@ -25,7 +28,21 @@
         <copyfield label="Rst" [value]="imageLinks.rst"></copyfield>
       </div>
       <div class="col-12">
-        <button mat-raised-button color="accent" (click)="goBackHome()">
+        <button
+          mat-raised-button
+          class="mx-1"
+          color="accent"
+          (click)="downloadImage()"
+        >
+          Download
+        </button>
+
+        <button
+          mat-raised-button
+          class="mx-1"
+          color="primary"
+          (click)="goBackHome()"
+        >
           Upload Another
         </button>
       </div>

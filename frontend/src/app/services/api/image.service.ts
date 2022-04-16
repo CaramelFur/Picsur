@@ -41,4 +41,8 @@ export class ImageService {
       bbcode: `[img]${imageURL}[/img]`,
     };
   }
+
+  public CreateImageLinksFromID(imageID: string): ImageLinks {
+    return this.CreateImageLinks(this.GetImageURL(imageID));
+  }
 }

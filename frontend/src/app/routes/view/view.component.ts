@@ -18,7 +18,6 @@ export class ViewComponent implements OnInit {
     private utilService: UtilService
   ) {}
 
-  public imageUrl: string = '';
   public imageLinks = new ImageLinks();
 
   async ngOnInit() {
@@ -28,13 +27,16 @@ export class ViewComponent implements OnInit {
       return this.utilService.quitError('Invalid image link');
     }
 
-    const imageMeta = await this.imageService.GetImageMeta(hash);
-    if (HasFailed(imageMeta)) {
-      return this.utilService.quitError(imageMeta.getReason());
+    const metadata = await this.imageService.GetImageMeta(hash);
+    if (HasFailed(metadata)) {
+      return this.utilService.quitError(metadata.getReason());
     }
 
-    this.imageUrl = this.imageService.GetImageURL(hash);
-    this.imageLinks = this.imageService.CreateImageLinks(this.imageUrl);
+    this.imageLinks = this.imageService.CreateImageLinksFromID(hash);
+  }
+
+  downloadImage() {
+    this.utilService.downloadFile(this.imageLinks.source);
   }
 
   goBackHome() {

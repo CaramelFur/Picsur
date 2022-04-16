@@ -1,0 +1,9 @@
+<canvas
+  *ngIf="state === 'canvas' || state === 'loading'"
+  [style.display]="state === 'loading' ? 'none' : 'unset'"
+  height="0"
+  width="0"
+  #targetcanvas
+></canvas>
+<img *ngIf="state === 'image'" [src]="imageURL" />
+<mat-spinner *ngIf="state === 'loading'" color="accent"></mat-spinner>

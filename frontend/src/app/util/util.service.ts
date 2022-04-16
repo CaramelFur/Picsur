@@ -47,6 +47,15 @@ export class UtilService {
     });
   }
 
+  public downloadFile(url: string) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = url.split('/').pop() ?? '';
+    link.click();
+
+    link.remove();
+  }
+
   public async sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }

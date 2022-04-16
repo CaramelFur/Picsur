@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Head,
   InternalServerErrorException,
   Logger,
   NotFoundException,
@@ -44,6 +45,20 @@ export class ImageController {
 
     res.type(image.mime);
     return image.data;
+  }
+
+  @Head(':hash')
+  async headImage(
+    @Res({ passthrough: true }) res: FastifyReply,
+    @Param('hash', ImageIdValidator) hash: string,
+  ) {
+    const image = await this.imagesService.retrieveInfo(hash);
+    if (HasFailed(image)) {
+      this.logger.warn(image.getReason());
+      throw new NotFoundException('Could not find image');
+    }
+
+    res.type(image.mime);
   }
 
   @Get('meta/:hash')

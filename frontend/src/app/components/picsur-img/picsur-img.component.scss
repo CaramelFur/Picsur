@@ -1,0 +1,19 @@
+:host {
+  display: block;
+  // Clip contents
+  overflow: hidden;
+
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+canvas, img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

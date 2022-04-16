@@ -1,30 +1,11 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-  "extends": "../tsconfig.base.json",
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./out-tsc/",
-
-    "target": "es2017",
-    "module": "es2020",
-
-    "lib": ["es2020", "dom"],
-
-    "experimentalDecorators": true,
-
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "importHelpers": true,
-    "resolveJsonModule": true
-  },
-  "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["src/**/*.d.ts", "src/app/**/*.ts"],
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
-  }
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.worker.json"
+    }
+  ]
 }

@@ -30,3 +30,4 @@ export interface FullMime {
   mime: string;
   type: SupportedMimeCategory;
 }
+

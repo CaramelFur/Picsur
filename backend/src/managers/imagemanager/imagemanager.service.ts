@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
+import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
+import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
 import { ImageDBService } from '../../collections/imagedb/imagedb.service';
-import { MimesService } from '../../collections/imagedb/mimes.service';
-import { FullMime } from '../../models/dto/mimes.dto';
 import { EImageBackend } from '../../models/entities/image.entity';
 import { ImageProcessorService } from './imageprocessor.service';
 
@@ -15,7 +15,6 @@ import { ImageProcessorService } from './imageprocessor.service';
 export class ImageManagerService {
   constructor(
     private readonly imagesService: ImageDBService,
-    private readonly mimesService: MimesService,
     private readonly processService: ImageProcessorService,
   ) {}
 
@@ -35,8 +34,15 @@ export class ImageManagerService {
     image: Buffer,
     userid: string,
   ): AsyncFailable<EImageBackend> {
+    let startTime = Date.now();
+
+    console.log('Uploading image');
+
     const fullMime = await this.getFullMimeFromBuffer(image);
     if (HasFailed(fullMime)) return fullMime;
+
+    console.log('Got full mime after ' + (Date.now() - startTime) + 'ms');
+    startTime = Date.now();
 
     const processedImage = await this.processService.process(
       image,
@@ -45,20 +51,26 @@ export class ImageManagerService {
     );
     if (HasFailed(processedImage)) return processedImage;
 
+    console.log('Processed image after ' + (Date.now() - startTime) + 'ms');
+    startTime = Date.now();
+
     const imageEntity = await this.imagesService.create(
       processedImage,
       fullMime.mime,
     );
     if (HasFailed(imageEntity)) return imageEntity;
 
+    console.log('Created image after ' + (Date.now() - startTime) + 'ms');
+
     return imageEntity;
   }
 
   private async getFullMimeFromBuffer(image: Buffer): AsyncFailable<FullMime> {
     const mime: FileTypeResult | undefined = await fileTypeFromBuffer(image);
-    const fullMime = await this.mimesService.getFullMime(
-      mime?.mime ?? 'extra/discard',
-    );
+
+    console.log(mime);
+
+    const fullMime = ParseMime(mime?.mime ?? 'extra/discard');
     return fullMime;
   }
 }
