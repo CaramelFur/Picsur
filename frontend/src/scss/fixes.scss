@@ -43,3 +43,7 @@ router-outlet ~ * {
   height: initial !important;
   width: initial !important;
 }
+
+.row {
+  width: 100%;
+}

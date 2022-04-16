@@ -73,7 +73,8 @@
   color="accent"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="startingPageSize"
-  showFirstLastButtons
+  [showFirstLastButtons]="utilService.isDesktop() | async"
+  [hidePageSize]="utilService.isMobile() | async"
   aria-label="Select page of roles"
 >
 </mat-paginator>

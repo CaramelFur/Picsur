@@ -1,7 +1,9 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
 import { SnackBarType } from '../models/dto/snack-bar-type.dto';
 import {
   ConfirmDialogComponent,
@@ -12,15 +14,30 @@ import {
   providedIn: 'root',
 })
 export class UtilService {
+  private isDesktopObservable: Observable<boolean>;
+
   constructor(
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private router: Router
-  ) {}
+    private router: Router,
+    private breakPointObserver: BreakpointObserver
+  ) {
+    this.isDesktopObservable = this.breakPointObserver
+      .observe(['(min-width: 576px)']) // Bootstrap breakpoints
+      .pipe(map((result) => result.matches));
+  }
 
   public quitError(message: string) {
     this.showSnackBar(message, SnackBarType.Error);
     this.router.navigate(['/']);
+  }
+
+  public isDesktop(): Observable<boolean> {
+    return this.isDesktopObservable;
+  }
+
+  public isMobile(): Observable<boolean> {
+    return this.isDesktopObservable.pipe(map((isDesktop) => !isDesktop));
   }
 
   public showSnackBar(

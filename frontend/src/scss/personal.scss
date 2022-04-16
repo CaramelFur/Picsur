@@ -54,6 +54,7 @@
   & > .fabbutton {
     position: fixed;
     bottom: 1.5rem;
+    z-index: 8;
 
     @include media-breakpoint-up(xl) {
       bottom: 4rem;

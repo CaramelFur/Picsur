@@ -1,4 +1,3 @@
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { Portal } from '@angular/cdk/portal';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -11,6 +10,7 @@ import {
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { RouteTransitionAnimations } from './app.animation';
 import { PRouteData } from './models/dto/picsur-routes.dto';
+import { UtilService } from './util/util.service';
 let b = 0;
 @Component({
   selector: 'app-root',
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
   public constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private breakPointObserver: BreakpointObserver
+    private utilService: UtilService
   ) {}
 
   public getRouteAnimData() {
@@ -57,12 +57,10 @@ export class AppComponent implements OnInit {
 
   @AutoUnsubscribe()
   private subscribeMobile() {
-    return this.breakPointObserver
-      .observe(['(min-width: 576px)']) // Bootstrap breakpoints
-      .subscribe((state) => {
-        this.isDesktop = state.matches;
-        this.updateSidebar();
-      });
+    return this.utilService.isDesktop().subscribe((state) => {
+      this.isDesktop = state;
+      this.updateSidebar();
+    });
   }
 
   private async onNavigationError(event: NavigationError) {

@@ -32,8 +32,8 @@ export class SettingsUsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    public utilService: UtilService,
     private userManageService: UserManageService,
-    private utilService: UtilService,
     private staticInfo: StaticInfoService,
     private router: Router
   ) {}
