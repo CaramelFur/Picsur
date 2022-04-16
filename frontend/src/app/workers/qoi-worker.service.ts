@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { QOIImage, QOIJob, QOIWorkerOut } from './qoi-worker.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QoiWorkerService {
   private worker: Worker | null = null;
-  private job: Promise<Function> | null = null;
+  private job: Promise<QOIJob> | null = null;
 
   constructor() {
     if (typeof Worker !== 'undefined') {
@@ -15,15 +16,11 @@ export class QoiWorkerService {
     }
   }
 
-  public async decode(url: string): Promise<{
-    data: ImageData;
-    width: number;
-    height: number;
-  }> {
+  public async decode(url: string): Promise<QOIImage> {
     if (this.worker && !this.job) {
       return new Promise((resolve, reject) => {
         const id = Date.now();
-        const listener = ({ data }: { data: any }) => {
+        const listener = ({ data }: { data: QOIWorkerOut }) => {
           if (data.id !== id) return;
           this.worker!.removeEventListener('message', listener);
 
