@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { FabModule } from 'src/app/components/fab/fab.module';
 import { ValuesPickerModule } from 'src/app/components/values-picker/values-picker.module';
 import { SettingsUsersEditComponent } from './settings-users-edit/settings-users-edit.component';
 import { SettingsUsersComponent } from './settings-users.component';
@@ -26,6 +27,7 @@ import { SettingsUsersRoutingModule } from './settings-users.routing.module';
     MatInputModule,
     MatChipsModule,
     FormsModule,
+    FabModule,
     ReactiveFormsModule,
     ValuesPickerModule,
   ],

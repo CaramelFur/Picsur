@@ -62,6 +62,7 @@
 
 <mat-paginator
   color="accent"
+  class="mat-elevation-z2"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="startingPageSize"
   [hidePageSize]="utilService.isMobile() | async"
@@ -71,13 +72,4 @@
 >
 </mat-paginator>
 
-<div class="fabholder">
-  <button
-    mat-fab
-    color="accent"
-    class="fabbutton fullanimate mat-elevation-z6"
-    (click)="addUser()"
-  >
-    <mat-icon fontSet="material-icons-outlined">person_add</mat-icon>
-  </button>
-</div>
+<fab aria-label="Add User" (click)="addUser()" icon="person_add"></fab>

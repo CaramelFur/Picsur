@@ -1,3 +1,5 @@
+@use "../node_modules/bootstrap/scss/bootstrap-grid.scss" as bs;
+
 // Create white border around content
 .content-border {
   border-radius: 20px;
@@ -53,11 +55,23 @@
 
   & > .fabbutton {
     position: fixed;
-    bottom: 1.5rem;
+    bottom: 2rem;
     z-index: 8;
 
-    @include media-breakpoint-up(xl) {
+    @include bs.media-breakpoint-down(xxl) {
+      right: 4rem;
+    }
+
+    @include bs.media-breakpoint-down(xl) {
+      right: 2rem;
+    }
+
+    @include bs.media-breakpoint-up(xl) {
       bottom: 4rem;
+    }
+
+    @include bs.media-breakpoint-up(xxl) {
+      margin-right: -3rem;
     }
   }
 }

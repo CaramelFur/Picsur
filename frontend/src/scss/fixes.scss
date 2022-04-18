@@ -2,6 +2,11 @@
 html,
 body {
   height: 100%;
+
+  color-scheme: dark;
+  .theme-alternate {
+    color-scheme: light;
+  }
 }
 
 app-root {
@@ -13,7 +18,6 @@ app-root {
 
 html {
   box-sizing: border-box;
-  color-scheme: dark;
   // Default font is sans family
   font-family: sans-serif;
 }

@@ -71,6 +71,7 @@
 
 <mat-paginator
   color="accent"
+  class="mat-elevation-z2"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="startingPageSize"
   [showFirstLastButtons]="utilService.isDesktop() | async"
@@ -79,15 +80,4 @@
 >
 </mat-paginator>
 
-<div class="fabholder">
-  <button
-    mat-fab
-    color="accent"
-    class="fabbutton fullanimate mat-elevation-z6"
-    (click)="addRole()"
-  >
-    <mat-icon fontSet="material-icons-outlined" aria-label="Add Role">
-      add
-    </mat-icon>
-  </button>
-</div>
+<fab aria-label="Add Role" (click)="addRole()"></fab>
