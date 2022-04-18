@@ -48,7 +48,7 @@ export class UsersModule implements OnModuleInit {
     password: string,
     roles: string[],
   ) {
-    this.logger.debug(`Ensuring user "${username}" exists`);
+    this.logger.verbose(`Ensuring user "${username}" exists`);
 
     const exists = await this.usersService.exists(username);
     if (exists) return;

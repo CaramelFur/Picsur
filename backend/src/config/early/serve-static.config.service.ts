@@ -16,7 +16,7 @@ export class ServeStaticConfigService
   private defaultLocation = join(PackageRoot, '../frontend/dist');
 
   constructor(private configService: ConfigService) {
-    this.logger.debug('Static directory: ' + this.getStaticDirectory());
+    this.logger.log('Static directory: ' + this.getStaticDirectory());
   }
 
   public getStaticDirectory(): string {

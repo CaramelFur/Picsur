@@ -28,7 +28,7 @@ export class MultiPartPipe implements PipeTransform {
   ) {
     let zodSchema = (metadata?.metatype as ZodDtoStatic)?.zodSchema;
     if (!zodSchema) {
-      this.logger.warn('Invalid scheme on multipart body');
+      this.logger.error('Invalid scheme on multipart body');
       throw new InternalServerErrorException('Invalid scheme on backend');
     }
 

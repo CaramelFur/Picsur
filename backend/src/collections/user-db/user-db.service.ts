@@ -64,8 +64,8 @@ export class UsersService {
 
     try {
       return await this.usersRepository.save(user);
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -79,8 +79,8 @@ export class UsersService {
 
     try {
       return await this.usersRepository.remove(userToModify);
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -95,7 +95,7 @@ export class UsersService {
 
     if (ImmutableUsersList.includes(userToModify.username)) {
       // Just fail silently
-      this.logger.log("Can't modify system user");
+      this.logger.verbose("User tried to modify system user, failed silently");
       return userToModify;
     }
 
@@ -108,8 +108,8 @@ export class UsersService {
 
     try {
       return await this.usersRepository.save(userToModify);
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -124,8 +124,7 @@ export class UsersService {
         .where('roles @> ARRAY[:role]', { role })
         .execute();
     } catch (e) {
-      this.logger.error(e);
-      return Fail("Couldn't remove role from everyone");
+      return Fail(e);
     }
 
     return true;
@@ -150,8 +149,8 @@ export class UsersService {
 
     try {
       userToModify = await this.usersRepository.save(userToModify);
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
 
     return userToModify;
@@ -193,8 +192,8 @@ export class UsersService {
 
       if (!found) return Fail('User not found');
       return found;
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -206,8 +205,8 @@ export class UsersService {
 
       if (!found) return Fail('User not found');
       return found as EUserBackend;
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -223,8 +222,8 @@ export class UsersService {
         take: count,
         skip: count * page,
       });
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 

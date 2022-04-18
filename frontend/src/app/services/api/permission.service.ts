@@ -59,7 +59,7 @@ export class PermissionService {
     return this.userService.live.pipe(Throttle(300)).subscribe(async (user) => {
       const permissions = await this.updatePermissions();
       if (HasFailed(permissions)) {
-        this.logger.warn(permissions.getReason());
+        this.logger.error(permissions.getReason());
         return;
       }
     });

@@ -45,9 +45,8 @@ export class SysPreferenceService {
       await this.sysPreferenceRepository.upsert(sysPreference, {
         conflictPaths: ['key'],
       });
-    } catch (e: any) {
-      this.logger.warn(e);
-      return Fail('Could not save preference');
+    } catch (e) {
+      return Fail(e);
     }
 
     // Return
@@ -75,16 +74,14 @@ export class SysPreferenceService {
           }),
         () => this.saveDefault(validatedKey as SysPreference),
       );
-    } catch (e: any) {
-      this.logger.warn(e);
-      return Fail('Could not get preference');
+    } catch (e) {
+      return Fail(e);
     }
 
     // Validate
     const result = ESysPreferenceSchema.safeParse(foundSysPreference);
     if (!result.success) {
-      this.logger.warn(result.error);
-      return Fail('Invalid preference');
+      return Fail(result.error);
     }
 
     // Return
@@ -157,8 +154,7 @@ export class SysPreferenceService {
     // It should already be valid, but these two validators might go out of sync
     const result = ESysPreferenceSchema.safeParse(verifySysPreference);
     if (!result.success) {
-      this.logger.warn(result.error);
-      return Fail('Invalid preference');
+      return Fail(result.error);
     }
 
     return result.data;

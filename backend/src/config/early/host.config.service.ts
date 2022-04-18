@@ -7,10 +7,10 @@ export class HostConfigService {
   private readonly logger = new Logger('HostConfigService');
 
   constructor(private configService: ConfigService) {
-    this.logger.debug('Host: ' + this.getHost());
-    this.logger.debug('Port: ' + this.getPort());
-    this.logger.debug('Demo: ' + this.isDemo());
-    this.logger.debug('Demo Interval: ' + this.getDemoInterval() / 1000 + 's');
+    this.logger.log('Host: ' + this.getHost());
+    this.logger.log('Port: ' + this.getPort());
+    this.logger.log('Demo: ' + this.isDemo());
+    this.logger.log('Demo Interval: ' + this.getDemoInterval() / 1000 + 's');
   }
 
   public getHost(): string {

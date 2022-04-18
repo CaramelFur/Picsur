@@ -28,7 +28,7 @@ export class PreferenceDefaultsService {
       if (envSecret) {
         return envSecret;
       } else {
-        this.logger.warn(
+        this.logger.log(
           'Since no JWT secret was provided, a random one will be generated and saved',
         );
         return generateRandomString(64);

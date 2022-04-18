@@ -7,7 +7,7 @@ export class MultipartConfigService {
   private readonly logger = new Logger('MultipartConfigService');
 
   constructor(private configService: ConfigService) {
-    this.logger.debug('Max file size: ' + this.getMaxFileSize());
+    this.logger.log('Max file size: ' + this.getMaxFileSize());
   }
 
   public getMaxFileSize(): number {

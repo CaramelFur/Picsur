@@ -20,7 +20,7 @@ export class DemoManagerModule implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     if (this.hostConfigService.isDemo()) {
-      this.logger.log('Demo mode enabled');
+      this.logger.warn('Demo mode enabled, images are ephimeral');
       await this.setupDemoMode();
     }
   }

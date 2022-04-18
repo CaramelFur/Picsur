@@ -4,15 +4,27 @@
 //  -> Side effects go brrr
 
 export class Failure {
-  constructor(private readonly reason?: string) {}
+  constructor(private readonly reason?: string, private readonly stack?: string) {}
 
   getReason(): string {
     return this.reason ?? 'Unknown';
   }
+
+  getStack(): string {
+    return this.stack ?? 'None';
+  }
 }
 
-export function Fail(reason?: string): Failure {
-  return new Failure(reason);
+export function Fail(reason?: any): Failure {
+  if (typeof reason === 'string') {
+    return new Failure(reason);
+  } else if(reason instanceof Error) {
+    return new Failure(reason.message, reason.stack);
+  } else if(reason instanceof Failure) {
+    return reason;
+  } else {
+    return new Failure('Converted(' + reason + ')');
+  }
 }
 
 export type Failable<T> = T | Failure;

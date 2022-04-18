@@ -14,8 +14,8 @@ export class JwtConfigService implements JwtOptionsFactory {
   private async printDebug() {
     const secret = await this.getJwtSecret();
     const expiresIn = await this.getJwtExpiresIn();
-    this.logger.debug('JWT secret: ' + secret);
-    this.logger.debug('JWT expiresIn: ' + expiresIn);
+    this.logger.verbose('JWT secret: ' + secret);
+    this.logger.verbose('JWT expiresIn: ' + expiresIn);
   }
 
   public async getJwtSecret(): Promise<string> {

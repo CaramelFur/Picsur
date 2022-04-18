@@ -25,8 +25,8 @@ export class ImageDBService {
 
     try {
       imageEntity = await this.imageRepository.save(imageEntity);
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
 
     return imageEntity;
@@ -48,8 +48,8 @@ export class ImageDBService {
       return found as B extends undefined
         ? EImageBackend
         : Required<EImageBackend>;
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -68,8 +68,8 @@ export class ImageDBService {
 
       if (found === undefined) return Fail('Images not found');
       return found;
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -77,8 +77,8 @@ export class ImageDBService {
     try {
       const result = await this.imageRepository.delete({ id });
       if (result.affected === 0) return Fail('Image not found');
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
     return true;
   }
@@ -89,8 +89,8 @@ export class ImageDBService {
 
     try {
       await this.imageRepository.delete({});
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
     return true;
   }

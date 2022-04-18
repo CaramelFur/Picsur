@@ -37,8 +37,8 @@ export class RolesService {
 
     try {
       return await this.rolesRepository.save(role, { reload: true });
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -52,8 +52,8 @@ export class RolesService {
 
     try {
       return await this.rolesRepository.remove(roleToModify);
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -118,8 +118,8 @@ export class RolesService {
 
     try {
       return await this.rolesRepository.save(roleToModify);
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -131,8 +131,8 @@ export class RolesService {
 
       if (!found) return Fail('Role not found');
       return found;
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -141,8 +141,8 @@ export class RolesService {
       const found = await this.rolesRepository.find();
       if (!found) return Fail('No roles found');
       return found;
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
   }
 
@@ -158,8 +158,8 @@ export class RolesService {
       await this.rolesRepository.delete({
         name: In(UndeletableRolesList),
       });
-    } catch (e: any) {
-      return Fail(e?.message);
+    } catch (e) {
+      return Fail(e);
     }
     return true;
   }
@@ -172,8 +172,7 @@ export class RolesService {
     } else {
       const result = ERoleSchema.safeParse(role);
       if (!result.success) {
-        this.logger.warn(result.error);
-        return Fail('Invalid role');
+        return Fail(result.error);
       }
       // This is safe
       return result.data as ERoleBackend;

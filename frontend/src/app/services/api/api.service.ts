@@ -44,7 +44,7 @@ export class ApiService {
 
     const validateResult = sendSchema.safeParse(data);
     if (!validateResult.success) {
-      this.logger.warn(validateResult.error);
+      this.logger.error(validateResult.error);
       return Fail('Something went wrong');
     }
 
@@ -78,7 +78,7 @@ export class ApiService {
 
     const validateResult = resultSchema.safeParse(result);
     if (!validateResult.success) {
-      this.logger.warn('result', validateResult.error);
+      this.logger.error(validateResult.error);
       return Fail('Something went wrong');
     }
 
@@ -98,7 +98,7 @@ export class ApiService {
     try {
       return await response.json();
     } catch (e) {
-      this.logger.warn(e);
+      this.logger.error(e);
       return Fail('Something went wrong');
     }
   }
@@ -113,7 +113,7 @@ export class ApiService {
     try {
       return await response.arrayBuffer();
     } catch (e) {
-      this.logger.warn(e);
+      this.logger.error(e);
       return Fail('Something went wrong');
     }
   }
@@ -133,9 +133,9 @@ export class ApiService {
       options.headers = headers;
 
       return await window.fetch(url, options);
-    } catch (error: any) {
+    } catch (e) {
       this.errorSubject.next({
-        error,
+        error: e,
         url,
       });
       return Fail('Network Error');

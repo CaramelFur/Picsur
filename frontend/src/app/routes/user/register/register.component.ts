@@ -54,7 +54,7 @@ export class RegisterComponent implements OnInit {
 
     const user = await this.userService.register(data.username, data.password);
     if (HasFailed(user)) {
-      this.logger.warn(user.getReason());
+      this.logger.error(user.getReason());
       this.utilService.showSnackBar(
         'Register failed, please try again',
         SnackBarType.Error
@@ -65,7 +65,7 @@ export class RegisterComponent implements OnInit {
     if (!this.userService.isLoggedIn) {
       const loginResult = await this.userService.login(data.username, data.password);
       if (HasFailed(loginResult)) {
-        this.logger.warn(loginResult.getReason());
+        this.logger.error(loginResult.getReason());
         this.utilService.showSnackBar(
           'Failed to login after register',
           SnackBarType.Error

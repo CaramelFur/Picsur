@@ -66,8 +66,18 @@ export class GlobalLogger {
       return;
     }
 
+    const processedArgs = args.map(a => {
+      if (typeof a === 'string') {
+        return a;
+      } else if (a instanceof Error) {
+        return a.message;
+      } else {
+        return a.toString();
+      }
+    })
+
     const styles = LoggerStyles[level];
-    const message = ['%c' + context.source, styles, ...args];
+    const message = ['%c' + context.source, styles, ...processedArgs];
     console[LoggerFunctions[level]](...message);
   }
 }

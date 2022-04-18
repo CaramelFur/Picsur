@@ -44,7 +44,7 @@ export class UserService {
 
     const user = await this.extractUser(apikey);
     if (HasFailed(user)) {
-      this.logger.warn(user.getReason());
+      this.logger.error(user.getReason());
       await this.logout();
       return;
     }
@@ -53,7 +53,7 @@ export class UserService {
 
     const fetchedUser = await this.fetchUser();
     if (HasFailed(fetchedUser)) {
-      this.logger.warn(fetchedUser.getReason());
+      this.logger.error(fetchedUser.getReason());
       await this.logout();
       return;
     }
@@ -122,7 +122,7 @@ export class UserService {
 
     const result = JwtDataSchema.safeParse(decoded);
     if (!result.success) {
-      this.logger.warn(result.error);
+      this.logger.error(result.error);
       return Fail('Invalid token data');
     }
 

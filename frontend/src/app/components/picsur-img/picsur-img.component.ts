@@ -40,7 +40,7 @@ export class PicsurImgComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     let url = this.imageURL ?? '';
     if (URLRegex.test(url)) {
-      this.update(url).catch((err) => this.logger.error(err));
+      this.update(url).catch(this.logger.error);
     } else {
       this.state = PicsurImgState.Loading;
     }

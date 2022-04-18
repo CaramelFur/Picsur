@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
 
     const user = await this.userService.login(data.username, data.password);
     if (HasFailed(user)) {
-      this.logger.warn(user.getReason());
+      this.logger.error(user.getReason());
       this.utilService.showSnackBar(
         'Login failed, please try again',
         SnackBarType.Error

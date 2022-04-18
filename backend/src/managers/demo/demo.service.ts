@@ -14,7 +14,7 @@ export class DemoManagerService {
 
   public async setupRoles() {
     this.logger.warn(
-      'Modifying roles for demo mode, this will not be reverted automatically',
+      'Modifying roles for demo mode, this will have to be reverted manually',
     );
     // Could be done manually, but this makes settup up a demo instance quicker
     this.rolesService.addPermissions('guest', [Permission.ImageUpload]);
@@ -25,7 +25,7 @@ export class DemoManagerService {
   }
 
   private async executeAsync() {
-    this.logger.debug('Executing demo cleanup');
+    this.logger.verbose('Executing demo cleanup');
     await this.imagesService.deleteAll(true);
   }
 }

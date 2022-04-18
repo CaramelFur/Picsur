@@ -46,9 +46,8 @@ export class UsrPreferenceService {
       await this.usrPreferenceRepository.upsert(usrPreference, {
         conflictPaths: ['key', 'userId'],
       });
-    } catch (e: any) {
-      this.logger.warn(e);
-      return Fail('Could not save preference');
+    } catch (e) {
+      return Fail(e);
     }
 
     // Return
@@ -80,16 +79,14 @@ export class UsrPreferenceService {
           }),
         () => this.saveDefault(userid, validatedKey as UsrPreference),
       );
-    } catch (e: any) {
-      this.logger.warn(e);
-      return Fail('Could not get preference');
+    } catch (e) {
+      return Fail(e);
     }
 
     // Validate
     const result = EUsrPreferenceSchema.safeParse(foundUsrPreference);
     if (!result.success) {
-      this.logger.warn(result.error);
-      return Fail('Invalid preference');
+      return Fail(result.error);
     }
 
     // Return
@@ -198,8 +195,7 @@ export class UsrPreferenceService {
     // It should already be valid, but these two validators might go out of sync
     const result = EUsrPreferenceSchema.safeParse(verifySysPreference);
     if (!result.success) {
-      this.logger.warn(result.error);
-      return Fail('Invalid preference');
+      return Fail(result.error);
     }
 
     return result.data;

@@ -3,7 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { EarlyConfigModule } from '../../config/early/early-config.module';
 import { HostConfigService } from '../../config/early/host.config.service';
-import { ImmutableRolesList, SystemRoleDefaults, UndeletableRolesList } from '../../models/constants/roles.const';
+import {
+  ImmutableRolesList,
+  SystemRoleDefaults,
+  UndeletableRolesList
+} from '../../models/constants/roles.const';
 import { ERoleBackend } from '../../models/entities/role.entity';
 import { RolesService } from './role-db.service';
 
@@ -42,7 +46,7 @@ export class RolesModule implements OnModuleInit {
   private async ensureSystemRolesExist() {
     // The UndeletableRolesList is also the list of systemroles
     for (const systemRole of UndeletableRolesList) {
-      this.logger.debug(`Ensuring system role "${systemRole}" exists`);
+      this.logger.verbose(`Ensuring system role "${systemRole}" exists`);
 
       const exists = await this.rolesService.exists(systemRole);
       if (exists) continue;
@@ -63,9 +67,9 @@ export class RolesModule implements OnModuleInit {
   private async updateImmutableRoles() {
     // Immutable roles can not be updated via the gui
     // They therefore do have to be kept up to date from the backend
-    
+
     for (const immutableRole of ImmutableRolesList) {
-      this.logger.debug(
+      this.logger.verbose(
         `Updating permissions for immutable role "${immutableRole}"`,
       );
 

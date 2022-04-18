@@ -29,7 +29,7 @@ export class ApiErrorService {
         this.utilService.showSnackBar('Network Error', SnackBarType.Error);
       }
 
-      this.logger.warn(error.error);
+      this.logger.error(error.error);
     });
   }
 }

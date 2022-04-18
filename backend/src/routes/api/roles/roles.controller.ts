@@ -123,6 +123,7 @@ export class RolesController {
 
     const success = await this.usersService.removeRoleEveryone(role.name);
     if (HasFailed(success)) {
+      this.logger.warn(success.getReason());
       throw new InternalServerErrorException(
         'Could not remove role from users',
       );

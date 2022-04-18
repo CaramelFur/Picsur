@@ -15,11 +15,12 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   ) {
     const varOptions = this.getTypeOrmServerOptions();
 
-    this.logger.debug('DB host: ' + varOptions.host);
-    this.logger.debug('DB port: ' + varOptions.port);
-    this.logger.debug('DB username: ' + varOptions.username);
-    this.logger.debug('DB password: ' + varOptions.password);
-    this.logger.debug('DB database: ' + varOptions.database);
+    this.logger.log('DB host: ' + varOptions.host);
+    this.logger.log('DB port: ' + varOptions.port);
+    this.logger.log('DB database: ' + varOptions.database);
+
+    this.logger.verbose('DB username: ' + varOptions.username);
+    this.logger.verbose('DB password: ' + varOptions.password);
   }
 
   public getTypeOrmServerOptions() {

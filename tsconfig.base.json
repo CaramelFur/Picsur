@@ -16,6 +16,7 @@
     "strictNullChecks": true,
     "noImplicitThis": true,
     "noImplicitReturns": true,
+    "useUnknownInCatchVariables": true,
     
     "skipLibCheck": true,
     "removeComments": true,
