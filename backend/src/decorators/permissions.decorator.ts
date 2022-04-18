@@ -1,7 +1,7 @@
 import { SetMetadata, UseGuards } from '@nestjs/common';
 import { CombineFCDecorators } from 'picsur-shared/dist/util/decorator';
-import { LocalAuthGuard } from '../managers/auth/guards/localauth.guard';
-import { Permissions } from '../models/dto/permissions.dto';
+import { LocalAuthGuard } from '../managers/auth/guards/local-auth.guard';
+import { Permissions } from '../models/constants/permissions.const';
 
 export const RequiredPermissions = (...permissions: Permissions) => {
   return SetMetadata('permissions', permissions);

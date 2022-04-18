@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { EarlyConfigModule } from '../../../config/early/earlyconfig.module';
+import { EarlyConfigModule } from '../../../config/early/early-config.module';
 import { InfoController } from './info.controller';
 
 @Module({

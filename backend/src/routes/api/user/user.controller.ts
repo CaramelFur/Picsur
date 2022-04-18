@@ -15,7 +15,7 @@ import {
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { UsersService } from '../../../collections/userdb/userdb.service';
+import { UsersService } from '../../../collections/user-db/user-db.service';
 import {
   NoPermissions,
   RequiredPermissions,
@@ -24,7 +24,7 @@ import {
 import { ReqUser, ReqUserID } from '../../../decorators/request-user.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
 import { AuthManagerService } from '../../../managers/auth/auth.service';
-import { Permission } from '../../../models/dto/permissions.dto';
+import { Permission } from '../../../models/constants/permissions.const';
 import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 
 @Controller('api/user')

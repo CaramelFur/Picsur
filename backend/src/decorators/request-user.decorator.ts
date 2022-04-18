@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import AuthFasityRequest from '../models/requests/authrequest.dto';
+import AuthFasityRequest from '../models/interfaces/authrequest.dto';
 
 export const ReqUser = createParamDecorator(
   (input: any, ctx: ExecutionContext) => {

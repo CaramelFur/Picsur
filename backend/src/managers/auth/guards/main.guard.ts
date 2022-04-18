@@ -9,8 +9,8 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { EUser, EUserSchema } from 'picsur-shared/dist/entities/user.entity';
 import { Fail, Failable, HasFailed } from 'picsur-shared/dist/types';
-import { UsersService } from '../../../collections/userdb/userdb.service';
-import { Permissions } from '../../../models/dto/permissions.dto';
+import { UsersService } from '../../../collections/user-db/user-db.service';
+import { Permissions } from '../../../models/constants/permissions.const';
 import { isPermissionsArray } from '../../../models/validators/permissions.validator';
 
 // This guard extends both the jwt authenticator and the guest authenticator

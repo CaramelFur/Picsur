@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { UsersService } from '../../collections/userdb/userdb.service';
+import { UsersService } from '../../collections/user-db/user-db.service';
 import { EUserBackend } from '../../models/entities/user.entity';
 
 @Injectable()

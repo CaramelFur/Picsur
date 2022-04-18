@@ -6,9 +6,9 @@ import {
 import fastifyHelmet from 'fastify-helmet';
 import * as multipart from 'fastify-multipart';
 import { AppModule } from './app.module';
-import { UsersService } from './collections/userdb/userdb.service';
+import { UsersService } from './collections/user-db/user-db.service';
 import { HostConfigService } from './config/early/host.config.service';
-import { MainExceptionFilter } from './layers/httpexception/httpexception.filter';
+import { MainExceptionFilter } from './layers/exception/exception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
 import { ZodValidationPipe } from './layers/validate/zod-validator.pipe';
 import { PicsurLoggerService } from './logger/logger.service';

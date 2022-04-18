@@ -5,6 +5,6 @@ import { ExperimentController } from './experiment.controller';
 // TODO: remove when out of beta
 
 @Module({
-  controllers: [ExperimentController]
+  controllers: [ExperimentController],
 })
 export class ExperimentModule {}

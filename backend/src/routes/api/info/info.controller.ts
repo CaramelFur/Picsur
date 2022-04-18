@@ -6,7 +6,7 @@ import {
 import { HostConfigService } from '../../../config/early/host.config.service';
 import { NoPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
-import { PermissionsList } from '../../../models/dto/permissions.dto';
+import { PermissionsList } from '../../../models/constants/permissions.const';
 
 @Controller('api/info')
 @NoPermissions()

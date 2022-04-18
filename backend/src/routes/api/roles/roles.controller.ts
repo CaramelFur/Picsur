@@ -19,17 +19,17 @@ import {
   SpecialRolesResponse
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { RolesService } from '../../../collections/roledb/roledb.service';
-import { UsersService } from '../../../collections/userdb/userdb.service';
+import { RolesService } from '../../../collections/role-db/role-db.service';
+import { UsersService } from '../../../collections/user-db/user-db.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
-import { Permission } from '../../../models/dto/permissions.dto';
+import { Permission } from '../../../models/constants/permissions.const';
 import {
   DefaultRolesList,
   ImmutableRolesList,
   SoulBoundRolesList,
   UndeletableRolesList
-} from '../../../models/dto/roles.dto';
+} from '../../../models/constants/roles.const';
 import { isPermissionsArray } from '../../../models/validators/permissions.validator';
 
 @Controller('api/roles')

@@ -1,7 +1,7 @@
 import { FactoryProvider, Injectable, Logger } from '@nestjs/common';
 import { JwtModuleOptions, JwtOptionsFactory } from '@nestjs/jwt';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { SysPreferenceService } from '../../collections/preferencesdb/syspreferencedb.service';
+import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
 
 @Injectable()
 export class JwtConfigService implements JwtOptionsFactory {
