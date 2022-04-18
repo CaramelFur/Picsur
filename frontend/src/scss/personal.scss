@@ -53,7 +53,7 @@
   display: flex;
   justify-content: flex-end;
 
-  & > .fabbutton {
+  & .fabposition {
     position: fixed;
     bottom: 2rem;
     z-index: 8;
@@ -71,7 +71,7 @@
     }
 
     @include bs.media-breakpoint-up(xxl) {
-      margin-right: -3rem;
+      transform: translateX(3rem);
     }
   }
 }

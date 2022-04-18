@@ -1,0 +1,44 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+
+@mixin _theme-property($theme, $property, $hue) {
+  $primary: map.get($theme, primary);
+  $accent: map.get($theme, accent);
+  $warn: map.get($theme, warn);
+  $background: map.get($theme, background);
+  $foreground: map.get($theme, foreground);
+
+  &.mat-primary {
+    #{$property}: mat.get-color-from-palette($primary, $hue);
+  }
+  &.mat-accent {
+    #{$property}: mat.get-color-from-palette($accent, $hue);
+  }
+  &.mat-warn {
+    #{$property}: mat.get-color-from-palette($warn, $hue);
+  }
+
+  &.mat-primary, &.mat-accent, &.mat-warn, &.mat-button-disabled {
+    &.mat-button-disabled {
+      $palette: if($property == 'color', $foreground, $background);
+      #{$property}: mat.get-color-from-palette($palette, disabled-button);
+    }
+  }
+}
+
+@mixin custom-buttons($color-theme) {
+  .mat-flat-button,
+  .mat-raised-button,
+  .mat-fab,
+  .mat-mini-fab {
+    &:hover {
+      @include _theme-property($color-theme, "background-color", "darker");
+    }
+  }
+}
+
+@mixin custom-material($theme) {
+  $color: mat.get-color-config($theme);
+
+  @include custom-buttons($color);
+}

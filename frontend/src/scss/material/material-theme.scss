@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "@angular/material" as mat;
+@use "./material-theme-custom.scss" as custom-mat;
 
 @include mat.core();
 
@@ -22,7 +23,7 @@ $mat-primary: (
 $mat-accent: (
   main: #43a047,
   lighter: #c7e3c8,
-  darker: #2c842f,
+  darker: #1B5E20,
   200: #43a047,
   // For slide toggle,
   contrast:
@@ -167,16 +168,15 @@ $mat-theme-light: (
   foreground: $mat-light-theme-foreground-palette,
 );
 
-
 @include mat.all-component-themes($mat-theme);
+@include custom-mat.custom-material($mat-theme);
 
 .theme-alternate {
   @include mat.all-component-themes($mat-theme-light);
+  @include custom-mat.custom-material($mat-theme-light);
 }
 
-.mat-raised-button,
-.mat-stroked-button,
-.mat-flat-button {
+.mat-button-base {
   padding: 0 1.15em;
   margin: 0 0.65em;
   min-width: 3em;

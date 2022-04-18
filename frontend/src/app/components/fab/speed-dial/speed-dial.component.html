@@ -1,0 +1,45 @@
+<div class="fabholder">
+  <div
+    class="fabposition"
+    (mouseenter)="enter()"
+    (mouseleave)="leave()"
+    [class.speeddial-is-open]="isOpen"
+  >
+    <div class="speeddial-options" [@speedDialAnimation] (@speedDialAnimation.done)="done()"  *ngIf="isOpen">
+      <button mat-mini-fab color="primary">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button class="pog" mat-mini-fab color="primary">
+        <mat-icon>filter_list</mat-icon>
+      </button>
+    </div>
+
+    <button
+      mat-fab
+      [color]="color"
+      class="fullanimate mat-elevation-z6"
+      (click)="click()"
+      aria-label=""
+    >
+      <mat-icon
+        [class.icon-rotate]="iconHover === undefined"
+        [class.icon-main]="iconHover !== undefined"
+        fontSet="material-icons-outlined"
+        [aria-label]="ariaLabel"
+      >
+        {{ icon }}
+      </mat-icon>
+      <mat-icon
+        *ngIf="iconHover !== undefined"
+        class="icon-hover"
+        fontSet="material-icons-outlined"
+        [aria-label]="ariaLabel"
+      >
+        {{ iconHover }}
+      </mat-icon>
+    </button>
+  </div>
+</div>
