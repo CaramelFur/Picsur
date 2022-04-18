@@ -7,7 +7,7 @@ import { SidebarResolverService } from 'src/app/services/sidebar-resolver/sideba
 import { SettingsGeneralRouteModule } from './general/settings-general.module';
 import { SettingsRolesRouteModule } from './roles/settings-roles.module';
 import { SettingsSidebarComponent } from './sidebar/settings-sidebar.component';
-import { SettingsSysprefRouteModule } from './syspref/settings-syspref.module';
+import { SettingsSysprefRouteModule } from './sys-pref/settings-sys-pref.module';
 import { SettingsUsersRouteModule } from './users/settings-users.module';
 
 const SettingsRoutes: PRoutes = [

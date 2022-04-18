@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { SnackBarType } from '../models/dto/snack-bar-type.dto';
-import { ApiService } from '../services/api/api.service';
-import { Logger } from '../services/logger/logger.service';
+import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
+import { ApiService } from '../../services/api/api.service';
+import { Logger } from '../../services/logger/logger.service';
 import { UtilService } from './util.service';
 
 @Injectable({

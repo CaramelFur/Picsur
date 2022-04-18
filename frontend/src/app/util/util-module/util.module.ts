@@ -7,7 +7,7 @@ import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS
 } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
-import { ApiErrorService } from './apierror.service';
+import { ApiErrorService } from './api-error.service';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({

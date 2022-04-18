@@ -5,12 +5,12 @@ import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
-import { UpdateUserControl } from 'src/app/models/forms/updateuser.control';
+import { UpdateUserControl } from 'src/app/models/forms/update-user.control';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
-import { UserManageService } from 'src/app/services/api/usermanage.service';
+import { UserManageService } from 'src/app/services/api/user-manage.service';
 import { Logger } from 'src/app/services/logger/logger.service';
-import { UtilService } from 'src/app/util/util.service';
+import { UtilService } from 'src/app/util/util-module/util.service';
 
 enum EditMode {
   edit = 'edit',

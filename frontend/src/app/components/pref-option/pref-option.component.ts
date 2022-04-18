@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import { Required } from 'src/app/models/decorators/required.decorator';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { Throttle } from 'src/app/util/throttle';
-import { UtilService } from 'src/app/util/util.service';
+import { UtilService } from 'src/app/util/util-module/util.service';
 
 @Component({
   selector: 'pref-option',

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { ProcessingViewMetadata } from 'src/app/models/dto/processing-view-metadata.dto';
+import { ProcessingViewMeta } from 'src/app/models/dto/processing-view-meta.dto';
 import { ImageService } from 'src/app/services/api/image.service';
-import { UtilService } from 'src/app/util/util.service';
+import { UtilService } from 'src/app/util/util-module/util.service';
 
 @Component({
   templateUrl: './processing.component.html',
@@ -16,7 +16,7 @@ export class ProcessingComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    const state = history.state as ProcessingViewMetadata;
+    const state = history.state as ProcessingViewMeta;
     if (!state) {
       return this.utilService.quitError('Error');
     }

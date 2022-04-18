@@ -8,7 +8,7 @@ import { UserPassModel } from 'src/app/models/forms-dto/userpass.dto';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UserService } from 'src/app/services/api/user.service';
 import { Logger } from 'src/app/services/logger/logger.service';
-import { UtilService } from 'src/app/util/util.service';
+import { UtilService } from 'src/app/util/util-module/util.service';
 import { RegisterControl } from '../../../models/forms/register.control';
 
 @Component({

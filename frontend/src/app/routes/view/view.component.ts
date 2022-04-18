@@ -4,7 +4,7 @@ import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UUIDRegex } from 'picsur-shared/dist/util/common-regex';
 import { ImageService } from 'src/app/services/api/image.service';
-import { UtilService } from 'src/app/util/util.service';
+import { UtilService } from 'src/app/util/util-module/util.service';
 
 @Component({
   templateUrl: './view.component.html',

@@ -5,8 +5,8 @@ import { NgxDropzoneChangeEvent } from 'ngx-dropzone';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { debounceTime } from 'rxjs';
 import { PermissionService } from 'src/app/services/api/permission.service';
-import { UtilService } from 'src/app/util/util.service';
-import { ProcessingViewMetadata } from '../../models/dto/processing-view-metadata.dto';
+import { UtilService } from 'src/app/util/util-module/util.service';
+import { ProcessingViewMeta } from '../../models/dto/processing-view-meta.dto';
 
 @Component({
   templateUrl: './upload.component.html',
@@ -41,7 +41,7 @@ export class UploadComponent implements OnInit {
       );
     }
 
-    const metadata: ProcessingViewMetadata = {
+    const metadata: ProcessingViewMeta = {
       imageFile: event.addedFiles[0],
     };
     this.router.navigate(['/processing'], { state: metadata });

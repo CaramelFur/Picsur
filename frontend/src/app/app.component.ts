@@ -10,8 +10,8 @@ import {
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { RouteTransitionAnimations } from './app.animation';
 import { PRouteData } from './models/dto/picsur-routes.dto';
-import { UtilService } from './util/util.service';
-let b = 0;
+import { UtilService } from './util/util-module/util.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

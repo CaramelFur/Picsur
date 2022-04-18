@@ -1,12 +1,12 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input } from '@angular/core';
 import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
-import { UtilService } from 'src/app/util/util.service';
+import { UtilService } from 'src/app/util/util-module/util.service';
 
 @Component({
-  selector: 'copyfield',
-  templateUrl: './copyfield.component.html',
-  styleUrls: ['./copyfield.component.scss'],
+  selector: 'copy-field',
+  templateUrl: './copy-field.component.html',
+  styleUrls: ['./copy-field.component.scss'],
 })
 export class CopyFieldComponent {
   // Two parameters: name, value

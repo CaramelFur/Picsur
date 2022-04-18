@@ -7,7 +7,7 @@ import {
 import { SemVerRegex } from 'picsur-shared/dist/util/common-regex';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
-import { UtilService } from 'src/app/util/util.service';
+import { UtilService } from 'src/app/util/util-module/util.service';
 import pkg from '../../../../package.json';
 import { ServerInfo } from '../../models/dto/server-info.dto';
 import { Logger } from '../logger/logger.service';

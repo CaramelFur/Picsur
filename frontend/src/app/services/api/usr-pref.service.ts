@@ -15,7 +15,7 @@ import { AsyncFailable, Fail, HasFailed, Map } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { Throttle } from 'src/app/util/throttle';
-import { UtilService } from 'src/app/util/util.service';
+import { UtilService } from 'src/app/util/util-module/util.service';
 import { Logger } from '../logger/logger.service';
 import { ApiService } from './api.service';
 import { PermissionService } from './permission.service';

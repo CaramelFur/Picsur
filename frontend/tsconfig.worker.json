@@ -7,5 +7,6 @@
 
     "isolatedModules": false
   },
-  "include": ["src/app/workers/*.worker.ts"]
+  "include": ["src/app/workers/*.worker.ts"],
+  "exclude": ["src/**/*.exclude.ts"],
 }

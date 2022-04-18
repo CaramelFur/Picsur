@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app.routing.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
 import { GuardsModule } from './guards/guards.module';
-import { UtilModule } from './util/util.module';
+import { UtilModule } from './util/util-module/util.module';
 
 @NgModule({
   declarations: [AppComponent],

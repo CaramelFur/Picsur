@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PRoutes } from 'src/app/models/dto/picsur-routes.dto';
-import { SettingsSysprefComponent } from './settings-syspref.component';
+import { SettingsSysprefComponent } from './settings-sys-pref.component';
 
 const routes: PRoutes = [
   {

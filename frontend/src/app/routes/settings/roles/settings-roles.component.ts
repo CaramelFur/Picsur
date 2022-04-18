@@ -10,7 +10,7 @@ import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { Logger } from 'src/app/services/logger/logger.service';
-import { UtilService } from 'src/app/util/util.service';
+import { UtilService } from 'src/app/util/util-module/util.service';
 
 @Component({
   templateUrl: './settings-roles.component.html',

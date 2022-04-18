@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
-import { SnackBarType } from '../models/dto/snack-bar-type.dto';
+import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
 import {
   ConfirmDialogComponent,
   DialogData

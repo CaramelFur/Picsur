@@ -7,7 +7,7 @@ import { HasFailed } from 'picsur-shared/dist/types';
 import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UserService } from 'src/app/services/api/user.service';
-import { UtilService } from 'src/app/util/util.service';
+import { UtilService } from 'src/app/util/util-module/util.service';
 
 @Component({
   selector: 'app-header',
