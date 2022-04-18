@@ -1,8 +1,15 @@
 import { QOIdecodeJS } from '../util/qoi/qoi-decode';
 import { QOIImage } from './qoi-worker.dto';
 
-export default async function qoiDecodeJob(url: string): Promise<QOIImage> {
-  const response = await fetch(url);
+export default async function qoiDecodeJob(
+  url: string,
+  authorization: string
+): Promise<QOIImage> {
+  const response = await fetch(url, {
+    headers: {
+      Authorization: authorization,
+    },
+  });
   if (!response.ok) {
     throw new Error(`Failed to fetch image: ${url}`);
   }

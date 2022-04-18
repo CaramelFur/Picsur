@@ -7,10 +7,11 @@ export interface QOIImage {
 export interface QOIWorkerIn {
   id: number;
   url: string;
+  authorization: string;
 }
 
 export interface QOIWorkerOut extends QOIImage {
   id: number;
 }
 
-export type QOIJob = (url: string) => Promise<QOIImage>;
+export type QOIJob = (url: string, authorization: string) => Promise<QOIImage>;

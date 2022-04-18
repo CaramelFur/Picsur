@@ -34,6 +34,10 @@ export class ApiService {
     return this.fetchSafeJson(type, url, { method: 'GET' });
   }
 
+  public async head(url: string): AsyncFailable<Headers> {
+    return this.fetchHead(url, { method: 'HEAD' });
+  }
+
   public async post<T extends z.AnyZodObject, W extends z.AnyZodObject>(
     sendType: ZodDtoStatic<T>,
     receiveType: ZodDtoStatic<W>,
@@ -116,6 +120,16 @@ export class ApiService {
       this.logger.error(e);
       return Fail('Something went wrong');
     }
+  }
+
+  private async fetchHead(
+    url: RequestInfo,
+    options: RequestInit
+  ): AsyncFailable<Headers> {
+    const response = await this.fetch(url, options);
+    if (HasFailed(response)) return response;
+
+    return response.headers;
   }
 
   private async fetch(
