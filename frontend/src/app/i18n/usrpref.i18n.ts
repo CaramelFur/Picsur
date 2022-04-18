@@ -1,4 +1,4 @@
-import { UsrPreference } from 'picsur-shared/dist/dto/usrpreferences.dto';
+import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.dto';
 
 export const UsrPreferenceFriendlyNames: {
   [key in UsrPreference]: string;

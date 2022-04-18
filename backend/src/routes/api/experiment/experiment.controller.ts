@@ -2,7 +2,7 @@ import {
   Controller, Get,
   Request
 } from '@nestjs/common';
-import { UserInfoResponse } from 'picsur-shared/dist/dto/api/usermanage.dto';
+import { UserInfoResponse } from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { ReqUserID } from '../../../decorators/request-user.decorator';

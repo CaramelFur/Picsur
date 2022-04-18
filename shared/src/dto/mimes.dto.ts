@@ -6,7 +6,7 @@ export enum ImageMime {
   TIFF = 'image/tiff',
   BMP = 'image/bmp',
   ICO = 'image/x-icon',
-  QOI = 'image/qoi',
+  QOI = 'image/x-qoi',
 }
 
 export enum AnimMime {

@@ -18,9 +18,9 @@ export class MainExceptionFilter implements ExceptionFilter {
 
   catch(exception: unknown, host: ArgumentsHost) {
     if (exception instanceof Error) {
-      MainExceptionFilter.logger.error(exception.message, exception.stack);
+      MainExceptionFilter.logger.warn(exception.message, exception.stack);
     } else {
-      MainExceptionFilter.logger.error(exception);
+      MainExceptionFilter.logger.warn(exception);
     }
 
     const ctx = host.switchToHttp();

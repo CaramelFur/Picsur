@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { SysPreference } from 'picsur-shared/dist/dto/syspreferences.dto';
+import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.dto';
 import {
   AsyncFailable,
   Fail,

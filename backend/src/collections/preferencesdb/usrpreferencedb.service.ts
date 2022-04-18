@@ -5,7 +5,7 @@ import {
   PrefValueType,
   PrefValueTypeStrings
 } from 'picsur-shared/dist/dto/preferences.dto';
-import { UsrPreference } from 'picsur-shared/dist/dto/usrpreferences.dto';
+import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {

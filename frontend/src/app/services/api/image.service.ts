@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
-import { ImageLinks } from 'picsur-shared/dist/dto/imagelinks.dto';
+import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { AsyncFailable } from 'picsur-shared/dist/types';
 import { Open } from 'picsur-shared/dist/types/failable';

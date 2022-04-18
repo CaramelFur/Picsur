@@ -10,7 +10,7 @@ import {
   UserListResponse,
   UserUpdateRequest,
   UserUpdateResponse
-} from 'picsur-shared/dist/dto/api/usermanage.dto';
+} from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, Open } from 'picsur-shared/dist/types';
 import { ApiService } from './api.service';

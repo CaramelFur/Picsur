@@ -5,7 +5,7 @@ import {
 import { createZodDto } from '../../util/create-zod-dto';
 import { IsPosInt } from '../../validators/positive-int.validator';
 import { IsStringList } from '../../validators/string-list.validator';
-import { EntityIDObjectSchema } from '../idobject.dto';
+import { EntityIDObjectSchema } from '../id-object.dto';
 
 // UserList
 export const UserListRequestSchema = z.object({
