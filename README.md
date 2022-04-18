@@ -8,7 +8,7 @@
 
 I couldn't really find any open source project that allowed you to easily host images. So I decided to create one.
 
-It works like a hybrid between imgur and pastebin.
+It feels like a hybrid between Imgur and Pastebin.
 
 ## Beta
 
@@ -19,11 +19,15 @@ But it does function, so feel free to give it a try.
 
 You can view a live demo here: <https://picsur.rubikscraft.nl/>
 
-The images are deleted every five minutes, and the max filesize is 16MB. But it should give you an indication of how it works.
+The images are deleted every five minutes, and the maximum filesize is 16MB. But it should give you an indication of how it works.
 
 ## Bugs
 
 If you encounter any bugs or oddities, please open an issue [here](https://github.com/rubikscraft/Picsur/issues). Cause without feedback I'll never know they exists.
+
+## Star
+
+If you like this project, don't forget to give it a star. It tells me that I'm not wasting my time on something that people don't like.
 
 ## Running
 
