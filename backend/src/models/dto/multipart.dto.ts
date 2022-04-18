@@ -1,5 +1,5 @@
-import { HttpException } from '@nestjs/common';
 import { MultipartFile } from 'fastify-multipart';
+import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
 import { z } from 'zod';
 
 export const MultiPartFileDtoSchema = z.object({
@@ -7,29 +7,27 @@ export const MultiPartFileDtoSchema = z.object({
   encoding: z.string(),
   filename: z.string(),
   mimetype: z.string(),
-  toBuffer: z.function(undefined, z.any()),
+  buffer: z.any(),
   file: z.any(),
 });
 export type MultiPartFileDto = z.infer<typeof MultiPartFileDtoSchema>;
 
-export function CreateMultiPartFileDto(
+export async function CreateMultiPartFileDto(
   file: MultipartFile,
-  exceptionOnFail: HttpException,
-): MultiPartFileDto {
-  return {
-    fieldname: file.fieldname,
-    encoding: file.encoding,
-    filename: file.filename,
-    mimetype: file.mimetype,
-    toBuffer: async () => {
-      try {
-        return await file.toBuffer();
-      } catch (e) {
-        throw exceptionOnFail;
-      }
-    },
-    file: file.file,
-  };
+): AsyncFailable<MultiPartFileDto> {
+  try {
+    const buffer = await file.toBuffer();
+    return {
+      fieldname: file.fieldname,
+      encoding: file.encoding,
+      filename: file.filename,
+      mimetype: file.mimetype,
+      buffer,
+      file: file.file,
+    };
+  } catch (e) {
+    return Fail(e);
+  }
 }
 
 export const MultiPartFieldDtoSchema = z.object({
@@ -39,7 +37,9 @@ export const MultiPartFieldDtoSchema = z.object({
 });
 export type MultiPartFieldDto = z.infer<typeof MultiPartFieldDtoSchema>;
 
-export function CreateMultiPartFieldDto(file: MultipartFile): MultiPartFieldDto {
+export function CreateMultiPartFieldDto(
+  file: MultipartFile,
+): MultiPartFieldDto {
   return {
     fieldname: file.fieldname,
     encoding: file.encoding,

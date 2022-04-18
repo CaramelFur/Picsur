@@ -18,7 +18,8 @@ export class MainExceptionFilter implements ExceptionFilter {
 
   catch(exception: unknown, host: ArgumentsHost) {
     if (exception instanceof Error) {
-      MainExceptionFilter.logger.warn(exception.message, exception.stack);
+      MainExceptionFilter.logger.warn(exception.message);
+      MainExceptionFilter.logger.debug(exception.stack);
     } else {
       MainExceptionFilter.logger.warn(exception);
     }

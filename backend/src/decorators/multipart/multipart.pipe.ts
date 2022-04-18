@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { MultipartFields, MultipartFile } from 'fastify-multipart';
+import { HasFailed } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { MultipartConfigService } from '../../config/early/multipart.config.service';
 import {
@@ -62,10 +63,12 @@ export class MultiPartPipe implements PipeTransform {
           fields[key] as MultipartFile,
         );
       } else {
-        (multipartData as any)[key] = CreateMultiPartFileDto(
-          fields[key] as MultipartFile,
-          new BadRequestException('Invalid file'),
-        );
+        const file = await CreateMultiPartFileDto(fields[key] as MultipartFile);
+        if (HasFailed(file)) {
+          this.logger.error(file.getReason());
+          throw new InternalServerErrorException('Invalid file');
+        }
+        (multipartData as any)[key] = file;
       }
     }
 

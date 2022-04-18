@@ -4,7 +4,8 @@ import {
   Head,
   InternalServerErrorException,
   Logger,
-  NotFoundException, Post,
+  NotFoundException,
+  Post,
   Res
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
@@ -61,9 +62,7 @@ export class ImageController {
 
   @Get('meta/:id')
   @Returns(ImageMetaResponse)
-  async getImageMeta(
-    @ImageIdParam() id: string,
-  ): Promise<ImageMetaResponse> {
+  async getImageMeta(@ImageIdParam() id: string): Promise<ImageMetaResponse> {
     const image = await this.imagesService.retrieveInfo(id);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
@@ -80,8 +79,7 @@ export class ImageController {
     @MultiPart() multipart: ImageUploadDto,
     @ReqUserID() userid: string,
   ): Promise<ImageMetaResponse> {
-    const fileBuffer = await multipart.image.toBuffer();
-    const image = await this.imagesService.upload(fileBuffer, userid);
+    const image = await this.imagesService.upload(multipart.image.buffer, userid);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
       throw new InternalServerErrorException('Could not upload image');
