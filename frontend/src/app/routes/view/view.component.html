@@ -24,12 +24,7 @@
       <copy-field label="Rst" [value]="imageLinks.rst"></copy-field>
     </div>
     <div class="col-12">
-      <button
-        mat-raised-button
-        class="m-1"
-        color="accent"
-        (click)="downloadImage()"
-      >
+      <button mat-raised-button class="m-1" color="accent" (click)="download()">
         Download
       </button>
 
@@ -45,4 +40,26 @@
   </div>
 </div>
 
-<speed-dial></speed-dial>
+<speed-dial
+  icon="menu"
+  icon-hover="download"
+  tooltip="Download the image"
+  [open-on-hover]="true"
+  (main-click)="download()"
+  #speedDial
+>
+  <button
+    mat-mini-fab
+    matTooltip="Close menu"
+    color="primary"
+    (click)="speedDial.close()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <button mat-mini-fab matTooltip="Info about the action" color="primary">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button mat-mini-fab matTooltip="Info about the action" color="primary">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+</speed-dial>

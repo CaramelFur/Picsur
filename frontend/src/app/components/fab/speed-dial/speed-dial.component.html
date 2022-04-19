@@ -1,32 +1,31 @@
-<div class="fabholder">
+<div class="fab-wrapper">
   <div
-    class="fabposition"
+    class="fab-position"
     (mouseenter)="enter()"
     (mouseleave)="leave()"
-    [class.speeddial-is-open]="isOpen"
+    [class.speed-dial-is-open]="isOpen"
   >
-    <div class="speeddial-options" [@speedDialAnimation] (@speedDialAnimation.done)="done()"  *ngIf="isOpen">
-      <button mat-mini-fab color="primary">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <button mat-mini-fab color="primary">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button class="pog" mat-mini-fab color="primary">
-        <mat-icon>filter_list</mat-icon>
-      </button>
+    <div
+      class="speed-dial-options"
+      [@speedDialAnimation]
+      (@speedDialAnimation.start)="animStart()"
+      (@speedDialAnimation.done)="animDone()"
+      *ngIf="isOpen"
+    >
+      <ng-content select="[mat-mini-fab]"></ng-content>
     </div>
 
     <button
       mat-fab
       [color]="color"
-      class="fullanimate mat-elevation-z6"
+      class="speed-dial-main-button fullanimate mat-elevation-z6"
+      [matTooltip]="tooltip"
+      [matTooltipDisabled]="!isOpen"
       (click)="click()"
       aria-label=""
     >
       <mat-icon
-        [class.icon-rotate]="iconHover === undefined"
-        [class.icon-main]="iconHover !== undefined"
+        class="icon-main"
         fontSet="material-icons-outlined"
         [aria-label]="ariaLabel"
       >

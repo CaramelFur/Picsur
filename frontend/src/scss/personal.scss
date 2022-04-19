@@ -1,5 +1,3 @@
-@use "../node_modules/bootstrap/scss/bootstrap-grid.scss" as bs;
-
 // Create white border around content
 .content-border {
   border-radius: 20px;
@@ -45,34 +43,6 @@
     box-shadow: inherit;
     padding: inherit;
     vertical-align: inherit;
-  }
-}
-
-// Fabs
-.fabholder {
-  display: flex;
-  justify-content: flex-end;
-
-  & .fabposition {
-    position: fixed;
-    bottom: 2rem;
-    z-index: 8;
-
-    @include bs.media-breakpoint-down(xxl) {
-      right: 4rem;
-    }
-
-    @include bs.media-breakpoint-down(xl) {
-      right: 2rem;
-    }
-
-    @include bs.media-breakpoint-up(xl) {
-      bottom: 4rem;
-    }
-
-    @include bs.media-breakpoint-up(xxl) {
-      transform: translateX(3rem);
-    }
   }
 }
 

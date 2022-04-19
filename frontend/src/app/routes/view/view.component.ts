@@ -35,7 +35,7 @@ export class ViewComponent implements OnInit {
     this.imageLinks = this.imageService.CreateImageLinksFromID(id);
   }
 
-  downloadImage() {
+  download() {
     this.utilService.downloadFile(this.imageLinks.source);
   }
 

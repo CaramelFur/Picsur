@@ -1,0 +1,72 @@
+@use "../node_modules/bootstrap/scss/bootstrap-grid.scss" as bs;
+
+// Fabs
+.fab-wrapper {
+  display: flex;
+  justify-content: flex-end;
+
+  .fab-position {
+    position: fixed;
+    bottom: 2rem;
+    z-index: 8;
+
+    @include bs.media-breakpoint-down(xxl) {
+      right: 4rem;
+    }
+
+    @include bs.media-breakpoint-down(xl) {
+      right: 2rem;
+    }
+
+    @include bs.media-breakpoint-up(xl) {
+      bottom: 4rem;
+    }
+
+    @include bs.media-breakpoint-up(xxl) {
+      transform: translateX(3rem);
+    }
+  }
+
+  .speed-dial-options {
+    display: flex;
+    width: 100%;
+
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+
+    padding-bottom: 1rem;
+
+    [mat-mini-fab] {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .speed-dial-main-button {
+    mat-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
+  }
+
+  .icon-main {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  .icon-hover {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  .speed-dial-is-open {
+    .icon-main {
+      opacity: 0;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+    .icon-hover {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
