@@ -46,20 +46,14 @@
   tooltip="Download the image"
   [open-on-hover]="true"
   (main-click)="download()"
-  #speedDial
 >
-  <button
-    mat-mini-fab
-    matTooltip="Close menu"
-    color="primary"
-    (click)="speedDial.close()"
-  >
+  <button mat-mini-fab matTooltip="Close menu">
     <mat-icon>close</mat-icon>
   </button>
-  <button mat-mini-fab matTooltip="Info about the action" color="primary">
+  <button mat-mini-fab matTooltip="Info about the action">
     <mat-icon>edit</mat-icon>
   </button>
-  <button mat-mini-fab matTooltip="Info about the action" color="primary">
+  <button mat-mini-fab matTooltip="Info about the action">
     <mat-icon>filter_list</mat-icon>
   </button>
 </speed-dial>

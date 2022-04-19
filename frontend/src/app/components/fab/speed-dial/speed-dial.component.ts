@@ -1,5 +1,6 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, HostListener, Input, Output } from '@angular/core';
 import { Subject } from 'rxjs';
+import { OpenManager } from './open-manager';
 import { SpeedDialAnimation } from './speed-dial.animation';
 
 @Component({
@@ -18,60 +19,40 @@ export class SpeedDialComponent {
 
   @Output('main-click') clickEmitter = new Subject<void>();
 
-  public isOpen = false;
+  public openManager = new OpenManager();
 
-  private _isAnimating = false;
-  private _wantsOpen = false;
+  private lastMouseEvent: number = 0;
 
-  private set isAnimating(val: boolean) {
-    this._isAnimating = val;
-    if (val === false && this._wantsOpen !== this.isOpen) {
-      this.isOpen = this._wantsOpen;
-    }
+  @HostListener('document:click', ['$event'])
+  anyClick(e: MouseEvent) {
+    if (!this.openManager.isOpen) return;
+    if (this.lastMouseEvent === e.timeStamp) return;
+
+    this.openManager.close();
   }
 
-  private set wantsOpen(val: boolean) {
-    this._wantsOpen = val;
-    if (!this._isAnimating) {
-      this.isOpen = val;
-    }
-  }
+  click(e: MouseEvent) {
+    if (this.lastMouseEvent === e.timeStamp) return;
 
-  click() {
-    if (this._isAnimating) return;
+    this.lastMouseEvent = e.timeStamp;
+    const value = this.openManager.toggle();
 
-    this.wantsOpen = !this._wantsOpen;
-
-    if (this._wantsOpen === false) {
+    if (value === false) {
       this.clickEmitter.next();
     }
   }
 
-  enter() {
+  enter(e: MouseEvent) {
     if (this.openOnHover) {
-      this.wantsOpen = true;
+      this.lastMouseEvent = e.timeStamp;
+      this.openManager.open();
     }
   }
 
-  leave() {
+  leave(e: MouseEvent) {
     if (this.openOnHover) {
-      this.wantsOpen = false;
+      this.lastMouseEvent = e.timeStamp;
+      this.openManager.close();
     }
-  }
-
-  animStart() {
-    this.isAnimating = true;
-  }
-
-  animDone() {
-    this.isAnimating = false;
-  }
-
-  open() {
-    this.wantsOpen = true;
-  }
-
-  close() {
-    this.wantsOpen = false;
   }
 }

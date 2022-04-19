@@ -1,18 +1,18 @@
 <div class="fab-wrapper">
   <div
     class="fab-position"
-    (mouseenter)="enter()"
-    (mouseleave)="leave()"
-    [class.speed-dial-is-open]="isOpen"
+    (mouseenter)="enter($event)"
+    (mouseleave)="leave($event)"
+    [class.speed-dial-is-open]="openManager.isOpen"
   >
     <div
       class="speed-dial-options"
       [@speedDialAnimation]
-      (@speedDialAnimation.start)="animStart()"
-      (@speedDialAnimation.done)="animDone()"
-      *ngIf="isOpen"
+      (@speedDialAnimation.start)="openManager.animationStart()"
+      (@speedDialAnimation.done)="openManager.animationDone()"
+      *ngIf="openManager.isOpen"
     >
-      <ng-content select="[mat-mini-fab]"></ng-content>
+      <ng-content select="button[mat-mini-fab]"></ng-content>
     </div>
 
     <button
@@ -20,8 +20,9 @@
       [color]="color"
       class="speed-dial-main-button fullanimate mat-elevation-z6"
       [matTooltip]="tooltip"
-      [matTooltipDisabled]="!isOpen"
-      (click)="click()"
+      matTooltipPosition="left"
+      [matTooltipDisabled]="!openManager.isOpen"
+      (click)="click($event)"
       aria-label=""
     >
       <mat-icon
