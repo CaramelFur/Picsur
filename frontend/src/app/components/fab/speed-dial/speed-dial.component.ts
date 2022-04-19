@@ -21,37 +21,48 @@ export class SpeedDialComponent {
 
   public openManager = new OpenManager();
 
-  private lastMouseEvent: number = 0;
+  private touchUntil: number = 0;
+
+  @HostListener('document:touchstart', ['$event'])
+  @HostListener('document:touchend', ['$event'])
+  touchEvent(e: TouchEvent) {
+    if (e.type === 'touchstart') {
+      this.touchUntil = Infinity;
+    } else {
+      this.touchUntil = e.timeStamp + 2000;
+    }
+  }
 
   @HostListener('document:click', ['$event'])
-  anyClick(e: MouseEvent) {
-    if (!this.openManager.isOpen) return;
-    if (this.lastMouseEvent === e.timeStamp) return;
+  @HostListener('document:keydown.escape', ['$event'])
+  anyClick(e: Event) {
+    console.log(e);
+    if (!this.openManager.isOpen || this.openManager.isAnimating) return;
 
     this.openManager.close();
   }
 
   click(e: MouseEvent) {
-    if (this.lastMouseEvent === e.timeStamp) return;
-
-    this.lastMouseEvent = e.timeStamp;
-    const value = this.openManager.toggle();
-
-    if (value === false) {
+    console.log(e);
+    if (!this.openManager.isOpen) {
+      this.openManager.open();
+    } else {
       this.clickEmitter.next();
     }
   }
 
   enter(e: MouseEvent) {
+    if (e.timeStamp <= this.touchUntil) return;
+
     if (this.openOnHover) {
-      this.lastMouseEvent = e.timeStamp;
       this.openManager.open();
     }
   }
 
   leave(e: MouseEvent) {
+    if (e.timeStamp <= this.touchUntil) return;
+
     if (this.openOnHover) {
-      this.lastMouseEvent = e.timeStamp;
       this.openManager.close();
     }
   }

@@ -47,13 +47,7 @@
   [open-on-hover]="true"
   (main-click)="download()"
 >
-  <button mat-mini-fab matTooltip="Close menu">
-    <mat-icon>close</mat-icon>
-  </button>
-  <button mat-mini-fab matTooltip="Info about the action">
-    <mat-icon>edit</mat-icon>
-  </button>
-  <button mat-mini-fab matTooltip="Info about the action">
-    <mat-icon>filter_list</mat-icon>
+  <button mat-mini-fab matTooltip="Share image" (click)="share()">
+    <mat-icon> share </mat-icon>
   </button>
 </speed-dial>

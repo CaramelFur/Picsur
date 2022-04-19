@@ -3,7 +3,10 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { HasFailed } from 'picsur-shared/dist/types';
 import { map, Observable } from 'rxjs';
+import { ApiService } from 'src/app/services/api/api.service';
+import { Logger } from 'src/app/services/logger/logger.service';
 import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
 import {
   ConfirmDialogComponent,
@@ -14,13 +17,16 @@ import {
   providedIn: 'root',
 })
 export class UtilService {
+  private readonly logger = new Logger('UtilService');
+
   private isDesktopObservable: Observable<boolean>;
 
   constructor(
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private router: Router,
-    private breakPointObserver: BreakpointObserver
+    private breakPointObserver: BreakpointObserver,
+    private api: ApiService
   ) {
     this.isDesktopObservable = this.breakPointObserver
       .observe(['(min-width: 576px)']) // Bootstrap breakpoints
@@ -71,6 +77,50 @@ export class UtilService {
     link.click();
 
     link.remove();
+  }
+
+  public canShare(): boolean {
+    return navigator.canShare !== undefined && navigator.share !== undefined;
+  }
+
+  public async shareLink(url: string) {
+    if (!this.canShare()) {
+      this.showSnackBar(
+        'Sharing is not supported on your device',
+        SnackBarType.Warning
+      );
+      return;
+    }
+
+    let image = await this.api.getBuffer(url);
+    if (HasFailed(image)){
+      this.showSnackBar(
+        'Sharing is not supported on your device',
+        SnackBarType.Warning
+      );
+      return;
+    }
+
+    let file = new File([image], 'image.gif', { type: 'image/gif' });
+
+    let a = navigator.canShare({
+      title: 'test',
+      files: [file],
+    });
+    console.log(a);
+
+    try {
+      await navigator.share({
+        title: 'test',
+        files: [file],
+      });
+    } catch (e) {
+      this.logger.error(e);
+      this.showSnackBar(
+        'Sharing is not supported on your device',
+        SnackBarType.Warning
+      );
+    }
   }
 
   public async sleep(ms: number) {

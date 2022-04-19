@@ -7,10 +7,10 @@ import { MatTooltip } from '@angular/material/tooltip';
 })
 export class SpeedDialOptionDirective {
   constructor(
-    @Host() @Optional() test?: MatTooltip,
-    @Host() @Optional() test2?: MatButton
+    @Host() @Optional() tooltip?: MatTooltip,
+    @Host() @Optional() button?: MatButton
   ) {
-    if (test) test.position = 'left';
-    if (test2) test2.color = 'primary';
+    if (tooltip) tooltip.position = 'left';
+    if (button) button.color = 'primary';
   }
 }

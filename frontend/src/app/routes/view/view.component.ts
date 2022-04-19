@@ -39,6 +39,10 @@ export class ViewComponent implements OnInit {
     this.utilService.downloadFile(this.imageLinks.source);
   }
 
+  share() {
+    this.utilService.shareLink(this.imageLinks.source);
+  }
+
   goBackHome() {
     this.router.navigate(['/']);
   }

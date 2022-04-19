@@ -38,6 +38,10 @@ export class ApiService {
     return this.fetchHead(url, { method: 'HEAD' });
   }
 
+  public async getBuffer(url: string): AsyncFailable<ArrayBuffer> {
+    return this.fetchBuffer(url, { method: 'GET' });
+  }
+
   public async post<T extends z.AnyZodObject, W extends z.AnyZodObject>(
     sendType: ZodDtoStatic<T>,
     receiveType: ZodDtoStatic<W>,
