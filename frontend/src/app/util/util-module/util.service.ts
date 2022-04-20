@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
+import { HasFailed } from 'picsur-shared/dist/types';
 import { map, Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { Logger } from 'src/app/services/logger/logger.service';
@@ -99,7 +100,25 @@ export class UtilService {
   }
 
   public canShare(): boolean {
-    return navigator.canShare !== undefined && navigator.share !== undefined;
+    if (navigator.canShare === undefined || navigator.share === undefined)
+      return false;
+
+    const testShare = navigator.canShare({
+      url: 'https://www.example.com',
+    });
+
+    return testShare;
+  }
+
+  public canShareFiles(): boolean {
+    if (!this.canShare()) return false;
+
+    const testFile = new File([], 'test.txt');
+    const testShare = navigator.canShare({
+      files: [testFile],
+    });
+
+    return testShare;
   }
 
   public async shareLink(url: string) {
@@ -111,35 +130,52 @@ export class UtilService {
       return;
     }
 
-    // let image = await this.api.getBuffer(url);
-    // if (HasFailed(image)){
-    //   this.showSnackBar(
-    //     'Sharing is not supported on your device',
-    //     SnackBarType.Warning
-    //   );
-    //   return;
-    // }
+    let shareObject: ShareData;
 
-    // let file = new File([image], 'image.gif', { type: 'image/gif' });
+    if (!this.canShareFiles()) {
+      shareObject = {
+        url,
+      };
+    } else {
+      const image = await this.api.getBuffer(url);
+      if (HasFailed(image)) {
+        this.logger.error(image.getReason());
+        this.showSnackBar('Error while sharing image', SnackBarType.Error);
+        return;
+      }
 
-    // let a = navigator.canShare({
-    //   title: 'test',
-    //   files: [file],
-    // });
-    // console.log(a);
+      this.logger.log(image.name, image.mimeType);
 
-    // try {
-    //   await navigator.share({
-    //     title: 'test',
-    //     files: [file],
-    //   });
-    // } catch (e) {
-    //   this.logger.error(e);
-    //   this.showSnackBar(
-    //     'Sharing is not supported on your device',
-    //     SnackBarType.Warning
-    //   );
-    // }
+      const imageFile = new File([image.buffer], image.name, {
+        type: image.mimeType,
+      });
+
+      shareObject = {
+        files: [imageFile],
+      };
+    }
+
+    const canShare = navigator.canShare(shareObject);
+    if (!canShare) {
+      this.showSnackBar(
+        'Sharing is not supported on your device',
+        SnackBarType.Warning
+      );
+      return;
+    }
+
+    try {
+      await navigator.share(shareObject);
+    } catch (e) {
+      if (e instanceof DOMException && e.message === 'Share canceled') {
+      } else {
+        this.logger.error(e);
+        this.showSnackBar(
+          'An error occured while sharing the image',
+          SnackBarType.Error
+        );
+      }
+    }
   }
 
   public async sleep(ms: number) {

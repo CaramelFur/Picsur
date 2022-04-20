@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiResponseSchema } from 'picsur-shared/dist/dto/api/api.dto';
+import { MimeExt } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { Subject } from 'rxjs';
+import { ApiBuffer } from 'src/app/models/dto/api-buffer.dto';
 import { ApiError } from 'src/app/models/dto/api-error.dto';
 import { z } from 'zod';
 import { MultiPartRequest } from '../../models/dto/multi-part-request.dto';
@@ -38,7 +40,7 @@ export class ApiService {
     return this.fetchHead(url, { method: 'HEAD' });
   }
 
-  public async getBuffer(url: string): AsyncFailable<ArrayBuffer> {
+  public async getBuffer(url: string): AsyncFailable<ApiBuffer> {
     return this.fetchBuffer(url, { method: 'GET' });
   }
 
@@ -114,12 +116,32 @@ export class ApiService {
   private async fetchBuffer(
     url: RequestInfo,
     options: RequestInit
-  ): AsyncFailable<ArrayBuffer> {
+  ): AsyncFailable<ApiBuffer> {
     const response = await this.fetch(url, options);
     if (HasFailed(response)) return response;
 
+    const mimeType = response.headers.get('Content-Type') ?? 'other/unknown';
+    let name = response.headers.get('Content-Disposition');
+    if (!name) {
+      if (typeof url === 'string') {
+        name = url.split('/').pop() ?? 'unnamed';
+      } else {
+        name = url.url.split('/').pop() ?? 'unnamed';
+      }
+    }
+
+    const mimeTypeExt = MimeExt(mimeType);
+    if (mimeTypeExt !== undefined && !name.endsWith(mimeTypeExt)) {
+      name += '.' + mimeTypeExt;
+    }
+
     try {
-      return await response.arrayBuffer();
+      const arrayBuffer = await response.arrayBuffer();
+      return {
+        buffer: arrayBuffer,
+        mimeType,
+        name,
+      };
     } catch (e) {
       this.logger.error(e);
       return Fail('Something went wrong');

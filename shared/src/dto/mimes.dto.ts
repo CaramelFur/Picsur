@@ -32,3 +32,21 @@ export interface FullMime {
   type: SupportedMimeCategory;
 }
 
+export const MimeExtMap: {
+  [key in ImageMime | AnimMime]: string;
+} = {
+  [ImageMime.JPEG]: 'jpg',
+  [ImageMime.PNG]: 'png',
+  [ImageMime.WEBP]: 'webp',
+  [ImageMime.TIFF]: 'tiff',
+  [ImageMime.BMP]: 'bmp',
+  [ImageMime.ICO]: 'ico',
+  [ImageMime.QOI]: 'qoi',
+
+  [AnimMime.APNG]: 'apng',
+  [AnimMime.GIF]: 'gif',
+};
+
+export const MimeExt = (mime: string): string | undefined => {
+  return MimeExtMap[mime as ImageMime | AnimMime];
+}

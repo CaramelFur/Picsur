@@ -66,7 +66,7 @@ export class ImageManagerService {
       mime = filetypeResult.mime;
     }
 
-    const fullMime = ParseMime(mime ?? 'extra/discard');
+    const fullMime = ParseMime(mime ?? 'other/unknown');
     return fullMime;
   }
 }
