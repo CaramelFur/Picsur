@@ -3,7 +3,7 @@
   color: white;
 
   &.snack-success {
-    background: #274E29;
+    background: #274e29;
   }
 
   &.snack-error {
@@ -11,14 +11,18 @@
   }
 
   &.snack-warning {
-    background: #934D06;
+    background: #934d06;
   }
 
   &.snack-info {
-    background: #125E87;
+    background: #125e87;
   }
 
   &.snack-default {
     background: #272727;
   }
+}
+
+.mat-snack-bar-handset {
+  transform: translateY(64px);
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { map, Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { Logger } from 'src/app/services/logger/logger.service';
@@ -20,6 +20,7 @@ export class UtilService {
   private readonly logger = new Logger('UtilService');
 
   private isDesktopObservable: Observable<boolean>;
+  private isDesktopVariable: boolean = true;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -31,6 +32,15 @@ export class UtilService {
     this.isDesktopObservable = this.breakPointObserver
       .observe(['(min-width: 576px)']) // Bootstrap breakpoints
       .pipe(map((result) => result.matches));
+
+    this.subscribeToIsDesktop();
+  }
+
+  @AutoUnsubscribe()
+  private subscribeToIsDesktop() {
+    return this.isDesktopObservable.subscribe((isDesktop) => {
+      this.isDesktopVariable = isDesktop;
+    });
   }
 
   public quitError(message: string) {
@@ -46,13 +56,22 @@ export class UtilService {
     return this.isDesktopObservable.pipe(map((isDesktop) => !isDesktop));
   }
 
+  public isDesktopSnapshot(): boolean {
+    return this.isDesktopVariable;
+  }
+
+  public isMobileSnapshot(): boolean {
+    return !this.isDesktopVariable;
+  }
+
   public showSnackBar(
     message: string,
     type: SnackBarType = SnackBarType.Default,
     duration: number | undefined | null = null
   ) {
-    this.snackBar.open(message, '', {
+    let ref = this.snackBar.open(message, '', {
       panelClass: ['mat-toolbar', 'snackbar', type],
+      verticalPosition: this.isDesktopSnapshot() ? 'bottom' : 'top',
       ...(duration !== null ? { duration } : {}),
     });
   }
@@ -92,35 +111,35 @@ export class UtilService {
       return;
     }
 
-    let image = await this.api.getBuffer(url);
-    if (HasFailed(image)){
-      this.showSnackBar(
-        'Sharing is not supported on your device',
-        SnackBarType.Warning
-      );
-      return;
-    }
+    // let image = await this.api.getBuffer(url);
+    // if (HasFailed(image)){
+    //   this.showSnackBar(
+    //     'Sharing is not supported on your device',
+    //     SnackBarType.Warning
+    //   );
+    //   return;
+    // }
 
-    let file = new File([image], 'image.gif', { type: 'image/gif' });
+    // let file = new File([image], 'image.gif', { type: 'image/gif' });
 
-    let a = navigator.canShare({
-      title: 'test',
-      files: [file],
-    });
-    console.log(a);
+    // let a = navigator.canShare({
+    //   title: 'test',
+    //   files: [file],
+    // });
+    // console.log(a);
 
-    try {
-      await navigator.share({
-        title: 'test',
-        files: [file],
-      });
-    } catch (e) {
-      this.logger.error(e);
-      this.showSnackBar(
-        'Sharing is not supported on your device',
-        SnackBarType.Warning
-      );
-    }
+    // try {
+    //   await navigator.share({
+    //     title: 'test',
+    //     files: [file],
+    //   });
+    // } catch (e) {
+    //   this.logger.error(e);
+    //   this.showSnackBar(
+    //     'Sharing is not supported on your device',
+    //     SnackBarType.Warning
+    //   );
+    // }
   }
 
   public async sleep(ms: number) {

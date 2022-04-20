@@ -36,14 +36,12 @@ export class SpeedDialComponent {
   @HostListener('document:click', ['$event'])
   @HostListener('document:keydown.escape', ['$event'])
   anyClick(e: Event) {
-    console.log(e);
     if (!this.openManager.isOpen || this.openManager.isAnimating) return;
 
     this.openManager.close();
   }
 
   click(e: MouseEvent) {
-    console.log(e);
     if (!this.openManager.isOpen) {
       this.openManager.open();
     } else {
