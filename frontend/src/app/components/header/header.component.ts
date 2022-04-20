@@ -4,7 +4,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
+import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UserService } from 'src/app/services/api/user.service';
 import { UtilService } from 'src/app/util/util-module/util.service';
@@ -19,7 +19,11 @@ export class HeaderComponent implements OnInit {
   @Output('onHamburgerClick') onHamburgerClick = new EventEmitter<void>();
 
   private currentUser: EUser | null = null;
-  private permissions: string[] = [];
+
+  public canLogIn: boolean = false;
+  public canAccessSettings: boolean = false;
+  public canUpload: boolean = false;
+  public canRegister: boolean = false;
 
   public get user() {
     return this.currentUser;
@@ -27,14 +31,6 @@ export class HeaderComponent implements OnInit {
 
   public get isLoggedIn() {
     return this.currentUser !== null;
-  }
-
-  public get canLogIn() {
-    return this.permissions.includes(Permission.UserLogin);
-  }
-
-  public get canAccessSettings() {
-    return this.permissions.includes(Permission.Settings);
   }
 
   constructor(
@@ -59,7 +55,10 @@ export class HeaderComponent implements OnInit {
   @AutoUnsubscribe()
   subscribePermissions() {
     return this.permissionService.live.subscribe((permissions) => {
-      this.permissions = permissions;
+      this.canLogIn = permissions.includes(Permission.UserLogin);
+      this.canAccessSettings = permissions.includes(Permission.Settings);
+      this.canUpload = permissions.includes(Permission.ImageUpload);
+      this.canRegister = permissions.includes(Permission.UserRegister);
     });
   }
 
@@ -79,5 +78,9 @@ export class HeaderComponent implements OnInit {
 
   doSettings() {
     this.router.navigate(['/settings']);
+  }
+
+  doUpload() {
+    this.router.navigate(['/upload']);
   }
 }

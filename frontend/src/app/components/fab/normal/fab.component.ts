@@ -8,6 +8,7 @@ export class FabComponent {
   @Input('aria-label') ariaLabel: string = 'Floating Action Button';
   @Input() icon: string = 'add';
   @Input() color: string = 'accent';
+  @Input('tooltip') tooltip: string;
   @Input() onClick: () => void = () => {};
 
   constructor() {}

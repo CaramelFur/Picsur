@@ -7,7 +7,9 @@
   </ng-container>
 
   <ng-container matColumnDef="roles">
-    <mat-header-cell class="d-none d-md-flex" *matHeaderCellDef>Roles</mat-header-cell>
+    <mat-header-cell class="d-none d-md-flex" *matHeaderCellDef
+      >Roles</mat-header-cell
+    >
     <mat-cell class="d-none d-md-flex" *matCellDef="let user">
       <mat-chip-list aria-label="User Roles">
         <mat-chip
@@ -72,4 +74,9 @@
 >
 </mat-paginator>
 
-<fab aria-label="Add User" (click)="addUser()" icon="person_add"></fab>
+<fab
+  aria-label="Add User"
+  (click)="addUser()"
+  icon="person_add"
+  tooltip="Create a new user"
+></fab>

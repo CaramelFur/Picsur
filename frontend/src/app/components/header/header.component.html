@@ -19,6 +19,17 @@
   <span class="spacer"></span>
 
   <button
+    matTooltip="Upload an image"
+    *ngIf="canUpload"
+    mat-icon-button
+    class="me-3"
+    (click)="doUpload()"
+  >
+    <mat-icon fontSet="material-icons-outlined">upload</mat-icon>
+  </button>
+
+  <button
+    [matTooltip]="canRegister ? 'Login or Register' : 'Login to your account'"
     *ngIf="!isLoggedIn && canLogIn"
     mat-stroked-button
     (click)="doLogin()"
@@ -26,10 +37,15 @@
     Login
   </button>
 
-  <span *ngIf="isLoggedIn" class="me-3 d-none d-sm-block">
+  <!-- <span *ngIf="isLoggedIn" class="me-3 d-none d-sm-block">
     {{ user?.username }}
-  </span>
-  <button *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu">
+  </span> -->
+  <button
+    matTooltip="Your account"
+    *ngIf="isLoggedIn"
+    mat-icon-button
+    [matMenuTriggerFor]="menu"
+  >
     <mat-icon fontSet="material-icons-outlined">account_circle</mat-icon>
   </button>
 
