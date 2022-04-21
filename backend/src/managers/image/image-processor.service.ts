@@ -9,7 +9,6 @@ import {
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
 import { QOIColorSpace, QOIdecode, QOIencode } from 'qoi-img';
 import sharp from 'sharp';
-import { UsrPreferenceService } from '../../collections/preference-db/usr-preference-db.service';
 
 interface ProcessResult {
   image: Buffer;
@@ -18,8 +17,6 @@ interface ProcessResult {
 
 @Injectable()
 export class ImageProcessorService {
-  constructor(private readonly userPref: UsrPreferenceService) {}
-
   public async process(
     image: Buffer,
     mime: FullMime,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiResponseSchema } from 'picsur-shared/dist/dto/api/api.dto';
-import { MimeExt } from 'picsur-shared/dist/dto/mimes.dto';
+import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { Subject } from 'rxjs';
@@ -130,7 +130,7 @@ export class ApiService {
       }
     }
 
-    const mimeTypeExt = MimeExt(mimeType);
+    const mimeTypeExt = Mime2Ext(mimeType);
     if (mimeTypeExt !== undefined && !name.endsWith(mimeTypeExt)) {
       name += '.' + mimeTypeExt;
     }

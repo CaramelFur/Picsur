@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
+import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
 import { IsQOI } from 'qoi-img';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
+import { UsrPreferenceService } from '../../collections/preference-db/usr-preference-db.service';
 import { ImageFileType } from '../../models/constants/image-file-types.const';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
 import { EImageBackend } from '../../models/entities/image.entity';
@@ -21,6 +23,7 @@ export class ImageManagerService {
     private readonly imagesService: ImageDBService,
     private readonly imageFilesService: ImageFileDBService,
     private readonly processService: ImageProcessorService,
+    private readonly userPref: UsrPreferenceService,
   ) {}
 
   public async retrieveInfo(id: string): AsyncFailable<EImageBackend> {
@@ -40,6 +43,14 @@ export class ImageManagerService {
     const fullMime = await this.getFullMimeFromBuffer(image);
     if (HasFailed(fullMime)) return fullMime;
 
+    // Check if need to save orignal
+    const keepOriginal = await this.userPref.getBooleanPreference(
+      userid,
+      UsrPreference.KeepOriginal,
+    );
+    if (HasFailed(keepOriginal)) return keepOriginal;
+
+    // Process
     const processResult = await this.processService.process(
       image,
       fullMime,
@@ -47,6 +58,7 @@ export class ImageManagerService {
     );
     if (HasFailed(processResult)) return processResult;
 
+    // Save processed to db
     const imageEntity = await this.imagesService.create();
     if (HasFailed(imageEntity)) return imageEntity;
 
@@ -58,15 +70,15 @@ export class ImageManagerService {
     );
     if (HasFailed(imageFileEntity)) return imageFileEntity;
 
-    // // nothing happens right now
-    // const keepOriginal = await this.userPref.getBooleanPreference(
-    //   userid,
-    //   UsrPreference.KeepOriginal,
-    // );
-    // if (HasFailed(keepOriginal)) return keepOriginal;
-
-    // if (keepOriginal) {
-    // }
+    if (keepOriginal) {
+      const originalFileEntity = await this.imageFilesService.setFile(
+        imageEntity.id,
+        ImageFileType.ORIGINAL,
+        image,
+        fullMime.mime,
+      );
+      if (HasFailed(originalFileEntity)) return originalFileEntity;
+    }
 
     return imageEntity;
   }

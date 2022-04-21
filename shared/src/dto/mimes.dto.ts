@@ -32,7 +32,7 @@ export interface FullMime {
   type: SupportedMimeCategory;
 }
 
-export const MimeExtMap: {
+export const Mime2ExtMap: {
   [key in ImageMime | AnimMime]: string;
 } = {
   [ImageMime.JPEG]: 'jpg',
@@ -47,6 +47,14 @@ export const MimeExtMap: {
   [AnimMime.GIF]: 'gif',
 };
 
-export const MimeExt = (mime: string): string | undefined => {
-  return MimeExtMap[mime as ImageMime | AnimMime];
-}
+export const Ext2MimeMap: {
+  [key: string]: string;
+} = Object.fromEntries(Object.entries(Mime2ExtMap).map(([k, v]) => [v, k]));
+
+export const Mime2Ext = (mime: string): string | undefined => {
+  return Mime2ExtMap[mime as ImageMime | AnimMime];
+};
+
+export const Ext2Mime = (ext: string): string | undefined => {
+  return Ext2MimeMap[ext];
+};
