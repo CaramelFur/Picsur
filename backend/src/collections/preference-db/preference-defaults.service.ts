@@ -17,7 +17,7 @@ export class PreferenceDefaultsService {
   public readonly usrDefaults: {
     [key in UsrPreference]: () => PrefValueType;
   } = {
-    [UsrPreference.KeepOriginal]: () => true,
+    [UsrPreference.KeepOriginal]: () => false,
   };
 
   public readonly sysDefaults: {
