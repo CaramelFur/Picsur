@@ -1,9 +1,8 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { ImageFileType } from '../constants/image-file-types.const';
 
 @Entity()
-@Unique(['imageId', 'type'])
-export class EImageFileBackend {
+@Unique(['imageId', 'key'])
+export class EImageDerivativeBackend {
   @PrimaryGeneratedColumn('uuid')
   private _id?: string;
 
@@ -12,8 +11,8 @@ export class EImageFileBackend {
   imageId: string;
 
   @Index()
-  @Column({ nullable: false, enum: ImageFileType })
-  type: ImageFileType;
+  @Column({ nullable: false })
+  key: string;
 
   @Column({ nullable: false })
   mime: string;

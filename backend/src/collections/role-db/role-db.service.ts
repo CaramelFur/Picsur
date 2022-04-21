@@ -66,8 +66,6 @@ export class RolesService {
       [] as Permissions,
     );
 
-    console.log(permissions);
-
     return makeUnique(permissions);
   }
 

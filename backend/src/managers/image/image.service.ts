@@ -50,7 +50,7 @@ export class ImageManagerService {
     const imageEntity = await this.imagesService.create();
     if (HasFailed(imageEntity)) return imageEntity;
 
-    const imageFileEntity = await this.imageFilesService.setSingle(
+    const imageFileEntity = await this.imageFilesService.setFile(
       imageEntity.id,
       ImageFileType.MASTER,
       processResult.image,
@@ -74,11 +74,11 @@ export class ImageManagerService {
   // File getters ==============================================================
 
   public async getMaster(imageId: string): AsyncFailable<EImageFileBackend> {
-    return this.imageFilesService.getSingle(imageId, ImageFileType.MASTER);
+    return this.imageFilesService.getFile(imageId, ImageFileType.MASTER);
   }
 
   public async getMasterMime(imageId: string): AsyncFailable<FullMime> {
-    const mime = await this.imageFilesService.getSingleMime(
+    const mime = await this.imageFilesService.getFileMime(
       imageId,
       ImageFileType.MASTER,
     );
@@ -88,11 +88,11 @@ export class ImageManagerService {
   }
 
   public async getOriginal(imageId: string): AsyncFailable<EImageFileBackend> {
-    return this.imageFilesService.getSingle(imageId, ImageFileType.ORIGINAL);
+    return this.imageFilesService.getFile(imageId, ImageFileType.ORIGINAL);
   }
 
   public async getOriginalMime(imageId: string): AsyncFailable<FullMime> {
-    const mime = await this.imageFilesService.getSingleMime(
+    const mime = await this.imageFilesService.getFileMime(
       imageId,
       ImageFileType.ORIGINAL,
     );

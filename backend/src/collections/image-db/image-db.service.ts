@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
+import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
 import { EImageBackend } from '../../models/entities/image.entity';
 
@@ -13,6 +14,9 @@ export class ImageDBService {
 
     @InjectRepository(EImageFileBackend)
     private imageFileRepo: Repository<EImageFileBackend>,
+
+    @InjectRepository(EImageDerivativeBackend)
+    private imageDerivativeRepo: Repository<EImageDerivativeBackend>,
   ) {}
 
   public async create(): AsyncFailable<EImageBackend> {
@@ -62,12 +66,19 @@ export class ImageDBService {
 
   public async delete(id: string): AsyncFailable<true> {
     try {
+      const derivativesResult = await this.imageDerivativeRepo.delete({
+        imageId: id,
+      });
       const filesResult = await this.imageFileRepo.delete({
         imageId: id,
       });
       const result = await this.imageRepo.delete({ id });
-      
-      if (result.affected === 0 && filesResult.affected === 0)
+
+      if (
+        result.affected === 0 &&
+        filesResult.affected === 0 &&
+        derivativesResult.affected === 0
+      )
         return Fail('Image not found');
     } catch (e) {
       return Fail(e);
@@ -80,6 +91,7 @@ export class ImageDBService {
       return Fail('You must confirm that you want to delete all images');
 
     try {
+      await this.imageDerivativeRepo.delete({});
       await this.imageFileRepo.delete({});
       await this.imageRepo.delete({});
     } catch (e) {

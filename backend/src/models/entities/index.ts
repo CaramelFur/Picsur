@@ -1,3 +1,4 @@
+import { EImageDerivativeBackend } from './image-derivative.entity';
 import { EImageFileBackend } from './image-file.entity';
 import { EImageBackend } from './image.entity';
 import { ERoleBackend } from './role.entity';
@@ -8,6 +9,7 @@ import { EUsrPreferenceBackend } from './usr-preference.entity';
 export const EntityList = [
   EImageBackend,
   EImageFileBackend,
+  EImageDerivativeBackend,
   EUserBackend,
   ERoleBackend,
   ESysPreferenceBackend,
