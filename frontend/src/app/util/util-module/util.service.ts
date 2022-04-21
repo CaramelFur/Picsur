@@ -11,8 +11,9 @@ import { Logger } from 'src/app/services/logger/logger.service';
 import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
 import {
   ConfirmDialogComponent,
-  DialogData
+  ConfirmDialogData
 } from './confirm-dialog/confirm-dialog.component';
+import { DownloadDialogComponent } from './download-dialog/download-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -77,11 +78,14 @@ export class UtilService {
     });
   }
 
-  public async showDialog(options: DialogData): Promise<string | undefined> {
+  public async showDialog(
+    options: ConfirmDialogData
+  ): Promise<string | undefined> {
     return new Promise((resolve, reject) => {
       const ref = this.dialog.open(ConfirmDialogComponent, {
         data: options,
         disableClose: true,
+        closeOnNavigation: false,
       });
       const subscription = ref.beforeClosed().subscribe((result) => {
         subscription.unsubscribe();
@@ -90,13 +94,37 @@ export class UtilService {
     });
   }
 
-  public downloadFile(url: string) {
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = url.split('/').pop() ?? '';
-    link.click();
+  public showDownloadDialog(filename: string): () => void {
+    const ref = this.dialog.open(DownloadDialogComponent, {
+      data: { name: filename },
+      disableClose: true,
+      closeOnNavigation: false,
+    });
 
-    link.remove();
+    return () => ref.close();
+  }
+
+  public async downloadFile(url: string) {
+    const closeDialog = this.showDownloadDialog('image');
+
+    const file = await this.api.getBuffer(url);
+    if (HasFailed(file)) {
+      closeDialog();
+      this.logger.error(file.getReason());
+      this.showSnackBar('Error while downloading image', SnackBarType.Error);
+      return;
+    }
+
+    // Download with the browser
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(
+      new Blob([file.buffer], { type: file.mimeType })
+    );
+    a.download = file.name;
+    a.click();
+
+    closeDialog();
+    this.showSnackBar('Image downloaded', SnackBarType.Info);
   }
 
   public canShare(): boolean {
@@ -121,7 +149,7 @@ export class UtilService {
     return testShare;
   }
 
-  public async shareLink(url: string) {
+  public async shareFile(url: string) {
     if (!this.canShare()) {
       this.showSnackBar(
         'Sharing is not supported on your device',

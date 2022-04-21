@@ -1,17 +1,17 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-export interface DialogButton {
+export interface ConfirmDialogButton {
   text: string;
   name: string;
   color: string;
 }
 
-export interface DialogData {
+export interface ConfirmDialogData {
   title: string;
   description?: string;
 
-  buttons: DialogButton[];
+  buttons: ConfirmDialogButton[];
 }
 
 @Component({
@@ -22,7 +22,7 @@ export interface DialogData {
 export class ConfirmDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
   ) {}
 
   onButton(name: string) {

@@ -40,7 +40,7 @@ export class ViewComponent implements OnInit {
   }
 
   share() {
-    this.utilService.shareLink(this.imageLinks.source);
+    this.utilService.shareFile(this.imageLinks.source);
   }
 
   goBackHome() {
