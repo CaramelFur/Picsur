@@ -58,15 +58,15 @@ export class RolesService {
   }
 
   public async getPermissions(roles: string[]): AsyncFailable<Permissions> {
-    const permissions: Permissions = [];
-    const foundRoles = await Promise.all(
-      roles.map((role: string) => this.findOne(role)),
+    const foundRoles = await this.findMany(roles);
+    if (HasFailed(foundRoles)) return foundRoles;
+
+    const permissions = foundRoles.reduce(
+      (acc, role) => [...acc, ...role.permissions],
+      [] as Permissions,
     );
 
-    for (const foundRole of foundRoles) {
-      if (HasFailed(foundRole)) return foundRole;
-      permissions.push(...foundRole.permissions);
-    }
+    console.log(permissions);
 
     return makeUnique(permissions);
   }
@@ -130,6 +130,19 @@ export class RolesService {
       });
 
       if (!found) return Fail('Role not found');
+      return found;
+    } catch (e) {
+      return Fail(e);
+    }
+  }
+
+  public async findMany(names: string[]): AsyncFailable<ERoleBackend[]> {
+    try {
+      const found = await this.rolesRepository.find({
+        where: { name: In(names) },
+      });
+
+      if (!found) return Fail('No roles found');
       return found;
     } catch (e) {
       return Fail(e);

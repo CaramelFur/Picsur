@@ -19,7 +19,6 @@ import { Returns } from '../../decorators/returns.decorator';
 import { ImageManagerService } from '../../managers/image/image.service';
 import { Permission } from '../../models/constants/permissions.const';
 import { ImageUploadDto } from '../../models/dto/image-upload.dto';
-import { EImageBackend2EImage } from '../../models/transformers/image.transformer';
 
 // This is the only controller with CORS enabled
 @Controller('i')
@@ -36,7 +35,7 @@ export class ImageController {
     @Res({ passthrough: true }) res: FastifyReply,
     @ImageIdParam() id: string,
   ): Promise<Buffer> {
-    const image = await this.imagesService.retrieveComplete(id);
+    const image = await this.imagesService.getMaster(id);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
       throw new NotFoundException('Could not find image');
@@ -51,13 +50,13 @@ export class ImageController {
     @Res({ passthrough: true }) res: FastifyReply,
     @ImageIdParam() id: string,
   ) {
-    const image = await this.imagesService.retrieveInfo(id);
-    if (HasFailed(image)) {
-      this.logger.warn(image.getReason());
+    const fullmime = await this.imagesService.getMasterMime(id);
+    if (HasFailed(fullmime)) {
+      this.logger.warn(fullmime.getReason());
       throw new NotFoundException('Could not find image');
     }
 
-    res.type(image.mime);
+    res.type(fullmime.mime);
   }
 
   @Get('meta/:id')
@@ -69,7 +68,7 @@ export class ImageController {
       throw new NotFoundException('Could not find image');
     }
 
-    return EImageBackend2EImage(image);
+    return image;
   }
 
   @Post()
@@ -79,12 +78,15 @@ export class ImageController {
     @MultiPart() multipart: ImageUploadDto,
     @ReqUserID() userid: string,
   ): Promise<ImageMetaResponse> {
-    const image = await this.imagesService.upload(multipart.image.buffer, userid);
+    const image = await this.imagesService.upload(
+      multipart.image.buffer,
+      userid,
+    );
     if (HasFailed(image)) {
-      this.logger.warn(image.getReason());
+      this.logger.warn(image.getReason(), image.getStack());
       throw new InternalServerErrorException('Could not upload image');
     }
 
-    return EImageBackend2EImage(image);
+    return image;
   }
 }

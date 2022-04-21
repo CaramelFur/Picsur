@@ -11,6 +11,11 @@ import { QOIColorSpace, QOIdecode, QOIencode } from 'qoi-img';
 import sharp from 'sharp';
 import { UsrPreferenceService } from '../../collections/preference-db/usr-preference-db.service';
 
+interface ProcessResult {
+  image: Buffer;
+  mime: string;
+}
+
 @Injectable()
 export class ImageProcessorService {
   constructor(private readonly userPref: UsrPreferenceService) {}
@@ -19,7 +24,7 @@ export class ImageProcessorService {
     image: Buffer,
     mime: FullMime,
     userid: string,
-  ): AsyncFailable<Buffer> {
+  ): AsyncFailable<ProcessResult> {
     if (mime.type === SupportedMimeCategory.Image) {
       return await this.processStill(image, mime, {});
     } else if (mime.type === SupportedMimeCategory.Animation) {
@@ -27,25 +32,17 @@ export class ImageProcessorService {
     } else {
       return Fail('Unsupported mime type');
     }
-
-    // // nothing happens right now
-    // const keepOriginal = await this.userPref.getBooleanPreference(
-    //   userid,
-    //   UsrPreference.KeepOriginal,
-    // );
-    // if (HasFailed(keepOriginal)) return keepOriginal;
-
-    // if (keepOriginal) {
-    // }
   }
 
   private async processStill(
     image: Buffer,
     mime: FullMime,
     options: {},
-  ): AsyncFailable<Buffer> {
+  ): AsyncFailable<ProcessResult> {
+    let processedMime = mime.mime;
     let sharpImage: sharp.Sharp;
 
+    // TODO: ensure mime and sharp are in agreement
     if (mime.mime === ImageMime.ICO) {
       sharpImage = this.icoSharp(image);
     } else if (mime.mime === ImageMime.BMP) {
@@ -55,7 +52,7 @@ export class ImageProcessorService {
     } else {
       sharpImage = sharp(image);
     }
-    mime.mime = ImageMime.QOI;
+    processedMime = ImageMime.QOI;
 
     sharpImage = sharpImage.toColorspace('srgb');
 
@@ -69,6 +66,10 @@ export class ImageProcessorService {
     )
       return Fail('Invalid image');
 
+    if (metadata.width >= 32768 || metadata.height >= 32768) {
+      return Fail('Image too large');
+    }
+
     // Png can be more efficient than QOI, but its just sooooooo slow
     const qoiImage = QOIencode(pixels, {
       channels: metadata.hasAlpha ? 4 : 3,
@@ -77,16 +78,22 @@ export class ImageProcessorService {
       width: metadata.width,
     });
 
-    return qoiImage;
+    return {
+      image: qoiImage,
+      mime: processedMime,
+    };
   }
 
   private async processAnimation(
     image: Buffer,
     mime: FullMime,
     options: {},
-  ): AsyncFailable<Buffer> {
+  ): AsyncFailable<ProcessResult> {
     // Apng and gif are stored as is for now
-    return image;
+    return {
+      image: image,
+      mime: mime.mime,
+    };
   }
 
   private bmpSharp(image: Buffer) {

@@ -1,30 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  AsyncFailable,
-  Fail
-} from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
+import { EImageFileBackend } from '../../models/entities/image-file.entity';
 import { EImageBackend } from '../../models/entities/image.entity';
-import { GetCols } from '../../models/util/collection';
 
 @Injectable()
 export class ImageDBService {
   constructor(
     @InjectRepository(EImageBackend)
-    private imageRepository: Repository<EImageBackend>,
+    private imageRepo: Repository<EImageBackend>,
+
+    @InjectRepository(EImageFileBackend)
+    private imageFileRepo: Repository<EImageFileBackend>,
   ) {}
 
-  public async create(
-    image: Buffer,
-    type: string,
-  ): AsyncFailable<EImageBackend> {
+  public async create(): AsyncFailable<EImageBackend> {
     let imageEntity = new EImageBackend();
-    imageEntity.data = image;
-    imageEntity.mime = type;
 
     try {
-      imageEntity = await this.imageRepository.save(imageEntity);
+      imageEntity = await this.imageRepo.save(imageEntity);
     } catch (e) {
       return Fail(e);
     }
@@ -32,22 +27,14 @@ export class ImageDBService {
     return imageEntity;
   }
 
-  public async findOne<B extends true | undefined = undefined>(
-    id: string,
-    getPrivate?: B,
-  ): AsyncFailable<
-    B extends undefined ? EImageBackend : Required<EImageBackend>
-  > {
+  public async findOne(id: string): AsyncFailable<EImageBackend> {
     try {
-      const found = await this.imageRepository.findOne({
+      const found = await this.imageRepo.findOne({
         where: { id },
-        select: getPrivate ? GetCols(this.imageRepository) : undefined,
       });
 
       if (!found) return Fail('Image not found');
-      return found as B extends undefined
-        ? EImageBackend
-        : Required<EImageBackend>;
+      return found;
     } catch (e) {
       return Fail(e);
     }
@@ -61,7 +48,7 @@ export class ImageDBService {
     if (count > 100) return Fail('Too many results');
 
     try {
-      const found = await this.imageRepository.find({
+      const found = await this.imageRepo.find({
         skip: count * page,
         take: count,
       });
@@ -75,8 +62,13 @@ export class ImageDBService {
 
   public async delete(id: string): AsyncFailable<true> {
     try {
-      const result = await this.imageRepository.delete({ id });
-      if (result.affected === 0) return Fail('Image not found');
+      const filesResult = await this.imageFileRepo.delete({
+        imageId: id,
+      });
+      const result = await this.imageRepo.delete({ id });
+      
+      if (result.affected === 0 && filesResult.affected === 0)
+        return Fail('Image not found');
     } catch (e) {
       return Fail(e);
     }
@@ -88,7 +80,8 @@ export class ImageDBService {
       return Fail('You must confirm that you want to delete all images');
 
     try {
-      await this.imageRepository.delete({});
+      await this.imageFileRepo.delete({});
+      await this.imageRepo.delete({});
     } catch (e) {
       return Fail(e);
     }
