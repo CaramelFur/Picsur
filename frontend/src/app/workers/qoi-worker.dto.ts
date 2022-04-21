@@ -1,3 +1,5 @@
+import { AsyncFailable, Failable } from 'picsur-shared/dist/types';
+
 export interface QOIImage {
   data: ImageData;
   width: number;
@@ -10,8 +12,9 @@ export interface QOIWorkerIn {
   authorization: string;
 }
 
-export interface QOIWorkerOut extends QOIImage {
+export interface QOIWorkerOut {
   id: number;
+  result: Failable<QOIImage>;
 }
 
-export type QOIJob = (url: string, authorization: string) => Promise<QOIImage>;
+export type QOIJob = (url: string, authorization: string) => AsyncFailable<QOIImage>;

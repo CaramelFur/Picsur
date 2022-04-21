@@ -18,6 +18,7 @@ enum PicsurImgState {
   Loading = 'loading',
   Canvas = 'canvas',
   Image = 'image',
+  Error = 'error',
 }
 
 @Component({
@@ -41,22 +42,28 @@ export class PicsurImgComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     let url = this.imageURL ?? '';
-    if (URLRegex.test(url)) {
-      this.update(url).catch(this.logger.error);
-    } else {
+    if (!URLRegex.test(url)) {
       this.state = PicsurImgState.Loading;
-    }
-  }
-
-  private async update(url: string) {
-    const mime = await this.getMime(url);
-    if (HasFailed(mime)) {
-      this.logger.error(mime.getReason());
       return;
     }
 
+    this.update(url)
+      .then((result) => {
+        if (HasFailed(result)) {
+          this.state = PicsurImgState.Error;
+          this.logger.error(result.getReason());
+        }
+      })
+      .catch((e) => this.logger.error);
+  }
+
+  private async update(url: string): AsyncFailable<void> {
+    const mime = await this.getMime(url);
+    if (HasFailed(mime)) return mime;
+
     if (mime.mime === SupportedMime.QOI) {
       const result = await this.qoiWorker.decode(url);
+      if (HasFailed(result)) return result;
 
       const canvas = this.canvas.nativeElement;
       canvas.height = result.height;

@@ -32,7 +32,7 @@ export class ViewComponent implements OnInit {
       return this.utilService.quitError(metadata.getReason());
     }
 
-    this.imageLinks = this.imageService.CreateImageLinksFromID(id);
+    this.imageLinks = this.imageService.CreateImageLinksFromID(id, 'qoi');
   }
 
   download() {

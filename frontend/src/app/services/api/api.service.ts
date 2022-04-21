@@ -120,6 +120,8 @@ export class ApiService {
     const response = await this.fetch(url, options);
     if (HasFailed(response)) return response;
 
+    if (!response.ok) return Fail('Recieved a non-ok response');
+
     const mimeType = response.headers.get('Content-Type') ?? 'other/unknown';
     let name = response.headers.get('Content-Disposition');
     if (!name) {
@@ -154,6 +156,8 @@ export class ApiService {
   ): AsyncFailable<Headers> {
     const response = await this.fetch(url, options);
     if (HasFailed(response)) return response;
+
+    if (!response.ok) return Fail('Recieved a non-ok response');
 
     return response.headers;
   }

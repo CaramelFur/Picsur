@@ -14,7 +14,7 @@ addEventListener('message', async (msg) => {
 
   const returned: QOIWorkerOut = {
     id,
-    ...result,
+    result,
   };
 
   postMessage(returned);

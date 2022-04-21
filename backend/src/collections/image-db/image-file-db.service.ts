@@ -45,7 +45,7 @@ export class ImageFileDBService {
   ): AsyncFailable<EImageFileBackend> {
     try {
       const found = await this.imageFileRepo.findOne({
-        where: { imageId, type },
+        where: { imageId: imageId ?? '', type: type ?? '' },
       });
 
       if (!found) return Fail('Image not found');

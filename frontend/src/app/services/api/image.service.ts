@@ -42,7 +42,7 @@ export class ImageService {
     };
   }
 
-  public CreateImageLinksFromID(imageID: string): ImageLinks {
-    return this.CreateImageLinks(this.GetImageURL(imageID));
+  public CreateImageLinksFromID(imageID: string, format: string): ImageLinks {
+    return this.CreateImageLinks(this.GetImageURL(imageID + '.' + format));
   }
 }

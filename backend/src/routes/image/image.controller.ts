@@ -11,12 +11,14 @@ import {
 import { FastifyReply } from 'fastify';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
+import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decorator';
 import { ImageIdParam } from '../../decorators/image-id/image-id.decorator';
 import { MultiPart } from '../../decorators/multipart/multipart.decorator';
 import { RequiredPermissions } from '../../decorators/permissions.decorator';
 import { ReqUserID } from '../../decorators/request-user.decorator';
 import { Returns } from '../../decorators/returns.decorator';
 import { ImageManagerService } from '../../managers/image/image.service';
+import { ImageFullId } from '../../models/constants/image-full-id.const';
 import { Permission } from '../../models/constants/permissions.const';
 import { ImageUploadDto } from '../../models/dto/image-upload.dto';
 
@@ -33,9 +35,9 @@ export class ImageController {
     // Usually passthrough is for manually sending the response,
     // But we need it here to set the mime type
     @Res({ passthrough: true }) res: FastifyReply,
-    @ImageIdParam() id: string,
+    @ImageFullIdParam() fullid: ImageFullId,
   ): Promise<Buffer> {
-    const image = await this.imagesService.getMaster(id);
+    const image = await this.imagesService.getMaster(fullid.id);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
       throw new NotFoundException('Could not find image');
@@ -48,9 +50,9 @@ export class ImageController {
   @Head(':id')
   async headImage(
     @Res({ passthrough: true }) res: FastifyReply,
-    @ImageIdParam() id: string,
+    @ImageFullIdParam() fullid: ImageFullId,
   ) {
-    const fullmime = await this.imagesService.getMasterMime(id);
+    const fullmime = await this.imagesService.getMasterMime(fullid.id);
     if (HasFailed(fullmime)) {
       this.logger.warn(fullmime.getReason());
       throw new NotFoundException('Could not find image');

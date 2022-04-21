@@ -7,3 +7,4 @@
 ></canvas>
 <img *ngIf="state === 'image'" [src]="imageURL" />
 <mat-spinner *ngIf="state === 'loading'" color="accent"></mat-spinner>
+<mat-icon *ngIf="state === 'error'">broken_image</mat-icon>
