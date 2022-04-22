@@ -5,8 +5,7 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
-  Post,
-  Res
+  Post, Res
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
@@ -37,6 +36,17 @@ export class ImageController {
     @Res({ passthrough: true }) res: FastifyReply,
     @ImageFullIdParam() fullid: ImageFullId,
   ): Promise<Buffer> {
+    if (fullid.type === 'original') {
+      const image = await this.imagesService.getOriginal(fullid.id);
+      if (HasFailed(image)) {
+        this.logger.warn(image.getReason());
+        throw new NotFoundException('Could not find image');
+      }
+
+      res.type(image.mime);
+      return image.data;
+    }
+
     const image = await this.imagesService.getMaster(fullid.id);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
@@ -52,13 +62,18 @@ export class ImageController {
     @Res({ passthrough: true }) res: FastifyReply,
     @ImageFullIdParam() fullid: ImageFullId,
   ) {
-    const fullmime = await this.imagesService.getMasterMime(fullid.id);
-    if (HasFailed(fullmime)) {
-      this.logger.warn(fullmime.getReason());
-      throw new NotFoundException('Could not find image');
+    if (fullid.type === 'original') {
+      const fullmime = await this.imagesService.getOriginalMime(fullid.id);
+      if (HasFailed(fullmime)) {
+        this.logger.warn(fullmime.getReason());
+        throw new NotFoundException('Could not find image');
+      }
+
+      res.type(fullmime.mime);
+      return;
     }
 
-    res.type(fullmime.mime);
+    res.type(fullid.mime);
   }
 
   @Get('meta/:id')

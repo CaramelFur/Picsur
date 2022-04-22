@@ -22,14 +22,14 @@ export class ImageFullIdPipe implements PipeTransform<string, ImageFullId> {
       if (mime === undefined)
         throw new BadRequestException('Invalid image identifier');
 
-      return { id, ext, mime };
+      return { type: 'normal', id, ext, mime };
     } else if (split.length === 1) {
       const [id] = split;
 
       if (!UUIDRegex.test(id))
         throw new BadRequestException('Invalid image identifier');
 
-      return { id, ext: null, mime: null };
+      return { type: 'original', id, ext: null, mime: null };
     } else {
       throw new BadRequestException('Invalid image identifier');
     }
