@@ -1,18 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Request } from 'express';
-import { ParamsDictionary } from 'express-serve-static-core';
 import { Strategy } from 'passport-strategy';
-import { ParsedQs } from 'qs';
 import { GuestService } from '../guest.service';
-
-type ReqType = Request<
-  ParamsDictionary,
-  any,
-  any,
-  ParsedQs,
-  Record<string, any>
->;
+import { ReqType } from './reqtype';
 
 class GuestPassportStrategy extends Strategy {
   // Will be overridden by the nest implementation
