@@ -9,7 +9,10 @@ import {
   Res
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
-import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
+import {
+  ImageMetaResponse,
+  ImageUploadResponse
+} from 'picsur-shared/dist/dto/api/image.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decorator';
 import { ImageIdParam } from '../../decorators/image-id/image-id.decorator';
@@ -88,16 +91,22 @@ export class ImageController {
       throw new NotFoundException('Could not find image');
     }
 
-    return image;
+    const fileMimes = await this.imagesService.getAllFileMimes(id);
+    if (HasFailed(fileMimes)) {
+      this.logger.warn(fileMimes.getReason());
+      throw new InternalServerErrorException('Could not get image mime');
+    }
+
+    return { image, fileMimes };
   }
 
   @Post()
-  @Returns(ImageMetaResponse)
+  @Returns(ImageUploadResponse)
   @RequiredPermissions(Permission.ImageUpload)
   async uploadImage(
     @MultiPart() multipart: ImageUploadDto,
     @ReqUserID() userid: string,
-  ): Promise<ImageMetaResponse> {
+  ): Promise<ImageUploadResponse> {
     const image = await this.imagesService.upload(
       multipart.image.buffer,
       userid,

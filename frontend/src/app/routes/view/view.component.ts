@@ -18,6 +18,7 @@ export class ViewComponent implements OnInit {
     private utilService: UtilService
   ) {}
 
+  public previewLink = '';
   public imageLinks = new ImageLinks();
 
   async ngOnInit() {
@@ -32,7 +33,16 @@ export class ViewComponent implements OnInit {
       return this.utilService.quitError(metadata.getReason());
     }
 
-    this.imageLinks = this.imageService.CreateImageLinksFromID(id, 'qoi');
+    const hasOriginal = metadata.fileMimes.original !== undefined;
+    this.previewLink = this.imageService.GetImageURL(
+      id,
+      metadata.fileMimes.master
+    );
+
+    this.imageLinks = this.imageService.CreateImageLinksFromID(
+      id,
+      hasOriginal ? null : metadata.fileMimes.master
+    );
   }
 
   download() {

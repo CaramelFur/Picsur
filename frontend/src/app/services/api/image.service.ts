@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
+import {
+  ImageMetaResponse,
+  ImageUploadResponse
+} from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
-import { EImage } from 'picsur-shared/dist/entities/image.entity';
+import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable } from 'picsur-shared/dist/types';
 import { Open } from 'picsur-shared/dist/types/failable';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
@@ -14,7 +17,7 @@ export class ImageService {
 
   public async UploadImage(image: File): AsyncFailable<string> {
     const result = await this.api.postForm(
-      ImageMetaResponse,
+      ImageUploadResponse,
       '/i',
       new ImageUploadRequest(image)
     );
@@ -22,14 +25,15 @@ export class ImageService {
     return Open(result, 'id');
   }
 
-  public async GetImageMeta(image: string): AsyncFailable<EImage> {
+  public async GetImageMeta(image: string): AsyncFailable<ImageMetaResponse> {
     return await this.api.get(ImageMetaResponse, `/i/meta/${image}`);
   }
 
-  public GetImageURL(image: string): string {
+  public GetImageURL(image: string, mime: string | null): string {
     const baseURL = window.location.protocol + '//' + window.location.host;
+    const extension = mime !== null ? Mime2Ext(mime) ?? 'error' : null;
 
-    return `${baseURL}/i/${image}`;
+    return `${baseURL}/i/${image}${extension !== null ? '.' + extension : ''}`;
   }
 
   public CreateImageLinks(imageURL: string): ImageLinks {
@@ -42,7 +46,7 @@ export class ImageService {
     };
   }
 
-  public CreateImageLinksFromID(imageID: string, format: string): ImageLinks {
-    return this.CreateImageLinks(this.GetImageURL(imageID + '.' + format));
+  public CreateImageLinksFromID(imageID: string, mime: string | null): ImageLinks {
+    return this.CreateImageLinks(this.GetImageURL(imageID, mime));
   }
 }

@@ -31,7 +31,6 @@ async function bootstrap() {
     },
   );
 
-  // Configure nest app
   app.useGlobalFilters(new MainExceptionFilter());
   app.useGlobalInterceptors(new SuccessInterceptor(app.get(Reflector)));
   app.useGlobalPipes(new ZodValidationPipe());

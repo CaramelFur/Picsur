@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.dto';
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
-import { LessThan, Repository } from 'typeorm';
-import { ImageFileType } from '../../models/constants/image-file-types.const';
+import { In, LessThan, Repository } from 'typeorm';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
 
@@ -69,6 +69,28 @@ export class ImageFileDBService {
 
       if (!found) return Fail('Image not found');
       return found.mime;
+    } catch (e) {
+      return Fail(e);
+    }
+  }
+
+  public async getFileMimes(
+    imageId: string,
+    types: ImageFileType[],
+  ): AsyncFailable<{ [key: string]: string | undefined }> {
+    try {
+      const found = await this.imageFileRepo.find({
+        where: { image_id: imageId, type: In(types) },
+        select: ['type', 'mime'],
+      });
+
+      if (!found) return Fail('Image not found');
+      return Object.fromEntries(
+        types.map((type) => [
+          type,
+          found.find((f) => f.type === type)?.mime,
+        ]),
+      );
     } catch (e) {
       return Fail(e);
     }

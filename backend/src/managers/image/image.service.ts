@@ -1,15 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import Crypto from 'crypto';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
+import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.dto';
 import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.dto';
-import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
 import { IsQOI } from 'qoi-img';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
 import { UsrPreferenceService } from '../../collections/preference-db/usr-preference-db.service';
-import { ImageFileType } from '../../models/constants/image-file-types.const';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
 import { EImageBackend } from '../../models/entities/image.entity';
@@ -155,6 +155,26 @@ export class ImageManagerService {
     if (HasFailed(mime)) return mime;
 
     return ParseMime(mime);
+  }
+
+  public async getAllFileMimes(imageId: string): AsyncFailable<{
+    [ImageFileType.MASTER]: string;
+    [ImageFileType.ORIGINAL]: string | undefined;
+  }> {
+    const result = await this.imageFilesService.getFileMimes(imageId, [
+      ImageFileType.MASTER,
+      ImageFileType.ORIGINAL,
+    ]);
+    if (HasFailed(result)) return result;
+
+    if (result[ImageFileType.MASTER] === undefined) {
+      return Fail('No master file found');
+    }
+
+    return {
+      [ImageFileType.MASTER]: result[ImageFileType.MASTER]!,
+      [ImageFileType.ORIGINAL]: result[ImageFileType.ORIGINAL],
+    };
   }
 
   // Util stuff ==================================================================

@@ -16,6 +16,7 @@ const SettingsRoutes: PRoutes = [
     children: [
       {
         path: '',
+        pathMatch: 'full',
         redirectTo: 'general',
       },
       {

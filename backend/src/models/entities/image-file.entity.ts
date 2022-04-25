@@ -1,5 +1,5 @@
+import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.dto';
 import { Column, Entity, Index, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { ImageFileType } from '../constants/image-file-types.const';
 
 @Entity()
 @Unique(['image_id', 'type'])
