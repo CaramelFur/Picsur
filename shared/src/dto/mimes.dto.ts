@@ -5,7 +5,7 @@ export enum ImageMime {
   WEBP = 'image/webp',
   TIFF = 'image/tiff',
   BMP = 'image/bmp',
-  ICO = 'image/x-icon',
+  // ICO = 'image/x-icon',
   QOI = 'image/x-qoi',
 }
 
@@ -32,19 +32,30 @@ export interface FullMime {
   type: SupportedMimeCategory;
 }
 
-export const Mime2ExtMap: {
-  [key in ImageMime | AnimMime]: string;
+export const ImageMime2ExtMap: {
+  [key in ImageMime]: string;
 } = {
   [ImageMime.JPEG]: 'jpg',
   [ImageMime.PNG]: 'png',
   [ImageMime.WEBP]: 'webp',
   [ImageMime.TIFF]: 'tiff',
   [ImageMime.BMP]: 'bmp',
-  [ImageMime.ICO]: 'ico',
+  // [ImageMime.ICO]: 'ico',
   [ImageMime.QOI]: 'qoi',
+};
 
+export const AnimMime2ExtMap: {
+  [key in AnimMime]: string;
+} = {
   [AnimMime.APNG]: 'apng',
   [AnimMime.GIF]: 'gif',
+};
+
+export const Mime2ExtMap: {
+  [key in ImageMime | AnimMime]: string;
+} = {
+  ...ImageMime2ExtMap,
+  ...AnimMime2ExtMap,
 };
 
 export const Ext2MimeMap: {

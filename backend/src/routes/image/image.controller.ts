@@ -47,7 +47,7 @@ export class ImageController {
       return image.data;
     }
 
-    const image = await this.imagesService.getMaster(fullid.id);
+    const image = await this.imagesService.getConverted(fullid.id, fullid.mime);
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
       throw new NotFoundException('Could not find image');

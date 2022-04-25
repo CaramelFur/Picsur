@@ -9,8 +9,10 @@ import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
 import { UsrPreferenceService } from '../../collections/preference-db/usr-preference-db.service';
 import { ImageFileType } from '../../models/constants/image-file-types.const';
+import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
 import { EImageBackend } from '../../models/entities/image.entity';
+import { ImageConverterService } from './image-converter.service';
 import { ImageProcessorService } from './image-processor.service';
 
 // Right now this service is mostly a wrapper for the imagedbservice.
@@ -23,6 +25,7 @@ export class ImageManagerService {
     private readonly imagesService: ImageDBService,
     private readonly imageFilesService: ImageFileDBService,
     private readonly processService: ImageProcessorService,
+    private readonly convertService: ImageConverterService,
     private readonly userPref: UsrPreferenceService,
   ) {}
 
@@ -51,11 +54,7 @@ export class ImageManagerService {
     if (HasFailed(keepOriginal)) return keepOriginal;
 
     // Process
-    const processResult = await this.processService.process(
-      image,
-      fullMime,
-      userid,
-    );
+    const processResult = await this.processService.process(image, fullMime);
     if (HasFailed(processResult)) return processResult;
 
     // Save processed to db
@@ -81,6 +80,35 @@ export class ImageManagerService {
     }
 
     return imageEntity;
+  }
+
+  public async getConverted(
+    imageId: string,
+    mime: string,
+  ): AsyncFailable<EImageDerivativeBackend> {
+    const targetMime = ParseMime(mime);
+    if (HasFailed(targetMime)) return targetMime;
+    
+    const masterImage = await this.getMaster(imageId);
+    if (HasFailed(masterImage)) return masterImage;
+
+    const sourceMime = ParseMime(masterImage.mime);
+    if (HasFailed(sourceMime)) return sourceMime;
+
+    const convertResult = await this.convertService.convert(
+      masterImage.data,
+      sourceMime,
+      targetMime,
+    );
+    if (HasFailed(convertResult)) return convertResult;
+
+    const returned = new EImageDerivativeBackend();
+    returned.data = convertResult.image;
+    returned.mime = convertResult.mime;
+    returned.imageId = imageId;
+    returned.key = 'aight';
+
+    return returned;
   }
 
   // File getters ==============================================================

@@ -14,4 +14,14 @@ export class InfoResponse extends createZodDto(InfoResponseSchema) {}
 export const AllPermissionsResponseSchema = z.object({
   permissions: IsStringList(),
 });
-export class AllPermissionsResponse extends createZodDto(AllPermissionsResponseSchema) {}
+export class AllPermissionsResponse extends createZodDto(
+  AllPermissionsResponseSchema,
+) {}
+
+export const AllFormatsResponseSchema = z.object({
+  image: z.record(string(), z.string()),
+  anim: z.record(string(), z.string()),
+});
+export class AllFormatsResponse extends createZodDto(
+  AllFormatsResponseSchema,
+) {}
