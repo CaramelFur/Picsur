@@ -121,6 +121,7 @@ export class UtilService {
       new Blob([file.buffer], { type: file.mimeType })
     );
     a.download = file.name;
+    a.target = '_self';
     a.click();
 
     closeDialog();

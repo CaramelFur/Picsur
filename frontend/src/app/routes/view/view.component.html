@@ -8,9 +8,28 @@
       <picsur-img class="uploadedimage" [src]="previewLink"></picsur-img>
     </div>
 
-    <div class="col-12">
+    <div class="col-md-6 col-12">
       <copy-field label="Image URL" [value]="imageLinks.source"></copy-field>
     </div>
+
+    <div class="col-md-6 col-12">
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>Image Format</mat-label>
+        <mat-select
+          (valueChange)="selectedFormat($event)"
+          [value]="setSelectedValue"
+        >
+          <mat-option *ngFor="let format of formatOptions" [value]="format.key">
+            {{ format.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-12 mb-3">
+      <mat-divider class="" [inset]="false"></mat-divider>
+    </div>
+
     <div class="col-md-6 col-12">
       <copy-field label="Markdown" [value]="imageLinks.markdown"></copy-field>
     </div>

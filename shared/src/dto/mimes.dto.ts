@@ -35,20 +35,20 @@ export interface FullMime {
 export const ImageMime2ExtMap: {
   [key in ImageMime]: string;
 } = {
+  [ImageMime.QOI]: 'qoi',
   [ImageMime.JPEG]: 'jpg',
   [ImageMime.PNG]: 'png',
   [ImageMime.WEBP]: 'webp',
   [ImageMime.TIFF]: 'tiff',
   [ImageMime.BMP]: 'bmp',
   // [ImageMime.ICO]: 'ico',
-  [ImageMime.QOI]: 'qoi',
 };
 
 export const AnimMime2ExtMap: {
   [key in AnimMime]: string;
 } = {
-  [AnimMime.APNG]: 'apng',
   [AnimMime.GIF]: 'gif',
+  [AnimMime.APNG]: 'apng',
 };
 
 export const Mime2ExtMap: {

@@ -46,7 +46,10 @@ export class ImageService {
     };
   }
 
-  public CreateImageLinksFromID(imageID: string, mime: string | null): ImageLinks {
+  public CreateImageLinksFromID(
+    imageID: string,
+    mime: string | null
+  ): ImageLinks {
     return this.CreateImageLinks(this.GetImageURL(imageID, mime));
   }
 }
