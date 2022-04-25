@@ -4,4 +4,5 @@ export enum SysPreference {
   JwtSecret = 'jwt_secret',
   JwtExpiresIn = 'jwt_expires_in',
   BCryptStrength = 'bcrypt_strength',
+  RemoveDerivativesAfter = 'remove_derivatives_after',
 }

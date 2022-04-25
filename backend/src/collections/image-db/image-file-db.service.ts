@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
-import { Repository } from 'typeorm';
+import { LessThan, Repository } from 'typeorm';
 import { ImageFileType } from '../../models/constants/image-file-types.const';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
+
+const A_DAY_IN_SECONDS = 24 * 60 * 60;
 
 @Injectable()
 export class ImageFileDBService {
@@ -83,6 +85,7 @@ export class ImageFileDBService {
     imageDerivative.key = key;
     imageDerivative.mime = mime;
     imageDerivative.data = file;
+    imageDerivative.last_read_unix_sec = Math.floor(Date.now() / 1000);
 
     try {
       return await this.imageDerivativeRepo.save(imageDerivative);
@@ -96,9 +99,18 @@ export class ImageFileDBService {
     key: string,
   ): AsyncFailable<EImageDerivativeBackend | null> {
     try {
-      return await this.imageDerivativeRepo.findOne({
+      const derivative = await this.imageDerivativeRepo.findOne({
         where: { image_id: imageId, key },
       });
+      if (!derivative) return null;
+
+      const unix_seconds = Math.floor(Date.now() / 1000);
+      if (derivative.last_read_unix_sec > unix_seconds - A_DAY_IN_SECONDS) {
+        derivative.last_read_unix_sec = unix_seconds;
+        return await this.imageDerivativeRepo.save(derivative);
+      }
+
+      return derivative;
     } catch (e) {
       return Fail(e);
     }
@@ -116,6 +128,21 @@ export class ImageFileDBService {
 
       if (!found) return Fail('Image not found');
       return found.mime;
+    } catch (e) {
+      return Fail(e);
+    }
+  }
+
+  public async cleanupDerivatives(
+    olderThanSeconds: number,
+  ): AsyncFailable<number> {
+    try {
+      const unix_seconds = Math.floor(Date.now() / 1000);
+      const result = await this.imageDerivativeRepo.delete({
+        last_read_unix_sec: LessThan(unix_seconds - olderThanSeconds),
+      });
+
+      return result.affected ?? 0;
     } catch (e) {
       return Fail(e);
     }

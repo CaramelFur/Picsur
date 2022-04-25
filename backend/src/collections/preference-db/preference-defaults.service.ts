@@ -37,5 +37,6 @@ export class PreferenceDefaultsService {
     [SysPreference.JwtExpiresIn]: () =>
       this.jwtConfigService.getJwtExpiresIn() ?? '7d',
     [SysPreference.BCryptStrength]: () => 12,
+    [SysPreference.RemoveDerivativesAfter]: () => '7d',
   };
 }

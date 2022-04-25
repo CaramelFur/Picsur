@@ -6,4 +6,5 @@ export const SysPreferenceFriendlyNames: {
   [SysPreference.JwtSecret]: 'JWT Secret',
   [SysPreference.JwtExpiresIn]: 'JWT Expiry Time',
   [SysPreference.BCryptStrength]: 'BCrypt Strength',
+  [SysPreference.RemoveDerivativesAfter]: 'Cached Images Expiry Time',
 };
