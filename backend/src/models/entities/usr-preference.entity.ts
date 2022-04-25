@@ -6,12 +6,12 @@ export const EUsrPreferenceSchema = z.object({
   id: IsEntityID().optional(),
   key: z.string(),
   value: z.string(),
-  userId: IsEntityID(),
+  user_id: IsEntityID(),
 });
 type EUsrPreference = z.infer<typeof EUsrPreferenceSchema>;
 
 @Entity()
-@Unique(['key', 'userId'])
+@Unique(['key', 'user_id'])
 export class EUsrPreferenceBackend implements EUsrPreference {
   @PrimaryGeneratedColumn('uuid')
   id?: string;
@@ -25,5 +25,5 @@ export class EUsrPreferenceBackend implements EUsrPreference {
 
   @Index()
   @Column({ nullable: false })
-  userId: string;
+  user_id: string;
 }

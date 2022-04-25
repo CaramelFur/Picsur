@@ -23,5 +23,5 @@ export class EUserBackend implements OverriddenEUser {
   roles: string[];
 
   @Column({ nullable: false, select: false })
-  hashedPassword?: string;
+  hashed_password?: string;
 }

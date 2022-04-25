@@ -67,10 +67,10 @@ export class ImageDBService {
   public async delete(id: string): AsyncFailable<true> {
     try {
       const derivativesResult = await this.imageDerivativeRepo.delete({
-        imageId: id,
+        image_id: id,
       });
       const filesResult = await this.imageFileRepo.delete({
-        imageId: id,
+        image_id: id,
       });
       const result = await this.imageRepo.delete({ id });
 

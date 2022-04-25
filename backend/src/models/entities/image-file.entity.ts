@@ -2,14 +2,14 @@ import { Column, Entity, Index, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { ImageFileType } from '../constants/image-file-types.const';
 
 @Entity()
-@Unique(['imageId', 'type'])
+@Unique(['image_id', 'type'])
 export class EImageFileBackend {
   @PrimaryGeneratedColumn('uuid')
   private _id?: string;
 
   @Index()
   @Column({ nullable: false })
-  imageId: string;
+  image_id: string;
 
   @Index()
   @Column({ nullable: false, enum: ImageFileType })

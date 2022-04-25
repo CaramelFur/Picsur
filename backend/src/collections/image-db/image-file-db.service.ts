@@ -23,14 +23,14 @@ export class ImageFileDBService {
     mime: string,
   ): AsyncFailable<true> {
     const imageFile = new EImageFileBackend();
-    imageFile.imageId = imageId;
+    imageFile.image_id = imageId;
     imageFile.type = type;
     imageFile.mime = mime;
     imageFile.data = file;
 
     try {
       await this.imageFileRepo.upsert(imageFile, {
-        conflictPaths: ['imageId', 'type'],
+        conflictPaths: ['image_id', 'type'],
       });
     } catch (e) {
       return Fail(e);
@@ -45,7 +45,7 @@ export class ImageFileDBService {
   ): AsyncFailable<EImageFileBackend> {
     try {
       const found = await this.imageFileRepo.findOne({
-        where: { imageId: imageId ?? '', type: type ?? '' },
+        where: { image_id: imageId ?? '', type: type ?? '' },
       });
 
       if (!found) return Fail('Image not found');
@@ -61,7 +61,7 @@ export class ImageFileDBService {
   ): AsyncFailable<string> {
     try {
       const found = await this.imageFileRepo.findOne({
-        where: { imageId, type },
+        where: { image_id: imageId, type },
         select: ['mime'],
       });
 
@@ -79,7 +79,7 @@ export class ImageFileDBService {
     file: Buffer,
   ): AsyncFailable<EImageDerivativeBackend> {
     const imageDerivative = new EImageDerivativeBackend();
-    imageDerivative.imageId = imageId;
+    imageDerivative.image_id = imageId;
     imageDerivative.key = key;
     imageDerivative.mime = mime;
     imageDerivative.data = file;
@@ -97,7 +97,7 @@ export class ImageFileDBService {
   ): AsyncFailable<EImageDerivativeBackend | null> {
     try {
       return await this.imageDerivativeRepo.findOne({
-        where: { imageId, key },
+        where: { image_id: imageId, key },
       });
     } catch (e) {
       return Fail(e);
@@ -110,7 +110,7 @@ export class ImageFileDBService {
   ): AsyncFailable<string> {
     try {
       const found = await this.imageDerivativeRepo.findOne({
-        where: { imageId, key },
+        where: { image_id: imageId, key },
         select: ['mime'],
       });
 

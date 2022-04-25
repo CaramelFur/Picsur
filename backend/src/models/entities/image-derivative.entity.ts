@@ -1,14 +1,14 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity()
-@Unique(['imageId', 'key'])
+@Unique(['image_id', 'key'])
 export class EImageDerivativeBackend {
   @PrimaryGeneratedColumn('uuid')
   private _id?: string;
 
   @Index()
   @Column({ nullable: false })
-  imageId: string;
+  image_id: string;
 
   @Index()
   @Column({ nullable: false })

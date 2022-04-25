@@ -44,7 +44,7 @@ export class UsrPreferenceService {
     try {
       // Upsert here, because we want to create a new record if it does not exist
       await this.usrPreferenceRepository.upsert(usrPreference, {
-        conflictPaths: ['key', 'userId'],
+        conflictPaths: ['key', 'user_id'],
       });
     } catch (e) {
       return Fail(e);
@@ -74,7 +74,7 @@ export class UsrPreferenceService {
         let existing: EUsrPreferenceBackend | null;
         try {
           existing = await this.usrPreferenceRepository.findOne({
-            where: { key: validatedKey as UsrPreference, userId: userid },
+            where: { key: validatedKey as UsrPreference, user_id: userid },
             cache: 60000,
           });
           if (!existing) return null;
@@ -97,7 +97,7 @@ export class UsrPreferenceService {
         if (HasFailed(unpacked)) return unpacked;
         return {
           ...unpacked,
-          user: result.data.userId,
+          user: result.data.user_id,
         };
       },
       () => this.saveDefault(userid, validatedKey as UsrPreference),
@@ -192,7 +192,7 @@ export class UsrPreferenceService {
     let verifySysPreference = new EUsrPreferenceBackend();
     verifySysPreference.key = validated.key;
     verifySysPreference.value = validated.value;
-    verifySysPreference.userId = userid;
+    verifySysPreference.user_id = userid;
 
     // It should already be valid, but these two validators might go out of sync
     const result = EUsrPreferenceSchema.safeParse(verifySysPreference);
