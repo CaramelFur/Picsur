@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import Crypto from 'crypto';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.dto';
@@ -12,15 +13,14 @@ import { ImageFileType } from '../../models/constants/image-file-types.const';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
 import { EImageBackend } from '../../models/entities/image.entity';
+import { MutexFallBack } from '../../models/util/mutex-fallback';
 import { ImageConverterService } from './image-converter.service';
 import { ImageProcessorService } from './image-processor.service';
 
-// Right now this service is mostly a wrapper for the imagedbservice.
-// But in the future the actual image logic will happend here
-// And the image storing part will stay in the imagedbservice
-
 @Injectable()
 export class ImageManagerService {
+  private readonly logger = new Logger(ImageManagerService.name);
+
   constructor(
     private readonly imagesService: ImageDBService,
     private readonly imageFilesService: ImageFileDBService,
@@ -84,31 +84,47 @@ export class ImageManagerService {
 
   public async getConverted(
     imageId: string,
-    mime: string,
+    options: {
+      mime: string;
+    },
   ): AsyncFailable<EImageDerivativeBackend> {
-    const targetMime = ParseMime(mime);
+    const targetMime = ParseMime(options.mime);
     if (HasFailed(targetMime)) return targetMime;
-    
-    const masterImage = await this.getMaster(imageId);
-    if (HasFailed(masterImage)) return masterImage;
 
-    const sourceMime = ParseMime(masterImage.mime);
-    if (HasFailed(sourceMime)) return sourceMime;
+    const converted_key = this.getConvertHash(options);
 
-    const convertResult = await this.convertService.convert(
-      masterImage.data,
-      sourceMime,
-      targetMime,
+    return MutexFallBack(
+      converted_key,
+      () => this.imageFilesService.getDerivative(imageId, converted_key),
+      async () => {
+        const masterImage = await this.getMaster(imageId);
+        if (HasFailed(masterImage)) return masterImage;
+
+        const sourceMime = ParseMime(masterImage.mime);
+        if (HasFailed(sourceMime)) return sourceMime;
+
+        const startTime = Date.now();
+        const convertResult = await this.convertService.convert(
+          masterImage.data,
+          sourceMime,
+          targetMime,
+        );
+        if (HasFailed(convertResult)) return convertResult;
+
+        this.logger.verbose(
+          `Converted ${imageId} from ${sourceMime.mime} to ${
+            targetMime.mime
+          } in ${Date.now() - startTime}ms`,
+        );
+
+        return await this.imageFilesService.addDerivative(
+          imageId,
+          converted_key,
+          convertResult.mime,
+          convertResult.image,
+        );
+      },
     );
-    if (HasFailed(convertResult)) return convertResult;
-
-    const returned = new EImageDerivativeBackend();
-    returned.data = convertResult.image;
-    returned.mime = convertResult.mime;
-    returned.imageId = imageId;
-    returned.key = 'aight';
-
-    return returned;
   }
 
   // File getters ==============================================================
@@ -157,5 +173,14 @@ export class ImageManagerService {
 
     const fullMime = ParseMime(mime ?? 'other/unknown');
     return fullMime;
+  }
+
+  private getConvertHash(options: object) {
+    // Return a sha256 hash of the stringified options
+    const stringified = JSON.stringify(options);
+    const hash = Crypto.createHash('sha256');
+    hash.update(stringified);
+    const digest = hash.digest('hex');
+    return digest;
   }
 }

@@ -63,32 +63,34 @@ export class SysPreferenceService {
     let validatedKey = this.prefCommon.validatePrefKey(key, SysPreference);
     if (HasFailed(validatedKey)) return validatedKey;
 
-    let foundSysPreference: ESysPreferenceBackend;
-    try {
-      foundSysPreference = await MutexFallBack(
-        'fetchSysPrefrence',
-        () =>
-          this.sysPreferenceRepository.findOne({
+    return MutexFallBack(
+      'fetchSysPrefrence',
+      async () => {
+        let existing: ESysPreferenceBackend | null;
+        try {
+          existing = await this.sysPreferenceRepository.findOne({
             where: { key: validatedKey as SysPreference },
             cache: 60000,
-          }),
-        () => this.saveDefault(validatedKey as SysPreference),
-      );
-    } catch (e) {
-      return Fail(e);
-    }
+          });
+          if (!existing) return null;
+        } catch (e) {
+          return Fail(e);
+        }
 
-    // Validate
-    const result = ESysPreferenceSchema.safeParse(foundSysPreference);
-    if (!result.success) {
-      return Fail(result.error);
-    }
+        // Validate
+        const result = ESysPreferenceSchema.safeParse(existing);
+        if (!result.success) {
+          return Fail(result.error);
+        }
 
-    // Return
-    return this.prefCommon.validateAndUnpackPref(
-      result.data,
-      SysPreference,
-      SysPreferenceValueTypes,
+        // Return
+        return this.prefCommon.validateAndUnpackPref(
+          result.data,
+          SysPreference,
+          SysPreferenceValueTypes,
+        );
+      },
+      () => this.saveDefault(validatedKey as SysPreference),
     );
   }
 

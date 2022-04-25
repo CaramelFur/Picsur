@@ -77,7 +77,7 @@ export class ImageFileDBService {
     key: string,
     mime: string,
     file: Buffer,
-  ): AsyncFailable<true> {
+  ): AsyncFailable<EImageDerivativeBackend> {
     const imageDerivative = new EImageDerivativeBackend();
     imageDerivative.imageId = imageId;
     imageDerivative.key = key;
@@ -85,25 +85,20 @@ export class ImageFileDBService {
     imageDerivative.data = file;
 
     try {
-      await this.imageDerivativeRepo.save(imageDerivative);
+      return await this.imageDerivativeRepo.save(imageDerivative);
     } catch (e) {
       return Fail(e);
     }
-
-    return true;
   }
 
   public async getDerivative(
     imageId: string,
     key: string,
-  ): AsyncFailable<EImageDerivativeBackend> {
+  ): AsyncFailable<EImageDerivativeBackend | null> {
     try {
-      const found = await this.imageDerivativeRepo.findOne({
+      return await this.imageDerivativeRepo.findOne({
         where: { imageId, key },
       });
-
-      if (!found) return Fail('Image not found');
-      return found;
     } catch (e) {
       return Fail(e);
     }

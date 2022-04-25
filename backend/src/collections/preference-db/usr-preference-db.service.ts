@@ -68,38 +68,40 @@ export class UsrPreferenceService {
     let validatedKey = this.prefCommon.validatePrefKey(key, UsrPreference);
     if (HasFailed(validatedKey)) return validatedKey;
 
-    let foundUsrPreference: EUsrPreferenceBackend;
-    try {
-      foundUsrPreference = await MutexFallBack(
-        'fetchUsrPrefrence',
-        () =>
-          this.usrPreferenceRepository.findOne({
+    return MutexFallBack(
+      'fetchUsrPrefrence',
+      async () => {
+        let existing: EUsrPreferenceBackend | null;
+        try {
+          existing = await this.usrPreferenceRepository.findOne({
             where: { key: validatedKey as UsrPreference, userId: userid },
             cache: 60000,
-          }),
-        () => this.saveDefault(userid, validatedKey as UsrPreference),
-      );
-    } catch (e) {
-      return Fail(e);
-    }
+          });
+          if (!existing) return null;
+        } catch (e) {
+          return Fail(e);
+        }
 
-    // Validate
-    const result = EUsrPreferenceSchema.safeParse(foundUsrPreference);
-    if (!result.success) {
-      return Fail(result.error);
-    }
+        // Validate
+        const result = EUsrPreferenceSchema.safeParse(existing);
+        if (!result.success) {
+          return Fail(result.error);
+        }
 
-    // Return
-    const unpacked = this.prefCommon.validateAndUnpackPref(
-      result.data,
-      UsrPreference,
-      UsrPreferenceValueTypes,
+        // Return
+        const unpacked = this.prefCommon.validateAndUnpackPref(
+          result.data,
+          UsrPreference,
+          UsrPreferenceValueTypes,
+        );
+        if (HasFailed(unpacked)) return unpacked;
+        return {
+          ...unpacked,
+          user: result.data.userId,
+        };
+      },
+      () => this.saveDefault(userid, validatedKey as UsrPreference),
     );
-    if (HasFailed(unpacked)) return unpacked;
-    return {
-      ...unpacked,
-      user: result.data.userId,
-    };
   }
 
   public async getStringPreference(

@@ -14,7 +14,7 @@ const fallBackMap: Record<string, Promise<unknown>> = {};
 
 export async function MutexFallBack<
   MF extends () => Promise<O | null | undefined>,
-  FF extends () => Promise<unknown>,
+  FF extends () => Promise<O>,
   O,
 >(key: string, mainFunc: MF, fallBackFunc: FF): Promise<O> {
   const try_it = await mainFunc();
@@ -25,7 +25,9 @@ export async function MutexFallBack<
     return MutexFallBack(key, mainFunc, fallBackFunc);
   }
 
-  fallBackMap[key] = fallBackFunc();
+  const fallBackPromise = fallBackFunc();
+
+  fallBackMap[key] = fallBackPromise;
   fallBackMap[key]
     .then(() => {
       delete fallBackMap[key];
@@ -33,5 +35,6 @@ export async function MutexFallBack<
     .catch(() => {
       delete fallBackMap[key];
     });
-  return MutexFallBack(key, mainFunc, fallBackFunc);
+
+  return fallBackPromise;
 }

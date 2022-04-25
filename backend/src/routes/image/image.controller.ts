@@ -5,7 +5,8 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
-  Post, Res
+  Post,
+  Res
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
@@ -47,7 +48,9 @@ export class ImageController {
       return image.data;
     }
 
-    const image = await this.imagesService.getConverted(fullid.id, fullid.mime);
+    const image = await this.imagesService.getConverted(fullid.id, {
+      mime: fullid.mime,
+    });
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
       throw new NotFoundException('Could not find image');
