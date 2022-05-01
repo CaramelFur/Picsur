@@ -13,9 +13,11 @@
     "setversion": "./support/setversion.sh"
   },
   "resolutions": {
-    "minimist": "npm:minimist-lite"
+    "minimist": "npm:minimist-lite",
+    "fastify-static": "npm:@fastify/static"
   },
   "dependencies": {
+    "fastify-static": "npm:@fastify/static",
     "minimist": "npm:minimist-lite"
   }
 }

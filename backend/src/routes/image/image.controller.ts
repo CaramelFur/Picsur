@@ -6,11 +6,13 @@ import {
   Logger,
   NotFoundException,
   Post,
+  Query,
   Res
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import {
   ImageMetaResponse,
+  ImageRequestParams,
   ImageUploadResponse
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
@@ -39,6 +41,7 @@ export class ImageController {
     // But we need it here to set the mime type
     @Res({ passthrough: true }) res: FastifyReply,
     @ImageFullIdParam() fullid: ImageFullId,
+    @Query() params: ImageRequestParams,
   ): Promise<Buffer> {
     if (fullid.type === 'original') {
       const image = await this.imagesService.getOriginal(fullid.id);
@@ -51,12 +54,14 @@ export class ImageController {
       return image.data;
     }
 
-    const image = await this.imagesService.getConverted(fullid.id, {
-      mime: fullid.mime,
-    });
+    const image = await this.imagesService.getConverted(
+      fullid.id,
+      fullid.mime,
+      params,
+    );
     if (HasFailed(image)) {
       this.logger.warn(image.getReason());
-      throw new NotFoundException('Could not find image');
+      throw new NotFoundException('Failed to get image');
     }
 
     res.type(image.mime);

@@ -1,4 +1,4 @@
-import { MultipartFile } from 'fastify-multipart';
+import { MultipartFile } from '@fastify/multipart';
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
 import { z } from 'zod';
 

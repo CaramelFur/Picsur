@@ -69,16 +69,12 @@ export class ViewComponent implements OnInit {
       this.masterMime = masterMime;
     }
 
-    if (this.hasOriginal) {
-      this.setSelectedValue = 'original';
+    if (this.masterMime.type === SupportedMimeCategory.Image) {
+      this.setSelectedValue = ImageMime.JPEG;
+    } else if (this.masterMime.type === SupportedMimeCategory.Animation) {
+      this.setSelectedValue = AnimMime.GIF;
     } else {
-      if (this.masterMime.type === SupportedMimeCategory.Image) {
-        this.setSelectedValue = ImageMime.JPEG;
-      } else if (this.masterMime.type === SupportedMimeCategory.Animation) {
-        this.setSelectedValue = AnimMime.GIF;
-      } else {
-        this.setSelectedValue = metadata.fileMimes.master;
-      }
+      this.setSelectedValue = metadata.fileMimes.master;
     }
 
     this.selectedFormat(this.setSelectedValue);

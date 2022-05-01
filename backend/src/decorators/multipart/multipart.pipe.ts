@@ -1,3 +1,4 @@
+import { MultipartFields, MultipartFile } from '@fastify/multipart';
 import {
   ArgumentMetadata,
   BadRequestException,
@@ -8,7 +9,6 @@ import {
   Scope
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
-import { MultipartFields, MultipartFile } from 'fastify-multipart';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { MultipartConfigService } from '../../config/early/multipart.config.service';

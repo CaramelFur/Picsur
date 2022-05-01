@@ -1,15 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { BMPencode } from 'bmp-img';
+import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import {
-  FullMime,
-  ImageMime,
-  SupportedMimeCategory
+  FullMime, SupportedMimeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
-import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
-import { QOIencode } from 'qoi-img';
-import { Sharp } from 'sharp';
+import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { SharpWrapper } from '../../workers/sharp.wrapper';
 import { ImageResult } from './imageresult';
-import { UniversalSharp } from './universal-sharp';
 
 @Injectable()
 export class ImageConverterService {
@@ -17,6 +13,7 @@ export class ImageConverterService {
     image: Buffer,
     sourcemime: FullMime,
     targetmime: FullMime,
+    options: ImageRequestParams,
   ): AsyncFailable<ImageResult> {
     if (sourcemime.type !== targetmime.type) {
       return Fail("Can't convert from animated to still or vice versa");
@@ -30,9 +27,9 @@ export class ImageConverterService {
     }
 
     if (targetmime.type === SupportedMimeCategory.Image) {
-      return this.convertStill(image, sourcemime, targetmime);
+      return this.convertStill(image, sourcemime, targetmime, options);
     } else if (targetmime.type === SupportedMimeCategory.Animation) {
-      return this.convertAnimation(image, targetmime);
+      return this.convertAnimation(image, targetmime, options);
     } else {
       return Fail('Unsupported mime type');
     }
@@ -42,43 +39,58 @@ export class ImageConverterService {
     image: Buffer,
     sourcemime: FullMime,
     targetmime: FullMime,
+    options: ImageRequestParams,
   ): AsyncFailable<ImageResult> {
-    const sharpImage = UniversalSharp(image, sourcemime);
+    const sharpWrapper = new SharpWrapper();
+
+    const hasStarted = await sharpWrapper.start(image, sourcemime);
+    if (HasFailed(hasStarted)) return hasStarted;
 
     // Do modifications
-
-    // Export
-    let result: Buffer;
-
-    try {
-      switch (targetmime.mime) {
-        case ImageMime.PNG:
-          result = await sharpImage.png().toBuffer();
-          break;
-        case ImageMime.JPEG:
-          result = await sharpImage.jpeg().toBuffer();
-          break;
-        case ImageMime.TIFF:
-          result = await sharpImage.tiff().toBuffer();
-          break;
-        case ImageMime.WEBP:
-          result = await sharpImage.webp().toBuffer();
-          break;
-        case ImageMime.BMP:
-          result = await this.sharpToBMP(sharpImage);
-          break;
-        case ImageMime.QOI:
-          result = await this.sharpToQOI(sharpImage);
-          break;
-        default:
-          throw new Error('Unsupported mime type');
+    if (options.height || options.width) {
+      if (options.height && options.width) {
+        sharpWrapper.operation('resize', {
+          width: options.width,
+          height: options.height,
+          fit: 'fill',
+          kernel: 'cubic',
+        });
+      } else {
+        sharpWrapper.operation('resize', {
+          width: options.width,
+          height: options.height,
+          fit: 'contain',
+          kernel: 'cubic',
+        });
       }
-    } catch (e) {
-      return Fail(e);
+    }
+    if (options.rotate) {
+      sharpWrapper.operation('rotate', options.rotate, {
+        background: 'transparent',
+      });
+    }
+    if (options.flipx) {
+      sharpWrapper.operation('flop');
+    }
+    if (options.flipy) {
+      sharpWrapper.operation('flip');
+    }
+    if (options.noalpha) {
+      sharpWrapper.operation('removeAlpha');
+    }
+    if (options.negative) {
+      sharpWrapper.operation('negate');
+    }
+    if (options.greyscale) {
+      sharpWrapper.operation('greyscale');
     }
 
+    // Export
+    const result = await sharpWrapper.finish(targetmime, options);
+    if (HasFailed(result)) return result;
+
     return {
-      image: result,
+      image: result.data,
       mime: targetmime.mime,
     };
   }
@@ -86,45 +98,12 @@ export class ImageConverterService {
   private async convertAnimation(
     image: Buffer,
     targetmime: FullMime,
+    options: ImageRequestParams,
   ): AsyncFailable<ImageResult> {
     // Apng and gif are stored as is for now
     return {
       image: image,
       mime: targetmime.mime,
     };
-  }
-
-  private async sharpToBMP(sharpImage: Sharp): Promise<Buffer> {
-    const dimensions = await sharpImage.metadata();
-    if (!dimensions.width || !dimensions.height || !dimensions.channels) {
-      throw new Error('Invalid image');
-    }
-
-    const raw = await sharpImage.raw().toBuffer();
-
-    const encoded = BMPencode(raw, {
-      width: dimensions.width,
-      height: dimensions.height,
-      channels: dimensions.channels,
-    });
-
-    return encoded;
-  }
-
-  private async sharpToQOI(sharpImage: Sharp): Promise<Buffer> {
-    const dimensions = await sharpImage.metadata();
-    if (!dimensions.width || !dimensions.height || !dimensions.channels) {
-      throw new Error('Invalid image');
-    }
-
-    const raw = await sharpImage.raw().toBuffer();
-
-    const encoded = QOIencode(raw, {
-      height: dimensions.height,
-      width: dimensions.width,
-      channels: dimensions.channels,
-    });
-
-    return encoded;
   }
 }

@@ -18,6 +18,7 @@ import { ViewRoutingModule } from './view.routing.module';
     MatButtonModule,
     MatSelectModule,
     MatDividerModule,
+    MatIconModule,
     PicsurImgModule,
     MatIconModule,
     FabModule,

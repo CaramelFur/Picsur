@@ -1,14 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import Crypto from 'crypto';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
+import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.dto';
 import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
+import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.dto';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
 import { IsQOI } from 'qoi-img';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
+import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
 import { UsrPreferenceService } from '../../collections/preference-db/usr-preference-db.service';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
@@ -27,6 +30,7 @@ export class ImageManagerService {
     private readonly processService: ImageProcessorService,
     private readonly convertService: ImageConverterService,
     private readonly userPref: UsrPreferenceService,
+    private readonly sysPref: SysPreferenceService,
   ) {}
 
   public async retrieveInfo(id: string): AsyncFailable<EImageBackend> {
@@ -84,18 +88,28 @@ export class ImageManagerService {
 
   public async getConverted(
     imageId: string,
-    options: {
-      mime: string;
-    },
+    mime: string,
+    options: ImageRequestParams,
   ): AsyncFailable<EImageDerivativeBackend> {
-    const targetMime = ParseMime(options.mime);
+    const targetMime = ParseMime(mime);
     if (HasFailed(targetMime)) return targetMime;
 
-    const converted_key = this.getConvertHash(options);
+    const converted_key = this.getConvertHash({ mime, ...options });
+
+    const [save_derivatives, allow_editing] = await Promise.all([
+      this.sysPref.getBooleanPreference(SysPreference.SaveDerivatives),
+      this.sysPref.getBooleanPreference(SysPreference.AllowEditing),
+    ]);
+    if (HasFailed(save_derivatives)) return save_derivatives;
+    if (HasFailed(allow_editing)) return allow_editing;
 
     return MutexFallBack(
       converted_key,
-      () => this.imageFilesService.getDerivative(imageId, converted_key),
+      () => {
+        if (save_derivatives)
+          return this.imageFilesService.getDerivative(imageId, converted_key);
+        else return Promise.resolve(null);
+      },
       async () => {
         const masterImage = await this.getMaster(imageId);
         if (HasFailed(masterImage)) return masterImage;
@@ -108,6 +122,7 @@ export class ImageManagerService {
           masterImage.data,
           sourceMime,
           targetMime,
+          allow_editing ? options : {},
         );
         if (HasFailed(convertResult)) return convertResult;
 
@@ -117,12 +132,21 @@ export class ImageManagerService {
           } in ${Date.now() - startTime}ms`,
         );
 
-        return await this.imageFilesService.addDerivative(
-          imageId,
-          converted_key,
-          convertResult.mime,
-          convertResult.image,
-        );
+        if (save_derivatives) {
+          return await this.imageFilesService.addDerivative(
+            imageId,
+            converted_key,
+            convertResult.mime,
+            convertResult.image,
+          );
+        } else {
+          const derivative = new EImageDerivativeBackend();
+          derivative.mime = convertResult.mime;
+          derivative.data = convertResult.image;
+          derivative.image_id = imageId;
+          derivative.key = converted_key;
+          return derivative;
+        }
       },
     );
   }

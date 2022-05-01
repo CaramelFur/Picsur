@@ -12,4 +12,6 @@ export const SysPreferenceValueTypes: {
   [SysPreference.JwtExpiresIn]: 'string',
   [SysPreference.BCryptStrength]: 'number',
   [SysPreference.RemoveDerivativesAfter]: 'string',
+  [SysPreference.SaveDerivatives]: 'boolean',
+  [SysPreference.AllowEditing]: 'boolean',
 };

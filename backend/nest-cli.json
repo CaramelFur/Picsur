@@ -5,5 +5,8 @@
   "generateOptions": {
     "spec": false
   },
+  "compilerOptions": {
+    "tsConfigPath": "tsconfig.build.json"
+  },
   "exec": "pog"
 }

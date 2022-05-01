@@ -35,26 +35,23 @@ export class ImageProcessorService {
 
     sharpImage = sharpImage.toColorspace('srgb');
 
-    const metadata = await sharpImage.metadata();
-    const pixels = await sharpImage.raw().toBuffer();
+    const processedImage = await sharpImage.raw().toBuffer({
+      resolveWithObject: true,
+    });
 
     if (
-      metadata.hasAlpha === undefined ||
-      metadata.width === undefined ||
-      metadata.height === undefined
-    )
-      return Fail('Invalid image');
-
-    if (metadata.width >= 32768 || metadata.height >= 32768) {
+      processedImage.info.width >= 32768 ||
+      processedImage.info.height >= 32768
+    ) {
       return Fail('Image too large');
     }
 
     // Png can be more efficient than QOI, but its just sooooooo slow
-    const qoiImage = QOIencode(pixels, {
-      channels: metadata.hasAlpha ? 4 : 3,
+    const qoiImage = QOIencode(processedImage.data, {
+      channels: processedImage.info.channels,
       colorspace: QOIColorSpace.SRGB,
-      height: metadata.height,
-      width: metadata.width,
+      height: processedImage.info.height,
+      width: processedImage.info.width,
     });
 
     return {

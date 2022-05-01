@@ -7,4 +7,6 @@ export const SysPreferenceFriendlyNames: {
   [SysPreference.JwtExpiresIn]: 'JWT Expiry Time',
   [SysPreference.BCryptStrength]: 'BCrypt Strength',
   [SysPreference.RemoveDerivativesAfter]: 'Cached Images Expiry Time',
+  [SysPreference.SaveDerivatives]: 'Cache Trancoded Images',
+  [SysPreference.AllowEditing]: 'Allow images to be edited (e.g. resize)',
 };
