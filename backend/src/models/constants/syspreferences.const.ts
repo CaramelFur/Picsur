@@ -11,7 +11,11 @@ export const SysPreferenceValueTypes: {
   [SysPreference.JwtSecret]: 'string',
   [SysPreference.JwtExpiresIn]: 'string',
   [SysPreference.BCryptStrength]: 'number',
+
   [SysPreference.RemoveDerivativesAfter]: 'string',
   [SysPreference.SaveDerivatives]: 'boolean',
   [SysPreference.AllowEditing]: 'boolean',
+
+  [SysPreference.ConversionTimeLimit]: 'string',
+  [SysPreference.ConversionMemoryLimit]: 'number',
 };

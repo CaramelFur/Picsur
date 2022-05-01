@@ -1,14 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import ms from 'ms';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import {
-  FullMime, SupportedMimeCategory
+  FullMime,
+  SupportedMimeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
+import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
 import { SharpWrapper } from '../../workers/sharp.wrapper';
 import { ImageResult } from './imageresult';
 
 @Injectable()
 export class ImageConverterService {
+  constructor(private readonly sysPref: SysPreferenceService) {}
+
   public async convert(
     image: Buffer,
     sourcemime: FullMime,
@@ -41,8 +47,16 @@ export class ImageConverterService {
     targetmime: FullMime,
     options: ImageRequestParams,
   ): AsyncFailable<ImageResult> {
-    const sharpWrapper = new SharpWrapper();
+    const [memLimit, timeLimit] = await Promise.all([
+      this.sysPref.getNumberPreference(SysPreference.ConversionMemoryLimit),
+      this.sysPref.getStringPreference(SysPreference.ConversionTimeLimit),
+    ]);
+    if (HasFailed(memLimit) || HasFailed(timeLimit)) {
+      return Fail('Failed to get conversion limits');
+    }
+    const timeLimitMS = ms(timeLimit);
 
+    const sharpWrapper = new SharpWrapper(timeLimitMS, memLimit);
     const hasStarted = await sharpWrapper.start(image, sourcemime);
     if (HasFailed(hasStarted)) return hasStarted;
 

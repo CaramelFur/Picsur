@@ -7,4 +7,7 @@ export enum SysPreference {
   SaveDerivatives = 'save_derivatives',
   RemoveDerivativesAfter = 'remove_derivatives_after',
   AllowEditing = 'allow_editing',
+
+  ConversionTimeLimit = 'conversion_time_limit',
+  ConversionMemoryLimit = 'conversion_memory_limit',
 }

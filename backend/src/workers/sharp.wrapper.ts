@@ -27,9 +27,6 @@ export class SharpWrapper {
   private readonly workerID: number = Math.floor(Math.random() * 100000);
   private readonly logger: Logger = new Logger('SharpWrapper' + this.workerID);
 
-  private static readonly PROMISE_TIMEOUT = 10000;
-  private static readonly INSTANCE_TIMEOUT = 10000;
-  private static readonly MEMORY_LIMIT = 512;
   private static readonly WORKER_PATH = path.join(
     __dirname,
     './sharp',
@@ -38,18 +35,25 @@ export class SharpWrapper {
 
   private worker: ChildProcess | null = null;
 
+  constructor(private instance_timeout: number, private memory_limit: number) {}
+
   public async start(image: Buffer, mime: FullMime): AsyncFailable<true> {
     this.worker = fork(SharpWrapper.WORKER_PATH, {
       serialization: 'advanced',
-      timeout: SharpWrapper.INSTANCE_TIMEOUT,
+      timeout: this.instance_timeout,
       env: {
-        MEMORY_LIMIT_MB: SharpWrapper.MEMORY_LIMIT.toString(),
+        MEMORY_LIMIT_MB: this.memory_limit.toString(),
+        NODE_OPTIONS: '--no-warnings',
       },
       stdio: 'overlapped',
     });
 
-    this.worker.stdout?.pipe(process.stdout);
-    this.worker.stderr?.pipe(process.stderr);
+    this.worker.stdout?.on('data', (data) => {
+      this.logger.verbose(`Worker log: ${data}`);
+    });
+    this.worker.stderr?.on('data', (data) => {
+      this.logger.warn(`Worker error: ${data}`);
+    });
 
     this.worker.on('error', (error) => {
       this.logger.error(`Worker ${this.workerID} error: ${error}`);
@@ -78,7 +82,9 @@ export class SharpWrapper {
       return hasSent;
     }
 
-    this.logger.verbose(`Worker ${this.workerID} initialized`);
+    this.logger.verbose(
+      `Worker ${this.workerID} initialized with ${this.instance_timeout}ms timeout and ${this.memory_limit}MB memory limit`,
+    );
 
     return true;
   }
@@ -138,10 +144,7 @@ export class SharpWrapper {
         },
       );
 
-      const result = await pTimeout(
-        finishPromise,
-        SharpWrapper.PROMISE_TIMEOUT,
-      );
+      const result = await pTimeout(finishPromise, this.instance_timeout);
 
       this.logger.verbose(
         `Worker ${this.workerID} finished in ${result.processingTime}ms`,
@@ -167,7 +170,7 @@ export class SharpWrapper {
         });
       });
 
-      await pTimeout(waitReadyPromise, SharpWrapper.PROMISE_TIMEOUT);
+      await pTimeout(waitReadyPromise, this.instance_timeout);
       return true;
     } catch (error) {
       return Fail(error);

@@ -37,8 +37,12 @@ export class PreferenceDefaultsService {
     [SysPreference.JwtExpiresIn]: () =>
       this.jwtConfigService.getJwtExpiresIn() ?? '7d',
     [SysPreference.BCryptStrength]: () => 12,
+
     [SysPreference.RemoveDerivativesAfter]: () => '7d',
     [SysPreference.SaveDerivatives]: () => true,
     [SysPreference.AllowEditing]: () => true,
+
+    [SysPreference.ConversionTimeLimit]: () => '10s',
+    [SysPreference.ConversionMemoryLimit]: () => 512,
   };
 }
