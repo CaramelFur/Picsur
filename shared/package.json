@@ -19,6 +19,7 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "start": "yarn clean && tsc-watch",
-    "build": "yarn clean && tsc"
+    "build": "yarn clean && tsc",
+    "purge": "rm -rf ./dist && rm -rf ./node_modules"
   }
 }

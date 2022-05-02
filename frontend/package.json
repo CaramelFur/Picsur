@@ -10,7 +10,8 @@
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "purge": "rm -rf dist && rm -rf node_modules && rm -rf .angular"
   },
   "dependencies": {
     "@angular/animations": "^14.0.0-next.15",

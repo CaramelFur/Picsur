@@ -10,7 +10,9 @@
     "devdb:start": "podman-compose -f ./dev/docker-compose.yml up -d",
     "devdb:stop": "podman-compose -f ./dev/docker-compose.yml down",
     "build": "./support/build.sh",
-    "setversion": "./support/setversion.sh"
+    "setversion": "./support/setversion.sh",
+    "purge": "rm -rf ./node_modules",
+    "purge-all": "./support/purge-all.sh"
   },
   "resolutions": {
     "minimist": "npm:minimist-lite",

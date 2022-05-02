@@ -17,7 +17,8 @@
     "start:prod": "node --es-module-specifier-resolution=node dist/main",
     "format": "prettier --write \"src/**/*.ts\"",
     "clean": "rimraf dist",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "purge": "rm -rf dist && rm -rf node_modules"
   },
   "dependencies": {
     "@fastify/helmet": "^8.0.0",
