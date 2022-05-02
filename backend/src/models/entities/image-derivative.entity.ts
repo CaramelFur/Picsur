@@ -18,7 +18,7 @@ export class EImageDerivativeBackend {
   mime: string;
 
   @Column({ name: 'last_read', nullable: false })
-  last_read_unix_sec: number;
+  last_read: Date;
 
   // Binary data
   @Column({ type: 'bytea', nullable: false })

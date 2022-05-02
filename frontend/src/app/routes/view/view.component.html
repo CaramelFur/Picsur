@@ -1,7 +1,11 @@
 <div class="container centered">
   <div class="row">
     <div class="col-12">
-      <h1>Uploaded Image</h1>
+      <h1>Image uploaded by {{imageUser?.username}}</h1>
+    </div>
+
+    <div class="col-12" *ngIf="image !== null">
+      <h3>{{(timeAgo | async)}}</h3>
     </div>
 
     <div class="col-12 py-3">

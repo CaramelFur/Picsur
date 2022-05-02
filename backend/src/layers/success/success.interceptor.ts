@@ -66,7 +66,7 @@ export class SuccessInterceptor<T> implements NestInterceptor {
     const parseResult = schema.safeParse(data);
     if (!parseResult.success) {
       this.logger.warn(
-        `Function ${context.getHandler().name} failed validation`,
+        `Function ${context.getHandler().name} failed validation: ${parseResult.error}`,
       );
       throw new InternalServerErrorException(
         'Server produced invalid response',

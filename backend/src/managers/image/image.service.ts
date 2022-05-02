@@ -37,12 +37,6 @@ export class ImageManagerService {
     return await this.imagesService.findOne(id);
   }
 
-  // Image data buffer is not included by default, this also returns that buffer
-  // Dont send to client, keep in backend
-  public async retrieveComplete(id: string): AsyncFailable<EImageBackend> {
-    return await this.imagesService.findOne(id);
-  }
-
   public async upload(
     image: Buffer,
     userid: string,
@@ -62,7 +56,7 @@ export class ImageManagerService {
     if (HasFailed(processResult)) return processResult;
 
     // Save processed to db
-    const imageEntity = await this.imagesService.create();
+    const imageEntity = await this.imagesService.create(userid);
     if (HasFailed(imageEntity)) return imageEntity;
 
     const imageFileEntity = await this.imageFilesService.setFile(

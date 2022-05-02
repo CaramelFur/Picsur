@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { EImageSchema } from '../../entities/image.entity';
+import { EUserSchema } from '../../entities/user.entity';
 import { createZodDto } from '../../util/create-zod-dto';
 import { ImageFileType } from '../image-file-types.dto';
 
@@ -32,6 +33,7 @@ export class ImageRequestParams extends createZodDto(
 
 export const ImageMetaResponseSchema = z.object({
   image: EImageSchema,
+  user: EUserSchema,
   fileMimes: z.object({
     [ImageFileType.MASTER]: z.string(),
     [ImageFileType.ORIGINAL]: z.union([z.string(), z.undefined()]),

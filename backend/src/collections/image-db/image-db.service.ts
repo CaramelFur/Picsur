@@ -19,11 +19,13 @@ export class ImageDBService {
     private imageDerivativeRepo: Repository<EImageDerivativeBackend>,
   ) {}
 
-  public async create(): AsyncFailable<EImageBackend> {
+  public async create(userid: string): AsyncFailable<EImageBackend> {
     let imageEntity = new EImageBackend();
+    imageEntity.user_id = userid;
+    imageEntity.created = new Date();
 
     try {
-      imageEntity = await this.imageRepo.save(imageEntity);
+      imageEntity = await this.imageRepo.save(imageEntity, { reload: true });
     } catch (e) {
       return Fail(e);
     }

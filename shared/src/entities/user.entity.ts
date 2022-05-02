@@ -11,7 +11,7 @@ export const SimpleUserSchema = z.object({
 export type SimpleUser = z.infer<typeof SimpleUserSchema>;
 
 export const EUserSchema = z.object({
-  id: IsEntityID().optional(),
+  id: IsEntityID(),
   username: IsUsername(),
   roles: IsStringList(),
   hashedPassword: z.undefined(),

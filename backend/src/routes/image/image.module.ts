@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import { UsersModule } from '../../collections/user-db/user-db.module';
 import { DecoratorsModule } from '../../decorators/decorators.module';
 import { ImageManagerModule } from '../../managers/image/image.module';
 import { ImageController } from './image.controller';
 
 @Module({
-  imports: [ImageManagerModule, DecoratorsModule],
+  imports: [ImageManagerModule, UsersModule, DecoratorsModule],
   controllers: [ImageController],
 })
 export class ImageModule {}

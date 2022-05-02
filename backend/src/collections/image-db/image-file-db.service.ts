@@ -86,10 +86,7 @@ export class ImageFileDBService {
 
       if (!found) return Fail('Image not found');
       return Object.fromEntries(
-        types.map((type) => [
-          type,
-          found.find((f) => f.type === type)?.mime,
-        ]),
+        types.map((type) => [type, found.find((f) => f.type === type)?.mime]),
       );
     } catch (e) {
       return Fail(e);
@@ -107,7 +104,7 @@ export class ImageFileDBService {
     imageDerivative.key = key;
     imageDerivative.mime = mime;
     imageDerivative.data = file;
-    imageDerivative.last_read_unix_sec = Math.floor(Date.now() / 1000);
+    imageDerivative.last_read = new Date();
 
     try {
       return await this.imageDerivativeRepo.save(imageDerivative);
@@ -126,9 +123,9 @@ export class ImageFileDBService {
       });
       if (!derivative) return null;
 
-      const unix_seconds = Math.floor(Date.now() / 1000);
-      if (derivative.last_read_unix_sec > unix_seconds - A_DAY_IN_SECONDS) {
-        derivative.last_read_unix_sec = unix_seconds;
+      const yesterday = new Date(Date.now() - A_DAY_IN_SECONDS * 1000);
+      if (derivative.last_read > yesterday) {
+        derivative.last_read = new Date();
         return await this.imageDerivativeRepo.save(derivative);
       }
 
@@ -159,9 +156,8 @@ export class ImageFileDBService {
     olderThanSeconds: number,
   ): AsyncFailable<number> {
     try {
-      const unix_seconds = Math.floor(Date.now() / 1000);
       const result = await this.imageDerivativeRepo.delete({
-        last_read_unix_sec: LessThan(unix_seconds - olderThanSeconds),
+        last_read: LessThan(new Date()),
       });
 
       return result.affected ?? 0;

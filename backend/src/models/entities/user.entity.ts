@@ -13,7 +13,7 @@ type OverriddenEUser = z.infer<typeof OverriddenEUserSchema>;
 @Entity()
 export class EUserBackend implements OverriddenEUser {
   @PrimaryGeneratedColumn('uuid', {})
-  id?: string;
+  id: string;
 
   @Index()
   @Column({ nullable: false, unique: true })

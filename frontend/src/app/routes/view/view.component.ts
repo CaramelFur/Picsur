@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import moment from 'moment';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
 import {
   AnimMime,
@@ -10,10 +11,13 @@ import {
   SupportedImageMimes,
   SupportedMimeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
+import { EImage } from 'picsur-shared/dist/entities/image.entity';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed, HasSuccess } from 'picsur-shared/dist/types';
 import { UUIDRegex } from 'picsur-shared/dist/util/common-regex';
 import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
 import { ImageService } from 'src/app/services/api/image.service';
+import { rxjs_poll } from 'src/app/util/poll';
 import { UtilService } from 'src/app/util/util-module/util.service';
 
 @Component({
@@ -45,6 +49,14 @@ export class ViewComponent implements OnInit {
   public previewLink = '';
   public imageLinks = new ImageLinks();
 
+  public image: EImage | null = null;
+  public imageUser: EUser | null = null;
+
+  public timeAgo = rxjs_poll(
+    1000,
+    (() => moment(this.image?.created).fromNow()).bind(this)
+  );
+
   async ngOnInit() {
     const params = this.route.snapshot.paramMap;
 
@@ -63,6 +75,9 @@ export class ViewComponent implements OnInit {
     );
 
     this.hasOriginal = metadata.fileMimes.original !== undefined;
+
+    this.imageUser = metadata.user;
+    this.image = metadata.image;
 
     const masterMime = ParseMime(metadata.fileMimes.master);
     if (HasSuccess(masterMime)) {

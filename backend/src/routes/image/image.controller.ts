@@ -7,15 +7,16 @@ import {
   NotFoundException,
   Post,
   Query,
-  Res
+  Res,
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import {
   ImageMetaResponse,
   ImageRequestParams,
-  ImageUploadResponse
+  ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
+import { UsersService } from '../../collections/user-db/user-db.service';
 import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decorator';
 import { ImageIdParam } from '../../decorators/image-id/image-id.decorator';
 import { MultiPart } from '../../decorators/multipart/multipart.decorator';
@@ -26,6 +27,7 @@ import { ImageManagerService } from '../../managers/image/image.service';
 import { ImageFullId } from '../../models/constants/image-full-id.const';
 import { Permission } from '../../models/constants/permissions.const';
 import { ImageUploadDto } from '../../models/dto/image-upload.dto';
+import { EUserBackend2EUser } from '../../models/transformers/user.transformer';
 
 // This is the only controller with CORS enabled
 @Controller('i')
@@ -33,7 +35,10 @@ import { ImageUploadDto } from '../../models/dto/image-upload.dto';
 export class ImageController {
   private readonly logger = new Logger('ImageController');
 
-  constructor(private readonly imagesService: ImageManagerService) {}
+  constructor(
+    private readonly imagesService: ImageManagerService,
+    private readonly userService: UsersService,
+  ) {}
 
   @Get(':id')
   async getImage(
@@ -96,13 +101,20 @@ export class ImageController {
       throw new NotFoundException('Could not find image');
     }
 
-    const fileMimes = await this.imagesService.getAllFileMimes(id);
+    const [fileMimes, imageUser] = await Promise.all([
+      this.imagesService.getAllFileMimes(id),
+      this.userService.findOne(image.user_id),
+    ]);
     if (HasFailed(fileMimes)) {
       this.logger.warn(fileMimes.getReason());
       throw new InternalServerErrorException('Could not get image mime');
     }
+    if (HasFailed(imageUser)) {
+      this.logger.warn(imageUser.getReason());
+      throw new InternalServerErrorException('Could not get image user');
+    }
 
-    return { image, fileMimes };
+    return { image, user: EUserBackend2EUser(imageUser), fileMimes };
   }
 
   @Post()
