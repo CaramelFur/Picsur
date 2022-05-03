@@ -4,7 +4,7 @@
 // -> the frontend and backend can be somewhat out of sync
 export enum Permission {
   ImageView = 'image-view',
-  ImageUpload = 'image-upload',
+  ImageUpload = 'image-upload', // Ability to upload and manage own images
 
   UserLogin = 'user-login', // Ability to log in
   UserKeepLogin = 'user-keep-login', // Ability to view own user details and refresh token
@@ -12,6 +12,7 @@ export enum Permission {
 
   Settings = 'settings', // Ability to view (personal) settings
 
+  ImageManage = 'image-manage', // Ability to manage everyones manage images
   UserManage = 'user-manage', // Allow modification of users
   RoleManage = 'role-manage', // Allow modification of roles
   SysPrefManage = 'syspref-manage',

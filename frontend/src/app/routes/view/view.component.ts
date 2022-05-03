@@ -53,7 +53,7 @@ export class ViewComponent implements OnInit {
   public imageUser: EUser | null = null;
 
   public timeAgo = rxjs_poll(
-    1000,
+    10000,
     (() => moment(this.image?.created).fromNow()).bind(this)
   );
 

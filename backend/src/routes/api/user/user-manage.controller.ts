@@ -6,6 +6,7 @@ import {
   Logger,
   Post
 } from '@nestjs/common';
+import { PagedRequest } from 'picsur-shared/dist/dto/api/common.dto';
 import {
   GetSpecialUsersResponse,
   UserCreateRequest,
@@ -14,7 +15,6 @@ import {
   UserDeleteResponse,
   UserInfoRequest,
   UserInfoResponse,
-  UserListRequest,
   UserListResponse,
   UserUpdateRequest,
   UserUpdateResponse
@@ -38,20 +38,9 @@ export class UserManageController {
 
   constructor(private usersService: UsersService) {}
 
-  @Get('list')
-  @Returns(UserListResponse)
-  async listUsers(): Promise<UserListResponse> {
-    return this.listUsersPaged({
-      count: 20,
-      page: 0,
-    });
-  }
-
   @Post('list')
   @Returns(UserListResponse)
-  async listUsersPaged(
-    @Body() body: UserListRequest,
-  ): Promise<UserListResponse> {
+  async listUsersPaged(@Body() body: PagedRequest): Promise<UserListResponse> {
     const users = await this.usersService.findMany(body.count, body.page);
     if (HasFailed(users)) {
       this.logger.warn(users.getReason());

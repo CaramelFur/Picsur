@@ -1,12 +1,12 @@
 // Config
 export enum ImageMime {
+  QOI = 'image/x-qoi',
   JPEG = 'image/jpeg',
   PNG = 'image/png',
   WEBP = 'image/webp',
   TIFF = 'image/tiff',
   BMP = 'image/bmp',
   // ICO = 'image/x-icon',
-  QOI = 'image/x-qoi',
 }
 
 export enum AnimMime {

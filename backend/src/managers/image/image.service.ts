@@ -33,8 +33,16 @@ export class ImageManagerService {
     private readonly sysPref: SysPreferenceService,
   ) {}
 
-  public async retrieveInfo(id: string): AsyncFailable<EImageBackend> {
+  public async findOne(id: string): AsyncFailable<EImageBackend> {
     return await this.imagesService.findOne(id);
+  }
+
+  public async findMany(
+    count: number,
+    page: number,
+    userid: string | false,
+  ): AsyncFailable<EImageBackend[]> {
+    return await this.imagesService.findMany(count, page, userid);
   }
 
   public async upload(

@@ -49,6 +49,7 @@ export class ImageDBService {
   public async findMany(
     count: number,
     page: number,
+    userid: string | false,
   ): AsyncFailable<EImageBackend[]> {
     if (count < 1 || page < 0) return Fail('Invalid page');
     if (count > 100) return Fail('Too many results');
@@ -57,6 +58,9 @@ export class ImageDBService {
       const found = await this.imageRepo.find({
         skip: count * page,
         take: count,
+        where: {
+          user_id: userid === false ? undefined : userid,
+        },
       });
 
       if (found === undefined) return Fail('Images not found');

@@ -8,12 +8,6 @@ import { IsStringList } from '../../validators/string-list.validator';
 import { EntityIDObjectSchema } from '../id-object.dto';
 
 // UserList
-export const UserListRequestSchema = z.object({
-  count: IsPosInt(),
-  page: IsPosInt(),
-});
-export class UserListRequest extends createZodDto(UserListRequestSchema) {}
-
 export const UserListResponseSchema = z.object({
   users: z.array(EUserSchema),
   count: IsPosInt(),

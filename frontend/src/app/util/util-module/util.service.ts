@@ -200,7 +200,7 @@ export class UtilService {
       } else {
         this.logger.error(e);
         this.showSnackBar(
-          'An error occured while sharing the image',
+          'Could not share',
           SnackBarType.Error
         );
       }

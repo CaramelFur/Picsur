@@ -18,7 +18,7 @@ export class ImageService {
   public async UploadImage(image: File): AsyncFailable<string> {
     const result = await this.api.postForm(
       ImageUploadResponse,
-      '/i',
+      '/api/image/upload',
       new ImageUploadRequest(image)
     );
 

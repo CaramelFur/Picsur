@@ -40,8 +40,3 @@ export const ImageMetaResponseSchema = z.object({
   }),
 });
 export class ImageMetaResponse extends createZodDto(ImageMetaResponseSchema) {}
-
-export const ImageUploadResponseSchema = EImageSchema;
-export class ImageUploadResponse extends createZodDto(
-  ImageUploadResponseSchema,
-) {}
