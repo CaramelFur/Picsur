@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
 import { EImageBackend } from '../../models/entities/image.entity';
@@ -33,10 +33,13 @@ export class ImageDBService {
     return imageEntity;
   }
 
-  public async findOne(id: string): AsyncFailable<EImageBackend> {
+  public async findOne(
+    id: string,
+    userid: string | undefined,
+  ): AsyncFailable<EImageBackend> {
     try {
       const found = await this.imageRepo.findOne({
-        where: { id },
+        where: { id, user_id: userid },
       });
 
       if (!found) return Fail('Image not found');
@@ -49,7 +52,7 @@ export class ImageDBService {
   public async findMany(
     count: number,
     page: number,
-    userid: string | false,
+    userid: string | undefined,
   ): AsyncFailable<EImageBackend[]> {
     if (count < 1 || page < 0) return Fail('Invalid page');
     if (count > 100) return Fail('Too many results');
@@ -59,7 +62,7 @@ export class ImageDBService {
         skip: count * page,
         take: count,
         where: {
-          user_id: userid === false ? undefined : userid,
+          user_id: userid,
         },
       });
 
@@ -70,15 +73,40 @@ export class ImageDBService {
     }
   }
 
-  public async delete(id: string): AsyncFailable<true> {
+  public async findList(
+    ids: string[],
+    userid: string | undefined,
+  ): AsyncFailable<EImageBackend[]> {
+    if (ids.length === 0) return [];
+    if (ids.length > 500) return Fail('Too many results');
+
+    try {
+      const found = await this.imageRepo.find({
+        where: {
+          id: In(ids),
+          user_id: userid,
+        },
+      });
+
+      if (found === undefined) return Fail('Images not found');
+      return found;
+    } catch (e) {
+      return Fail(e);
+    }
+  }
+
+  public async delete(ids: string[]): AsyncFailable<true> {
+    if (ids.length === 0) return true;
+    if (ids.length > 500) return Fail('Too many results');
+
     try {
       const derivativesResult = await this.imageDerivativeRepo.delete({
-        image_id: id,
+        image_id: In(ids),
       });
       const filesResult = await this.imageFileRepo.delete({
-        image_id: id,
+        image_id: In(ids),
       });
-      const result = await this.imageRepo.delete({ id });
+      const result = await this.imageRepo.delete({ id: In(ids) });
 
       if (
         result.affected === 0 &&

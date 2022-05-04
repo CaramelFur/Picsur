@@ -16,9 +16,7 @@ export const ImageListRequestSchema = z.object({
   page: IsPosInt(),
   user_id: z.string().uuid().optional(),
 });
-export class ImageListRequest extends createZodDto(
-  ImageListRequestSchema,
-) {}
+export class ImageListRequest extends createZodDto(ImageListRequestSchema) {}
 
 export const ImageListResponseSchema = z.object({
   images: z.array(EImageSchema),
@@ -26,3 +24,20 @@ export const ImageListResponseSchema = z.object({
   page: IsPosInt(),
 });
 export class ImageListResponse extends createZodDto(ImageListResponseSchema) {}
+
+// Image Delete
+
+export const ImageDeleteRequestSchema = z.object({
+  ids: z.array(z.string().uuid()),
+});
+export class ImageDeleteRequest extends createZodDto(
+  ImageDeleteRequestSchema,
+) {}
+
+export const ImageDeleteResponseSchema = z.object({
+  images: z.array(EImageSchema),
+  count: IsPosInt(),
+});
+export class ImageDeleteResponse extends createZodDto(
+  ImageDeleteResponseSchema,
+) {}

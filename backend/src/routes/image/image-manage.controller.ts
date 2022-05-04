@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   InternalServerErrorException,
@@ -6,6 +7,8 @@ import {
   Post
 } from '@nestjs/common';
 import {
+  ImageDeleteRequest,
+  ImageDeleteResponse,
   ImageListRequest,
   ImageListResponse,
   ImageUploadResponse
@@ -61,7 +64,7 @@ export class ImageManageController {
     const images = await this.imagesService.findMany(
       body.count,
       body.page,
-      userid,
+      body.user_id,
     );
     if (HasFailed(images)) {
       this.logger.warn(images.getReason());
@@ -72,6 +75,28 @@ export class ImageManageController {
       images,
       count: images.length,
       page: body.page,
+    };
+  }
+
+  @Post('delete')
+  @Returns(ImageDeleteResponse)
+  async deleteImage(
+    @Body() body: ImageDeleteRequest,
+    @ReqUserID() userid: string,
+    @HasPermission(Permission.ImageAdmin) isImageAdmin: boolean,
+  ): Promise<ImageDeleteResponse> {
+    const deletedImages = await this.imagesService.deleteMany(
+      body.ids,
+      isImageAdmin ? undefined : userid,
+    );
+    if (HasFailed(deletedImages)) {
+      this.logger.warn(deletedImages.getReason());
+      throw new BadRequestException('Could not delete images');
+    }
+
+    return {
+      images: deletedImages,
+      count: deletedImages.length,
     };
   }
 }

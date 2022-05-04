@@ -33,16 +33,33 @@ export class ImageManagerService {
     private readonly sysPref: SysPreferenceService,
   ) {}
 
-  public async findOne(id: string): AsyncFailable<EImageBackend> {
-    return await this.imagesService.findOne(id);
+  public async findOne(
+    id: string,
+  ): AsyncFailable<EImageBackend> {
+    return await this.imagesService.findOne(id, undefined);
   }
 
   public async findMany(
     count: number,
     page: number,
-    userid: string | false,
+    userid: string | undefined,
   ): AsyncFailable<EImageBackend[]> {
     return await this.imagesService.findMany(count, page, userid);
+  }
+
+  public async deleteMany(
+    ids: string[],
+    userid: string | undefined,
+  ): AsyncFailable<EImageBackend[]> {
+    const images = await this.imagesService.findList(ids, userid);
+    if (HasFailed(images)) return images;
+
+    const availableIds = images.map(image => image.id);
+
+    const deleteResult = await this.imagesService.delete(availableIds);
+    if (HasFailed(deleteResult)) return deleteResult;
+
+    return images;
   }
 
   public async upload(
