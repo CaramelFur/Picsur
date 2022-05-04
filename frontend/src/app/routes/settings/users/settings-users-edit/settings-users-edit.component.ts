@@ -8,7 +8,7 @@ import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UpdateUserControl } from 'src/app/models/forms/update-user.control';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
-import { UserManageService } from 'src/app/services/api/user-manage.service';
+import { UserAdminService } from 'src/app/services/api/user-manage.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { UtilService } from 'src/app/util/util-module/util.service';
 
@@ -45,7 +45,7 @@ export class SettingsUsersEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userManageService: UserManageService,
+    private userManageService: UserAdminService,
     private utilService: UtilService,
     private rolesService: RolesService,
     private staticInfo: StaticInfoService

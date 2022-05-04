@@ -3,22 +3,22 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.dto';
 import {
-    AsyncFailable,
-    Fail,
-    HasFailed,
-    HasSuccess
+  AsyncFailable,
+  Fail,
+  HasFailed,
+  HasSuccess
 } from 'picsur-shared/dist/types';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { Repository } from 'typeorm';
 import { Permissions } from '../../models/constants/permissions.const';
 import {
-    DefaultRolesList,
-    SoulBoundRolesList
+  DefaultRolesList,
+  SoulBoundRolesList
 } from '../../models/constants/roles.const';
 import {
-    ImmutableUsersList,
-    LockedLoginUsersList,
-    UndeletableUsersList
+  ImmutableUsersList,
+  LockedLoginUsersList,
+  UndeletableUsersList
 } from '../../models/constants/special-users.const';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { GetCols } from '../../models/util/collection';

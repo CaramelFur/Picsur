@@ -35,7 +35,7 @@ const SettingsRoutes: PRoutes = [
         path: 'users',
         loadChildren: () => SettingsUsersRouteModule,
         data: {
-          permissions: [Permission.UserManage],
+          permissions: [Permission.UserAdmin],
           page: {
             title: 'Users',
             icon: 'people_outline',
@@ -47,7 +47,7 @@ const SettingsRoutes: PRoutes = [
         path: 'roles',
         loadChildren: () => SettingsRolesRouteModule,
         data: {
-          permissions: [Permission.RoleManage],
+          permissions: [Permission.RoleAdmin],
           page: {
             title: 'Roles',
             icon: 'admin_panel_settings',
@@ -59,7 +59,7 @@ const SettingsRoutes: PRoutes = [
         path: 'system',
         loadChildren: () => SettingsSysprefRouteModule,
         data: {
-          permissions: [Permission.SysPrefManage],
+          permissions: [Permission.SysPrefAdmin],
           page: {
             title: 'System Settings',
             icon: 'tune',

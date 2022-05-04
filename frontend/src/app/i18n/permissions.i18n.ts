@@ -12,8 +12,8 @@ export const UIFriendlyPermissions: {
 
   [Permission.Settings]: 'View settings',
 
-  [Permission.ImageManage]: 'Manage All Images',
-  [Permission.UserManage]: 'Manage users',
-  [Permission.RoleManage]: 'Manage roles',
-  [Permission.SysPrefManage]: 'Manage system',
+  [Permission.ImageAdmin]: 'Image Admin',
+  [Permission.UserAdmin]: 'User Admin',
+  [Permission.RoleAdmin]: 'Role Admin',
+  [Permission.SysPrefAdmin]: 'System Admin',
 };

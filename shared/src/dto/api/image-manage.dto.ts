@@ -3,9 +3,21 @@ import { EImageSchema } from '../../entities/image.entity';
 import { createZodDto } from '../../util/create-zod-dto';
 import { IsPosInt } from '../../validators/positive-int.validator';
 
+// Image upload
 export const ImageUploadResponseSchema = EImageSchema;
 export class ImageUploadResponse extends createZodDto(
   ImageUploadResponseSchema,
+) {}
+
+// Image list
+
+export const ImageListRequestSchema = z.object({
+  count: IsPosInt(),
+  page: IsPosInt(),
+  user_id: z.string().uuid().optional(),
+});
+export class ImageListRequest extends createZodDto(
+  ImageListRequestSchema,
 ) {}
 
 export const ImageListResponseSchema = z.object({

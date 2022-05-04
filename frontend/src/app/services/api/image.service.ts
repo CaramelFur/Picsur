@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import {
-  ImageMetaResponse,
-  ImageUploadResponse
-} from 'picsur-shared/dist/dto/api/image.dto';
+import { ImageUploadResponse } from 'picsur-shared/dist/dto/api/image-manage.dto';
+import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
 import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable } from 'picsur-shared/dist/types';
 import { Open } from 'picsur-shared/dist/types/failable';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
+
 @Injectable({
   providedIn: 'root',
 })

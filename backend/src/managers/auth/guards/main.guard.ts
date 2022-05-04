@@ -58,6 +58,8 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
       throw new InternalServerErrorException();
     }
 
+    context.switchToHttp().getRequest().userPermissions = userPermissions;
+
     if (permissions.every((permission) => userPermissions.includes(permission)))
       return true;
     else throw new ForbiddenException('Permission denied');

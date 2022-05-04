@@ -1,17 +1,17 @@
 import {
-  Body,
-  Controller,
-  Get,
-  InternalServerErrorException,
-  Logger,
-  Param,
-  Post
+    Body,
+    Controller,
+    Get,
+    InternalServerErrorException,
+    Logger,
+    Param,
+    Post
 } from '@nestjs/common';
 import {
-  GetPreferenceResponse,
-  MultiplePreferencesResponse,
-  UpdatePreferenceRequest,
-  UpdatePreferenceResponse
+    GetPreferenceResponse,
+    MultiplePreferencesResponse,
+    UpdatePreferenceRequest,
+    UpdatePreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/preference-db/sys-preference-db.service';
@@ -20,7 +20,7 @@ import { Returns } from '../../../decorators/returns.decorator';
 import { Permission } from '../../../models/constants/permissions.const';
 
 @Controller('api/pref/sys')
-@RequiredPermissions(Permission.SysPrefManage)
+@RequiredPermissions(Permission.SysPrefAdmin)
 export class SysPrefController {
   private readonly logger = new Logger('SysPrefController');
 

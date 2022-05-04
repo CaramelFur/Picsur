@@ -7,7 +7,7 @@ import { HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
-import { UserManageService } from 'src/app/services/api/user-manage.service';
+import { UserAdminService } from 'src/app/services/api/user-manage.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { Throttle } from 'src/app/util/throttle';
 import { UtilService } from 'src/app/util/util-module/util.service';
@@ -33,7 +33,7 @@ export class SettingsUsersComponent implements OnInit {
 
   constructor(
     public utilService: UtilService,
-    private userManageService: UserManageService,
+    private userManageService: UserAdminService,
     private staticInfo: StaticInfoService,
     private router: Router
   ) {}

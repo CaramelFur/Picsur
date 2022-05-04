@@ -12,8 +12,8 @@ export enum Permission {
 
   Settings = 'settings', // Ability to view (personal) settings
 
-  ImageManage = 'image-manage', // Ability to manage everyones manage images
-  UserManage = 'user-manage', // Allow modification of users
-  RoleManage = 'role-manage', // Allow modification of roles
-  SysPrefManage = 'syspref-manage',
+  ImageAdmin = 'image-admin', // Ability to manage everyones manage images
+  UserAdmin = 'user-admin', // Allow modification of users
+  RoleAdmin = 'role-admin', // Allow modification of roles
+  SysPrefAdmin = 'syspref-admin',
 }

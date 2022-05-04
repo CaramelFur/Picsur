@@ -51,7 +51,9 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
       this.allPermissionsArray !== null &&
       !isPermissionsArray(requiredPermissions, this.allPermissionsArray)
     ) {
-      this.logger.error(`Permissions array is invalid: ${requiredPermissions}`);
+      this.logger.error(
+        `Permissions array is invalid: "${requiredPermissions}" (available: ${this.allPermissionsArray})`
+      );
       return false;
     }
 

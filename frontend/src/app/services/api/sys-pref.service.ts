@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import {
-  GetPreferenceResponse,
-  MultiplePreferencesResponse,
-  UpdatePreferenceRequest,
-  UpdatePreferenceResponse
+    GetPreferenceResponse,
+    MultiplePreferencesResponse,
+    UpdatePreferenceRequest,
+    UpdatePreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import {
-  DecodedPref,
-  PrefValueType
+    DecodedPref,
+    PrefValueType
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { AsyncFailable, Fail, HasFailed, Map } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
@@ -130,7 +130,7 @@ export class SysPrefService {
       .pipe(Throttle(300))
       .subscribe((permissions) => {
         const oldHasPermission = this.hasPermission;
-        this.hasPermission = permissions.includes(Permission.SysPrefManage);
+        this.hasPermission = permissions.includes(Permission.SysPrefAdmin);
         if (!this.hasPermission) {
           this.flush();
         }

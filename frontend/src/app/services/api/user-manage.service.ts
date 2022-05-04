@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import {
-  UserCreateRequest,
-  UserCreateResponse,
-  UserDeleteRequest,
-  UserDeleteResponse,
-  UserInfoRequest,
-  UserInfoResponse,
-  UserListRequest,
-  UserListResponse,
-  UserUpdateRequest,
-  UserUpdateResponse
+    UserCreateRequest,
+    UserCreateResponse,
+    UserDeleteRequest,
+    UserDeleteResponse,
+    UserInfoRequest,
+    UserInfoResponse,
+    UserListRequest,
+    UserListResponse,
+    UserUpdateRequest,
+    UserUpdateResponse
 } from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, Open } from 'picsur-shared/dist/types';
@@ -18,7 +18,7 @@ import { ApiService } from './api.service';
 @Injectable({
   providedIn: 'root',
 })
-export class UserManageService {
+export class UserAdminService {
   constructor(private api: ApiService) {}
 
   public async getUser(id: string): AsyncFailable<EUser> {
