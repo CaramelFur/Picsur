@@ -39,8 +39,8 @@ export class ImageService {
     count: number,
     page: number,
     userID?: string
-  ): AsyncFailable<EImage[]> {
-    const result = await this.api.post(
+  ): AsyncFailable<ImageListResponse> {
+    return await this.api.post(
       ImageListRequest,
       ImageListResponse,
       '/api/image/list',
@@ -50,8 +50,6 @@ export class ImageService {
         user_id: userID,
       }
     );
-
-    return Open(result, 'images');
   }
 
   public async DeleteImages(

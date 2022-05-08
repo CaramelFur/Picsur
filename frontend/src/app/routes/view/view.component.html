@@ -5,7 +5,7 @@
     </div>
 
     <div class="col-12" *ngIf="image !== null">
-      <h3>{{(timeAgo | async)}}</h3>
+      <h3>Uploaded {{(image.created | amTimeAgo)}}</h3>
     </div>
 
     <div class="col-12 py-3">

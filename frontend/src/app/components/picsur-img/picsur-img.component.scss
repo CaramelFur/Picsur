@@ -1,19 +1,23 @@
 :host {
-  display: block;
+  display: inline-block;
   // Clip contents
   overflow: hidden;
 
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+  // width: fit-content;
+  // margin-left: auto;
+  // margin-right: auto;
 }
 
 mat-spinner {
   margin: auto;
 }
 
-canvas, img {
-  display: block;
+canvas,
+img {
   width: 100%;
   height: 100%;
+}
+
+ngui-inview {
+  min-height: 1px;
 }

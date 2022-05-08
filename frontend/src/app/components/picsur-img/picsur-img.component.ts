@@ -29,7 +29,9 @@ enum PicsurImgState {
 export class PicsurImgComponent implements OnChanges {
   private readonly logger = new Logger('ZodImgComponent');
 
-  @ViewChild('targetcanvas') canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('targetcanvas') private canvas: ElementRef<HTMLCanvasElement>;
+
+  private isInView = false;
 
   @Input('src') imageURL: string | undefined;
 
@@ -41,6 +43,10 @@ export class PicsurImgComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (this.isInView) this.reload();
+  }
+
+  private reload() {
     let url = this.imageURL ?? '';
     if (!URLRegex.test(url)) {
       this.state = PicsurImgState.Loading;
@@ -87,5 +93,17 @@ export class PicsurImgComponent implements OnChanges {
 
     const fullMime = ParseMime(mime);
     return fullMime;
+  }
+
+  onInview(e: any) {
+    this.isInView = true;
+
+    if (this.state === PicsurImgState.Loading) {
+      this.reload();
+    }
+  }
+
+  onOutview(e: any) {
+    this.isInView = false;
   }
 }

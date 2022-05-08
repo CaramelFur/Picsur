@@ -1,1 +1,27 @@
-hello
+<div class="column-wrapper" *ngIf="images !== null">
+  <div
+    *ngFor="let dummy of [].constructor(columns); let i = index"
+    class="column"
+  >
+    <div *ngFor="let image of images | masonry : columns : i" class="m-2">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Image by you</mat-card-title>
+          <mat-card-subtitle>
+            Uploaded {{ image.created | amTimeAgo }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <picsur-img
+          mat-card-image
+          [src]="getThumbnailUrl(image)"
+          alt="Image uploaded by you"
+        >
+        </picsur-img>
+        <mat-card-actions>
+          <button mat-stroked-button (click)="viewImage(image)">View</button>
+          <button mat-button color="warn">Delete</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
