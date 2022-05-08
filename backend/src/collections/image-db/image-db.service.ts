@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
+import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { In, Repository } from 'typeorm';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
@@ -53,12 +54,12 @@ export class ImageDBService {
     count: number,
     page: number,
     userid: string | undefined,
-  ): AsyncFailable<EImageBackend[]> {
+  ): AsyncFailable<FindResult<EImageBackend>> {
     if (count < 1 || page < 0) return Fail('Invalid page');
     if (count > 100) return Fail('Too many results');
 
     try {
-      const found = await this.imageRepo.find({
+      const [found, amount] = await this.imageRepo.findAndCount({
         skip: count * page,
         take: count,
         where: {
@@ -67,7 +68,13 @@ export class ImageDBService {
       });
 
       if (found === undefined) return Fail('Images not found');
-      return found;
+      
+      return {
+        results: found,
+        totalResults: amount,
+        page,
+        pages: Math.ceil(amount / count),
+      };
     } catch (e) {
       return Fail(e);
     }

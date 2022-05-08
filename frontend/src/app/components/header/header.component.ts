@@ -83,4 +83,8 @@ export class HeaderComponent implements OnInit {
   doUpload() {
     this.router.navigate(['/upload']);
   }
+
+  doImages() {
+    this.router.navigate(['/images']);
+  }
 }

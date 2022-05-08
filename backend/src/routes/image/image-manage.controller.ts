@@ -61,20 +61,20 @@ export class ImageManageController {
       body.user_id = userid;
     }
 
-    const images = await this.imagesService.findMany(
+    const found = await this.imagesService.findMany(
       body.count,
       body.page,
       body.user_id,
     );
-    if (HasFailed(images)) {
-      this.logger.warn(images.getReason());
+    if (HasFailed(found)) {
+      this.logger.warn(found.getReason());
       throw new InternalServerErrorException('Could not list images');
     }
 
     return {
-      images,
-      count: images.length,
-      page: body.page,
+      images: found.results,
+      page: found.page,
+      pages: found.pages,
     };
   }
 
@@ -96,7 +96,6 @@ export class ImageManageController {
 
     return {
       images: deletedImages,
-      count: deletedImages.length,
     };
   }
 }

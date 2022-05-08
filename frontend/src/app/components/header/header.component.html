@@ -56,6 +56,10 @@
           <h2>{{ user?.username }}</h2>
         </div>
       </span>
+      <button *ngIf="canUpload" mat-menu-item (click)="doImages()">
+        <mat-icon fontSet="material-icons-outlined">image</mat-icon>
+        <span>My Images</span>
+      </button>
       <button *ngIf="canAccessSettings" mat-menu-item (click)="doSettings()">
         <mat-icon fontSet="material-icons-outlined">settings</mat-icon>
         <span>Settings</span>

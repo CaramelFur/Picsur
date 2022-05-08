@@ -43,16 +43,16 @@ export class UserAdminController {
   async listUsersPaged(
     @Body() body: UserListRequest,
   ): Promise<UserListResponse> {
-    const users = await this.usersService.findMany(body.count, body.page);
-    if (HasFailed(users)) {
-      this.logger.warn(users.getReason());
+    const found = await this.usersService.findMany(body.count, body.page);
+    if (HasFailed(found)) {
+      this.logger.warn(found.getReason());
       throw new InternalServerErrorException('Could not list users');
     }
 
     return {
-      users: users.map(EUserBackend2EUser),
-      count: users.length,
-      page: body.page,
+      users: found.results.map(EUserBackend2EUser),
+      page: found.page,
+      pages: found.pages,
     };
   }
 

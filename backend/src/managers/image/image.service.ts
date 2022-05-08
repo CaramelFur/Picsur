@@ -7,6 +7,7 @@ import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.dto';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
 import { IsQOI } from 'qoi-img';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
@@ -33,9 +34,7 @@ export class ImageManagerService {
     private readonly sysPref: SysPreferenceService,
   ) {}
 
-  public async findOne(
-    id: string,
-  ): AsyncFailable<EImageBackend> {
+  public async findOne(id: string): AsyncFailable<EImageBackend> {
     return await this.imagesService.findOne(id, undefined);
   }
 
@@ -43,7 +42,7 @@ export class ImageManagerService {
     count: number,
     page: number,
     userid: string | undefined,
-  ): AsyncFailable<EImageBackend[]> {
+  ): AsyncFailable<FindResult<EImageBackend>> {
     return await this.imagesService.findMany(count, page, userid);
   }
 
@@ -54,7 +53,7 @@ export class ImageManagerService {
     const images = await this.imagesService.findList(ids, userid);
     if (HasFailed(images)) return images;
 
-    const availableIds = images.map(image => image.id);
+    const availableIds = images.map((image) => image.id);
 
     const deleteResult = await this.imagesService.delete(availableIds);
     if (HasFailed(deleteResult)) return deleteResult;

@@ -20,8 +20,8 @@ export class ImageListRequest extends createZodDto(ImageListRequestSchema) {}
 
 export const ImageListResponseSchema = z.object({
   images: z.array(EImageSchema),
-  count: IsPosInt(),
   page: IsPosInt(),
+  pages: IsPosInt(),
 });
 export class ImageListResponse extends createZodDto(ImageListResponseSchema) {}
 
@@ -36,7 +36,6 @@ export class ImageDeleteRequest extends createZodDto(
 
 export const ImageDeleteResponseSchema = z.object({
   images: z.array(EImageSchema),
-  count: IsPosInt(),
 });
 export class ImageDeleteResponse extends createZodDto(
   ImageDeleteResponseSchema,

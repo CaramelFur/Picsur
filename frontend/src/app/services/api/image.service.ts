@@ -1,10 +1,17 @@
 import { Injectable } from '@angular/core';
-import { ImageUploadResponse } from 'picsur-shared/dist/dto/api/image-manage.dto';
+import {
+  ImageDeleteRequest,
+  ImageDeleteResponse,
+  ImageListRequest,
+  ImageListResponse,
+  ImageUploadResponse
+} from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
 import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
+import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { AsyncFailable } from 'picsur-shared/dist/types';
-import { Open } from 'picsur-shared/dist/types/failable';
+import { Fail, HasFailed, Open } from 'picsur-shared/dist/types/failable';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
 
@@ -27,6 +34,53 @@ export class ImageService {
   public async GetImageMeta(image: string): AsyncFailable<ImageMetaResponse> {
     return await this.api.get(ImageMetaResponse, `/i/meta/${image}`);
   }
+
+  public async ListImages(
+    count: number,
+    page: number,
+    userID?: string
+  ): AsyncFailable<EImage[]> {
+    const result = await this.api.post(
+      ImageListRequest,
+      ImageListResponse,
+      '/api/image/list',
+      {
+        count,
+        page,
+        user_id: userID,
+      }
+    );
+
+    return Open(result, 'images');
+  }
+
+  public async DeleteImages(
+    images: string[]
+  ): AsyncFailable<ImageDeleteResponse> {
+    return await this.api.post(
+      ImageDeleteRequest,
+      ImageDeleteResponse,
+      '/api/image/delete',
+      {
+        ids: images,
+      }
+    );
+  }
+
+  public async DeleteImage(image: string): AsyncFailable<EImage> {
+    const result = await this.DeleteImages([image]);
+    if (HasFailed(result)) return result;
+
+    if (result.images.length !== 1) {
+      return Fail(
+        `Image ${image} was not deleted, probably lacking permissions`
+      );
+    }
+
+    return result.images[0];
+  }
+
+  // Non api calls
 
   public GetImageURL(image: string, mime: string | null): string {
     const baseURL = window.location.protocol + '//' + window.location.host;

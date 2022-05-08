@@ -8,6 +8,7 @@ import {
   HasFailed,
   HasSuccess
 } from 'picsur-shared/dist/types';
+import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { Repository } from 'typeorm';
 import { Permissions } from '../../models/constants/permissions.const';
@@ -95,7 +96,7 @@ export class UsersService {
 
     if (ImmutableUsersList.includes(userToModify.username)) {
       // Just fail silently
-      this.logger.verbose("User tried to modify system user, failed silently");
+      this.logger.verbose('User tried to modify system user, failed silently');
       return userToModify;
     }
 
@@ -213,15 +214,24 @@ export class UsersService {
   public async findMany(
     count: number,
     page: number,
-  ): AsyncFailable<EUserBackend[]> {
+  ): AsyncFailable<FindResult<EUserBackend>> {
     if (count < 1 || page < 0) return Fail('Invalid page');
     if (count > 100) return Fail('Too many results');
 
     try {
-      return await this.usersRepository.find({
+      const [users, amount] = await this.usersRepository.findAndCount({
         take: count,
         skip: count * page,
       });
+
+      if (users === undefined) return Fail('Users not found');
+
+      return {
+        results: users,
+        totalResults: amount,
+        page,
+        pages: Math.ceil(amount / count),
+      };
     } catch (e) {
       return Fail(e);
     }
