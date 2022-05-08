@@ -28,6 +28,7 @@ export class SettingsUsersComponent implements OnInit {
 
   public dataSubject = new BehaviorSubject<EUser[]>([]);
   public updateSubject = new Subject<PageEvent>();
+  public totalUsers: number = 0;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -126,8 +127,9 @@ export class SettingsUsersComponent implements OnInit {
       return false;
     }
 
-    if (result.length > 0) {
-      this.dataSubject.next(result);
+    if (result.users.length > 0) {
+      this.dataSubject.next(result.users);
+      this.totalUsers = result.total;
       return true;
     }
 

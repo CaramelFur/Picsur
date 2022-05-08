@@ -75,6 +75,7 @@ export class ImageManageController {
       images: found.results,
       page: found.page,
       pages: found.pages,
+      total: found.totalResults,
     };
   }
 

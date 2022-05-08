@@ -68,7 +68,7 @@
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="startingPageSize"
   [hidePageSize]="utilService.isMobile() | async"
-  length="Infinity"
+  [length]="totalUsers"
   aria-label="Select page of users"
   (page)="updateSubject.next($event)"
 >

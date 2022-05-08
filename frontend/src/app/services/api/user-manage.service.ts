@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
-    UserCreateRequest,
-    UserCreateResponse,
-    UserDeleteRequest,
-    UserDeleteResponse,
-    UserInfoRequest,
-    UserInfoResponse,
-    UserListRequest,
-    UserListResponse,
-    UserUpdateRequest,
-    UserUpdateResponse
+  UserCreateRequest,
+  UserCreateResponse,
+  UserDeleteRequest,
+  UserDeleteResponse,
+  UserInfoRequest,
+  UserInfoResponse,
+  UserListRequest,
+  UserListResponse,
+  UserUpdateRequest,
+  UserUpdateResponse
 } from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { AsyncFailable, Open } from 'picsur-shared/dist/types';
+import { AsyncFailable } from 'picsur-shared/dist/types';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -30,8 +30,11 @@ export class UserAdminService {
     );
   }
 
-  public async getUsers(count: number, page: number): AsyncFailable<EUser[]> {
-    const result = await this.api.post(
+  public async getUsers(
+    count: number,
+    page: number
+  ): AsyncFailable<UserListResponse> {
+    return await this.api.post(
       UserListRequest,
       UserListResponse,
       '/api/user/list',
@@ -40,8 +43,6 @@ export class UserAdminService {
         page,
       }
     );
-
-    return Open(result, 'users');
   }
 
   public async createUser(user: UserCreateRequest): AsyncFailable<EUser> {

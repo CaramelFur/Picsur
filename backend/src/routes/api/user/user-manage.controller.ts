@@ -53,6 +53,7 @@ export class UserAdminController {
       users: found.results.map(EUserBackend2EUser),
       page: found.page,
       pages: found.pages,
+      total: found.totalResults,
     };
   }
 

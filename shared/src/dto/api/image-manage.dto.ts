@@ -22,6 +22,7 @@ export const ImageListResponseSchema = z.object({
   images: z.array(EImageSchema),
   page: IsPosInt(),
   pages: IsPosInt(),
+  total: IsPosInt(),
 });
 export class ImageListResponse extends createZodDto(ImageListResponseSchema) {}
 
