@@ -67,7 +67,7 @@
   class="mat-elevation-z2"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="startingPageSize"
-  [hidePageSize]="utilService.isMobile() | async"
+  [hidePageSize]="bootstrapService.isMobile() | async"
   [length]="totalUsers"
   aria-label="Select page of users"
   (page)="updateSubject.next($event)"

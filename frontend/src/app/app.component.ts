@@ -5,11 +5,12 @@ import {
   ActivatedRoute,
   NavigationEnd,
   NavigationError,
-  Router
+  Router,
 } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { RouteTransitionAnimations } from './app.animation';
 import { PRouteData } from './models/dto/picsur-routes.dto';
+import { BootstrapService } from './util/util-module/bootstrap.service';
 import { UtilService } from './util/util-module/util.service';
 
 @Component({
@@ -32,7 +33,8 @@ export class AppComponent implements OnInit {
   public constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private bootstrapService: BootstrapService
   ) {}
 
   public getRouteAnimData() {
@@ -57,7 +59,7 @@ export class AppComponent implements OnInit {
 
   @AutoUnsubscribe()
   private subscribeMobile() {
-    return this.utilService.isDesktop().subscribe((state) => {
+    return this.bootstrapService.isNotMobile().subscribe((state) => {
       this.isDesktop = state;
       this.updateSidebar();
     });

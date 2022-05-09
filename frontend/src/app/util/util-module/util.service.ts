@@ -9,9 +9,10 @@ import { map, Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
+import { BootstrapService, BSScreenSize } from './bootstrap.service';
 import {
   ConfirmDialogComponent,
-  ConfirmDialogData
+  ConfirmDialogData,
 } from './confirm-dialog/confirm-dialog.component';
 import { DownloadDialogComponent } from './download-dialog/download-dialog.component';
 
@@ -21,49 +22,17 @@ import { DownloadDialogComponent } from './download-dialog/download-dialog.compo
 export class UtilService {
   private readonly logger = new Logger('UtilService');
 
-  private isDesktopObservable: Observable<boolean>;
-  private isDesktopVariable: boolean = true;
-
   constructor(
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private router: Router,
-    private breakPointObserver: BreakpointObserver,
-    private api: ApiService
-  ) {
-    this.isDesktopObservable = this.breakPointObserver
-      .observe(['(min-width: 576px)']) // Bootstrap breakpoints
-      .pipe(map((result) => result.matches));
-
-    this.subscribeToIsDesktop();
-  }
-
-  @AutoUnsubscribe()
-  private subscribeToIsDesktop() {
-    return this.isDesktopObservable.subscribe((isDesktop) => {
-      this.isDesktopVariable = isDesktop;
-    });
-  }
+    private api: ApiService,
+    private bootstrap: BootstrapService
+  ) {}
 
   public quitError(message: string) {
     this.showSnackBar(message, SnackBarType.Error);
     this.router.navigate(['/']);
-  }
-
-  public isDesktop(): Observable<boolean> {
-    return this.isDesktopObservable;
-  }
-
-  public isMobile(): Observable<boolean> {
-    return this.isDesktopObservable.pipe(map((isDesktop) => !isDesktop));
-  }
-
-  public isDesktopSnapshot(): boolean {
-    return this.isDesktopVariable;
-  }
-
-  public isMobileSnapshot(): boolean {
-    return !this.isDesktopVariable;
   }
 
   public showSnackBar(
@@ -73,7 +42,7 @@ export class UtilService {
   ) {
     let ref = this.snackBar.open(message, '', {
       panelClass: ['mat-toolbar', 'snackbar', type],
-      verticalPosition: this.isDesktopSnapshot() ? 'bottom' : 'top',
+      verticalPosition: this.bootstrap.screenSizeSnapshot() > BSScreenSize.xs ? 'bottom' : 'top',
       ...(duration !== null ? { duration } : {}),
     });
   }
@@ -199,10 +168,7 @@ export class UtilService {
       if (e instanceof DOMException && e.message === 'Share canceled') {
       } else {
         this.logger.error(e);
-        this.showSnackBar(
-          'Could not share',
-          SnackBarType.Error
-        );
+        this.showSnackBar('Could not share', SnackBarType.Error);
       }
     }
   }

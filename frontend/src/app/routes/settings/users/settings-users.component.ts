@@ -10,6 +10,7 @@ import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { UserAdminService } from 'src/app/services/api/user-manage.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { Throttle } from 'src/app/util/throttle';
+import { BootstrapService } from 'src/app/util/util-module/bootstrap.service';
 import { UtilService } from 'src/app/util/util-module/util.service';
 
 @Component({
@@ -33,10 +34,11 @@ export class SettingsUsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    public utilService: UtilService,
+    private utilService: UtilService,
     private userManageService: UserAdminService,
     private staticInfo: StaticInfoService,
-    private router: Router
+    private router: Router,
+    public bootstrapService: BootstrapService
   ) {}
 
   ngOnInit() {

@@ -74,8 +74,8 @@
   class="mat-elevation-z2"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="startingPageSize"
-  [showFirstLastButtons]="utilService.isDesktop() | async"
-  [hidePageSize]="utilService.isMobile() | async"
+  [showFirstLastButtons]="bootstrapService.isDesktop() | async"
+  [hidePageSize]="bootstrapService.isMobile() | async"
   aria-label="Select page of roles"
 >
 </mat-paginator>
