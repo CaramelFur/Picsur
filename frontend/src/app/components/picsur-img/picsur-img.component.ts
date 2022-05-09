@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -25,6 +27,7 @@ enum PicsurImgState {
   selector: 'picsur-img',
   templateUrl: './picsur-img.component.html',
   styleUrls: ['./picsur-img.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PicsurImgComponent implements OnChanges {
   private readonly logger = new Logger('ZodImgComponent');
@@ -39,7 +42,8 @@ export class PicsurImgComponent implements OnChanges {
 
   constructor(
     private qoiWorker: QoiWorkerService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private changeDetector: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -50,6 +54,7 @@ export class PicsurImgComponent implements OnChanges {
     let url = this.imageURL ?? '';
     if (!URLRegex.test(url)) {
       this.state = PicsurImgState.Loading;
+      this.changeDetector.markForCheck();
       return;
     }
 
@@ -61,6 +66,8 @@ export class PicsurImgComponent implements OnChanges {
         }
       })
       .catch((e) => this.logger.error);
+
+    
   }
 
   private async update(url: string): AsyncFailable<void> {
@@ -80,6 +87,7 @@ export class PicsurImgComponent implements OnChanges {
     } else {
       this.state = PicsurImgState.Image;
     }
+    this.changeDetector.markForCheck();
   }
 
   private async getMime(url: string): AsyncFailable<FullMime> {

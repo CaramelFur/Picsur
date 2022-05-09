@@ -1,9 +1,33 @@
+<masonry>
+  <div *ngFor="let image of sourceImages" class="m-2" masonry-item>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Image by you</mat-card-title>
+        <mat-card-subtitle>
+          Uploaded {{ image.created | amTimeAgo }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <picsur-img
+        mat-card-image
+        [src]="getThumbnailUrl(image)"
+        alt="Image uploaded by you"
+      >
+      </picsur-img>
+      <mat-card-actions>
+        <button mat-stroked-button (click)="viewImage(image)">View</button>
+        <button mat-button color="warn">Delete</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</masonry>
+
 <div class="column-wrapper" *ngIf="images !== null">
   <div
-    *ngFor="let dummy of [].constructor(columns); let i = index"
+    *ngFor="let column of images"
     class="column"
+    #column
   >
-    <div *ngFor="let image of images | masonry : columns : i" class="m-2">
+    <div *ngFor="let image of column" class="m-2" #imgdiv (waResizeObserver)="onResize($event, image, imgdiv)">
       <mat-card>
         <mat-card-header>
           <mat-card-title>Image by you</mat-card-title>
@@ -25,3 +49,30 @@
     </div>
   </div>
 </div>
+
+<!-- <div class="paginator">
+  <button class="mat-stroked-button" mat-icon-button>
+    <mat-icon>first_page</mat-icon>
+  </button>
+  <button class="mat-stroked-button" mat-icon-button>
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <button class="mat-stroked-button" mat-icon-button>
+    <span>1</span>
+  </button>
+  <button class="mat-stroked-button" mat-icon-button>
+    <span>2</span>
+  </button>
+  <button class="mat-stroked-button" color="accent" mat-icon-button>
+    <span>3</span>
+  </button>
+  <button class="mat-stroked-button" mat-icon-button>
+    <span>4</span>
+  </button>
+  <button class="mat-stroked-button" mat-icon-button>
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+  <button class="mat-stroked-button" mat-icon-button>
+    <mat-icon>last_page</mat-icon>
+  </button>
+</div> -->

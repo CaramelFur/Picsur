@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { SESSION_STORAGE } from '@ng-web-apis/common';
 import { AsyncFailable, Failable, HasFailed } from 'picsur-shared/dist/types';
 
 interface dataWrapper<T> {
@@ -12,15 +13,7 @@ interface dataWrapper<T> {
 export class CacheService {
   private readonly cacheExpiresMS = 1000 * 60 * 60;
 
-  private storage: Storage;
-
-  constructor() {
-    if (window.sessionStorage) {
-      this.storage = window.sessionStorage;
-    } else {
-      throw new Error('Session storage is not supported');
-    }
-  }
+  constructor(@Inject(SESSION_STORAGE) private readonly storage: Storage) {}
 
   public set<T>(key: string, value: T): void {
     const data: dataWrapper<T> = {

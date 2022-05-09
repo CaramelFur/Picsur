@@ -48,6 +48,10 @@ router-outlet ~ * {
   width: initial !important;
 }
 
+button.mat-icon-button {
+  line-height: unset;
+}
+
 .row {
   width: 100%;
 }

@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { HISTORY } from '@ng-web-apis/common';
 import { InfoResponse } from 'picsur-shared/dist/dto/api/info.dto';
-import {
-  AsyncFailable,
-  Fail, HasFailed
-} from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { SemVerRegex } from 'picsur-shared/dist/util/common-regex';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
@@ -25,7 +23,11 @@ export class InfoService {
 
   private infoSubject = new BehaviorSubject<ServerInfo>(new ServerInfo());
 
-  constructor(private api: ApiService, private utilService: UtilService) {
+  constructor(
+    private readonly api: ApiService,
+    private readonly utilService: UtilService,
+    @Inject(HISTORY) private readonly history: History
+  ) {
     this.checkCompatibility().catch(this.logger.error);
   }
 
@@ -104,7 +106,7 @@ export class InfoService {
           } else {
             this.checkCompatibility();
             // Go to previous page
-            window.history.back();
+            this.history.back();
           }
         });
     }

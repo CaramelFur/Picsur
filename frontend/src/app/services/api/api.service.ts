@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ApiResponseSchema } from 'picsur-shared/dist/dto/api/api.dto';
 import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { MultiPartRequest } from '../../models/dto/multi-part-request.dto';
 import { Logger } from '../logger/logger.service';
 import { KeyService } from '../storage/key.service';
+import { WINDOW } from '@ng-web-apis/common';
 
 /*
   Proud of this, it works so smoooth
@@ -27,7 +28,10 @@ export class ApiService {
     return this.errorSubject.asObservable();
   }
 
-  constructor(private keyService: KeyService) {}
+  constructor(
+    private readonly keyService: KeyService,
+    @Inject(WINDOW) readonly windowRef: Window
+  ) {}
 
   public async get<T extends z.AnyZodObject>(
     type: ZodDtoStatic<T>,
@@ -176,7 +180,7 @@ export class ApiService {
       if (isJSON) headers['Content-Type'] = 'application/json';
       options.headers = headers;
 
-      return await window.fetch(url, options);
+      return await this.windowRef.fetch(url, options);
     } catch (e) {
       this.errorSubject.next({
         error: e,

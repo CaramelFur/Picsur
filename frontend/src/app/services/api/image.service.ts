@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { LOCATION, WINDOW } from '@ng-web-apis/common';
 import {
   ImageDeleteRequest,
   ImageDeleteResponse,
   ImageListRequest,
   ImageListResponse,
-  ImageUploadResponse
+  ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
@@ -19,7 +20,10 @@ import { ApiService } from './api.service';
   providedIn: 'root',
 })
 export class ImageService {
-  constructor(private api: ApiService) {}
+  constructor(
+    private api: ApiService,
+    @Inject(LOCATION) readonly location: Location,
+  ) {}
 
   public async UploadImage(image: File): AsyncFailable<string> {
     const result = await this.api.postForm(
@@ -81,7 +85,7 @@ export class ImageService {
   // Non api calls
 
   public GetImageURL(image: string, mime: string | null): string {
-    const baseURL = window.location.protocol + '//' + window.location.host;
+    const baseURL = this.location.protocol + '//' + this.location.host;
     const extension = mime !== null ? Mime2Ext(mime) ?? 'error' : null;
 
     return `${baseURL}/i/${image}${extension !== null ? '.' + extension : ''}`;

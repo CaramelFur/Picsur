@@ -74,7 +74,7 @@
   class="mat-elevation-z2"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="startingPageSize"
-  [showFirstLastButtons]="bootstrapService.isDesktop() | async"
+  [showFirstLastButtons]="bootstrapService.isNotMobile() | async"
   [hidePageSize]="bootstrapService.isMobile() | async"
   aria-label="Select page of roles"
 >

@@ -9,3 +9,13 @@
   flex-basis: 0;
   flex-direction: column;
 }
+
+.paginator {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  button {
+    margin-inline: .5em;
+  }
+}
