@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export interface ConfirmDialogButton {
   text: string;
   name: string;
-  color: string;
+  color?: string;
 }
 
 export interface ConfirmDialogData {

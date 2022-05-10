@@ -1,18 +1,15 @@
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { map, Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
 import { BootstrapService, BSScreenSize } from './bootstrap.service';
 import {
   ConfirmDialogComponent,
-  ConfirmDialogData,
+  ConfirmDialogData
 } from './confirm-dialog/confirm-dialog.component';
 import { DownloadDialogComponent } from './download-dialog/download-dialog.component';
 
@@ -55,6 +52,7 @@ export class UtilService {
         data: options,
         disableClose: true,
         closeOnNavigation: false,
+        panelClass: 'small-dialog-padding'
       });
       const subscription = ref.beforeClosed().subscribe((result) => {
         subscription.unsubscribe();

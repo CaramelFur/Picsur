@@ -176,13 +176,6 @@ $mat-theme-light: (
   @include custom-mat.custom-material($mat-theme-light);
 }
 
-.mat-button-base {
-  padding: 0 1.15em;
-  margin: 0 0.65em;
-  min-width: 3em;
-  line-height: 36.4px;
-}
-
 .mat-standard-chip {
   padding: 0.5em 0.85em;
   min-height: 2.5em;

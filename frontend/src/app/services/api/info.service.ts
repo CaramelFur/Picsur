@@ -91,7 +91,7 @@ export class InfoService {
             {
               text: 'Back',
               name: 'back',
-              color: 'green',
+              color: 'accent',
             },
             {
               text: 'Ignore',

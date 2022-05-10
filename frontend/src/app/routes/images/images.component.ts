@@ -85,12 +85,11 @@ export class ImagesComponent implements OnInit {
       description: 'This action cannot be undone.',
       buttons: [
         {
-          color: 'primary',
           name: 'cancel',
           text: 'Cancel',
         },
         {
-          color: 'red',
+          color: 'warn',
           name: 'delete',
           text: 'Delete',
         },

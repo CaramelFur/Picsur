@@ -1,0 +1,19 @@
+.small-dialog-padding mat-dialog-container {
+  padding: 0;
+}
+
+.dialog-text {
+  margin: 24px 24px 0 24px;
+}
+
+.dialog-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+
+  margin: 12px;
+
+  & > :not(:first-of-type) {
+    margin-left: 12px;
+  }
+}
