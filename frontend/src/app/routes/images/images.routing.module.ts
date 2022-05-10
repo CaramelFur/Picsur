@@ -9,7 +9,7 @@ const routes: PRoutes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '0',
+    redirectTo: '1',
   },
   {
     path: ':page',

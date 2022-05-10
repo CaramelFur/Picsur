@@ -1,49 +1,38 @@
-<masonry [columns]="columns">
-  <div *ngFor="let image of images" class="m-2" masonry-item>
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>Image by you</mat-card-title>
-        <mat-card-subtitle>
-          Uploaded {{ image.created | amTimeAgo }}
-        </mat-card-subtitle>
-      </mat-card-header>
-      <picsur-img
-        mat-card-image
-        [src]="getThumbnailUrl(image)"
-        alt="Image uploaded by you"
-      >
-      </picsur-img>
-      <mat-card-actions>
-        <button mat-stroked-button (click)="viewImage(image)">View</button>
-        <button mat-button color="warn">Delete</button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
-</masonry>
+<mat-progress-spinner *ngIf="images === null"></mat-progress-spinner>
 
-<!-- <div class="paginator">
-  <button class="mat-stroked-button" mat-icon-button>
-    <mat-icon>first_page</mat-icon>
-  </button>
-  <button class="mat-stroked-button" mat-icon-button>
-    <mat-icon>chevron_left</mat-icon>
-  </button>
-  <button class="mat-stroked-button" mat-icon-button>
-    <span>1</span>
-  </button>
-  <button class="mat-stroked-button" mat-icon-button>
-    <span>2</span>
-  </button>
-  <button class="mat-stroked-button" color="accent" mat-icon-button>
-    <span>3</span>
-  </button>
-  <button class="mat-stroked-button" mat-icon-button>
-    <span>4</span>
-  </button>
-  <button class="mat-stroked-button" mat-icon-button>
-    <mat-icon>chevron_right</mat-icon>
-  </button>
-  <button class="mat-stroked-button" mat-icon-button>
-    <mat-icon>last_page</mat-icon>
-  </button>
-</div> -->
+<h3 *ngIf="images !== null && images.length <= 0">
+  There are no images to display
+</h3>
+
+<ng-container *ngIf="images !== null && images.length > 0">
+  <masonry [columns]="columns">
+    <div *ngFor="let image of images" class="m-2" masonry-item>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Image by you</mat-card-title>
+          <mat-card-subtitle>
+            Uploaded {{ image.created | amTimeAgo }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <picsur-img
+          mat-card-image
+          [src]="getThumbnailUrl(image)"
+          alt="Image uploaded by you"
+        >
+        </picsur-img>
+        <mat-card-actions>
+          <button mat-stroked-button (click)="viewImage(image)">View</button>
+          <button mat-button color="warn" (click)="deleteImage(image)">
+            Delete
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </masonry>
+
+  <paginator
+    [total-pages]="pages"
+    [page]="page"
+    (page)="gotoPage($event)"
+  ></paginator>
+</ng-container>

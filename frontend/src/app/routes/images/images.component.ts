@@ -1,6 +1,4 @@
-import {
-  Component, OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { SupportedMime } from 'picsur-shared/dist/dto/mimes.dto';
@@ -23,6 +21,9 @@ export class ImagesComponent implements OnInit {
   images: EImage[] | null = null;
   columns = 1;
 
+  page: number = 1;
+  pages: number = 1;
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -30,19 +31,25 @@ export class ImagesComponent implements OnInit {
     private readonly imageService: ImageService
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.load().catch(this.logger.error);
+  }
+
+  private async load() {
     const params = this.route.snapshot.paramMap;
 
-    let page = Number(params.get('id') ?? '');
-    if (isNaN(page)) page = 0;
+    let thispage = Number(params.get('page') ?? '');
+    if (isNaN(thispage) || thispage <= 0) thispage = 1;
+    this.page = thispage;
 
     this.subscribeMobile();
 
-    const result = await this.imageService.ListMyImages(24, page);
+    const result = await this.imageService.ListMyImages(24, this.page - 1);
     if (HasFailed(result)) {
       return this.logger.error(result.getReason());
     }
 
+    this.pages = result.pages;
     this.images = result.images;
   }
 
@@ -67,5 +74,15 @@ export class ImagesComponent implements OnInit {
 
   viewImage(image: EImage) {
     this.router.navigate(['/view', image.id]);
+  }
+
+  deleteImage(image: EImage) {
+    this.images = this.images?.filter((i) => i.id !== image.id) ?? null;
+  }
+
+  gotoPage(page: number) {
+    this.router.navigate(['/images', page]).then(() => {
+      this.load().catch(this.logger.error);
+    });
   }
 }

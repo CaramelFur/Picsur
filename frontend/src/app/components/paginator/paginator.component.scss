@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  margin-top: 1em;
+
+  & > * {
+    margin-inline: 0.3em;
+  }
+}
+
+.paginator-filler {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    font-weight: bold;
+  }
+}

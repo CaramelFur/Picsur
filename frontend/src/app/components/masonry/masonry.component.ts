@@ -37,23 +37,24 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
 
   @AutoUnsubscribe()
   private subscribeContent() {
-    return this.content.changes.subscribe(
-      (items: QueryList<MasonryItemDirective>) => {
-        const sizes = items.map((i) => i.getSize());
+    this.handleContentChange(this.content);
+    return this.content.changes.subscribe(this.handleContentChange.bind(this));
+  }
 
-        if (this.sizesSubscription) {
-          this.sizesSubscription.unsubscribe();
-        }
+  private handleContentChange(items: QueryList<MasonryItemDirective>) {
+    const sizes = items.map((i) => i.getSize());
 
-        this.sizesSubscription = combineLatest(sizes)
-          .pipe(Throttle(this.update_speed))
-          .subscribe((output) => {
-            this.resortItems(items);
-          });
+    if (this.sizesSubscription) {
+      this.sizesSubscription.unsubscribe();
+    }
 
+    this.sizesSubscription = combineLatest(sizes)
+      .pipe(Throttle(this.update_speed))
+      .subscribe((output) => {
         this.resortItems(items);
-      }
-    );
+      });
+
+    this.resortItems(items);
   }
 
   private resortItems(items: QueryList<MasonryItemDirective>) {
@@ -71,7 +72,7 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
 
       let smallestColumn = 0;
       let smallestColumnSize = columnSizes[0];
-      for (let j = 1; j < columnSizes.length; j++) {
+      for (let j = columnSizes.length - 1; j >= 0; j--) {
         let better_j = (j + i) % columnSizes.length;
 
         if (columnSizes[better_j] <= smallestColumnSize) {
