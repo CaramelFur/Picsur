@@ -1,5 +1,5 @@
-<masonry>
-  <div *ngFor="let image of sourceImages" class="m-2" masonry-item>
+<masonry [columns]="columns">
+  <div *ngFor="let image of images" class="m-2" masonry-item>
     <mat-card>
       <mat-card-header>
         <mat-card-title>Image by you</mat-card-title>
@@ -20,35 +20,6 @@
     </mat-card>
   </div>
 </masonry>
-
-<div class="column-wrapper" *ngIf="images !== null">
-  <div
-    *ngFor="let column of images"
-    class="column"
-    #column
-  >
-    <div *ngFor="let image of column" class="m-2" #imgdiv (waResizeObserver)="onResize($event, image, imgdiv)">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Image by you</mat-card-title>
-          <mat-card-subtitle>
-            Uploaded {{ image.created | amTimeAgo }}
-          </mat-card-subtitle>
-        </mat-card-header>
-        <picsur-img
-          mat-card-image
-          [src]="getThumbnailUrl(image)"
-          alt="Image uploaded by you"
-        >
-        </picsur-img>
-        <mat-card-actions>
-          <button mat-stroked-button (click)="viewImage(image)">View</button>
-          <button mat-button color="warn">Delete</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  </div>
-</div>
 
 <!-- <div class="paginator">
   <button class="mat-stroked-button" mat-icon-button>

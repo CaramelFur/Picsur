@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
-import { LOCATION, WINDOW } from '@ng-web-apis/common';
+import { LOCATION } from '@ng-web-apis/common';
 import {
   ImageDeleteRequest,
   ImageDeleteResponse,
   ImageListRequest,
   ImageListResponse,
-  ImageUploadResponse,
+  ImageUploadResponse
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
@@ -15,6 +15,7 @@ import { AsyncFailable } from 'picsur-shared/dist/types';
 import { Fail, HasFailed, Open } from 'picsur-shared/dist/types/failable';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,8 @@ export class ImageService {
   constructor(
     private api: ApiService,
     @Inject(LOCATION) readonly location: Location,
+
+    private userService: UserService
   ) {}
 
   public async UploadImage(image: File): AsyncFailable<string> {
@@ -39,7 +42,7 @@ export class ImageService {
     return await this.api.get(ImageMetaResponse, `/i/meta/${image}`);
   }
 
-  public async ListImages(
+  public async ListAllImages(
     count: number,
     page: number,
     userID?: string
@@ -54,6 +57,18 @@ export class ImageService {
         user_id: userID,
       }
     );
+  }
+
+  public async ListMyImages(
+    count: number,
+    page: number
+  ): AsyncFailable<ImageListResponse> {
+    const userID = await this.userService.snapshot?.id;
+    if (userID === undefined) {
+      return Fail('User not logged in');
+    }
+
+    return await this.ListAllImages(count, page, userID);
   }
 
   public async DeleteImages(
