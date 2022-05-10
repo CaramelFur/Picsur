@@ -1,8 +1,8 @@
 <mat-progress-spinner *ngIf="images === null"></mat-progress-spinner>
 
-<h3 *ngIf="images !== null && images.length <= 0">
+<h2 class="text-center" *ngIf="images !== null && images.length <= 0">
   There are no images to display
-</h3>
+</h2>
 
 <ng-container *ngIf="images !== null && images.length > 0">
   <masonry [columns]="columns">

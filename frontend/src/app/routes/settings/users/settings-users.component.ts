@@ -64,14 +64,14 @@ export class SettingsUsersComponent implements OnInit {
       description: 'This action cannot be undone.',
       buttons: [
         {
-          color: 'red',
-          name: 'delete',
-          text: 'Delete',
-        },
-        {
           color: 'primary',
           name: 'cancel',
           text: 'Cancel',
+        },
+        {
+          color: 'red',
+          name: 'delete',
+          text: 'Delete',
         },
       ],
     });
