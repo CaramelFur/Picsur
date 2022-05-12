@@ -1,11 +1,11 @@
 <div class="container centered">
   <div class="row">
     <div class="col-12">
-      <h1>Image uploaded by {{imageUser?.username}}</h1>
+      <h1>Image uploaded by {{ imageUser?.username }}</h1>
     </div>
 
     <div class="col-12" *ngIf="image !== null">
-      <h3>Uploaded {{(image.created | amTimeAgo)}}</h3>
+      <h3>Uploaded {{ image.created | amTimeAgo }}</h3>
     </div>
 
     <div class="col-12 py-3">
@@ -21,7 +21,7 @@
         <mat-label>Image Format</mat-label>
         <mat-select
           (valueChange)="selectedFormat($event)"
-          [value]="setSelectedValue"
+          [value]="setSelectedFormat"
         >
           <mat-option *ngFor="let format of formatOptions" [value]="format.key">
             {{ format.value }}
@@ -56,6 +56,9 @@
   [open-on-hover]="true"
   (main-click)="download()"
 >
+  <button mat-mini-fab matTooltip="Customize Image" (click)="customize()">
+    <mat-icon> tune </mat-icon>
+  </button>
   <button mat-mini-fab matTooltip="Share image" (click)="share()">
     <mat-icon> share </mat-icon>
   </button>

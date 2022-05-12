@@ -1,3 +1,4 @@
+import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -39,26 +40,40 @@ export class UtilService {
   ) {
     let ref = this.snackBar.open(message, '', {
       panelClass: ['mat-toolbar', 'snackbar', type],
-      verticalPosition: this.bootstrap.screenSizeSnapshot() > BSScreenSize.xs ? 'bottom' : 'top',
+      verticalPosition:
+        this.bootstrap.screenSizeSnapshot() > BSScreenSize.xs
+          ? 'bottom'
+          : 'top',
       ...(duration !== null ? { duration } : {}),
     });
   }
 
-  public async showDialog(
-    options: ConfirmDialogData
-  ): Promise<string | undefined> {
+  public async showCustomDialog<T>(
+    component: ComponentType<T>,
+    data: any,
+    options?: {
+      dismissable?: boolean;
+    }
+  ): Promise<any | undefined> {
     return new Promise((resolve, reject) => {
-      const ref = this.dialog.open(ConfirmDialogComponent, {
-        data: options,
-        disableClose: true,
-        closeOnNavigation: false,
-        panelClass: 'small-dialog-padding'
+      const ref = this.dialog.open(component, {
+        data,
+        panelClass: 'small-dialog-padding',
+        ...(options?.dismissable === false
+          ? {}
+          : { disableClose: true, closeOnNavigation: false }),
       });
       const subscription = ref.beforeClosed().subscribe((result) => {
         subscription.unsubscribe();
         resolve(result);
       });
     });
+  }
+
+  public async showDialog(
+    options: ConfirmDialogData
+  ): Promise<string | undefined> {
+    return this.showCustomDialog(ConfirmDialogComponent, options);
   }
 
   public showDownloadDialog(filename: string): () => void {
