@@ -21,6 +21,32 @@ You can view a live demo here: <https://picsur.rubikscraft.nl/>
 
 The images are deleted every five minutes, and the maximum filesize is 16MB. But it should give you an indication of how it works.
 
+## Features
+
+Here is a list of done features, and what is planned.
+For a more detailed list, you can always visit [the project](https://github.com/rubikscraft/Picsur/projects/1).
+
+Right now, not every done feature here is available in the current release. But these will all be available with the next one.
+
+[x] Uploading and viewing images
+[x] Anonymous uploads
+[x] User accounts
+[x] User roles and permissions
+[x] Proper CORS restrictions
+[x] Exif stripping
+[x] Ability to keep original
+[x] Support for [QOI format](https://qoiformat.org/)
+[x] Convert images
+[x] Resize images
+[x] Apply filters
+[x] Deletable images
+
+[ ] Correct previews on chats
+[ ] Expiring images
+[ ] White mode
+[ ] ShareX endpoint
+[ ] Arm64 image
+
 ## Bugs
 
 If you encounter any bugs or oddities, please open an issue [here](https://github.com/rubikscraft/Picsur/issues). Cause without feedback I'll never know they exists.
