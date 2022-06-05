@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM ghcr.io/rubikscraft/node-docker:1.0.0
 
 # Sorry for the humongous docker container this generates
 # Maybe I'll trim it down some day

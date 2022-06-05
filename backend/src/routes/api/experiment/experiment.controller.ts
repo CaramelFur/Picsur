@@ -4,7 +4,7 @@ import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { ReqUserID } from '../../../decorators/request-user.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
-import AuthFasityRequest from '../../../models/interfaces/authrequest.dto';
+import type AuthFasityRequest from '../../../models/interfaces/authrequest.dto';
 
 @Controller('api/experiment')
 @RequiredPermissions(Permission.Settings)

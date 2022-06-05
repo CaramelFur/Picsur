@@ -15,11 +15,15 @@
     "purge-all": "./support/purge-all.sh"
   },
   "resolutions": {
-    "minimist": "npm:minimist-lite",
-    "fastify-static": "npm:@fastify/static"
+    "fastify-static": "npm:@fastify/static",
+    "minimist": "npm:minimist-lite"
   },
   "dependencies": {
     "fastify-static": "npm:@fastify/static",
     "minimist": "npm:minimist-lite"
+  },
+  "devDependencies": {
+    "prettier": "^2.6.2",
+    "prettier-plugin-sh": "^0.11.0"
   }
 }

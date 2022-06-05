@@ -4,10 +4,11 @@ import {
   Head,
   InternalServerErrorException,
   Logger,
-  NotFoundException, Query,
+  NotFoundException,
+  Query,
   Res
 } from '@nestjs/common';
-import { FastifyReply } from 'fastify';
+import type { FastifyReply } from 'fastify';
 import {
   ImageMetaResponse,
   ImageRequestParams
@@ -19,7 +20,7 @@ import { ImageIdParam } from '../../decorators/image-id/image-id.decorator';
 import { RequiredPermissions } from '../../decorators/permissions.decorator';
 import { Returns } from '../../decorators/returns.decorator';
 import { ImageManagerService } from '../../managers/image/image.service';
-import { ImageFullId } from '../../models/constants/image-full-id.const';
+import type { ImageFullId } from '../../models/constants/image-full-id.const';
 import { Permission } from '../../models/constants/permissions.const';
 import { EUserBackend2EUser } from '../../models/transformers/user.transformer';
 

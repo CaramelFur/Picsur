@@ -13,7 +13,7 @@ import {
   UserRegisterRequest,
   UserRegisterResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
-import { EUser } from 'picsur-shared/dist/entities/user.entity';
+import type { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/user-db/user-db.service';
 import {
