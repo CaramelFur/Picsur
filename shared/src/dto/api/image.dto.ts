@@ -5,8 +5,10 @@ import { createZodDto } from '../../util/create-zod-dto';
 import { ImageFileType } from '../image-file-types.dto';
 
 const parseBool = (value: unknown): boolean | null => {
-  if (value === 'true' || value === '1' || value === 'yes') return true;
-  if (value === 'false' || value === '0' || value === 'no') return false;
+  if (value === true || value === 'true' || value === '1' || value === 'yes')
+    return true;
+  if (value === false || value === 'false' || value === '0' || value === 'no')
+    return false;
   return null;
 };
 

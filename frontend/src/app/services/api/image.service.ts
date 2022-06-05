@@ -5,9 +5,12 @@ import {
   ImageDeleteResponse,
   ImageListRequest,
   ImageListResponse,
-  ImageUploadResponse,
+  ImageUploadResponse
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
-import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
+import {
+  ImageMetaResponse,
+  ImageRequestParams
+} from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
 import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
@@ -101,9 +104,42 @@ export class ImageService {
 
   public GetImageURL(image: string, mime: string | null): string {
     const baseURL = this.location.protocol + '//' + this.location.host;
-    const extension = mime !== null ? Mime2Ext(mime) ?? 'error' : null;
+    const extension = mime !== null ? Mime2Ext(mime) : null;
 
     return `${baseURL}/i/${image}${extension !== null ? '.' + extension : ''}`;
+  }
+
+  public GetImageURLCustomized(
+    image: string,
+    mime: string | null,
+    options: ImageRequestParams,
+  ): string {
+    const baseURL = this.GetImageURL(image, mime);
+    const betterOptions = ImageRequestParams.zodSchema.safeParse(options);
+
+    if (!betterOptions.success) return baseURL;
+
+    let queryParams: string[] = [];
+
+    if (options.height !== undefined)
+      queryParams.push(`height=${options.height}`);
+    if (options.width !== undefined) queryParams.push(`width=${options.width}`);
+    if (options.rotate !== undefined)
+      queryParams.push(`rotate=${options.rotate}`);
+    if (options.flipx !== undefined) queryParams.push(`flipx=${options.flipx}`);
+    if (options.flipy !== undefined) queryParams.push(`flipy=${options.flipy}`);
+    if (options.greyscale !== undefined)
+      queryParams.push(`greyscale=${options.greyscale}`);
+    if (options.noalpha !== undefined)
+      queryParams.push(`noalpha=${options.noalpha}`);
+    if (options.negative !== undefined)
+      queryParams.push(`negative=${options.negative}`);
+    if (options.quality !== undefined)
+      queryParams.push(`quality=${options.quality}`);
+
+    if (queryParams.length === 0) return baseURL;
+
+    return baseURL + '?' + queryParams.join('&');
   }
 
   public CreateImageLinks(imageURL: string): ImageLinks {

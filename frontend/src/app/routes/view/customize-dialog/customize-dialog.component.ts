@@ -1,9 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {
-  ConfirmDialogComponent,
-  ConfirmDialogData,
-} from 'src/app/util/util-module/confirm-dialog/confirm-dialog.component';
+import { ImageService } from 'src/app/services/api/image.service';
+
+export interface CustomizeDialogData {
+  imageID: string;
+  formatOptions: {
+    value: string;
+    key: string;
+  }[];
+  selectedFormat: string;
+}
 
 @Component({
   selector: 'customize-dialog',
@@ -11,16 +17,57 @@ import {
   styleUrls: ['./customize-dialog.component.scss'],
 })
 export class CustomizeDialogComponent implements OnInit {
-  constructor(
-    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
-  ) {}
+  public sizeTooltip = 'Leave empty to keep original aspect ratio';
 
-  ngOnInit(): void {
-    console.log(this.data);
+  public rotationOptions = [0, 90, 180, 270];
+  public formatOptions: {
+    value: string;
+    key: string;
+  }[];
+
+  public imageID: string;
+  public selectedFormat: string;
+  public height: number;
+  public width: number;
+  public rotate: number;
+  public flipx: boolean;
+  public flipy: boolean;
+  public greyscale: boolean;
+  public noalpha: boolean;
+  public negative: boolean;
+  public quality: number;
+
+  constructor(
+    public dialogRef: MatDialogRef<CustomizeDialogComponent>,
+    private imageService: ImageService,
+    @Inject(MAT_DIALOG_DATA) data: CustomizeDialogData,
+  ) {
+    this.formatOptions = data.formatOptions;
+    this.selectedFormat = data.selectedFormat;
+    this.imageID = data.imageID;
   }
+
+  ngOnInit(): void {}
 
   close() {
     this.dialogRef.close();
+  }
+
+  getURL(): string {
+    return this.imageService.GetImageURLCustomized(
+      this.imageID,
+      this.selectedFormat,
+      {
+        height: this.height ?? undefined,
+        width: this.width ?? undefined,
+        rotate: this.rotate ?? undefined,
+        quality: this.quality ?? undefined,
+        flipx: this.flipx,
+        flipy: this.flipy,
+        greyscale: this.greyscale,
+        noalpha: this.noalpha,
+        negative: this.negative,
+      },
+    );
   }
 }

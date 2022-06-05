@@ -9,7 +9,7 @@ import {
   Mime2Ext,
   SupportedAnimMimes,
   SupportedImageMimes,
-  SupportedMimeCategory,
+  SupportedMimeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -18,7 +18,10 @@ import { UUIDRegex } from 'picsur-shared/dist/util/common-regex';
 import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
 import { ImageService } from 'src/app/services/api/image.service';
 import { UtilService } from 'src/app/util/util-module/util.service';
-import { CustomizeDialogComponent } from './customize-dialog/customize-dialog.component';
+import {
+  CustomizeDialogComponent,
+  CustomizeDialogData
+} from './customize-dialog/customize-dialog.component';
 
 @Component({
   templateUrl: './view.component.html',
@@ -114,13 +117,19 @@ export class ViewComponent implements OnInit {
   }
 
   async customize() {
-    await this.utilService.showCustomDialog(
-      CustomizeDialogComponent,
-      {
-        format: this.currentSelectedFormat,
-      },
-      { dismissable: false },
-    );
+    const options: CustomizeDialogData = {
+      imageID: this.id,
+      selectedFormat: this.currentSelectedFormat,
+      formatOptions: this.getBaseFormatOptions(),
+    };
+
+    if (options.selectedFormat === 'original') {
+      options.selectedFormat = this.masterMime.mime;
+    }
+
+    await this.utilService.showCustomDialog(CustomizeDialogComponent, options, {
+      dismissable: false,
+    });
   }
 
   goBackHome() {
@@ -139,6 +148,17 @@ export class ViewComponent implements OnInit {
       });
     }
 
+    newOptions = newOptions.concat(this.getBaseFormatOptions());
+
+    this.formatOptions = newOptions;
+  }
+
+  private getBaseFormatOptions() {
+    let newOptions: {
+      value: string;
+      key: string;
+    }[] = [];
+
     if (this.masterMime.type === SupportedMimeCategory.Image) {
       newOptions.push(
         ...SupportedImageMimes.map((mime) => ({
@@ -155,6 +175,6 @@ export class ViewComponent implements OnInit {
       );
     }
 
-    this.formatOptions = newOptions;
+    return newOptions;
   }
 }

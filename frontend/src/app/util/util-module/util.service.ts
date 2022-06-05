@@ -10,12 +10,12 @@ import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
 import { BootstrapService, BSScreenSize } from './bootstrap.service';
 import {
   ConfirmDialogComponent,
-  ConfirmDialogData,
+  ConfirmDialogData
 } from './confirm-dialog/confirm-dialog.component';
 import { DownloadDialogComponent } from './download-dialog/download-dialog.component';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'any',
 })
 export class UtilService {
   private readonly logger = new Logger('UtilService');
@@ -62,6 +62,7 @@ export class UtilService {
         ...(options?.dismissable === false
           ? {}
           : { disableClose: true, closeOnNavigation: false }),
+        maxHeight: '90vh',
       });
       const subscription = ref.beforeClosed().subscribe((result) => {
         subscription.unsubscribe();

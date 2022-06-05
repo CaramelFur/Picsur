@@ -1,6 +1,92 @@
 <div class="dialog-text">
-  <h1>Customize Image</h1>
-</div>
-<div class="dialog-buttons">
-  <button mat-button (click)="close()">Close</button>
+  <div class="row">
+    <div class="col-12">
+      <h1>Customize Image</h1>
+    </div>
+    <div class="col-xl-4 col-12">
+      <mat-form-field>
+        <mat-label>Format</mat-label>
+        <mat-select [(value)]="selectedFormat">
+          <mat-option *ngFor="let format of formatOptions" [value]="format.key">
+            {{ format.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-xl-2 col-md-3 col-sm-6 col-12">
+      <mat-form-field [matTooltip]="sizeTooltip">
+        <mat-label>Height</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          max="32768"
+          [(ngModel)]="height"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="col-xl-2 col-md-3 col-sm-6 col-12">
+      <mat-form-field
+        appearance="outline"
+        color="accent"
+        [matTooltip]="sizeTooltip"
+      >
+        <mat-label>Width</mat-label>
+        <input matInput type="number" min="0" max="32768" [(ngModel)]="width" />
+      </mat-form-field>
+    </div>
+
+    <div class="col-xl-2 col-md-3 col-sm-6 col-12">
+      <mat-form-field>
+        <mat-label>Rotation</mat-label>
+        <mat-select [(value)]="rotate">
+          <mat-option *ngFor="let option of rotationOptions" [value]="option">
+            {{ option }}°
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-xl-2 col-md-3 col-sm-6 col-12">
+      <mat-form-field>
+        <mat-label>Quality %</mat-label>
+        <input matInput type="number" min="0" max="100" [(ngModel)]="quality" />
+      </mat-form-field>
+    </div>
+
+    <div class="col-xl-4 col-sm-6 col-12">
+      <mat-slide-toggle [(ngModel)]="flipx">
+        Flip image horizontally
+      </mat-slide-toggle>
+    </div>
+
+    <div class="col-xl-4 col-sm-6 col-12">
+      <mat-slide-toggle [(ngModel)]="flipy">
+        Flip image vertically
+      </mat-slide-toggle>
+    </div>
+
+    <div class="col-xl-4 col-sm-6 col-12">
+      <mat-slide-toggle [(ngModel)]="greyscale">Greyscale</mat-slide-toggle>
+    </div>
+
+    <div class="col-xl-4 col-sm-6 col-12">
+      <mat-slide-toggle [(ngModel)]="noalpha">
+        Disable transparancy
+      </mat-slide-toggle>
+    </div>
+
+    <div class="col-xl-4 col-sm-6 col-12">
+      <mat-slide-toggle [(ngModel)]="negative">Negative</mat-slide-toggle>
+    </div>
+
+    <div class="col-12">
+      <copy-field label="Custom Image URL" [value]="getURL()"></copy-field>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button mat-stroked-button (click)="close()">Close</button>
+  </div>
 </div>
