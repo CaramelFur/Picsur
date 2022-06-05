@@ -7,9 +7,13 @@
     "target": "es2017",
     "module": "es2020",
 
-    "lib": ["es2020", "dom"],
+    "lib": ["es2020", "dom"]
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["src/**/*.d.ts", "src/app/**/*.ts", "src/app/util/qoi/qoi-encode.ts.disabled"],
-  "exclude": ["src/**/*.worker.ts", "src/**/*.exclude.ts"],
+  "include": [
+    "src/**/*.d.ts",
+    "src/app/**/*.ts",
+    "src/app/util/qoi/qoi-encode.ts.disabled"
+  ],
+  "exclude": ["src/**/*.worker.ts", "src/**/*.exclude.ts"]
 }

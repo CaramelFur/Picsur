@@ -5,7 +5,7 @@ import {
   InternalServerErrorException,
   Logger,
   NestInterceptor,
-  Optional
+  Optional,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ApiAnySuccessResponse } from 'picsur-shared/dist/dto/api/api.dto';
@@ -66,7 +66,9 @@ export class SuccessInterceptor<T> implements NestInterceptor {
     const parseResult = schema.safeParse(data);
     if (!parseResult.success) {
       this.logger.warn(
-        `Function ${context.getHandler().name} failed validation: ${parseResult.error}`,
+        `Function ${context.getHandler().name} failed validation: ${
+          parseResult.error
+        }`,
       );
       throw new InternalServerErrorException(
         'Server produced invalid response',
@@ -76,7 +78,10 @@ export class SuccessInterceptor<T> implements NestInterceptor {
     return parseResult.data;
   }
 
-  private createResponse(context: ExecutionContext, data: unknown): ApiAnySuccessResponse {
+  private createResponse(
+    context: ExecutionContext,
+    data: unknown,
+  ): ApiAnySuccessResponse {
     const status = context.switchToHttp().getResponse().statusCode;
     const response = {
       success: true as true, // really typescript

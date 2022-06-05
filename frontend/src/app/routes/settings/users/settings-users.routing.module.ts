@@ -16,7 +16,7 @@ const routes: PRoutes = [
   {
     path: 'add',
     component: SettingsUsersEditComponent,
-  }
+  },
 ];
 
 @NgModule({

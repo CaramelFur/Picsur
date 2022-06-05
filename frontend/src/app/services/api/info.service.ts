@@ -26,7 +26,7 @@ export class InfoService {
   constructor(
     private readonly api: ApiService,
     private readonly utilService: UtilService,
-    @Inject(HISTORY) private readonly history: History
+    @Inject(HISTORY) private readonly history: History,
   ) {
     this.checkCompatibility().catch(this.logger.error);
   }
@@ -76,7 +76,7 @@ export class InfoService {
     if (HasFailed(isCompatible)) {
       this.utilService.showSnackBar(
         'There was an error checking compatibility',
-        SnackBarType.Warning
+        SnackBarType.Warning,
       );
       return;
     }

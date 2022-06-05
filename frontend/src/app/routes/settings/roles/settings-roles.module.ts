@@ -29,7 +29,7 @@ import { SettingsRolesRoutingModule } from './settings-roles.routing.module';
     MatInputModule,
     FabModule,
     ReactiveFormsModule,
-    ValuesPickerModule
+    ValuesPickerModule,
   ],
 })
 export class SettingsRolesRouteModule {}

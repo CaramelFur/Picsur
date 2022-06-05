@@ -3,7 +3,7 @@ import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
-  Logger
+  Logger,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
@@ -47,14 +47,18 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
     // These are the permissions required to access the route
     const permissions = this.extractPermissions(context);
     if (HasFailed(permissions)) {
-      this.logger.error('Fetching route permission failed: ' + permissions.getReason());
+      this.logger.error(
+        'Fetching route permission failed: ' + permissions.getReason(),
+      );
       throw new InternalServerErrorException();
     }
 
     // These are the permissions the user has
     const userPermissions = await this.usersService.getPermissions(user.id);
     if (HasFailed(userPermissions)) {
-      this.logger.warn('Fetching user permissions failed: ' + userPermissions.getReason());
+      this.logger.warn(
+        'Fetching user permissions failed: ' + userPermissions.getReason(),
+      );
       throw new InternalServerErrorException();
     }
 

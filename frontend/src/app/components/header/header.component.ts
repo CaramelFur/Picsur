@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private permissionService: PermissionService,
-    private utilService: UtilService
+    private utilService: UtilService,
   ) {}
 
   ngOnInit(): void {

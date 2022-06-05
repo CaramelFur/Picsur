@@ -68,7 +68,7 @@ export class ImageDBService {
       });
 
       if (found === undefined) return Fail('Images not found');
-      
+
       return {
         results: found,
         totalResults: amount,

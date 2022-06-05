@@ -85,7 +85,7 @@ export class ValuesPickerComponent implements OnInit, OnChanges {
   private updateSelectable() {
     const selected: string[] = this.myControl.value;
     const available = this.fullSelection.filter(
-      (s) => !this.isDisabled(s) && !selected.includes(s)
+      (s) => !this.isDisabled(s) && !selected.includes(s),
     );
 
     this.selectableSubject.next(available);

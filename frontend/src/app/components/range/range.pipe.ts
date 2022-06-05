@@ -16,7 +16,7 @@ export class RangePipe implements PipeTransform {
     ) {
       return Array.from(
         { length: length[1] + 1 - length[0] },
-        (_, i) => i + length[0]
+        (_, i) => i + length[0],
       );
     }
 

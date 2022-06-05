@@ -6,12 +6,12 @@ import {
   Logger,
   NotFoundException,
   Query,
-  Res
+  Res,
 } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
 import {
   ImageMetaResponse,
-  ImageRequestParams
+  ImageRequestParams,
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../collections/user-db/user-db.service';

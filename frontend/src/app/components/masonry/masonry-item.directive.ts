@@ -27,7 +27,7 @@ export class MasonryItemDirective {
   constructor(
     private element: ElementRef<HTMLElement>,
     @Inject(ResizeObserverService)
-    resize: Observable<ResizeObserverEntry[]>
+    resize: Observable<ResizeObserverEntry[]>,
   ) {
     this.resizeObserver = resize.pipe(map((entries) => entries[0]));
     this.subscribeResize();

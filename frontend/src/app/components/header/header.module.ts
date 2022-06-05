@@ -16,7 +16,7 @@ import { HeaderComponent } from './header.component';
     RouterModule,
     MatIconModule,
     MatMenuModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   declarations: [HeaderComponent],
   exports: [HeaderComponent],

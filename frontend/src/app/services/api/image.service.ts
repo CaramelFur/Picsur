@@ -5,7 +5,7 @@ import {
   ImageDeleteResponse,
   ImageListRequest,
   ImageListResponse,
-  ImageUploadResponse
+  ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
@@ -25,14 +25,14 @@ export class ImageService {
     private api: ApiService,
     @Inject(LOCATION) readonly location: Location,
 
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   public async UploadImage(image: File): AsyncFailable<string> {
     const result = await this.api.postForm(
       ImageUploadResponse,
       '/api/image/upload',
-      new ImageUploadRequest(image)
+      new ImageUploadRequest(image),
     );
 
     return Open(result, 'id');
@@ -45,7 +45,7 @@ export class ImageService {
   public async ListAllImages(
     count: number,
     page: number,
-    userID?: string
+    userID?: string,
   ): AsyncFailable<ImageListResponse> {
     return await this.api.post(
       ImageListRequest,
@@ -55,13 +55,13 @@ export class ImageService {
         count,
         page,
         user_id: userID,
-      }
+      },
     );
   }
 
   public async ListMyImages(
     count: number,
-    page: number
+    page: number,
   ): AsyncFailable<ImageListResponse> {
     const userID = await this.userService.snapshot?.id;
     if (userID === undefined) {
@@ -72,7 +72,7 @@ export class ImageService {
   }
 
   public async DeleteImages(
-    images: string[]
+    images: string[],
   ): AsyncFailable<ImageDeleteResponse> {
     return await this.api.post(
       ImageDeleteRequest,
@@ -80,7 +80,7 @@ export class ImageService {
       '/api/image/delete',
       {
         ids: images,
-      }
+      },
     );
   }
 
@@ -90,7 +90,7 @@ export class ImageService {
 
     if (result.images.length !== 1) {
       return Fail(
-        `Image ${image} was not deleted, probably lacking permissions`
+        `Image ${image} was not deleted, probably lacking permissions`,
       );
     }
 
@@ -118,7 +118,7 @@ export class ImageService {
 
   public CreateImageLinksFromID(
     imageID: string,
-    mime: string | null
+    mime: string | null,
   ): ImageLinks {
     return this.CreateImageLinks(this.GetImageURL(imageID, mime));
   }

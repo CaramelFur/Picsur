@@ -21,7 +21,7 @@ export class StaticInfoService {
         SoulBoundRoles: [],
         UndeletableRoles: [],
       },
-      () => this.api.get(SpecialRolesResponse, '/api/roles/special')
+      () => this.api.get(SpecialRolesResponse, '/api/roles/special'),
     );
   }
 
@@ -33,7 +33,7 @@ export class StaticInfoService {
         LockedLoginUsersList: [],
         UndeletableUsersList: [],
       },
-      () => this.api.get(GetSpecialUsersResponse, '/api/user/special')
+      () => this.api.get(GetSpecialUsersResponse, '/api/user/special'),
     );
   }
 
@@ -45,10 +45,10 @@ export class StaticInfoService {
       async () => {
         const res = await this.api.get(
           AllPermissionsResponse,
-          '/api/info/permissions'
+          '/api/info/permissions',
         );
         return Open(res, 'permissions');
-      }
+      },
     );
   }
 }

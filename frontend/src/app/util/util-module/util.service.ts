@@ -10,7 +10,7 @@ import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
 import { BootstrapService, BSScreenSize } from './bootstrap.service';
 import {
   ConfirmDialogComponent,
-  ConfirmDialogData
+  ConfirmDialogData,
 } from './confirm-dialog/confirm-dialog.component';
 import { DownloadDialogComponent } from './download-dialog/download-dialog.component';
 
@@ -25,7 +25,7 @@ export class UtilService {
     private dialog: MatDialog,
     private router: Router,
     private api: ApiService,
-    private bootstrap: BootstrapService
+    private bootstrap: BootstrapService,
   ) {}
 
   public quitError(message: string) {
@@ -36,7 +36,7 @@ export class UtilService {
   public showSnackBar(
     message: string,
     type: SnackBarType = SnackBarType.Default,
-    duration: number | undefined | null = null
+    duration: number | undefined | null = null,
   ) {
     let ref = this.snackBar.open(message, '', {
       panelClass: ['mat-toolbar', 'snackbar', type],
@@ -53,7 +53,7 @@ export class UtilService {
     data: any,
     options?: {
       dismissable?: boolean;
-    }
+    },
   ): Promise<any | undefined> {
     return new Promise((resolve, reject) => {
       const ref = this.dialog.open(component, {
@@ -71,7 +71,7 @@ export class UtilService {
   }
 
   public async showDialog(
-    options: ConfirmDialogData
+    options: ConfirmDialogData,
   ): Promise<string | undefined> {
     return this.showCustomDialog(ConfirmDialogComponent, options);
   }
@@ -100,7 +100,7 @@ export class UtilService {
     // Download with the browser
     const a = document.createElement('a');
     a.href = URL.createObjectURL(
-      new Blob([file.buffer], { type: file.mimeType })
+      new Blob([file.buffer], { type: file.mimeType }),
     );
     a.download = file.name;
     a.target = '_self';
@@ -136,7 +136,7 @@ export class UtilService {
     if (!this.canShare()) {
       this.showSnackBar(
         'Sharing is not supported on your device',
-        SnackBarType.Warning
+        SnackBarType.Warning,
       );
       return;
     }
@@ -170,7 +170,7 @@ export class UtilService {
     if (!canShare) {
       this.showSnackBar(
         'Sharing is not supported on your device',
-        SnackBarType.Warning
+        SnackBarType.Warning,
       );
       return;
     }

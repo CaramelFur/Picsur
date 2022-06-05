@@ -12,6 +12,6 @@ import { UserApiModule } from './user/user.module';
     ExperimentModule,
     InfoModule,
     RolesApiModule,
-  ]
+  ],
 })
 export class PicsurApiModule {}

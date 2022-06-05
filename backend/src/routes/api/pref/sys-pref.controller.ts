@@ -1,17 +1,17 @@
 import {
-    Body,
-    Controller,
-    Get,
-    InternalServerErrorException,
-    Logger,
-    Param,
-    Post
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Logger,
+  Param,
+  Post,
 } from '@nestjs/common';
 import {
-    GetPreferenceResponse,
-    MultiplePreferencesResponse,
-    UpdatePreferenceRequest,
-    UpdatePreferenceResponse
+  GetPreferenceResponse,
+  MultiplePreferencesResponse,
+  UpdatePreferenceRequest,
+  UpdatePreferenceResponse,
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/preference-db/sys-preference-db.service';
@@ -43,9 +43,7 @@ export class SysPrefController {
 
   @Get(':key')
   @Returns(GetPreferenceResponse)
-  async getSysPref(
-    @Param('key') key: string,
-  ): Promise<GetPreferenceResponse> {
+  async getSysPref(@Param('key') key: string): Promise<GetPreferenceResponse> {
     const pref = await this.prefService.getPreference(key);
     if (HasFailed(pref)) {
       this.logger.warn(pref.getReason());

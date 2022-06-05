@@ -4,7 +4,7 @@ import { QOIImage } from './qoi-worker.dto';
 
 export default async function qoiDecodeJob(
   url: string,
-  authorization: string
+  authorization: string,
 ): AsyncFailable<QOIImage> {
   try {
     const response = await fetch(url, {
@@ -23,7 +23,7 @@ export default async function qoiDecodeJob(
     const imageData = new ImageData(
       new Uint8ClampedArray(image.data.buffer),
       image.width,
-      image.height
+      image.height,
     );
 
     return {

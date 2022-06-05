@@ -8,5 +8,5 @@
     "isolatedModules": false
   },
   "include": ["src/app/workers/*.worker.ts"],
-  "exclude": ["src/**/*.exclude.ts"],
+  "exclude": ["src/**/*.exclude.ts"]
 }

@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
     private userService: UserService,
     private permissionService: PermissionService,
     private router: Router,
-    private utilService: UtilService
+    private utilService: UtilService,
   ) {}
 
   ngOnInit(): void {
@@ -57,29 +57,32 @@ export class RegisterComponent implements OnInit {
       this.logger.error(user.getReason());
       this.utilService.showSnackBar(
         'Register failed, please try again',
-        SnackBarType.Error
+        SnackBarType.Error,
       );
       return;
     }
 
     if (!this.userService.isLoggedIn) {
-      const loginResult = await this.userService.login(data.username, data.password);
+      const loginResult = await this.userService.login(
+        data.username,
+        data.password,
+      );
       if (HasFailed(loginResult)) {
         this.logger.error(loginResult.getReason());
         this.utilService.showSnackBar(
           'Failed to login after register',
-          SnackBarType.Error
+          SnackBarType.Error,
         );
       }
 
       this.utilService.showSnackBar(
         'Register successful',
-        SnackBarType.Success
+        SnackBarType.Success,
       );
     } else {
       this.utilService.showSnackBar(
         'Register successful, did not log in',
-        SnackBarType.Success
+        SnackBarType.Success,
       );
     }
 

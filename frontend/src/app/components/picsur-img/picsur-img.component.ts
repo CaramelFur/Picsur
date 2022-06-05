@@ -6,7 +6,7 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { FullMime, SupportedMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
@@ -27,7 +27,7 @@ enum PicsurImgState {
   selector: 'picsur-img',
   templateUrl: './picsur-img.component.html',
   styleUrls: ['./picsur-img.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PicsurImgComponent implements OnChanges {
   private readonly logger = new Logger('ZodImgComponent');
@@ -43,7 +43,7 @@ export class PicsurImgComponent implements OnChanges {
   constructor(
     private qoiWorker: QoiWorkerService,
     private apiService: ApiService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -66,8 +66,6 @@ export class PicsurImgComponent implements OnChanges {
         }
       })
       .catch((e) => this.logger.error);
-
-    
   }
 
   private async update(url: string): AsyncFailable<void> {

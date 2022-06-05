@@ -6,7 +6,7 @@ import { HostConfigService } from '../../config/early/host.config.service';
 import {
   ImmutableRolesList,
   SystemRoleDefaults,
-  UndeletableRolesList
+  UndeletableRolesList,
 } from '../../models/constants/roles.const';
 import { ERoleBackend } from '../../models/entities/role.entity';
 import { RolesService } from './role-db.service';

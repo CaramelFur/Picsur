@@ -2,8 +2,8 @@ import fastifyHelmet from '@fastify/helmet';
 import * as multipart from '@fastify/multipart';
 import { NestFactory, Reflector } from '@nestjs/core';
 import {
-    FastifyAdapter,
-    NestFastifyApplication
+  FastifyAdapter,
+  NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { UsersService } from './collections/user-db/user-db.service';

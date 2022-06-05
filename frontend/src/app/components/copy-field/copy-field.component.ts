@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input } from '@angular/core';
-import { SnackBarType } from "src/app/models/dto/snack-bar-type.dto";
+import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UtilService } from 'src/app/util/util-module/util.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class CopyFieldComponent {
 
     return this.utilService.showSnackBar(
       'Copying to clipboard failed',
-      SnackBarType.Error
+      SnackBarType.Error,
     );
   }
 }

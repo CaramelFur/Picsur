@@ -1,22 +1,22 @@
 import {
-    Body,
-    Controller,
-    Get,
-    InternalServerErrorException,
-    Logger,
-    Post
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Logger,
+  Post,
 } from '@nestjs/common';
 import {
-    RoleCreateRequest,
-    RoleCreateResponse,
-    RoleDeleteRequest,
-    RoleDeleteResponse,
-    RoleInfoRequest,
-    RoleInfoResponse,
-    RoleListResponse,
-    RoleUpdateRequest,
-    RoleUpdateResponse,
-    SpecialRolesResponse
+  RoleCreateRequest,
+  RoleCreateResponse,
+  RoleDeleteRequest,
+  RoleDeleteResponse,
+  RoleInfoRequest,
+  RoleInfoResponse,
+  RoleListResponse,
+  RoleUpdateRequest,
+  RoleUpdateResponse,
+  SpecialRolesResponse,
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { RolesService } from '../../../collections/role-db/role-db.service';
@@ -25,10 +25,10 @@ import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
 import { Permission } from '../../../models/constants/permissions.const';
 import {
-    DefaultRolesList,
-    ImmutableRolesList,
-    SoulBoundRolesList,
-    UndeletableRolesList
+  DefaultRolesList,
+  ImmutableRolesList,
+  SoulBoundRolesList,
+  UndeletableRolesList,
 } from '../../../models/constants/roles.const';
 import { isPermissionsArray } from '../../../models/validators/permissions.validator';
 

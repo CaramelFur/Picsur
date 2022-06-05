@@ -17,7 +17,7 @@ export class SettingsSidebarComponent implements OnInit {
   constructor(
     @Inject('SettingsRoutes') private settingsRoutes: PRoutes,
     private permissionService: PermissionService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -31,17 +31,17 @@ export class SettingsSidebarComponent implements OnInit {
       .filter((route) =>
         route.data?.permissions !== undefined
           ? route.data?.permissions?.every((permission) =>
-              permissions.includes(permission)
+              permissions.includes(permission),
             )
-          : true
+          : true,
       );
 
     // Split them according to their groups
     this.personalRoutes = this.accessibleRoutes.filter(
-      (route) => route.data?.page?.category === 'personal'
+      (route) => route.data?.page?.category === 'personal',
     );
     this.systemRoutes = this.accessibleRoutes.filter(
-      (route) => route.data?.page?.category === 'system'
+      (route) => route.data?.page?.category === 'system',
     );
 
     // Get out of here if we have no routes
@@ -53,7 +53,7 @@ export class SettingsSidebarComponent implements OnInit {
   @AutoUnsubscribe()
   private subscribePermissions() {
     return this.permissionService.live.subscribe(
-      this.handlePermissions.bind(this)
+      this.handlePermissions.bind(this),
     );
   }
 }

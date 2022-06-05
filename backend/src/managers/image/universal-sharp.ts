@@ -10,11 +10,10 @@ export function UniversalSharp(
 ): Sharp {
   // if (mime.mime === ImageMime.ICO) {
   //   return icoSharp(image, options);
-  // } else 
+  // } else
   if (mime.mime === ImageMime.BMP) {
     return bmpSharp(image, options);
-  } else 
-  if (mime.mime === ImageMime.QOI) {
+  } else if (mime.mime === ImageMime.QOI) {
     return qoiSharp(image, options);
   } else {
     return sharp(image, options);

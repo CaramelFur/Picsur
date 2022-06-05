@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import {
   DecodedPref,
-  PrefValueType
+  PrefValueType,
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { Subject } from 'rxjs';
@@ -20,7 +20,7 @@ export class PrefOptionComponent implements OnInit {
   @Input() @Required pref: DecodedPref;
   @Input('update') @Required updateFunction: (
     key: string,
-    pref: PrefValueType
+    pref: PrefValueType,
   ) => AsyncFailable<any>;
   @Input() @Required translator: {
     [key in string]: string;
@@ -87,14 +87,11 @@ export class PrefOptionComponent implements OnInit {
             ? `Enabled ${this.name}`
             : `Disabled ${this.name}`
           : '';
-      this.utilService.showSnackBar(
-        message,
-        SnackBarType.Success
-      );
+      this.utilService.showSnackBar(message, SnackBarType.Success);
     } else {
       this.utilService.showSnackBar(
         `Failed to update ${this.name}`,
-        SnackBarType.Error
+        SnackBarType.Error,
       );
     }
   }

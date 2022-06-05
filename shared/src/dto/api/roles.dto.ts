@@ -1,7 +1,5 @@
 import { z } from 'zod';
-import {
-  ERoleSchema, SimpleRoleSchema
-} from '../../entities/role.entity';
+import { ERoleSchema, SimpleRoleSchema } from '../../entities/role.entity';
 import { createZodDto } from '../../util/create-zod-dto';
 import { IsPosInt } from '../../validators/positive-int.validator';
 import { IsRoleName } from '../../validators/role.validators';
@@ -30,14 +28,18 @@ export const RoleUpdateRequestSchema = SimpleRoleSchema.partial({
 export class RoleUpdateRequest extends createZodDto(RoleUpdateRequestSchema) {}
 
 export const RoleUpdateResponseSchema = ERoleSchema;
-export class RoleUpdateResponse extends createZodDto(RoleUpdateResponseSchema) {}
+export class RoleUpdateResponse extends createZodDto(
+  RoleUpdateResponseSchema,
+) {}
 
 // RoleCreate
 export const RoleCreateRequestSchema = SimpleRoleSchema;
 export class RoleCreateRequest extends createZodDto(RoleCreateRequestSchema) {}
 
 export const RoleCreateResponseSchema = ERoleSchema;
-export class RoleCreateResponse extends createZodDto(RoleCreateResponseSchema) {}
+export class RoleCreateResponse extends createZodDto(
+  RoleCreateResponseSchema,
+) {}
 
 // RoleDelete
 export const RoleDeleteRequestSchema = z.object({
@@ -46,7 +48,9 @@ export const RoleDeleteRequestSchema = z.object({
 export class RoleDeleteRequest extends createZodDto(RoleDeleteRequestSchema) {}
 
 export const RoleDeleteResponseSchema = ERoleSchema;
-export class RoleDeleteResponse extends createZodDto(RoleDeleteResponseSchema) {}
+export class RoleDeleteResponse extends createZodDto(
+  RoleDeleteResponseSchema,
+) {}
 
 // SpecialRoles
 
@@ -56,4 +60,6 @@ export const SpecialRolesResponseSchema = z.object({
   UndeletableRoles: IsStringList(),
   DefaultRoles: IsStringList(),
 });
-export class SpecialRolesResponse extends createZodDto(SpecialRolesResponseSchema) {}
+export class SpecialRolesResponse extends createZodDto(
+  SpecialRolesResponseSchema,
+) {}

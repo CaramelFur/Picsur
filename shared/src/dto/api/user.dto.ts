@@ -21,10 +21,14 @@ export class UserLoginResponse extends createZodDto(UserLoginResponseSchema) {}
 
 // UserRegister
 export const UserRegisterRequestSchema = UserPassSchema;
-export class UserRegisterRequest extends createZodDto(UserRegisterRequestSchema) {}
+export class UserRegisterRequest extends createZodDto(
+  UserRegisterRequestSchema,
+) {}
 
 export const UserRegisterResponseSchema = EUserSchema;
-export class UserRegisterResponse extends createZodDto(UserRegisterResponseSchema) {}
+export class UserRegisterResponse extends createZodDto(
+  UserRegisterResponseSchema,
+) {}
 
 // UserMe
 export const UserMeResponseSchema = z.object({
@@ -37,4 +41,6 @@ export class UserMeResponse extends createZodDto(UserMeResponseSchema) {}
 export const UserMePermissionsResponseSchema = z.object({
   permissions: IsStringList(),
 });
-export class UserMePermissionsResponse extends createZodDto(UserMePermissionsResponseSchema) {}
+export class UserMePermissionsResponse extends createZodDto(
+  UserMePermissionsResponseSchema,
+) {}

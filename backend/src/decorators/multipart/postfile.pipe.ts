@@ -1,10 +1,10 @@
 import { Multipart } from '@fastify/multipart';
 import {
-    BadRequestException,
-    Injectable,
-    Logger,
-    PipeTransform,
-    Scope
+  BadRequestException,
+  Injectable,
+  Logger,
+  PipeTransform,
+  Scope,
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { MultipartConfigService } from '../../config/early/multipart.config.service';

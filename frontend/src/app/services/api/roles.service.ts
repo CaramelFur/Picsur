@@ -8,7 +8,7 @@ import {
   RoleInfoResponse,
   RoleListResponse,
   RoleUpdateRequest,
-  RoleUpdateResponse
+  RoleUpdateResponse,
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { AsyncFailable, Open } from 'picsur-shared/dist/types';
@@ -34,7 +34,7 @@ export class RolesService {
       '/api/roles/info',
       {
         name,
-      }
+      },
     );
   }
 
@@ -43,7 +43,7 @@ export class RolesService {
       RoleCreateRequest,
       RoleCreateResponse,
       '/api/roles/create',
-      role
+      role,
     );
   }
 
@@ -52,7 +52,7 @@ export class RolesService {
       RoleUpdateRequest,
       RoleUpdateResponse,
       '/api/roles/update',
-      role
+      role,
     );
   }
 
@@ -63,7 +63,7 @@ export class RolesService {
       '/api/roles/delete',
       {
         name,
-      }
+      },
     );
   }
 }

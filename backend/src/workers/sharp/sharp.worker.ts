@@ -7,7 +7,7 @@ import {
   SharpWorkerInitMessage,
   SharpWorkerOperationMessage,
   SharpWorkerRecieveMessage,
-  SharpWorkerSendMessage
+  SharpWorkerSendMessage,
 } from './sharp.message';
 import { UniversalSharpIn, UniversalSharpOut } from './universal-sharp';
 
@@ -25,7 +25,7 @@ export class SharpWorker {
     }
 
     const memoryLimit = parseInt(process.env['MEMORY_LIMIT_MB'] ?? '');
-    
+
     if (isNaN(memoryLimit) || memoryLimit <= 0) {
       return this.purge('MEMORY_LIMIT_MB environment variable is not set');
     }

@@ -7,6 +7,9 @@ export class AuthConfigService {
   constructor(private configService: ConfigService) {}
 
   public getDefaultAdminPassword(): string {
-    return this.configService.get<string>(`${EnvPrefix}ADMIN_PASSWORD`, 'admin');
+    return this.configService.get<string>(
+      `${EnvPrefix}ADMIN_PASSWORD`,
+      'admin',
+    );
   }
 }

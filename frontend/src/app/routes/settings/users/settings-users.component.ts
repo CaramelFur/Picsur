@@ -38,7 +38,7 @@ export class SettingsUsersComponent implements OnInit {
     private userManageService: UserAdminService,
     private staticInfo: StaticInfoService,
     private router: Router,
-    public bootstrapService: BootstrapService
+    public bootstrapService: BootstrapService,
   ) {}
 
   ngOnInit() {
@@ -80,7 +80,7 @@ export class SettingsUsersComponent implements OnInit {
       if (HasFailed(result)) {
         this.utilService.showSnackBar(
           'Failed to delete user',
-          SnackBarType.Error
+          SnackBarType.Error,
         );
       } else {
         this.utilService.showSnackBar('User deleted', SnackBarType.Success);
@@ -89,7 +89,7 @@ export class SettingsUsersComponent implements OnInit {
 
     const success = await this.fetchUsers(
       this.paginator.pageSize,
-      this.paginator.pageIndex
+      this.paginator.pageIndex,
     );
     if (!success) {
       this.paginator.firstPage();
@@ -103,7 +103,7 @@ export class SettingsUsersComponent implements OnInit {
       .subscribe(async (pageEvent: PageEvent) => {
         let success = await this.fetchUsers(
           pageEvent.pageSize,
-          pageEvent.pageIndex
+          pageEvent.pageIndex,
         );
         if (!success) {
           if (pageEvent.previousPageIndex === pageEvent.pageIndex - 1) {
@@ -117,13 +117,13 @@ export class SettingsUsersComponent implements OnInit {
 
   private async fetchUsers(
     pageSize: number,
-    pageIndex: number
+    pageIndex: number,
   ): Promise<boolean> {
     const result = await this.userManageService.getUsers(pageSize, pageIndex);
     if (HasFailed(result)) {
       this.utilService.showSnackBar(
         'Failed to fetch users',
-        SnackBarType.Error
+        SnackBarType.Error,
       );
       return false;
     }

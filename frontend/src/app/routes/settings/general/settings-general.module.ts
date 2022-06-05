@@ -6,10 +6,6 @@ import { SettingsGeneralRoutingModule } from './settings-general.routing.module'
 
 @NgModule({
   declarations: [SettingsGeneralComponent],
-  imports: [
-    CommonModule,
-    SettingsGeneralRoutingModule,
-    PrefOptionModule
-  ],
+  imports: [CommonModule, SettingsGeneralRoutingModule, PrefOptionModule],
 })
 export class SettingsGeneralRouteModule {}

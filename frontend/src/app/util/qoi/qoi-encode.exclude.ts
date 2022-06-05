@@ -19,7 +19,7 @@ export function QOIencodeJS(
     height: number;
     channels: number;
     colorspace: number;
-  }
+  },
 ) {
   const width = description.width;
   const height = description.height;
@@ -53,7 +53,7 @@ export function QOIencodeJS(
     colorData.constructor.name !== 'Uint8ClampedArray'
   ) {
     throw new Error(
-      'QOI.encode: The provided colorData must be instance of Uint8Array or Uint8ClampedArray'
+      'QOI.encode: The provided colorData must be instance of Uint8Array or Uint8ClampedArray',
     );
   }
 
@@ -67,7 +67,7 @@ export function QOIencodeJS(
 
   if (colorspace !== 0 && colorspace !== 1) {
     throw new Error(
-      'QOI.encode: Invalid description.colorspace, must be 0 or 1'
+      'QOI.encode: Invalid description.colorspace, must be 0 or 1',
     );
   }
 

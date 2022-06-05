@@ -12,7 +12,7 @@ export function QOIdecodeJS(
   arrayBuffer: ArrayBuffer,
   byteOffset: number | null,
   byteLength: number | null,
-  outputChannels: number | null
+  outputChannels: number | null,
 ): {
   channels: number;
   data: Uint8Array;
@@ -58,19 +58,19 @@ export function QOIdecodeJS(
 
   if (channels < 3 || channels > 4) {
     throw new Error(
-      'QOI.decode: The number of channels declared in the file is invalid'
+      'QOI.decode: The number of channels declared in the file is invalid',
     );
   }
 
   if (colorspace > 1) {
     throw new Error(
-      'QOI.decode: The colorspace declared in the file is invalid'
+      'QOI.decode: The colorspace declared in the file is invalid',
     );
   }
 
   if (outputChannels < 3 || outputChannels > 4) {
     throw new Error(
-      'QOI.decode: The number of channels for the output is invalid'
+      'QOI.decode: The number of channels for the output is invalid',
     );
   }
 

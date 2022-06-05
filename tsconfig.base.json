@@ -1,5 +1,5 @@
 {
-  "compilerOptions": {  
+  "compilerOptions": {
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
@@ -17,7 +17,7 @@
     "noImplicitThis": true,
     "noImplicitReturns": true,
     "useUnknownInCatchVariables": true,
-    
+
     "skipLibCheck": true,
     "removeComments": true,
     "isolatedModules": true,

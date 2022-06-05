@@ -3,7 +3,7 @@ import {
   query,
   style,
   transition,
-  trigger
+  trigger,
 } from '@angular/animations';
 
 // This shit worked so beautifully on firefox, but then chrome and angular had to come along and fuck it up
@@ -40,7 +40,7 @@ export const RouteTransitionAnimations = trigger('mainAnimation', [
       ],
       {
         optional: true,
-      }
+      },
     ),
 
     query(
@@ -55,7 +55,7 @@ export const RouteTransitionAnimations = trigger('mainAnimation', [
           display: 'none',
         }),
       ],
-      { optional: true }
+      { optional: true },
     ),
 
     query(
@@ -69,7 +69,7 @@ export const RouteTransitionAnimations = trigger('mainAnimation', [
         }),
         animate('.1s', style({ opacity: 1 })),
       ],
-      { optional: true }
+      { optional: true },
     ),
   ]),
 ]);

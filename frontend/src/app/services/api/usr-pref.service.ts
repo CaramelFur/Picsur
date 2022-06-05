@@ -4,12 +4,12 @@ import {
   GetPreferenceResponse,
   MultiplePreferencesResponse,
   UpdatePreferenceRequest,
-  UpdatePreferenceResponse
+  UpdatePreferenceResponse,
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
 import {
   DecodedPref,
-  PrefValueType
+  PrefValueType,
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { AsyncFailable, Fail, HasFailed, Map } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
@@ -41,7 +41,7 @@ export class UsrPrefService {
   constructor(
     private api: ApiService,
     private permissionsService: PermissionService,
-    private utilService: UtilService
+    private utilService: UtilService,
   ) {
     this.subscribePermissions();
   }
@@ -51,7 +51,7 @@ export class UsrPrefService {
     if (HasFailed(result)) {
       this.utilService.showSnackBar(
         "Couldn't load user preferences",
-        SnackBarType.Error
+        SnackBarType.Error,
       );
       this.flush();
     }
@@ -63,7 +63,7 @@ export class UsrPrefService {
 
     const response = await this.api.get(
       MultiplePreferencesResponse,
-      '/api/pref/usr'
+      '/api/pref/usr',
     );
 
     return Map(response, (pref) => {
@@ -73,14 +73,14 @@ export class UsrPrefService {
   }
 
   public async getPreference(
-    key: string
+    key: string,
   ): AsyncFailable<GetPreferenceResponse> {
     if (!this.hasPermission)
       return Fail('You do not have permission to edit user preferences');
 
     const response = await this.api.get(
       GetPreferenceResponse,
-      `/api/pref/usr/${key}`
+      `/api/pref/usr/${key}`,
     );
 
     if (!HasFailed(response)) this.updatePrefArray(response);
@@ -89,7 +89,7 @@ export class UsrPrefService {
 
   public async setPreference(
     key: string,
-    value: PrefValueType
+    value: PrefValueType,
   ): AsyncFailable<UpdatePreferenceResponse> {
     if (!this.hasPermission)
       return Fail('You do not have permission to edit user preferences');
@@ -98,7 +98,7 @@ export class UsrPrefService {
       UpdatePreferenceRequest,
       UpdatePreferenceResponse,
       `/api/pref/usr/${key}`,
-      { value }
+      { value },
     );
 
     if (!HasFailed(response)) this.updatePrefArray(response);

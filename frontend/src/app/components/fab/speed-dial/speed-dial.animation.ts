@@ -4,7 +4,7 @@ import {
   stagger,
   style,
   transition,
-  trigger
+  trigger,
 } from '@angular/animations';
 
 export const SpeedDialAnimation = trigger('speedDialAnimation', [

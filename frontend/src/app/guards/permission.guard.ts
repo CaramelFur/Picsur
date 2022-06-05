@@ -4,7 +4,7 @@ import {
   CanActivate,
   CanActivateChild,
   Router,
-  RouterStateSnapshot
+  RouterStateSnapshot,
 } from '@angular/router';
 import { isPermissionsArray } from 'picsur-shared/dist/validators/permissions.validator';
 import { PRouteData } from '../models/dto/picsur-routes.dto';
@@ -22,7 +22,7 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
   constructor(
     private permissionService: PermissionService,
     private staticInfo: StaticInfoService,
-    private router: Router
+    private router: Router,
   ) {
     this.setupAllPermissions().catch(this.logger.error);
   }
@@ -33,7 +33,7 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
 
   async canActivateChild(
     childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ) {
     return await this.can(childRoute, state);
   }
@@ -52,14 +52,14 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
       !isPermissionsArray(requiredPermissions, this.allPermissionsArray)
     ) {
       this.logger.error(
-        `Permissions array is invalid: "${requiredPermissions}" (available: ${this.allPermissionsArray})`
+        `Permissions array is invalid: "${requiredPermissions}" (available: ${this.allPermissionsArray})`,
       );
       return false;
     }
 
     const ourPermissions = await this.permissionService.getLoadedSnapshot();
     const weHavePermission = requiredPermissions.every((permission) =>
-      ourPermissions.includes(permission)
+      ourPermissions.includes(permission),
     );
 
     if (!weHavePermission)
@@ -78,7 +78,7 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
     }
     if (route.firstChild) {
       permissions = permissions.concat(
-        this.nestedPermissions(route.firstChild)
+        this.nestedPermissions(route.firstChild),
       );
     }
     return permissions;

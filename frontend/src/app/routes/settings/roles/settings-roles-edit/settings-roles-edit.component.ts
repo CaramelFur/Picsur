@@ -39,12 +39,12 @@ export class SettingsRolesEditComponent implements OnInit {
     private router: Router,
     private utilService: UtilService,
     private rolesService: RolesService,
-    private staticInfo: StaticInfoService
+    private staticInfo: StaticInfoService,
   ) {}
 
   ngOnInit() {
     Promise.all([this.initRole(), this.initPermissions()]).catch(
-      this.logger.error
+      this.logger.error,
     );
   }
 
@@ -81,7 +81,7 @@ export class SettingsRolesEditComponent implements OnInit {
       if (HasFailed(resultRole)) {
         this.utilService.showSnackBar(
           'Failed to create role',
-          SnackBarType.Error
+          SnackBarType.Error,
         );
         return;
       }
@@ -92,7 +92,7 @@ export class SettingsRolesEditComponent implements OnInit {
       if (HasFailed(resultRole)) {
         this.utilService.showSnackBar(
           'Failed to update role',
-          SnackBarType.Error
+          SnackBarType.Error,
         );
         return;
       }

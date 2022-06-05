@@ -3,18 +3,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   DecodedUsrPref,
   PrefValueType,
-  PrefValueTypeStrings
+  PrefValueTypeStrings,
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
   UsrPreferenceList,
-  UsrPreferenceValueTypes
+  UsrPreferenceValueTypes,
 } from '../../models/constants/usrpreferences.const';
 import {
   EUsrPreferenceBackend,
-  EUsrPreferenceSchema
+  EUsrPreferenceSchema,
 } from '../../models/entities/usr-preference.entity';
 import { MutexFallBack } from '../../models/util/mutex-fallback';
 import { PreferenceCommonService } from './preference-common.service';

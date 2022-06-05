@@ -11,7 +11,7 @@ export const UsernameValidators = [
 ];
 
 export const CreateUsernameError = (
-  errors: ValidationErrors | null
+  errors: ValidationErrors | null,
 ): string => {
   const error = errorsToError(errors);
   switch (error) {
@@ -34,7 +34,7 @@ export const PasswordValidators = [
 ];
 
 export const CreatePasswordError = (
-  errors: ValidationErrors | null
+  errors: ValidationErrors | null,
 ): string => {
   const error = errorsToError(errors);
   switch (error) {
@@ -50,4 +50,3 @@ export const CreatePasswordError = (
       return 'Invalid password';
   }
 };
-

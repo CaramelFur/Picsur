@@ -6,10 +6,6 @@ import { ProcessingRoutingModule } from './processing.routing.module';
 
 @NgModule({
   declarations: [ProcessingComponent],
-  imports: [
-    CommonModule,
-    ProcessingRoutingModule,
-    MatProgressSpinnerModule,
-  ],
+  imports: [CommonModule, ProcessingRoutingModule, MatProgressSpinnerModule],
 })
 export class ProcessingRouteModule {}

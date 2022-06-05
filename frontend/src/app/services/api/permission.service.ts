@@ -18,7 +18,7 @@ export class PermissionService {
 
   public get live(): Observable<string[]> {
     return this.permissionsSubject.pipe(
-      map((permissions) => permissions ?? this.allPermissions)
+      map((permissions) => permissions ?? this.allPermissions),
     );
   }
 
@@ -31,7 +31,7 @@ export class PermissionService {
     return new Promise((resolve) => {
       const filtered = this.permissionsSubject.pipe(
         filter((permissions) => permissions !== null),
-        take(1)
+        take(1),
       );
       (filtered as Observable<string[]>).subscribe(resolve);
     });
@@ -40,7 +40,7 @@ export class PermissionService {
   constructor(
     private userService: UserService,
     private api: ApiService,
-    private staticInfo: StaticInfoService
+    private staticInfo: StaticInfoService,
   ) {
     this.subscribeUser();
     this.loadAllPermissions().catch(this.logger.error);
@@ -68,7 +68,7 @@ export class PermissionService {
   private async updatePermissions(): AsyncFailable<true> {
     const got = await this.api.get(
       UserMePermissionsResponse,
-      '/api/user/me/permissions'
+      '/api/user/me/permissions',
     );
     if (HasFailed(got)) return got;
 

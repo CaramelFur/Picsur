@@ -2,7 +2,7 @@ import {
   ArgumentMetadata,
   BadRequestException,
   Injectable,
-  PipeTransform
+  PipeTransform,
 } from '@nestjs/common';
 import { Ext2Mime } from 'picsur-shared/dist/dto/mimes.dto';
 import { UUIDRegex } from 'picsur-shared/dist/util/common-regex';

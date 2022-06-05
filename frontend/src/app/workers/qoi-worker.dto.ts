@@ -17,4 +17,7 @@ export interface QOIWorkerOut {
   result: Failable<QOIImage>;
 }
 
-export type QOIJob = (url: string, authorization: string) => AsyncFailable<QOIImage>;
+export type QOIJob = (
+  url: string,
+  authorization: string,
+) => AsyncFailable<QOIImage>;

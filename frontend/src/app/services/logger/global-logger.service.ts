@@ -66,7 +66,7 @@ export class GlobalLogger {
       return;
     }
 
-    const processedArgs = args.map(a => {
+    const processedArgs = args.map((a) => {
       if (typeof a === 'string') {
         return a;
       } else if (a instanceof Error) {
@@ -74,7 +74,7 @@ export class GlobalLogger {
       } else {
         return a.toString();
       }
-    })
+    });
 
     const styles = LoggerStyles[level];
     const message = ['%c' + context.source, styles, ...processedArgs];

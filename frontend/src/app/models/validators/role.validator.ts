@@ -8,7 +8,7 @@ export const RoleNameValidators = [
 ];
 
 export const CreateRoleNameError = (
-  errors: ValidationErrors | null
+  errors: ValidationErrors | null,
 ): string => {
   const error = errorsToError(errors);
   switch (error) {

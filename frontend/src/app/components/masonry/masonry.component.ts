@@ -6,7 +6,7 @@ import {
   Input,
   OnDestroy,
   QueryList,
-  ViewChildren
+  ViewChildren,
 } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { combineLatest, Subscription } from 'rxjs';

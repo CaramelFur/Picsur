@@ -1,5 +1,5 @@
-@use "sass:map";
-@use "@angular/material" as mat;
+@use 'sass:map';
+@use '@angular/material' as mat;
 
 @mixin _theme-property($theme, $property, $hue) {
   $primary: map.get($theme, primary);
@@ -18,7 +18,10 @@
     #{$property}: mat.get-color-from-palette($warn, $hue);
   }
 
-  &.mat-primary, &.mat-accent, &.mat-warn, &.mat-button-disabled {
+  &.mat-primary,
+  &.mat-accent,
+  &.mat-warn,
+  &.mat-button-disabled {
     &.mat-button-disabled {
       $palette: if($property == 'color', $foreground, $background);
       #{$property}: mat.get-color-from-palette($palette, disabled-button);
@@ -32,7 +35,7 @@
   .mat-fab,
   .mat-mini-fab {
     &:hover {
-      @include _theme-property($color-theme, "background-color", "darker");
+      @include _theme-property($color-theme, 'background-color', 'darker');
     }
   }
 }

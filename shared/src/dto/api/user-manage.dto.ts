@@ -1,7 +1,5 @@
 import { z } from 'zod';
-import {
-  EUserSchema, SimpleUserSchema
-} from '../../entities/user.entity';
+import { EUserSchema, SimpleUserSchema } from '../../entities/user.entity';
 import { createZodDto } from '../../util/create-zod-dto';
 import { IsPosInt } from '../../validators/positive-int.validator';
 import { IsStringList } from '../../validators/string-list.validator';
@@ -27,14 +25,18 @@ export const UserCreateRequestSchema = SimpleUserSchema;
 export class UserCreateRequest extends createZodDto(UserCreateRequestSchema) {}
 
 export const UserCreateResponseSchema = EUserSchema;
-export class UserCreateResponse extends createZodDto(UserCreateResponseSchema) {}
+export class UserCreateResponse extends createZodDto(
+  UserCreateResponseSchema,
+) {}
 
 // UserDelete
 export const UserDeleteRequestSchema = EntityIDObjectSchema;
 export class UserDeleteRequest extends createZodDto(UserDeleteRequestSchema) {}
 
 export const UserDeleteResponseSchema = EUserSchema;
-export class UserDeleteResponse extends createZodDto(UserDeleteResponseSchema) {}
+export class UserDeleteResponse extends createZodDto(
+  UserDeleteResponseSchema,
+) {}
 
 // UserInfo
 export const UserInfoRequestSchema = EntityIDObjectSchema;
@@ -50,7 +52,9 @@ export const UserUpdateRequestSchema = EntityIDObjectSchema.merge(
 export class UserUpdateRequest extends createZodDto(UserUpdateRequestSchema) {}
 
 export const UserUpdateResponseSchema = EUserSchema;
-export class UserUpdateResponse extends createZodDto(UserUpdateResponseSchema) {}
+export class UserUpdateResponse extends createZodDto(
+  UserUpdateResponseSchema,
+) {}
 
 // GetSpecialUsers
 export const GetSpecialUsersResponseSchema = z.object({
@@ -58,4 +62,6 @@ export const GetSpecialUsersResponseSchema = z.object({
   ImmutableUsersList: IsStringList(),
   LockedLoginUsersList: IsStringList(),
 });
-export class GetSpecialUsersResponse extends createZodDto(GetSpecialUsersResponseSchema) {}
+export class GetSpecialUsersResponse extends createZodDto(
+  GetSpecialUsersResponseSchema,
+) {}

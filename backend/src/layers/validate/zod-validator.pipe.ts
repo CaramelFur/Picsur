@@ -8,7 +8,7 @@ import {
   BadRequestException,
   Injectable,
   Optional,
-  PipeTransform
+  PipeTransform,
 } from '@nestjs/common';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 

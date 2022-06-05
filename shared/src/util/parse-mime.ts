@@ -1,4 +1,9 @@
-import { FullMime, SupportedAnimMimes, SupportedImageMimes, SupportedMimeCategory } from '../dto/mimes.dto';
+import {
+  FullMime,
+  SupportedAnimMimes,
+  SupportedImageMimes,
+  SupportedMimeCategory,
+} from '../dto/mimes.dto';
 import { Fail, Failable } from '../types';
 
 export function ParseMime(mime: string): Failable<FullMime> {

@@ -5,13 +5,13 @@ import {
   InternalServerErrorException,
   Logger,
   Param,
-  Post
+  Post,
 } from '@nestjs/common';
 import {
   GetPreferenceResponse,
   MultiplePreferencesResponse,
   UpdatePreferenceRequest,
-  UpdatePreferenceResponse
+  UpdatePreferenceResponse,
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsrPreferenceService } from '../../../collections/preference-db/usr-preference-db.service';
@@ -29,7 +29,9 @@ export class UsrPrefController {
 
   @Get()
   @Returns(MultiplePreferencesResponse)
-  async getAllSysPrefs(@ReqUserID() userid: string): Promise<MultiplePreferencesResponse> {
+  async getAllSysPrefs(
+    @ReqUserID() userid: string,
+  ): Promise<MultiplePreferencesResponse> {
     const prefs = await this.prefService.getAllPreferences(userid);
     if (HasFailed(prefs)) {
       this.logger.warn(prefs.getReason());
@@ -46,7 +48,7 @@ export class UsrPrefController {
   @Returns(GetPreferenceResponse)
   async getSysPref(
     @Param('key') key: string,
-    @ReqUserID() userid: string
+    @ReqUserID() userid: string,
   ): Promise<GetPreferenceResponse> {
     const pref = await this.prefService.getPreference(userid, key);
     if (HasFailed(pref)) {

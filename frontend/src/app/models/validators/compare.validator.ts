@@ -2,7 +2,7 @@ import {
   AbstractControl,
   FormControl,
   ValidationErrors,
-  ValidatorFn
+  ValidatorFn,
 } from '@angular/forms';
 
 export function Compare(compareTo: FormControl): ValidatorFn {

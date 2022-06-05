@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   FullMime,
   ImageMime,
-  SupportedMimeCategory
+  SupportedMimeCategory,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
 import { QOIColorSpace, QOIencode } from 'qoi-img';

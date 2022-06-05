@@ -3,7 +3,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { PreferenceModule } from '../../collections/preference-db/preference-db.module';
 import { UsersModule } from '../../collections/user-db/user-db.module';
-import { JwtConfigService, JwtSecretProvider } from '../../config/late/jwt.config.service';
+import {
+  JwtConfigService,
+  JwtSecretProvider,
+} from '../../config/late/jwt.config.service';
 import { LateConfigModule } from '../../config/late/late-config.module';
 import { AuthManagerService } from './auth.service';
 import { GuestStrategy } from './guards/guest.strategy';

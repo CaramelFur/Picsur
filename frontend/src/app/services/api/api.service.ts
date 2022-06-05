@@ -30,12 +30,12 @@ export class ApiService {
 
   constructor(
     private readonly keyService: KeyService,
-    @Inject(WINDOW) readonly windowRef: Window
+    @Inject(WINDOW) readonly windowRef: Window,
   ) {}
 
   public async get<T extends z.AnyZodObject>(
     type: ZodDtoStatic<T>,
-    url: string
+    url: string,
   ): AsyncFailable<z.infer<T>> {
     return this.fetchSafeJson(type, url, { method: 'GET' });
   }
@@ -52,7 +52,7 @@ export class ApiService {
     sendType: ZodDtoStatic<T>,
     receiveType: ZodDtoStatic<W>,
     url: string,
-    data: z.infer<T>
+    data: z.infer<T>,
   ): AsyncFailable<z.infer<W>> {
     const sendSchema = sendType.zodSchema;
 
@@ -71,7 +71,7 @@ export class ApiService {
   public async postForm<T extends z.AnyZodObject>(
     receiveType: ZodDtoStatic<T>,
     url: string,
-    data: MultiPartRequest
+    data: MultiPartRequest,
   ): AsyncFailable<z.infer<T>> {
     return this.fetchSafeJson(receiveType, url, {
       method: 'POST',
@@ -82,7 +82,7 @@ export class ApiService {
   private async fetchSafeJson<T extends z.AnyZodObject>(
     type: ZodDtoStatic<T>,
     url: RequestInfo,
-    options: RequestInit
+    options: RequestInit,
   ): AsyncFailable<z.infer<T>> {
     const resultSchema = ApiResponseSchema(type.zodSchema as z.AnyZodObject);
     type resultType = z.infer<typeof resultSchema>;
@@ -103,7 +103,7 @@ export class ApiService {
 
   private async fetchJsonAs<T>(
     url: RequestInfo,
-    options: RequestInit
+    options: RequestInit,
   ): AsyncFailable<T> {
     const response = await this.fetch(url, options);
     if (HasFailed(response)) {
@@ -119,7 +119,7 @@ export class ApiService {
 
   private async fetchBuffer(
     url: RequestInfo,
-    options: RequestInit
+    options: RequestInit,
   ): AsyncFailable<ApiBuffer> {
     const response = await this.fetch(url, options);
     if (HasFailed(response)) return response;
@@ -156,7 +156,7 @@ export class ApiService {
 
   private async fetchHead(
     url: RequestInfo,
-    options: RequestInit
+    options: RequestInit,
   ): AsyncFailable<Headers> {
     const response = await this.fetch(url, options);
     if (HasFailed(response)) return response;
@@ -168,7 +168,7 @@ export class ApiService {
 
   private async fetch(
     url: RequestInfo,
-    options: RequestInit
+    options: RequestInit,
   ): AsyncFailable<Response> {
     try {
       const key = this.keyService.get();

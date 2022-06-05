@@ -1,6 +1,6 @@
-@use "sass:map";
-@use "@angular/material" as mat;
-@use "./material-theme-custom.scss" as custom-mat;
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use './material-theme-custom.scss' as custom-mat;
 
 @include mat.core();
 
@@ -23,7 +23,7 @@ $mat-primary: (
 $mat-accent: (
   main: #43a047,
   lighter: #c7e3c8,
-  darker: #1B5E20,
+  darker: #1b5e20,
   200: #43a047,
   // For slide toggle,
   contrast:
@@ -183,8 +183,8 @@ $mat-theme-light: (
 
 .material-icons {
   font-size: 24px;
-  font-family: "Material Icons Round", "Material Icons";
+  font-family: 'Material Icons Round', 'Material Icons';
   .mat-badge-content {
-    font-family: "Roboto";
+    font-family: 'Roboto';
   }
 }

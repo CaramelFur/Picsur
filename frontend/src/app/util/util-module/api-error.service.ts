@@ -13,7 +13,7 @@ export class ApiErrorService {
 
   constructor(
     private apiSerivce: ApiService,
-    private utilService: UtilService
+    private utilService: UtilService,
   ) {
     this.subscribeErrors();
   }

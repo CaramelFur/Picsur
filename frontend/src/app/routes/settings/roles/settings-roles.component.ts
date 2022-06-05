@@ -41,7 +41,7 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
     private rolesService: RolesService,
     private staticInfo: StaticInfoService,
     private router: Router,
-    public bootstrapService: BootstrapService
+    public bootstrapService: BootstrapService,
   ) {}
 
   ngOnInit(): void {
@@ -82,7 +82,7 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
       if (HasFailed(result)) {
         this.utilService.showSnackBar(
           'Failed to delete role',
-          SnackBarType.Error
+          SnackBarType.Error,
         );
       } else {
         this.utilService.showSnackBar('Role deleted', SnackBarType.Success);

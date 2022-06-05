@@ -1,4 +1,3 @@
-
 export function isPermissionsArray(
   value: any,
   permissionsList: string[],

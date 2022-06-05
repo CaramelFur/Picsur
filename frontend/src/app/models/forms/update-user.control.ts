@@ -1,10 +1,13 @@
 import { FormControl } from '@angular/forms';
-import { UserCreateRequest, UserUpdateRequest } from 'picsur-shared/dist/dto/api/user-manage.dto';
+import {
+  UserCreateRequest,
+  UserUpdateRequest,
+} from 'picsur-shared/dist/dto/api/user-manage.dto';
 import {
   CreatePasswordError,
   CreateUsernameError,
   PasswordValidators,
-  UsernameValidators
+  UsernameValidators,
 } from '../validators/user.validator';
 
 export class UpdateUserControl {

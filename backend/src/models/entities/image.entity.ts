@@ -12,7 +12,7 @@ export class EImageBackend implements EImage {
   user_id: string;
 
   @Column({
-    nullable: false
+    nullable: false,
   })
   created: Date;
 }

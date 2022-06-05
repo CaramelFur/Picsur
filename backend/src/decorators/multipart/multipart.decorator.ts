@@ -4,5 +4,4 @@ import { PostFilePipe } from './postfile.pipe';
 
 export const PostFile = () => InjectRequest(PostFilePipe);
 
-export const MultiPart = () =>
-  InjectRequest(MultiPartPipe);
+export const MultiPart = () => InjectRequest(MultiPartPipe);

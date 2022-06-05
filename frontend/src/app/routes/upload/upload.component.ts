@@ -18,7 +18,7 @@ export class UploadComponent implements OnInit {
   constructor(
     private utilService: UtilService,
     private permissionService: PermissionService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -37,7 +37,7 @@ export class UploadComponent implements OnInit {
   onSelect(event: NgxDropzoneChangeEvent) {
     if (event.addedFiles.length > 1) {
       this.utilService.showSnackBar(
-        'You uploaded multiple images, only one has been uploaded'
+        'You uploaded multiple images, only one has been uploaded',
       );
     }
 

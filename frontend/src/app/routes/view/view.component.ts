@@ -9,7 +9,7 @@ import {
   Mime2Ext,
   SupportedAnimMimes,
   SupportedImageMimes,
-  SupportedMimeCategory
+  SupportedMimeCategory,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -30,7 +30,7 @@ export class ViewComponent implements OnInit {
     private router: Router,
     private imageService: ImageService,
     private utilService: UtilService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   private id: string;
@@ -68,7 +68,7 @@ export class ViewComponent implements OnInit {
 
     this.previewLink = this.imageService.GetImageURL(
       this.id,
-      metadata.fileMimes.master
+      metadata.fileMimes.master,
     );
 
     this.hasOriginal = metadata.fileMimes.original !== undefined;
@@ -100,7 +100,7 @@ export class ViewComponent implements OnInit {
     } else {
       this.imageLinks = this.imageService.CreateImageLinksFromID(
         this.id,
-        format
+        format,
       );
     }
   }
@@ -119,7 +119,7 @@ export class ViewComponent implements OnInit {
       {
         format: this.currentSelectedFormat,
       },
-      { dismissable: false }
+      { dismissable: false },
     );
   }
 
@@ -144,14 +144,14 @@ export class ViewComponent implements OnInit {
         ...SupportedImageMimes.map((mime) => ({
           value: Mime2Ext(mime)?.toUpperCase() ?? 'Error',
           key: mime,
-        }))
+        })),
       );
     } else if (this.masterMime.type === SupportedMimeCategory.Animation) {
       newOptions.push(
         ...SupportedAnimMimes.map((mime) => ({
           value: Mime2Ext(mime)?.toUpperCase() ?? 'Error',
           key: mime,
-        }))
+        })),
       );
     }
 

@@ -34,13 +34,13 @@ If you like this project, don't forget to give it a star. It tells me that I'm n
 You easily run this service yourself via Docker. Here is an example docker-compose file:
 
 ```yaml
-version: "3"
+version: '3'
 services:
   picsur:
     image: ghcr.io/rubikscraft/picsur:latest
     container_name: picsur
     ports:
-      - "8080:8080"
+      - '8080:8080'
     environment:
       # PICSUR_HOST: '0.0.0.0'
       # PICSUR_PORT: 8080

@@ -1,13 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import {
-  DecodedPref, PrefValueType,
-  PrefValueTypeStrings
+  DecodedPref,
+  PrefValueType,
+  PrefValueTypeStrings,
 } from 'picsur-shared/dist/dto/preferences.dto';
 import {
   AsyncFailable,
   Fail,
   Failable,
-  HasFailed
+  HasFailed,
 } from 'picsur-shared/dist/types';
 
 type Enum = Record<string, string>;

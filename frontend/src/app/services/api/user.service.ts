@@ -5,7 +5,7 @@ import {
   UserLoginResponse,
   UserMeResponse,
   UserRegisterRequest,
-  UserRegisterResponse
+  UserRegisterResponse,
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -69,7 +69,7 @@ export class UserService {
       {
         username,
         password,
-      }
+      },
     );
     if (HasFailed(response)) return response;
 
@@ -85,7 +85,7 @@ export class UserService {
 
   public async register(
     username: string,
-    password: string
+    password: string,
   ): AsyncFailable<EUser> {
     return await this.api.post(
       UserRegisterRequest,
@@ -94,7 +94,7 @@ export class UserService {
       {
         username,
         password,
-      }
+      },
     );
   }
 

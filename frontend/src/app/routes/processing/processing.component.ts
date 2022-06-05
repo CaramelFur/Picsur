@@ -12,7 +12,7 @@ export class ProcessingComponent implements OnInit {
   constructor(
     private router: Router,
     private imageService: ImageService,
-    private utilService: UtilService
+    private utilService: UtilService,
   ) {}
 
   async ngOnInit() {

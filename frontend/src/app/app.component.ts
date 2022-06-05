@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private utilService: UtilService,
-    private bootstrapService: BootstrapService
+    private bootstrapService: BootstrapService,
   ) {}
 
   public getRouteAnimData() {

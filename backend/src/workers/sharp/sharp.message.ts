@@ -21,7 +21,8 @@ export type SupportedSharpWorkerFunctions =
   | 'negate'
   | 'greyscale';
 
-export type SharpWorkerOperation = MapSharpFunctions<SupportedSharpWorkerFunctions>;
+export type SharpWorkerOperation =
+  MapSharpFunctions<SupportedSharpWorkerFunctions>;
 
 export interface SharpWorkerFinishOptions {
   quality?: number;

@@ -1,8 +1,4 @@
-import {
-  Param,
-  PipeTransform,
-  Type
-} from '@nestjs/common';
+import { Param, PipeTransform, Type } from '@nestjs/common';
 import { ImageIdPipe } from './image-id.pipe';
 
 export const ImageIdParam = (

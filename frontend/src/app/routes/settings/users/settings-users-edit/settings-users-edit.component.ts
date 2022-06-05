@@ -48,7 +48,7 @@ export class SettingsUsersEditComponent implements OnInit {
     private userManageService: UserAdminService,
     private utilService: UtilService,
     private rolesService: RolesService,
-    private staticInfo: StaticInfoService
+    private staticInfo: StaticInfoService,
   ) {}
 
   ngOnInit() {
@@ -116,7 +116,7 @@ export class SettingsUsersEditComponent implements OnInit {
       }
 
       permissions.push(
-        ...fullRole.permissions.filter((p) => !permissions.includes(p))
+        ...fullRole.permissions.filter((p) => !permissions.includes(p)),
       );
     }
 
@@ -134,7 +134,7 @@ export class SettingsUsersEditComponent implements OnInit {
       if (HasFailed(resultUser)) {
         this.utilService.showSnackBar(
           'Failed to create user',
-          SnackBarType.Error
+          SnackBarType.Error,
         );
         return;
       }
@@ -148,7 +148,7 @@ export class SettingsUsersEditComponent implements OnInit {
       if (HasFailed(resultUser)) {
         this.utilService.showSnackBar(
           'Failed to update user',
-          SnackBarType.Error
+          SnackBarType.Error,
         );
         return;
       }
@@ -164,7 +164,7 @@ export class SettingsUsersEditComponent implements OnInit {
       return false;
     } else {
       return this.ImmutableUsersList.includes(
-        this.model.getDataCreate().username
+        this.model.getDataCreate().username,
       );
     }
   }

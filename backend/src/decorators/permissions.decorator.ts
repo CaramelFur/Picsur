@@ -2,7 +2,7 @@ import {
   createParamDecorator,
   ExecutionContext,
   SetMetadata,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { CombineFCDecorators } from 'picsur-shared/dist/util/decorator';
 import { LocalAuthGuard } from '../managers/auth/guards/local-auth.guard';

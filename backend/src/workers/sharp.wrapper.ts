@@ -7,7 +7,7 @@ import {
   AsyncFailable,
   Fail,
   Failable,
-  HasFailed
+  HasFailed,
 } from 'picsur-shared/dist/types';
 import { Sharp } from 'sharp';
 import {
@@ -16,7 +16,7 @@ import {
   SharpWorkerRecieveMessage,
   SharpWorkerResultMessage,
   SharpWorkerSendMessage,
-  SupportedSharpWorkerFunctions
+  SupportedSharpWorkerFunctions,
 } from './sharp/sharp.message';
 import { SharpResult } from './sharp/universal-sharp';
 

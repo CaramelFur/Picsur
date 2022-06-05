@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   devdb:
     image: postgres:11-alpine
@@ -7,9 +7,9 @@ services:
       POSTGRES_PASSWORD: picsur
       POSTGRES_USER: picsur
     logging:
-      driver: "none"
+      driver: 'none'
     ports:
-      - "5432:5432"
+      - '5432:5432'
     restart: unless-stopped
     volumes:
       - db-data:/var/lib/postgresql/data

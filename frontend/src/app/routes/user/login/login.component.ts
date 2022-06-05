@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private permissionService: PermissionService,
     private router: Router,
-    private utilService: UtilService
+    private utilService: UtilService,
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
       this.logger.error(user.getReason());
       this.utilService.showSnackBar(
         'Login failed, please try again',
-        SnackBarType.Error
+        SnackBarType.Error,
       );
       return;
     }

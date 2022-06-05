@@ -9,7 +9,7 @@ import { ImageService } from 'src/app/services/api/image.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import {
   BootstrapService,
-  BSScreenSize
+  BSScreenSize,
 } from 'src/app/util/util-module/bootstrap.service';
 import { UtilService } from 'src/app/util/util-module/util.service';
 
@@ -31,7 +31,7 @@ export class ImagesComponent implements OnInit {
     private readonly router: Router,
     private readonly bootstrapService: BootstrapService,
     private readonly utilService: UtilService,
-    private readonly imageService: ImageService
+    private readonly imageService: ImageService,
   ) {}
 
   ngOnInit() {
@@ -101,7 +101,7 @@ export class ImagesComponent implements OnInit {
       if (HasFailed(result)) {
         this.utilService.showSnackBar(
           'Failed to delete image',
-          SnackBarType.Error
+          SnackBarType.Error,
         );
       } else {
         this.utilService.showSnackBar('Image deleted', SnackBarType.Success);
