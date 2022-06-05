@@ -28,24 +28,24 @@ For a more detailed list, you can always visit [the project](https://github.com/
 
 Right now, not every done feature here is available in the current release. But these will all be available with the next one.
 
-[x] Uploading and viewing images
-[x] Anonymous uploads
-[x] User accounts
-[x] User roles and permissions
-[x] Proper CORS restrictions
-[x] Exif stripping
-[x] Ability to keep original
-[x] Support for [QOI format](https://qoiformat.org/)
-[x] Convert images
-[x] Resize images
-[x] Apply filters
-[x] Deletable images
+- [x] Uploading and viewing images
+- [x] Anonymous uploads
+- [x] User accounts
+- [x] User roles and permissions
+- [x] Proper CORS restrictions
+- [x] Exif stripping
+- [x] Ability to keep original
+- [x] Support for [QOI format](https://qoiformat.org/)
+- [x] Convert images
+- [x] Resize images
+- [x] Apply filters
+- [x] Deletable images
 
-[ ] Correct previews on chats
-[ ] Expiring images
-[ ] White mode
-[ ] ShareX endpoint
-[ ] Arm64 image
+- [ ] Correct previews on chats
+- [ ] Expiring images
+- [ ] White mode
+- [ ] ShareX endpoint
+- [ ] Arm64 image
 
 ## Bugs
 
