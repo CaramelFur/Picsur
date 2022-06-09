@@ -15,10 +15,14 @@
     "purge-all": "./support/purge-all.sh"
   },
   "resolutions": {
+    "fastify": "^4.0.0",
     "fastify-static": "npm:@fastify/static",
+    "fastify-formbody": "npm:@fastify/formbody",
     "minimist": "npm:minimist-lite"
   },
   "dependencies": {
+    "fastify": "^4.0.0",
+    "fastify-formbody": "npm:@fastify/formbody",
     "fastify-static": "npm:@fastify/static",
     "minimist": "npm:minimist-lite"
   },

@@ -10,7 +10,7 @@ import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
 import { BootstrapService, BSScreenSize } from './bootstrap.service';
 import {
   ConfirmDialogComponent,
-  ConfirmDialogData
+  ConfirmDialogData,
 } from './confirm-dialog/confirm-dialog.component';
 import { DownloadDialogComponent } from './download-dialog/download-dialog.component';
 
