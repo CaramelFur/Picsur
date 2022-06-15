@@ -5,11 +5,11 @@ import {
   ImageDeleteResponse,
   ImageListRequest,
   ImageListResponse,
-  ImageUploadResponse
+  ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import {
   ImageMetaResponse,
-  ImageRequestParams
+  ImageRequestParams,
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
 import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
