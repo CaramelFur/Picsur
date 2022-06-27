@@ -4,21 +4,21 @@ import {
   Controller,
   InternalServerErrorException,
   Logger,
-  Post,
+  Post
 } from '@nestjs/common';
 import {
   ImageDeleteRequest,
   ImageDeleteResponse,
   ImageListRequest,
   ImageListResponse,
-  ImageUploadResponse,
+  ImageUploadResponse
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
-import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
+import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart/multipart.decorator';
 import {
   HasPermission,
-  RequiredPermissions,
+  RequiredPermissions
 } from '../../decorators/permissions.decorator';
 import { ReqUserID } from '../../decorators/request-user.decorator';
 import { Returns } from '../../decorators/returns.decorator';
@@ -71,12 +71,7 @@ export class ImageManageController {
       throw new InternalServerErrorException('Could not list images');
     }
 
-    return {
-      images: found.results,
-      page: found.page,
-      pages: found.pages,
-      total: found.totalResults,
-    };
+    return found;
   }
 
   @Post('delete')

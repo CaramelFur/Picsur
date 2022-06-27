@@ -1,4 +1,4 @@
-import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
+import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 
 export const UIFriendlyPermissions: {
   [key in Permission]: string;

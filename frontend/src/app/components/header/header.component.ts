@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
+import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';

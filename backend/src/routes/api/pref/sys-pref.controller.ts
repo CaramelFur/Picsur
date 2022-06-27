@@ -5,13 +5,13 @@ import {
   InternalServerErrorException,
   Logger,
   Param,
-  Post,
+  Post
 } from '@nestjs/common';
 import {
   GetPreferenceResponse,
   MultiplePreferencesResponse,
   UpdatePreferenceRequest,
-  UpdatePreferenceResponse,
+  UpdatePreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/preference-db/sys-preference-db.service';
@@ -36,7 +36,7 @@ export class SysPrefController {
     }
 
     return {
-      preferences: prefs,
+      results: prefs,
       total: prefs.length,
     };
   }

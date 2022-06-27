@@ -19,10 +19,10 @@ export const ImageListRequestSchema = z.object({
 export class ImageListRequest extends createZodDto(ImageListRequestSchema) {}
 
 export const ImageListResponseSchema = z.object({
-  images: z.array(EImageSchema),
+  results: z.array(EImageSchema),
+  total: IsPosInt(),
   page: IsPosInt(),
   pages: IsPosInt(),
-  total: IsPosInt(),
 });
 export class ImageListResponse extends createZodDto(ImageListResponseSchema) {}
 

@@ -1,5 +1,6 @@
 type FCDecorator = MethodDecorator & ClassDecorator;
 
+// FC = Function, Class
 export function CombineFCDecorators(...decorators: FCDecorator[]) {
   return (target: any, key: string, descriptor: PropertyDescriptor) => {
     decorators.forEach((decorator) => {
@@ -8,6 +9,7 @@ export function CombineFCDecorators(...decorators: FCDecorator[]) {
   };
 }
 
+// P = Property
 export const CombinePDecorators = (
   ...decorators: PropertyDecorator[]
 ): (() => PropertyDecorator) => {

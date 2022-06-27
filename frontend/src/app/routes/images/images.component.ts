@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { SupportedMime } from 'picsur-shared/dist/dto/mimes.dto';
+import { ImageMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
@@ -9,7 +9,7 @@ import { ImageService } from 'src/app/services/api/image.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import {
   BootstrapService,
-  BSScreenSize,
+  BSScreenSize
 } from 'src/app/util/util-module/bootstrap.service';
 import { UtilService } from 'src/app/util/util-module/util.service';
 
@@ -47,13 +47,13 @@ export class ImagesComponent implements OnInit {
 
     this.subscribeMobile();
 
-    const result = await this.imageService.ListMyImages(24, this.page - 1);
-    if (HasFailed(result)) {
-      return this.logger.error(result.getReason());
+    const list = await this.imageService.ListMyImages(24, this.page - 1);
+    if (HasFailed(list)) {
+      return this.logger.error(list.getReason());
     }
 
-    this.pages = result.pages;
-    this.images = result.images;
+    this.pages = list.pages;
+    this.images = list.results;
   }
 
   @AutoUnsubscribe()
@@ -71,7 +71,7 @@ export class ImagesComponent implements OnInit {
 
   getThumbnailUrl(image: EImage) {
     return (
-      this.imageService.GetImageURL(image.id, SupportedMime.QOI) + '?height=480'
+      this.imageService.GetImageURL(image.id, ImageMime.QOI) + '?height=480'
     );
   }
 

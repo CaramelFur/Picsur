@@ -5,13 +5,13 @@ import {
   InternalServerErrorException,
   Logger,
   Param,
-  Post,
+  Post
 } from '@nestjs/common';
 import {
   GetPreferenceResponse,
   MultiplePreferencesResponse,
   UpdatePreferenceRequest,
-  UpdatePreferenceResponse,
+  UpdatePreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsrPreferenceService } from '../../../collections/preference-db/usr-preference-db.service';
@@ -39,7 +39,7 @@ export class UsrPrefController {
     }
 
     return {
-      preferences: prefs,
+      results: prefs,
       total: prefs.length,
     };
   }

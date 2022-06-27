@@ -71,7 +71,7 @@ export class ImageDBService {
 
       return {
         results: found,
-        totalResults: amount,
+        total: amount,
         page,
         pages: Math.ceil(amount / count),
       };

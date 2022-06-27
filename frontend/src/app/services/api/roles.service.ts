@@ -8,7 +8,7 @@ import {
   RoleInfoResponse,
   RoleListResponse,
   RoleUpdateRequest,
-  RoleUpdateResponse,
+  RoleUpdateResponse
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { AsyncFailable, Open } from 'picsur-shared/dist/types';
@@ -22,9 +22,9 @@ export class RolesService {
   constructor(private api: ApiService) {}
 
   public async getRoles(): AsyncFailable<ERole[]> {
-    const result = await this.api.get(RoleListResponse, '/api/roles/list');
+    const response = await this.api.get(RoleListResponse, '/api/roles/list');
 
-    return Open(result, 'roles');
+    return Open(response, 'results');
   }
 
   public async getRole(name: string): AsyncFailable<ERole> {

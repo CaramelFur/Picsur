@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ImageLinks } from 'picsur-shared/dist/dto/image-links.dto';
+import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import {
   AnimMime,
   FullMime,
@@ -9,7 +9,7 @@ import {
   Mime2Ext,
   SupportedAnimMimes,
   SupportedImageMimes,
-  SupportedMimeCategory,
+  SupportedMimeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -20,7 +20,7 @@ import { ImageService } from 'src/app/services/api/image.service';
 import { UtilService } from 'src/app/util/util-module/util.service';
 import {
   CustomizeDialogComponent,
-  CustomizeDialogData,
+  CustomizeDialogData
 } from './customize-dialog/customize-dialog.component';
 
 @Component({

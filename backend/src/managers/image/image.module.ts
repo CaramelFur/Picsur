@@ -1,6 +1,6 @@
 import { Logger, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import ms from 'ms';
-import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.dto';
+import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { ImageDBModule } from '../../collections/image-db/image-db.module';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';

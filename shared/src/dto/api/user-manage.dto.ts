@@ -13,7 +13,7 @@ export const UserListRequestSchema = z.object({
 export class UserListRequest extends createZodDto(UserListRequestSchema) {}
 
 export const UserListResponseSchema = z.object({
-  users: z.array(EUserSchema),
+  results: z.array(EUserSchema),
   page: IsPosInt(),
   pages: IsPosInt(),
   total: IsPosInt(),

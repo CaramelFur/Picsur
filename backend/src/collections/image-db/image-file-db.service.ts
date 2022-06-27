@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.dto';
+import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.enum';
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
 import { In, LessThan, Repository } from 'typeorm';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';

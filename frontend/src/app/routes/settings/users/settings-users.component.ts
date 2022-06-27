@@ -119,8 +119,8 @@ export class SettingsUsersComponent implements OnInit {
     pageSize: number,
     pageIndex: number,
   ): Promise<boolean> {
-    const result = await this.userManageService.getUsers(pageSize, pageIndex);
-    if (HasFailed(result)) {
+    const response = await this.userManageService.getUsers(pageSize, pageIndex);
+    if (HasFailed(response)) {
       this.utilService.showSnackBar(
         'Failed to fetch users',
         SnackBarType.Error,
@@ -128,9 +128,9 @@ export class SettingsUsersComponent implements OnInit {
       return false;
     }
 
-    if (result.users.length > 0) {
-      this.dataSubject.next(result.users);
-      this.totalUsers = result.total;
+    if (response.results.length > 0) {
+      this.dataSubject.next(response.results);
+      this.totalUsers = response.total;
       return true;
     }
 

@@ -1,6 +1,6 @@
 export interface FindResult<T> {
   results: T[];
-  totalResults: number;
+  total: number;
 
   page: number;
   pages: number;

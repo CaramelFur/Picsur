@@ -1,4 +1,4 @@
-import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.dto';
+import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 
 export const SysPreferenceFriendlyNames: {
   [key in SysPreference]: string;

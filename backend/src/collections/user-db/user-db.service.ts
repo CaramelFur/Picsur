@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.dto';
+import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import {
   AsyncFailable,
   Fail,
   HasFailed,
-  HasSuccess,
+  HasSuccess
 } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
@@ -14,12 +14,12 @@ import { Repository } from 'typeorm';
 import { Permissions } from '../../models/constants/permissions.const';
 import {
   DefaultRolesList,
-  SoulBoundRolesList,
+  SoulBoundRolesList
 } from '../../models/constants/roles.const';
 import {
   ImmutableUsersList,
   LockedLoginUsersList,
-  UndeletableUsersList,
+  UndeletableUsersList
 } from '../../models/constants/special-users.const';
 import { EUserBackend } from '../../models/entities/user.entity';
 import { GetCols } from '../../models/util/collection';
@@ -228,7 +228,7 @@ export class UsersService {
 
       return {
         results: users,
-        totalResults: amount,
+        total: amount,
         page,
         pages: Math.ceil(amount / count),
       };

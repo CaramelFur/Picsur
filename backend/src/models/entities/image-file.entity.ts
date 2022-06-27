@@ -1,4 +1,4 @@
-import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.dto';
+import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.enum';
 import { Column, Entity, Index, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity()

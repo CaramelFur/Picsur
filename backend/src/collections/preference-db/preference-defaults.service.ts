@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrefValueType } from 'picsur-shared/dist/dto/preferences.dto';
-import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.dto';
-import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.dto';
+import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
+import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { EarlyJwtConfigService } from '../../config/early/early-jwt.config.service';
 

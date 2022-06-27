@@ -1,7 +1,7 @@
 // Config
 
-import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
-export { Permission } from 'picsur-shared/dist/dto/permissions.dto';
+import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
+export { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 
 // Derivatives
 

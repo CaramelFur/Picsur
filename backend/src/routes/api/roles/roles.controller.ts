@@ -4,7 +4,7 @@ import {
   Get,
   InternalServerErrorException,
   Logger,
-  Post,
+  Post
 } from '@nestjs/common';
 import {
   RoleCreateRequest,
@@ -16,7 +16,7 @@ import {
   RoleListResponse,
   RoleUpdateRequest,
   RoleUpdateResponse,
-  SpecialRolesResponse,
+  SpecialRolesResponse
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { RolesService } from '../../../collections/role-db/role-db.service';
@@ -28,7 +28,7 @@ import {
   DefaultRolesList,
   ImmutableRolesList,
   SoulBoundRolesList,
-  UndeletableRolesList,
+  UndeletableRolesList
 } from '../../../models/constants/roles.const';
 import { isPermissionsArray } from '../../../models/validators/permissions.validator';
 
@@ -52,7 +52,7 @@ export class RolesController {
     }
 
     return {
-      roles,
+      results: roles,
       total: roles.length,
     };
   }

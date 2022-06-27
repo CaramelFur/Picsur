@@ -1,5 +1,5 @@
 import { PrefValueTypeStrings } from 'picsur-shared/dist/dto/preferences.dto';
-import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.dto';
+import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 
 export type UsrPreferences = UsrPreference[];
 export const UsrPreferenceList: string[] = Object.values(UsrPreference);

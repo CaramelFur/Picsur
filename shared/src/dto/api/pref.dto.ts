@@ -13,7 +13,7 @@ export class GetPreferenceResponse extends createZodDto(
 
 // Get preferences
 export const MultiplePreferencesResponseSchema = z.object({
-  preferences: z.array(DecodedPrefSchema),
+  results: z.array(DecodedPrefSchema),
   total: IsPosInt(),
 });
 export class MultiplePreferencesResponse extends createZodDto(

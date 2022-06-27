@@ -4,12 +4,12 @@ import {
   GetPreferenceResponse,
   MultiplePreferencesResponse,
   UpdatePreferenceRequest,
-  UpdatePreferenceResponse,
+  UpdatePreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
-import { Permission } from 'picsur-shared/dist/dto/permissions.dto';
+import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import {
   DecodedPref,
-  PrefValueType,
+  PrefValueType
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { AsyncFailable, Fail, HasFailed, Map } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
@@ -67,8 +67,8 @@ export class SysPrefService {
     );
 
     return Map(response, (pref) => {
-      this.sysprefObservable.next(pref.preferences);
-      return pref.preferences;
+      this.sysprefObservable.next(pref.results);
+      return pref.results;
     });
   }
 

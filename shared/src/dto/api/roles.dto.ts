@@ -16,7 +16,7 @@ export class RoleInfoResponse extends createZodDto(RoleInfoResponseSchema) {}
 
 // RoleList
 export const RoleListResponseSchema = z.object({
-  roles: z.array(ERoleSchema),
+  results: z.array(ERoleSchema),
   total: IsPosInt(),
 });
 export class RoleListResponse extends createZodDto(RoleListResponseSchema) {}

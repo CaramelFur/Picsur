@@ -6,9 +6,9 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
-import { FullMime, SupportedMime } from 'picsur-shared/dist/dto/mimes.dto';
+import { FullMime, ImageMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { URLRegex } from 'picsur-shared/dist/util/common-regex';
 import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
@@ -72,7 +72,7 @@ export class PicsurImgComponent implements OnChanges {
     const mime = await this.getMime(url);
     if (HasFailed(mime)) return mime;
 
-    if (mime.mime === SupportedMime.QOI) {
+    if (mime.mime === ImageMime.QOI) {
       const result = await this.qoiWorker.decode(url);
       if (HasFailed(result)) return result;
 

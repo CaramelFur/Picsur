@@ -4,7 +4,7 @@ import {
   Get,
   InternalServerErrorException,
   Logger,
-  Post,
+  Post
 } from '@nestjs/common';
 import {
   GetSpecialUsersResponse,
@@ -17,7 +17,7 @@ import {
   UserListRequest,
   UserListResponse,
   UserUpdateRequest,
-  UserUpdateResponse,
+  UserUpdateResponse
 } from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/user-db/user-db.service';
@@ -27,7 +27,7 @@ import { Permission } from '../../../models/constants/permissions.const';
 import {
   ImmutableUsersList,
   LockedLoginUsersList,
-  UndeletableUsersList,
+  UndeletableUsersList
 } from '../../../models/constants/special-users.const';
 import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 
@@ -49,12 +49,8 @@ export class UserAdminController {
       throw new InternalServerErrorException('Could not list users');
     }
 
-    return {
-      users: found.results.map(EUserBackend2EUser),
-      page: found.page,
-      pages: found.pages,
-      total: found.totalResults,
-    };
+    found.results = found.results.map(EUserBackend2EUser);
+    return found;
   }
 
   @Post('create')

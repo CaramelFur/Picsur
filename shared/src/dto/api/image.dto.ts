@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { EImageSchema } from '../../entities/image.entity';
 import { EUserSchema } from '../../entities/user.entity';
 import { createZodDto } from '../../util/create-zod-dto';
-import { ImageFileType } from '../image-file-types.dto';
+import { ImageFileType } from '../image-file-types.enum';
 
 const parseBool = (value: unknown): boolean | null => {
   if (value === true || value === 'true' || value === '1' || value === 'yes')

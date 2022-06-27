@@ -14,13 +14,11 @@ export enum AnimMime {
   GIF = 'image/gif',
 }
 
-export const SupportedMime = { ...ImageMime, ...AnimMime };
-
 // Derivatives
 
 export const SupportedImageMimes: string[] = Object.values(ImageMime);
 export const SupportedAnimMimes: string[] = Object.values(AnimMime);
-export const SupportedMimes: string[] = Object.values(SupportedMime);
+export const SupportedMimes: string[] = Object.values({ ...ImageMime, ...AnimMime });
 
 export enum SupportedMimeCategory {
   Image = 'image',
