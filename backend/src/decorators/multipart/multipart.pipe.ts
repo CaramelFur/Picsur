@@ -6,7 +6,7 @@ import {
   InternalServerErrorException,
   Logger,
   PipeTransform,
-  Scope,
+  Scope
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { HasFailed } from 'picsur-shared/dist/types';
@@ -14,14 +14,16 @@ import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { MultipartConfigService } from '../../config/early/multipart.config.service';
 import {
   CreateMultiPartFieldDto,
-  CreateMultiPartFileDto,
+  CreateMultiPartFileDto
 } from '../../models/dto/multipart.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class MultiPartPipe implements PipeTransform {
   private readonly logger = new Logger('MultiPartPipe');
 
-  constructor(private multipartConfigService: MultipartConfigService) {}
+  constructor(
+    private readonly multipartConfigService: MultipartConfigService,
+  ) {}
 
   async transform<T extends Object>(
     req: FastifyRequest,

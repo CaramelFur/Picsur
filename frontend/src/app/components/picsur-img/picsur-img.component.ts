@@ -41,9 +41,9 @@ export class PicsurImgComponent implements OnChanges {
   public state: PicsurImgState = PicsurImgState.Loading;
 
   constructor(
-    private qoiWorker: QoiWorkerService,
-    private apiService: ApiService,
-    private changeDetector: ChangeDetectorRef,
+    private readonly qoiWorker: QoiWorkerService,
+    private readonly apiService: ApiService,
+    private readonly changeDetector: ChangeDetectorRef,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {

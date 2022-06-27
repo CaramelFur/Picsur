@@ -5,7 +5,7 @@ import {
   UserLoginResponse,
   UserMeResponse,
   UserRegisterRequest,
-  UserRegisterResponse,
+  UserRegisterResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -34,7 +34,10 @@ export class UserService {
     return this.userSubject.getValue() !== null;
   }
 
-  constructor(private api: ApiService, private key: KeyService) {
+  constructor(
+    private readonly api: ApiService,
+    private readonly key: KeyService,
+  ) {
     this.init().catch(this.logger.error);
   }
 

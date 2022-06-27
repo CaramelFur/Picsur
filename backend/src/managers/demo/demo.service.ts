@@ -9,7 +9,7 @@ export class DemoManagerService {
 
   constructor(
     private readonly imagesService: ImageDBService,
-    private rolesService: RolesService,
+    private readonly rolesService: RolesService,
   ) {}
 
   public async setupRoles() {

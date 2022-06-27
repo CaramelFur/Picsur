@@ -7,7 +7,7 @@ import {
   AsyncFailable,
   Fail,
   Failable,
-  HasFailed,
+  HasFailed
 } from 'picsur-shared/dist/types';
 import { Sharp } from 'sharp';
 import {
@@ -16,7 +16,7 @@ import {
   SharpWorkerRecieveMessage,
   SharpWorkerResultMessage,
   SharpWorkerSendMessage,
-  SupportedSharpWorkerFunctions,
+  SupportedSharpWorkerFunctions
 } from './sharp/sharp.message';
 import { SharpResult } from './sharp/universal-sharp';
 
@@ -35,7 +35,10 @@ export class SharpWrapper {
 
   private worker: ChildProcess | null = null;
 
-  constructor(private instance_timeout: number, private memory_limit: number) {}
+  constructor(
+    private readonly instance_timeout: number,
+    private readonly memory_limit: number,
+  ) {}
 
   public async start(image: Buffer, mime: FullMime): AsyncFailable<true> {
     this.worker = fork(SharpWrapper.WORKER_PATH, {

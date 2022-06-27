@@ -23,8 +23,8 @@ export class UsersModule implements OnModuleInit {
   private readonly logger = new Logger('UsersModule');
 
   constructor(
-    private usersService: UsersService,
-    private authConfigService: AuthConfigService,
+    private readonly usersService: UsersService,
+    private readonly authConfigService: AuthConfigService,
   ) {}
 
   async onModuleInit() {

@@ -10,7 +10,7 @@ import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
 import { BootstrapService, BSScreenSize } from './bootstrap.service';
 import {
   ConfirmDialogComponent,
-  ConfirmDialogData,
+  ConfirmDialogData
 } from './confirm-dialog/confirm-dialog.component';
 import { DownloadDialogComponent } from './download-dialog/download-dialog.component';
 
@@ -21,11 +21,11 @@ export class UtilService {
   private readonly logger = new Logger('UtilService');
 
   constructor(
-    private snackBar: MatSnackBar,
-    private dialog: MatDialog,
-    private router: Router,
-    private api: ApiService,
-    private bootstrap: BootstrapService,
+    private readonly snackBar: MatSnackBar,
+    private readonly dialog: MatDialog,
+    private readonly router: Router,
+    private readonly api: ApiService,
+    private readonly bootstrap: BootstrapService,
   ) {}
 
   public quitError(message: string) {

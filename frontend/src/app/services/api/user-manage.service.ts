@@ -9,7 +9,7 @@ import {
   UserListRequest,
   UserListResponse,
   UserUpdateRequest,
-  UserUpdateResponse,
+  UserUpdateResponse
 } from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable } from 'picsur-shared/dist/types';
@@ -19,7 +19,7 @@ import { ApiService } from './api.service';
   providedIn: 'root',
 })
 export class UserAdminService {
-  constructor(private api: ApiService) {}
+  constructor(private readonly api: ApiService) {}
 
   public async getUser(id: string): AsyncFailable<EUser> {
     return await this.api.post(

@@ -24,8 +24,8 @@ export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
   private interval: NodeJS.Timeout;
 
   constructor(
-    private prefManager: SysPreferenceService,
-    private imageFileDB: ImageFileDBService,
+    private readonly prefManager: SysPreferenceService,
+    private readonly imageFileDB: ImageFileDBService,
   ) {}
 
   async onModuleInit() {

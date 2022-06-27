@@ -10,8 +10,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   private readonly logger = new Logger('TypeOrmConfigService');
 
   constructor(
-    private configService: ConfigService,
-    private hostService: HostConfigService,
+    private readonly configService: ConfigService,
+    private readonly hostService: HostConfigService,
   ) {
     const varOptions = this.getTypeOrmServerOptions();
 

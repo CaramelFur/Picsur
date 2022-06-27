@@ -18,15 +18,15 @@ import { LoginControl } from '../../../models/forms/login.control';
 export class LoginComponent implements OnInit {
   private readonly logger = new Logger('LoginComponent');
 
-  showRegister = false;
+  public showRegister = false;
 
-  model = new LoginControl();
+  public readonly model = new LoginControl();
 
   constructor(
-    private userService: UserService,
-    private permissionService: PermissionService,
-    private router: Router,
-    private utilService: UtilService,
+    private readonly userService: UserService,
+    private readonly permissionService: PermissionService,
+    private readonly router: Router,
+    private readonly utilService: UtilService,
   ) {}
 
   ngOnInit(): void {

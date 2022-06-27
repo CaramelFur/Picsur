@@ -25,7 +25,7 @@ import { Permission } from '../../../models/constants/permissions.const';
 export class UsrPrefController {
   private readonly logger = new Logger('UsrPrefController');
 
-  constructor(private prefService: UsrPreferenceService) {}
+  constructor(private readonly prefService: UsrPreferenceService) {}
 
   @Get()
   @Returns(MultiplePreferencesResponse)

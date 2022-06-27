@@ -36,7 +36,7 @@ import { EUserBackend2EUser } from '../../../models/transformers/user.transforme
 export class UserAdminController {
   private readonly logger = new Logger('UserAdminController');
 
-  constructor(private usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Post('list')
   @Returns(UserListResponse)

@@ -4,7 +4,7 @@ import { EnvPrefix } from '../config.static';
 
 @Injectable()
 export class EarlyJwtConfigService {
-  constructor(private configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {}
 
   public getJwtSecret(): string | undefined {
     return this.configService.get<string>(`${EnvPrefix}JWT_SECRET`);

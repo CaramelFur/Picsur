@@ -5,14 +5,14 @@ import {
   AsyncFailable,
   Fail,
   HasFailed,
-  HasSuccess,
+  HasSuccess
 } from 'picsur-shared/dist/types';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { In, Repository } from 'typeorm';
 import { Permissions } from '../../models/constants/permissions.const';
 import {
   ImmutableRolesList,
-  UndeletableRolesList,
+  UndeletableRolesList
 } from '../../models/constants/roles.const';
 import { ERoleBackend } from '../../models/entities/role.entity';
 
@@ -22,7 +22,7 @@ export class RolesService {
 
   constructor(
     @InjectRepository(ERoleBackend)
-    private rolesRepository: Repository<ERoleBackend>,
+    private readonly rolesRepository: Repository<ERoleBackend>,
   ) {}
 
   public async create(

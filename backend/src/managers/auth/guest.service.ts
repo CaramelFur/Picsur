@@ -7,7 +7,7 @@ import { EUserBackend } from '../../models/entities/user.entity';
 export class GuestService {
   private fallBackUser: EUserBackend;
 
-  constructor(private usersService: UsersService) {
+  constructor(private readonly usersService: UsersService) {
     this.fallBackUser = new EUserBackend();
     this.fallBackUser.username = 'guest';
     this.fallBackUser.roles = ['guest'];

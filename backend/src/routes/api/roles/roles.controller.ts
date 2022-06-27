@@ -38,8 +38,8 @@ export class RolesController {
   private readonly logger = new Logger('RolesController');
 
   constructor(
-    private rolesService: RolesService,
-    private usersService: UsersService,
+    private readonly rolesService: RolesService,
+    private readonly usersService: UsersService,
   ) {}
 
   @Get('list')

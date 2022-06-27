@@ -10,9 +10,9 @@ import { UtilService } from 'src/app/util/util-module/util.service';
 })
 export class ProcessingComponent implements OnInit {
   constructor(
-    private router: Router,
-    private imageService: ImageService,
-    private utilService: UtilService,
+    private readonly router: Router,
+    private readonly imageService: ImageService,
+    private readonly utilService: UtilService,
   ) {}
 
   async ngOnInit() {

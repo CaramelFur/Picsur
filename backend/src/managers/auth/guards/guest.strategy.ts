@@ -21,7 +21,7 @@ export class GuestStrategy extends PassportStrategy(
   GuestPassportStrategy,
   'guest',
 ) {
-  constructor(private guestService: GuestService) {
+  constructor(private readonly guestService: GuestService) {
     super();
   }
 

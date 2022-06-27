@@ -8,7 +8,7 @@ import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
 export class AuthManagerService {
   private readonly logger = new Logger('AuthService');
 
-  constructor(private jwtService: JwtService) {}
+  constructor(private readonly jwtService: JwtService) {}
 
   async createToken(user: EUser): AsyncFailable<string> {
     const jwtData = {

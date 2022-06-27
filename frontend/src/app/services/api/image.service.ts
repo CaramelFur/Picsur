@@ -25,10 +25,10 @@ import { UserService } from './user.service';
 })
 export class ImageService {
   constructor(
-    private api: ApiService,
-    @Inject(LOCATION) readonly location: Location,
+    private readonly api: ApiService,
+    @Inject(LOCATION) private readonly location: Location,
 
-    private userService: UserService,
+    private readonly userService: UserService,
   ) {}
 
   public async UploadImage(image: File): AsyncFailable<string> {

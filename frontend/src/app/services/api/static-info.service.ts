@@ -10,7 +10,10 @@ import { ApiService } from './api.service';
   providedIn: 'root',
 })
 export class StaticInfoService {
-  constructor(private api: ApiService, private cache: CacheService) {}
+  constructor(
+    private readonly api: ApiService,
+    private readonly cache: CacheService,
+  ) {}
 
   public async getSpecialRoles(): Promise<SpecialRolesResponse> {
     return this.cache.getFallback(

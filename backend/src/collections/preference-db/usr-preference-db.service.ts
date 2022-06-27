@@ -26,9 +26,9 @@ export class UsrPreferenceService {
 
   constructor(
     @InjectRepository(EUsrPreferenceBackend)
-    private usrPreferenceRepository: Repository<EUsrPreferenceBackend>,
-    private defaultsService: PreferenceDefaultsService,
-    private prefCommon: PreferenceCommonService,
+    private readonly usrPreferenceRepository: Repository<EUsrPreferenceBackend>,
+    private readonly defaultsService: PreferenceDefaultsService,
+    private readonly prefCommon: PreferenceCommonService,
   ) {}
 
   public async setPreference(

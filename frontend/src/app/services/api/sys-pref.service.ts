@@ -39,9 +39,9 @@ export class SysPrefService {
   }
 
   constructor(
-    private api: ApiService,
-    private permissionsService: PermissionService,
-    private utilService: UtilService,
+    private readonly api: ApiService,
+    private readonly permissionsService: PermissionService,
+    private readonly utilService: UtilService,
   ) {
     this.subscribePermissions();
   }

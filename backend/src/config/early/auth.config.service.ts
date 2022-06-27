@@ -4,7 +4,7 @@ import { EnvPrefix } from '../config.static';
 
 @Injectable()
 export class AuthConfigService {
-  constructor(private configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {}
 
   public getDefaultAdminPassword(): string {
     return this.configService.get<string>(

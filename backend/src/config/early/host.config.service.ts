@@ -6,7 +6,7 @@ import { EnvPrefix } from '../config.static';
 export class HostConfigService {
   private readonly logger = new Logger('HostConfigService');
 
-  constructor(private configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     this.logger.log('Host: ' + this.getHost());
     this.logger.log('Port: ' + this.getPort());
     this.logger.log('Demo: ' + this.isDemo());

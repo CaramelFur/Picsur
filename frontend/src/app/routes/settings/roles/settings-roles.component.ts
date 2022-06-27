@@ -37,11 +37,12 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    private utilService: UtilService,
-    private rolesService: RolesService,
-    private staticInfo: StaticInfoService,
-    private router: Router,
-    public bootstrapService: BootstrapService,
+    private readonly utilService: UtilService,
+    private readonly rolesService: RolesService,
+    private readonly staticInfo: StaticInfoService,
+    private readonly router: Router,
+    // Public because used in template
+    public readonly bootstrapService: BootstrapService,
   ) {}
 
   ngOnInit(): void {

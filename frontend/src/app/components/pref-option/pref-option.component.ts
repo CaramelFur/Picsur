@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import {
   DecodedPref,
-  PrefValueType,
+  PrefValueType
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { Subject } from 'rxjs';
@@ -28,7 +28,7 @@ export class PrefOptionComponent implements OnInit {
 
   private updateSubject = new Subject<PrefValueType>();
 
-  constructor(private utilService: UtilService) {}
+  constructor(private readonly utilService: UtilService) {}
 
   ngOnInit(): void {
     this.subscribeUpdate();

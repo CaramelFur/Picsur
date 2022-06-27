@@ -19,8 +19,8 @@ export class LateConfigModule implements OnModuleInit {
   private readonly logger = new Logger('LateConfigModule');
 
   constructor(
-    private envJwtConfigService: EarlyJwtConfigService,
-    private prefService: SysPreferenceService,
+    private readonly envJwtConfigService: EarlyJwtConfigService,
+    private readonly prefService: SysPreferenceService,
   ) {}
 
   async onModuleInit() {

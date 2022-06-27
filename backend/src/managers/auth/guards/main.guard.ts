@@ -3,7 +3,7 @@ import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
-  Logger,
+  Logger
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
@@ -22,8 +22,8 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
   private readonly logger = new Logger('MainAuthGuard');
 
   constructor(
-    private reflector: Reflector,
-    private usersService: UsersService,
+    private readonly reflector: Reflector,
+    private readonly usersService: UsersService,
   ) {
     super();
   }

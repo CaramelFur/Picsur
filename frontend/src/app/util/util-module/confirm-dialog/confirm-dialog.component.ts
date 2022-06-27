@@ -21,8 +21,8 @@ export interface ConfirmDialogData {
 })
 export class ConfirmDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
+    public readonly dialogRef: MatDialogRef<ConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: ConfirmDialogData,
   ) {}
 
   onButton(name: string) {

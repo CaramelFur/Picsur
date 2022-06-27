@@ -5,7 +5,7 @@ import {
   InternalServerErrorException,
   Logger,
   NestInterceptor,
-  Optional,
+  Optional
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ApiAnySuccessResponse } from 'picsur-shared/dist/dto/api/api.dto';
@@ -26,7 +26,7 @@ export class SuccessInterceptor<T> implements NestInterceptor {
   private strict: boolean;
 
   constructor(
-    private reflector: Reflector,
+    private readonly reflector: Reflector,
     @Optional() options?: ZodValidationInterceptorOptions,
   ) {
     this.strict = options?.strict ?? true;

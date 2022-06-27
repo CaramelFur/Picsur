@@ -32,9 +32,9 @@ export class UsersService {
 
   constructor(
     @InjectRepository(EUserBackend)
-    private usersRepository: Repository<EUserBackend>,
-    private rolesService: RolesService,
-    private prefService: SysPreferenceService,
+    private readonly usersRepository: Repository<EUserBackend>,
+    private readonly rolesService: RolesService,
+    private readonly prefService: SysPreferenceService,
   ) {}
 
   // Creation and deletion

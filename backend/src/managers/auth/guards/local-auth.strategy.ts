@@ -8,7 +8,7 @@ import { EUserBackend2EUser } from '../../../models/transformers/user.transforme
 
 @Injectable()
 export class LocalAuthStrategy extends PassportStrategy(Strategy, 'local') {
-  constructor(private usersService: UsersService) {
+  constructor(private readonly usersService: UsersService) {
     super();
   }
 

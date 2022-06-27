@@ -5,13 +5,12 @@ import {
   ActivatedRoute,
   NavigationEnd,
   NavigationError,
-  Router,
+  Router
 } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { RouteTransitionAnimations } from './app.animation';
 import { PRouteData } from './models/dto/picsur-routes.dto';
 import { BootstrapService } from './util/util-module/bootstrap.service';
-import { UtilService } from './util/util-module/util.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +19,7 @@ import { UtilService } from './util/util-module/util.service';
   animations: [RouteTransitionAnimations],
 })
 export class AppComponent implements OnInit {
-  readonly logger = console;
+  private readonly logger = console;
 
   @ViewChild(MatSidenav) sidebar: MatSidenav;
 
@@ -31,10 +30,9 @@ export class AppComponent implements OnInit {
   hasSidebar: boolean = false;
 
   public constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private utilService: UtilService,
-    private bootstrapService: BootstrapService,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly bootstrapService: BootstrapService,
   ) {}
 
   public getRouteAnimData() {

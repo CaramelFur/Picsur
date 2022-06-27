@@ -4,7 +4,7 @@ import {
   CanActivate,
   CanActivateChild,
   Router,
-  RouterStateSnapshot,
+  RouterStateSnapshot
 } from '@angular/router';
 import { isPermissionsArray } from 'picsur-shared/dist/validators/permissions.validator';
 import { PRouteData } from '../models/dto/picsur-routes.dto';
@@ -20,9 +20,9 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
   private allPermissionsArray: string[] | null = null;
 
   constructor(
-    private permissionService: PermissionService,
-    private staticInfo: StaticInfoService,
-    private router: Router,
+    private readonly permissionService: PermissionService,
+    private readonly staticInfo: StaticInfoService,
+    private readonly router: Router,
   ) {
     this.setupAllPermissions().catch(this.logger.error);
   }

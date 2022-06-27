@@ -10,7 +10,7 @@ export class QoiWorkerService {
   private worker: Worker | null = null;
   private job: Promise<QOIJob> | null = null;
 
-  constructor(private keyService: KeyService) {
+  constructor(private readonly keyService: KeyService) {
     if (typeof Worker !== 'undefined') {
       this.worker = new Worker(new URL('./qoi.worker', import.meta.url));
     } else {

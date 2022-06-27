@@ -11,13 +11,13 @@ import { EImageBackend } from '../../models/entities/image.entity';
 export class ImageDBService {
   constructor(
     @InjectRepository(EImageBackend)
-    private imageRepo: Repository<EImageBackend>,
+    private readonly imageRepo: Repository<EImageBackend>,
 
     @InjectRepository(EImageFileBackend)
-    private imageFileRepo: Repository<EImageFileBackend>,
+    private readonly imageFileRepo: Repository<EImageFileBackend>,
 
     @InjectRepository(EImageDerivativeBackend)
-    private imageDerivativeRepo: Repository<EImageDerivativeBackend>,
+    private readonly imageDerivativeRepo: Repository<EImageDerivativeBackend>,
   ) {}
 
   public async create(userid: string): AsyncFailable<EImageBackend> {

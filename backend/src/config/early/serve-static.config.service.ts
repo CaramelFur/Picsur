@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   ServeStaticModuleOptions,
-  ServeStaticModuleOptionsFactory,
+  ServeStaticModuleOptionsFactory
 } from '@nestjs/serve-static';
 import { join } from 'path';
 import { EnvPrefix, PackageRoot } from '../config.static';
@@ -15,7 +15,7 @@ export class ServeStaticConfigService
 
   private defaultLocation = join(PackageRoot, '../frontend/dist');
 
-  constructor(private configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     this.logger.log('Static directory: ' + this.getStaticDirectory());
   }
 

@@ -4,14 +4,14 @@ import {
   Get,
   InternalServerErrorException,
   Logger,
-  Post,
+  Post
 } from '@nestjs/common';
 import {
   UserLoginResponse,
   UserMePermissionsResponse,
   UserMeResponse,
   UserRegisterRequest,
-  UserRegisterResponse,
+  UserRegisterResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
 import type { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
@@ -19,7 +19,7 @@ import { UsersService } from '../../../collections/user-db/user-db.service';
 import {
   NoPermissions,
   RequiredPermissions,
-  UseLocalAuth,
+  UseLocalAuth
 } from '../../../decorators/permissions.decorator';
 import { ReqUser, ReqUserID } from '../../../decorators/request-user.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
@@ -32,8 +32,8 @@ export class UserController {
   private readonly logger = new Logger('UserController');
 
   constructor(
-    private usersService: UsersService,
-    private authService: AuthManagerService,
+    private readonly usersService: UsersService,
+    private readonly authService: AuthManagerService,
   ) {}
 
   @Post('login')

@@ -6,7 +6,7 @@ import { EnvPrefix } from '../config.static';
 export class MultipartConfigService {
   private readonly logger = new Logger('MultipartConfigService');
 
-  constructor(private configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     this.logger.log('Max file size: ' + this.getMaxFileSize());
   }
 

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import {
@@ -29,11 +28,10 @@ import {
 })
 export class ViewComponent implements OnInit {
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private imageService: ImageService,
-    private utilService: UtilService,
-    private dialog: MatDialog,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly imageService: ImageService,
+    private readonly utilService: UtilService,
   ) {}
 
   private id: string;

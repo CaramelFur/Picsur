@@ -12,10 +12,10 @@ const A_DAY_IN_SECONDS = 24 * 60 * 60;
 export class ImageFileDBService {
   constructor(
     @InjectRepository(EImageFileBackend)
-    private imageFileRepo: Repository<EImageFileBackend>,
+    private readonly imageFileRepo: Repository<EImageFileBackend>,
 
     @InjectRepository(EImageDerivativeBackend)
-    private imageDerivativeRepo: Repository<EImageDerivativeBackend>,
+    private readonly imageDerivativeRepo: Repository<EImageDerivativeBackend>,
   ) {}
 
   public async setFile(
@@ -68,7 +68,7 @@ export class ImageFileDBService {
       });
 
       if (!found) return Fail('Image not found');
-      
+
       const result: { [key in ImageFileType]?: string } = {};
       for (const file of found) {
         result[file.type] = file.mime;

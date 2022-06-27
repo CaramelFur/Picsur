@@ -18,15 +18,15 @@ import { RegisterControl } from '../../../models/forms/register.control';
 export class RegisterComponent implements OnInit {
   private readonly logger = new Logger('RegisterComponent');
 
-  showLogin = false;
+  public showLogin = false;
 
-  model = new RegisterControl();
+  public readonly model = new RegisterControl();
 
   constructor(
-    private userService: UserService,
-    private permissionService: PermissionService,
-    private router: Router,
-    private utilService: UtilService,
+    private readonly userService: UserService,
+    private readonly permissionService: PermissionService,
+    private readonly router: Router,
+    private readonly utilService: UtilService,
   ) {}
 
   ngOnInit(): void {

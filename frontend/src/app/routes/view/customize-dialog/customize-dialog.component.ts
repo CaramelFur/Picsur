@@ -38,8 +38,8 @@ export class CustomizeDialogComponent implements OnInit {
   public quality: number;
 
   constructor(
-    public dialogRef: MatDialogRef<CustomizeDialogComponent>,
-    private imageService: ImageService,
+    public readonly dialogRef: MatDialogRef<CustomizeDialogComponent>,
+    private readonly imageService: ImageService,
     @Inject(MAT_DIALOG_DATA) data: CustomizeDialogData,
   ) {
     this.formatOptions = data.formatOptions;

@@ -15,7 +15,7 @@ export class DemoManagerModule implements OnModuleInit, OnModuleDestroy {
 
   constructor(
     private readonly demoManagerService: DemoManagerService,
-    private hostConfigService: HostConfigService,
+    private readonly hostConfigService: HostConfigService,
   ) {}
 
   async onModuleInit() {

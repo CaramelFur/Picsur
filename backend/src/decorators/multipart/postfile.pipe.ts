@@ -4,7 +4,7 @@ import {
   Injectable,
   Logger,
   PipeTransform,
-  Scope,
+  Scope
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { MultipartConfigService } from '../../config/early/multipart.config.service';
@@ -13,7 +13,9 @@ import { MultipartConfigService } from '../../config/early/multipart.config.serv
 export class PostFilePipe implements PipeTransform {
   private readonly logger = new Logger('PostFilePipe');
 
-  constructor(private multipartConfigService: MultipartConfigService) {}
+  constructor(
+    private readonly multipartConfigService: MultipartConfigService,
+  ) {}
 
   async transform({ req }: { req: FastifyRequest }) {
     if (!req.isMultipart()) throw new BadRequestException('Invalid file');

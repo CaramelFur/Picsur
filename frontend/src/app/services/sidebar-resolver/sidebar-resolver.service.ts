@@ -13,7 +13,7 @@ import { PRouteData } from 'src/app/models/dto/picsur-routes.dto';
 export class SidebarResolverService
   implements Resolve<Portal<unknown> | undefined>
 {
-  constructor(private injector: Injector) {}
+  constructor(private readonly injector: Injector) {}
 
   resolve(route: ActivatedRouteSnapshot) {
     const data: PRouteData = route.data;

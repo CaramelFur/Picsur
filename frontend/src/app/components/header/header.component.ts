@@ -34,10 +34,10 @@ export class HeaderComponent implements OnInit {
   }
 
   constructor(
-    private router: Router,
-    private userService: UserService,
-    private permissionService: PermissionService,
-    private utilService: UtilService,
+    private readonly router: Router,
+    private readonly userService: UserService,
+    private readonly permissionService: PermissionService,
+    private readonly utilService: UtilService,
   ) {}
 
   ngOnInit(): void {

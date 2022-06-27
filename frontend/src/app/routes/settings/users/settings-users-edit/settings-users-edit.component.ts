@@ -43,12 +43,12 @@ export class SettingsUsersEditComponent implements OnInit {
   }
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private userManageService: UserAdminService,
-    private utilService: UtilService,
-    private rolesService: RolesService,
-    private staticInfo: StaticInfoService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly userManageService: UserAdminService,
+    private readonly utilService: UtilService,
+    private readonly rolesService: RolesService,
+    private readonly staticInfo: StaticInfoService,
   ) {}
 
   ngOnInit() {

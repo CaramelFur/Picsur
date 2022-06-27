@@ -38,9 +38,9 @@ export class PermissionService {
   }
 
   constructor(
-    private userService: UserService,
-    private api: ApiService,
-    private staticInfo: StaticInfoService,
+    private readonly userService: UserService,
+    private readonly api: ApiService,
+    private readonly staticInfo: StaticInfoService,
   ) {
     this.subscribeUser();
     this.loadAllPermissions().catch(this.logger.error);

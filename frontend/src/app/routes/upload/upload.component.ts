@@ -16,9 +16,9 @@ export class UploadComponent implements OnInit {
   canUpload = true;
 
   constructor(
-    private utilService: UtilService,
-    private permissionService: PermissionService,
-    private router: Router,
+    private readonly utilService: UtilService,
+    private readonly permissionService: PermissionService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {

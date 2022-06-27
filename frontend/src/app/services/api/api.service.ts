@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
+import { WINDOW } from '@ng-web-apis/common';
 import { ApiResponseSchema } from 'picsur-shared/dist/dto/api/api.dto';
 import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
@@ -10,7 +11,6 @@ import { z } from 'zod';
 import { MultiPartRequest } from '../../models/dto/multi-part-request.dto';
 import { Logger } from '../logger/logger.service';
 import { KeyService } from '../storage/key.service';
-import { WINDOW } from '@ng-web-apis/common';
 
 /*
   Proud of this, it works so smoooth
@@ -30,7 +30,7 @@ export class ApiService {
 
   constructor(
     private readonly keyService: KeyService,
-    @Inject(WINDOW) readonly windowRef: Window,
+    @Inject(WINDOW) private readonly windowRef: Window,
   ) {}
 
   public async get<T extends z.AnyZodObject>(

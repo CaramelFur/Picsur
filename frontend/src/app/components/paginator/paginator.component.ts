@@ -30,8 +30,6 @@ export class PaginatorComponent implements OnInit {
   lastPagesRange: [number, number] | null = null;
   pagesRange: [number, number] = [0, 0];
 
-  constructor() {}
-
   ngOnInit(): void {
     this.calculateRanges();
   }

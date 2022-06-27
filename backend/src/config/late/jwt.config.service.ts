@@ -7,7 +7,7 @@ import { SysPreferenceService } from '../../collections/preference-db/sys-prefer
 export class JwtConfigService implements JwtOptionsFactory {
   private readonly logger = new Logger('JwtConfigService');
 
-  constructor(private prefService: SysPreferenceService) {
+  constructor(private readonly prefService: SysPreferenceService) {
     this.printDebug().catch(this.logger.error);
   }
 

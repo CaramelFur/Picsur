@@ -11,7 +11,7 @@ export interface DownloadDialogData {
 })
 export class DownloadDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<DownloadDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DownloadDialogData,
+    public readonly dialogRef: MatDialogRef<DownloadDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: DownloadDialogData,
   ) {}
 }

@@ -8,7 +8,7 @@ import { InfoService } from 'src/app/services/api/info.service';
   styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent implements OnInit {
-  constructor(private infoService: InfoService) {}
+  constructor(private readonly infoService: InfoService) {}
 
   isDemo: boolean = false;
   version: string = 'Unkown Version';

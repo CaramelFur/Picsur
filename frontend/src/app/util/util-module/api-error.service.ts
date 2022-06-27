@@ -12,11 +12,13 @@ export class ApiErrorService {
   private readonly logger = new Logger('ApiErrorService');
 
   constructor(
-    private apiSerivce: ApiService,
-    private utilService: UtilService,
+    private readonly apiSerivce: ApiService,
+    private readonly utilService: UtilService,
   ) {
     this.subscribeErrors();
   }
+
+  nothing(): void {}
 
   @AutoUnsubscribe()
   private subscribeErrors() {

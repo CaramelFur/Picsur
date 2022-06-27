@@ -12,7 +12,7 @@ export class SettingsGeneralComponent {
 
   preferences: Observable<DecodedPref[]>;
 
-  constructor(public usrPrefService: UsrPrefService) {
+  constructor(public readonly usrPrefService: UsrPrefService) {
     this.preferences = usrPrefService.live;
   }
 }

@@ -19,7 +19,7 @@ import { ApiService } from './api.service';
   providedIn: 'root',
 })
 export class RolesService {
-  constructor(private api: ApiService) {}
+  constructor(private readonly api: ApiService) {}
 
   public async getRoles(): AsyncFailable<ERole[]> {
     const response = await this.api.get(RoleListResponse, '/api/roles/list');

@@ -13,7 +13,10 @@ export class CopyFieldComponent {
   @Input() label: string = 'Loading...';
   @Input() value: string = 'Loading...';
 
-  constructor(private utilService: UtilService, private clipboard: Clipboard) {}
+  constructor(
+    private readonly utilService: UtilService,
+    private readonly clipboard: Clipboard,
+  ) {}
 
   public copy() {
     if (this.clipboard.copy(this.value)) {

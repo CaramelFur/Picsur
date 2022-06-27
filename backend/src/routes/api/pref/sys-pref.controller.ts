@@ -24,7 +24,7 @@ import { Permission } from '../../../models/constants/permissions.const';
 export class SysPrefController {
   private readonly logger = new Logger('SysPrefController');
 
-  constructor(private prefService: SysPreferenceService) {}
+  constructor(private readonly prefService: SysPreferenceService) {}
 
   @Get()
   @Returns(MultiplePreferencesResponse)

@@ -15,9 +15,9 @@ export class SettingsSidebarComponent implements OnInit {
   systemRoutes: PRoutes = [];
 
   constructor(
-    @Inject('SettingsRoutes') private settingsRoutes: PRoutes,
-    private permissionService: PermissionService,
-    private router: Router,
+    @Inject('SettingsRoutes') private readonly settingsRoutes: PRoutes,
+    private readonly permissionService: PermissionService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit() {

@@ -26,9 +26,9 @@ export class SysPreferenceService {
 
   constructor(
     @InjectRepository(ESysPreferenceBackend)
-    private sysPreferenceRepository: Repository<ESysPreferenceBackend>,
-    private defaultsService: PreferenceDefaultsService,
-    private prefCommon: PreferenceCommonService,
+    private readonly sysPreferenceRepository: Repository<ESysPreferenceBackend>,
+    private readonly defaultsService: PreferenceDefaultsService,
+    private readonly prefCommon: PreferenceCommonService,
   ) {}
 
   public async setPreference(

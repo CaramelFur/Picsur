@@ -34,11 +34,12 @@ export class SettingsUsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    private utilService: UtilService,
-    private userManageService: UserAdminService,
-    private staticInfo: StaticInfoService,
-    private router: Router,
-    public bootstrapService: BootstrapService,
+    private readonly utilService: UtilService,
+    private readonly userManageService: UserAdminService,
+    private readonly staticInfo: StaticInfoService,
+    private readonly router: Router,
+    // Public because used in template
+    public readonly bootstrapService: BootstrapService,
   ) {}
 
   ngOnInit() {

@@ -1,7 +1,7 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { Observable, map, BehaviorSubject, zip, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { Logger } from 'src/app/services/logger/logger.service';
 
 export enum BSScreenSize {
@@ -28,7 +28,7 @@ export class BootstrapService {
   private screenSizeSubject: BehaviorSubject<BSScreenSize> =
     new BehaviorSubject<BSScreenSize>(BSScreenSize.xs);
 
-  constructor(private breakPointObserver: BreakpointObserver) {
+  constructor(private readonly breakPointObserver: BreakpointObserver) {
     this.smObservable = this.createObserver('(min-width: 576px)');
     this.mdObservable = this.createObserver('(min-width: 768px)');
     this.lgObservable = this.createObserver('(min-width: 992px)');

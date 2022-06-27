@@ -13,7 +13,7 @@ import { EarlyJwtConfigService } from '../../config/early/early-jwt.config.servi
 export class PreferenceDefaultsService {
   private readonly logger = new Logger('PreferenceDefaultsService');
 
-  constructor(private jwtConfigService: EarlyJwtConfigService) {}
+  constructor(private readonly jwtConfigService: EarlyJwtConfigService) {}
 
   public readonly usrDefaults: {
     [key in UsrPreference]: () => PrefValueType;

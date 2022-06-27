@@ -8,11 +8,11 @@ import { SysPrefService } from 'src/app/services/api/sys-pref.service';
   templateUrl: './settings-sys-pref.component.html',
 })
 export class SettingsSysprefComponent {
-  public translator = SysPreferenceFriendlyNames;
+  public readonly translator = SysPreferenceFriendlyNames;
 
   preferences: Observable<DecodedPref[]>;
 
-  constructor(public sysPrefService: SysPrefService) {
+  constructor(public readonly sysPrefService: SysPrefService) {
     this.preferences = sysPrefService.live;
   }
 }
