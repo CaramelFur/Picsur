@@ -168,13 +168,14 @@ export class ImageManagerService {
   }
 
   public async getMasterMime(imageId: string): AsyncFailable<FullMime> {
-    const mime = await this.imageFilesService.getFileMime(
-      imageId,
-      ImageFileType.MASTER,
+    const mime = await this.imageFilesService.getFileMimes(
+      imageId
     );
     if (HasFailed(mime)) return mime;
 
-    return ParseMime(mime);
+    if (mime.master === undefined) return Fail('No master file');
+
+    return ParseMime(mime.master);
   }
 
   public async getOriginal(imageId: string): AsyncFailable<EImageFileBackend> {
@@ -182,23 +183,21 @@ export class ImageManagerService {
   }
 
   public async getOriginalMime(imageId: string): AsyncFailable<FullMime> {
-    const mime = await this.imageFilesService.getFileMime(
-      imageId,
-      ImageFileType.ORIGINAL,
+    const mime = await this.imageFilesService.getFileMimes(
+      imageId
     );
     if (HasFailed(mime)) return mime;
 
-    return ParseMime(mime);
+    if (mime.original === undefined) return Fail('No original file');
+
+    return ParseMime(mime.original);
   }
 
-  public async getAllFileMimes(imageId: string): AsyncFailable<{
+  public async getFileMimes(imageId: string): AsyncFailable<{
     [ImageFileType.MASTER]: string;
     [ImageFileType.ORIGINAL]: string | undefined;
   }> {
-    const result = await this.imageFilesService.getFileMimes(imageId, [
-      ImageFileType.MASTER,
-      ImageFileType.ORIGINAL,
-    ]);
+    const result = await this.imageFilesService.getFileMimes(imageId);
     if (HasFailed(result)) return result;
 
     if (result[ImageFileType.MASTER] === undefined) {

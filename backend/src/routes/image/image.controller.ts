@@ -6,12 +6,12 @@ import {
   Logger,
   NotFoundException,
   Query,
-  Res,
+  Res
 } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
 import {
   ImageMetaResponse,
-  ImageRequestParams,
+  ImageRequestParams
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../collections/user-db/user-db.service';
@@ -97,7 +97,7 @@ export class ImageController {
     }
 
     const [fileMimes, imageUser] = await Promise.all([
-      this.imagesService.getAllFileMimes(id),
+      this.imagesService.getFileMimes(id),
       this.userService.findOne(image.user_id),
     ]);
     if (HasFailed(fileMimes)) {

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.enum';
 import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
-import { In, LessThan, Repository } from 'typeorm';
+import { LessThan, Repository } from 'typeorm';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
 
@@ -57,37 +57,24 @@ export class ImageFileDBService {
     }
   }
 
-  public async getFileMime(
-    imageId: string,
-    type: ImageFileType,
-  ): AsyncFailable<string> {
-    try {
-      const found = await this.imageFileRepo.findOne({
-        where: { image_id: imageId, type },
-        select: ['mime'],
-      });
-
-      if (!found) return Fail('Image not found');
-      return found.mime;
-    } catch (e) {
-      return Fail(e);
-    }
-  }
-
+  // This is useful because you dont have to pull the whole image file
   public async getFileMimes(
     imageId: string,
-    types: ImageFileType[],
-  ): AsyncFailable<{ [key: string]: string | undefined }> {
+  ): AsyncFailable<{ [key in ImageFileType]?: string }> {
     try {
       const found = await this.imageFileRepo.find({
-        where: { image_id: imageId, type: In(types) },
+        where: { image_id: imageId },
         select: ['type', 'mime'],
       });
 
       if (!found) return Fail('Image not found');
-      return Object.fromEntries(
-        types.map((type) => [type, found.find((f) => f.type === type)?.mime]),
-      );
+      
+      const result: { [key in ImageFileType]?: string } = {};
+      for (const file of found) {
+        result[file.type] = file.mime;
+      }
+
+      return result;
     } catch (e) {
       return Fail(e);
     }
@@ -113,6 +100,7 @@ export class ImageFileDBService {
     }
   }
 
+  // Returns null when derivative is not found
   public async getDerivative(
     imageId: string,
     key: string,
@@ -123,6 +111,7 @@ export class ImageFileDBService {
       });
       if (!derivative) return null;
 
+      // Ensure read time updated to within 1 day precision
       const yesterday = new Date(Date.now() - A_DAY_IN_SECONDS * 1000);
       if (derivative.last_read > yesterday) {
         derivative.last_read = new Date();
@@ -130,23 +119,6 @@ export class ImageFileDBService {
       }
 
       return derivative;
-    } catch (e) {
-      return Fail(e);
-    }
-  }
-
-  public async getDerivativeMime(
-    imageId: string,
-    key: string,
-  ): AsyncFailable<string> {
-    try {
-      const found = await this.imageDerivativeRepo.findOne({
-        where: { image_id: imageId, key },
-        select: ['mime'],
-      });
-
-      if (!found) return Fail('Image not found');
-      return found.mime;
     } catch (e) {
       return Fail(e);
     }
