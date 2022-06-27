@@ -15,19 +15,19 @@
     "purge-all": "./support/purge-all.sh"
   },
   "resolutions": {
-    "fastify": "^4.0.3",
+    "fastify": "^4.1.0",
     "fastify-static": "npm:@fastify/static",
     "fastify-formbody": "npm:@fastify/formbody",
     "minimist": "npm:minimist-lite"
   },
   "dependencies": {
-    "fastify": "^4.0.3",
+    "fastify": "^4.1.0",
     "fastify-formbody": "npm:@fastify/formbody",
     "fastify-static": "npm:@fastify/static",
     "minimist": "npm:minimist-lite"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
-    "prettier-plugin-sh": "^0.11.0"
+    "prettier-plugin-sh": "^0.12.3"
   }
 }

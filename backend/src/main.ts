@@ -3,7 +3,7 @@ import * as multipart from '@fastify/multipart';
 import { NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
-  NestFastifyApplication,
+  NestFastifyApplication
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { UsersService } from './collections/user-db/user-db.service';
@@ -20,7 +20,7 @@ async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
   // TODO: generic error messages
   await fastifyAdapter.register(multipart as any);
-  await fastifyAdapter.register(fastifyHelmet, HelmetOptions);
+  await fastifyAdapter.register(fastifyHelmet as any, HelmetOptions);
 
   // Create nest app
   const app = await NestFactory.create<NestFastifyApplication>(

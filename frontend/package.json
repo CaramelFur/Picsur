@@ -14,16 +14,16 @@
     "purge": "rm -rf dist && rm -rf node_modules && rm -rf .angular"
   },
   "dependencies": {
-    "@angular/animations": "^14.0.2",
-    "@angular/cdk": "^14.0.2",
-    "@angular/common": "^14.0.2",
-    "@angular/compiler": "^14.0.2",
-    "@angular/core": "^14.0.2",
-    "@angular/forms": "^14.0.2",
-    "@angular/material": "^14.0.2",
-    "@angular/platform-browser": "^14.0.2",
-    "@angular/platform-browser-dynamic": "^14.0.2",
-    "@angular/router": "^14.0.2",
+    "@angular/animations": "^14.0.3",
+    "@angular/cdk": "^14.0.3",
+    "@angular/common": "^14.0.3",
+    "@angular/compiler": "^14.0.3",
+    "@angular/core": "^14.0.3",
+    "@angular/forms": "^14.0.3",
+    "@angular/material": "^14.0.3",
+    "@angular/platform-browser": "^14.0.3",
+    "@angular/platform-browser-dynamic": "^14.0.3",
+    "@angular/router": "^14.0.3",
     "@ng-web-apis/common": "^2.0.0",
     "@ng-web-apis/resize-observer": "^1.0.3",
     "@ngui/common": "^1.0.0",
@@ -42,15 +42,15 @@
     "zone.js": "~0.11.6"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "14.0.2",
-    "@angular/cli": "^14.0.2",
-    "@angular/compiler-cli": "^14.0.2",
+    "@angular-devkit/build-angular": "14.0.3",
+    "@angular/cli": "^14.0.3",
+    "@angular/compiler-cli": "^14.0.3",
     "@fontsource/material-icons": "^4.5.4",
     "@fontsource/material-icons-outlined": "^4.5.4",
     "@fontsource/roboto": "^4.5.7",
     "@types/node": "^18.0.0",
     "@types/resize-observer-browser": "^0.1.7",
     "@types/validator": "^13.7.3",
-    "typescript": "4.7.3"
+    "typescript": "4.7.4"
   }
 }

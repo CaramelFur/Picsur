@@ -1,13 +1,12 @@
 import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
-// @ts-ignore
-import posix from 'posix';
+import posix from 'posix.js';
 import { Sharp } from 'sharp';
 import {
   SharpWorkerFinishOptions,
   SharpWorkerInitMessage,
   SharpWorkerOperationMessage,
   SharpWorkerRecieveMessage,
-  SharpWorkerSendMessage,
+  SharpWorkerSendMessage
 } from './sharp.message';
 import { UniversalSharpIn, UniversalSharpOut } from './universal-sharp';
 
