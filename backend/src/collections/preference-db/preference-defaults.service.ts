@@ -5,8 +5,9 @@ import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { EarlyJwtConfigService } from '../../config/early/early-jwt.config.service';
 
-// This specific service is used to store default values for system preferences
+// This specific service holds the default values for system and user preferences
 // It needs to be in a service because the values depend on the environment
+// This environment is not loaded outside of services
 
 @Injectable()
 export class PreferenceDefaultsService {

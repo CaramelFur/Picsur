@@ -2,13 +2,13 @@ import { Injectable, Logger } from '@nestjs/common';
 import {
   DecodedPref,
   PrefValueType,
-  PrefValueTypeStrings,
+  PrefValueTypeStrings
 } from 'picsur-shared/dist/dto/preferences.dto';
 import {
   AsyncFailable,
   Fail,
   Failable,
-  HasFailed,
+  HasFailed
 } from 'picsur-shared/dist/types';
 
 type Enum = Record<string, string>;
@@ -16,7 +16,7 @@ type EnumValue<E> = E[keyof E];
 type PrefValueTypeType<E extends Enum> = {
   [key in EnumValue<E>]: PrefValueTypeStrings;
 };
-type KeyValuePref = {
+type EncodedPref = {
   key: string;
   value: string;
 };
@@ -25,8 +25,13 @@ type KeyValuePref = {
 export class PreferenceCommonService {
   private readonly logger = new Logger('PreferenceCommonService');
 
-  public validateAndUnpackPref<E extends Enum>(
-    preference: KeyValuePref,
+  // Preferences values are only validated upon encoding, not decoding
+  // The preference keys are always validated
+
+  // E is either the SysPreference or the UsrPreference enum
+  // the pref value types is the object containing the type of each key in E
+  public DecodePref<E extends Enum>(
+    preference: EncodedPref,
     prefType: E,
     prefValueTypes: PrefValueTypeType<E>,
   ): Failable<DecodedPref> {
@@ -58,17 +63,17 @@ export class PreferenceCommonService {
     return Fail('Invalid preference value');
   }
 
-  public async validatePref<E extends Enum>(
+  public async EncodePref<E extends Enum>(
     key: string,
     value: PrefValueType,
     prefType: E,
     prefValueTypes: PrefValueTypeType<E>,
-  ): AsyncFailable<KeyValuePref> {
+  ): AsyncFailable<EncodedPref> {
     const validatedKey = this.validatePrefKey(key, prefType);
     if (HasFailed(validatedKey)) return validatedKey;
 
     const valueType = prefValueTypes[validatedKey];
-    const validatedValue = this.validateAndPackPrefValue(value, valueType);
+    const validatedValue = this.encodePrefValue(value, valueType);
     if (HasFailed(validatedValue)) return validatedValue;
 
     return {
@@ -89,7 +94,7 @@ export class PreferenceCommonService {
     return key as V;
   }
 
-  public validateAndPackPrefValue(
+  public encodePrefValue(
     value: PrefValueType,
     expectedType: PrefValueTypeStrings,
   ): Failable<string> {

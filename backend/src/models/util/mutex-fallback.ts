@@ -1,11 +1,12 @@
 /*
-This function is necessary to make sure that a default isnt generated multiple times at the same time.
+This function is necessary to make sure that a default isn't generated multiple times at the same time.
 Doing that will cause errors.
 
-An example is the jwt secret value, its value is requested aroun 3 times at the same time while starting.
+An example is the jwt secret value, it's value is requested around 3 times at the same time while starting.
 So when the program was started for the first time, each request returned a different secret.
 
-This function will first try and see if its first function returns a value, if it does, it will return that value.
+This function will try and see if its first function returns a value, if it does, it will return that value.
+(A Failure object will be seen as a value, only null and undefined are counted as non-values)
 If not it will execute a fallback function, which usually is a function that populates a default value.
 After that is done it will retry the first function again.
 */
@@ -20,21 +21,22 @@ export async function MutexFallBack<
   const try_it = await mainFunc();
   if (try_it !== undefined && try_it !== null) return try_it;
 
+  // Check if a fallback is already running, if so wait on that
   if (fallBackMap[key] !== undefined) {
     await fallBackMap[key];
+
+    // When it is done, try again
     return MutexFallBack(key, mainFunc, fallBackFunc);
   }
 
+  // No fallback is running, start one
   const fallBackPromise = fallBackFunc();
 
+  // Save the running fallback, and make sure it is cleared when it is done
   fallBackMap[key] = fallBackPromise;
-  fallBackMap[key]
-    .then(() => {
-      delete fallBackMap[key];
-    })
-    .catch(() => {
-      delete fallBackMap[key];
-    });
+  fallBackMap[key].finally(() => {
+    delete fallBackMap[key];
+  });
 
   return fallBackPromise;
 }

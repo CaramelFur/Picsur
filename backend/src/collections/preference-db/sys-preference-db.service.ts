@@ -36,7 +36,7 @@ export class SysPreferenceService {
     value: PrefValueType,
   ): AsyncFailable<DecodedSysPref> {
     // Validate
-    let sysPreference = await this.validateSysPref(key, value);
+    let sysPreference = await this.encodeSysPref(key, value);
     if (HasFailed(sysPreference)) return sysPreference;
 
     // Set
@@ -49,7 +49,6 @@ export class SysPreferenceService {
       return Fail(e);
     }
 
-    // Return
     return {
       key: sysPreference.key,
       value,
@@ -63,8 +62,9 @@ export class SysPreferenceService {
     let validatedKey = this.prefCommon.validatePrefKey(key, SysPreference);
     if (HasFailed(validatedKey)) return validatedKey;
 
+    // See the comment in 'mutex-fallback.ts' for why we are using a mutex here
     return MutexFallBack(
-      'fetchSysPrefrence',
+      `fetchSysPrefrence-${key}`,
       async () => {
         let existing: ESysPreferenceBackend | null;
         try {
@@ -84,7 +84,7 @@ export class SysPreferenceService {
         }
 
         // Return
-        return this.prefCommon.validateAndUnpackPref(
+        return this.prefCommon.DecodePref(
           result.data,
           SysPreference,
           SysPreferenceValueTypes,
@@ -106,6 +106,7 @@ export class SysPreferenceService {
     return this.getPreferencePinned(key, 'boolean') as AsyncFailable<boolean>;
   }
 
+  // Get a preference that will be pinned to a specified type
   private async getPreferencePinned(
     key: string,
     type: PrefValueTypeStrings,
@@ -137,11 +138,11 @@ export class SysPreferenceService {
     return this.setPreference(key, this.defaultsService.sysDefaults[key]());
   }
 
-  private async validateSysPref(
+  private async encodeSysPref(
     key: string,
     value: PrefValueType,
   ): AsyncFailable<ESysPreferenceBackend> {
-    const validated = await this.prefCommon.validatePref(
+    const validated = await this.prefCommon.EncodePref(
       key,
       value,
       SysPreference,

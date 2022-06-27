@@ -37,7 +37,7 @@ export class UsrPreferenceService {
     value: PrefValueType,
   ): AsyncFailable<DecodedUsrPref> {
     // Validate
-    let usrPreference = await this.validatePref(userid, key, value);
+    let usrPreference = await this.encodeUsrPref(userid, key, value);
     if (HasFailed(usrPreference)) return usrPreference;
 
     // Set
@@ -68,6 +68,7 @@ export class UsrPreferenceService {
     let validatedKey = this.prefCommon.validatePrefKey(key, UsrPreference);
     if (HasFailed(validatedKey)) return validatedKey;
 
+    // See the comment in 'mutex-fallback.ts' for why we are using a mutex here
     return MutexFallBack(
       'fetchUsrPrefrence',
       async () => {
@@ -89,7 +90,7 @@ export class UsrPreferenceService {
         }
 
         // Return
-        const unpacked = this.prefCommon.validateAndUnpackPref(
+        const unpacked = this.prefCommon.DecodePref(
           result.data,
           UsrPreference,
           UsrPreferenceValueTypes,
@@ -137,6 +138,7 @@ export class UsrPreferenceService {
     ) as AsyncFailable<boolean>;
   }
 
+  // Get a preference that will be pinned to a specified type
   private async getPreferencePinned(
     userid: string,
     key: string,
@@ -176,12 +178,12 @@ export class UsrPreferenceService {
     );
   }
 
-  private async validatePref(
+  private async encodeUsrPref(
     userid: string,
     key: string,
     value: PrefValueType,
   ): AsyncFailable<EUsrPreferenceBackend> {
-    const validated = await this.prefCommon.validatePref(
+    const validated = await this.prefCommon.EncodePref(
       key,
       value,
       UsrPreference,
