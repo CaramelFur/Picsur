@@ -80,7 +80,7 @@ export class ImageDBService {
     }
   }
 
-  public async findList(
+  public async delete(
     ids: string[],
     userid: string | undefined,
   ): AsyncFailable<EImageBackend[]> {
@@ -88,43 +88,32 @@ export class ImageDBService {
     if (ids.length > 500) return Fail('Too many results');
 
     try {
-      const found = await this.imageRepo.find({
+      const deletable_images = await this.imageRepo.find({
         where: {
           id: In(ids),
           user_id: userid,
         },
       });
 
-      if (found === undefined) return Fail('Images not found');
-      return found;
+      const available_ids = deletable_images.map((i) => i.id);
+
+      if (available_ids.length === 0) return Fail('Images not found');
+
+      await Promise.all([
+        this.imageDerivativeRepo.delete({
+          image_id: In(available_ids),
+        }),
+        this.imageFileRepo.delete({
+          image_id: In(available_ids),
+        }),
+
+        this.imageRepo.delete({ id: In(available_ids) }),
+      ]);
+
+      return deletable_images;
     } catch (e) {
       return Fail(e);
     }
-  }
-
-  public async delete(ids: string[]): AsyncFailable<true> {
-    if (ids.length === 0) return true;
-    if (ids.length > 500) return Fail('Too many results');
-
-    try {
-      const derivativesResult = await this.imageDerivativeRepo.delete({
-        image_id: In(ids),
-      });
-      const filesResult = await this.imageFileRepo.delete({
-        image_id: In(ids),
-      });
-      const result = await this.imageRepo.delete({ id: In(ids) });
-
-      if (
-        result.affected === 0 &&
-        filesResult.affected === 0 &&
-        derivativesResult.affected === 0
-      )
-        return Fail('Image not found');
-    } catch (e) {
-      return Fail(e);
-    }
-    return true;
   }
 
   public async deleteAll(IAmSure: boolean): AsyncFailable<true> {

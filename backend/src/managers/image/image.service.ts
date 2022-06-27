@@ -50,15 +50,7 @@ export class ImageManagerService {
     ids: string[],
     userid: string | undefined,
   ): AsyncFailable<EImageBackend[]> {
-    const images = await this.imagesService.findList(ids, userid);
-    if (HasFailed(images)) return images;
-
-    const availableIds = images.map((image) => image.id);
-
-    const deleteResult = await this.imagesService.delete(availableIds);
-    if (HasFailed(deleteResult)) return deleteResult;
-
-    return images;
+    return await this.imagesService.delete(ids, userid);
   }
 
   public async upload(
