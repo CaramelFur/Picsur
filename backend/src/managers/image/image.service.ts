@@ -6,7 +6,7 @@ import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.enum';
 import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
-import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
 import { IsQOI } from 'qoi-img';
@@ -168,12 +168,10 @@ export class ImageManagerService {
   }
 
   public async getMasterMime(imageId: string): AsyncFailable<FullMime> {
-    const mime = await this.imageFilesService.getFileMimes(
-      imageId
-    );
+    const mime = await this.imageFilesService.getFileMimes(imageId);
     if (HasFailed(mime)) return mime;
 
-    if (mime.master === undefined) return Fail('No master file');
+    if (mime.master === undefined) return Fail(FT.NotFound, 'No master file');
 
     return ParseMime(mime.master);
   }
@@ -183,12 +181,11 @@ export class ImageManagerService {
   }
 
   public async getOriginalMime(imageId: string): AsyncFailable<FullMime> {
-    const mime = await this.imageFilesService.getFileMimes(
-      imageId
-    );
+    const mime = await this.imageFilesService.getFileMimes(imageId);
     if (HasFailed(mime)) return mime;
 
-    if (mime.original === undefined) return Fail('No original file');
+    if (mime.original === undefined)
+      return Fail(FT.NotFound, 'No original file');
 
     return ParseMime(mime.original);
   }
@@ -201,7 +198,7 @@ export class ImageManagerService {
     if (HasFailed(result)) return result;
 
     if (result[ImageFileType.MASTER] === undefined) {
-      return Fail('No master file found');
+      return Fail(FT.NotFound, 'No master file found');
     }
 
     return {

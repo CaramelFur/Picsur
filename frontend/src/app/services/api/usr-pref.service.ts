@@ -11,7 +11,13 @@ import {
   DecodedPref,
   PrefValueType
 } from 'picsur-shared/dist/dto/preferences.dto';
-import { AsyncFailable, Fail, HasFailed, Map } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
+  Map
+} from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { Throttle } from 'src/app/util/throttle';
@@ -59,7 +65,10 @@ export class UsrPrefService {
 
   public async getPreferences(): AsyncFailable<DecodedPref[]> {
     if (!this.hasPermission)
-      return Fail('You do not have permission to edit user preferences');
+      return Fail(
+        FT.Permission,
+        'You do not have permission to edit user preferences',
+      );
 
     const response = await this.api.get(
       MultiplePreferencesResponse,
@@ -76,7 +85,10 @@ export class UsrPrefService {
     key: string,
   ): AsyncFailable<GetPreferenceResponse> {
     if (!this.hasPermission)
-      return Fail('You do not have permission to edit user preferences');
+      return Fail(
+        FT.Permission,
+        'You do not have permission to edit user preferences',
+      );
 
     const response = await this.api.get(
       GetPreferenceResponse,
@@ -92,7 +104,10 @@ export class UsrPrefService {
     value: PrefValueType,
   ): AsyncFailable<UpdatePreferenceResponse> {
     if (!this.hasPermission)
-      return Fail('You do not have permission to edit user preferences');
+      return Fail(
+        FT.Permission,
+        'You do not have permission to edit user preferences',
+      );
 
     const response = await this.api.post(
       UpdatePreferenceRequest,

@@ -7,6 +7,7 @@ import {
   AsyncFailable,
   Fail,
   Failable,
+  FT,
   HasFailed
 } from 'picsur-shared/dist/types';
 import { Sharp } from 'sharp';
@@ -97,7 +98,7 @@ export class SharpWrapper {
     ...parameters: Parameters<Sharp[Operation]>
   ): Failable<true> {
     if (!this.worker) {
-      return Fail('Worker is not initialized');
+      return Fail(FT.Internal, 'Worker is not initialized');
     }
 
     const hasSent = this.sendToWorker({
@@ -120,7 +121,7 @@ export class SharpWrapper {
     options?: SharpWorkerFinishOptions,
   ): AsyncFailable<SharpResult> {
     if (!this.worker) {
-      return Fail('Worker is not initialized');
+      return Fail(FT.Internal, 'Worker is not initialized');
     }
 
     const hasSent = this.sendToWorker({
@@ -158,7 +159,7 @@ export class SharpWrapper {
       return result.result;
     } catch (error) {
       this.purge();
-      return Fail(error);
+      return Fail(FT.Internal, error);
     }
   }
 
@@ -176,13 +177,13 @@ export class SharpWrapper {
       await pTimeout(waitReadyPromise, this.instance_timeout);
       return true;
     } catch (error) {
-      return Fail(error);
+      return Fail(FT.Internal, error);
     }
   }
 
   private sendToWorker(message: SharpWorkerSendMessage): Failable<true> {
     if (!this.worker) {
-      return Fail('Worker is not initialized');
+      return Fail(FT.Internal, 'Worker is not initialized');
     }
 
     this.worker.send(message);

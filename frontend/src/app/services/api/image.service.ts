@@ -15,7 +15,7 @@ import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { AsyncFailable } from 'picsur-shared/dist/types';
-import { Fail, HasFailed, Open } from 'picsur-shared/dist/types/failable';
+import { Fail, FT, HasFailed, Open } from 'picsur-shared/dist/types/failable';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
 import { UserService } from './user.service';
@@ -68,7 +68,7 @@ export class ImageService {
   ): AsyncFailable<ImageListResponse> {
     const userID = await this.userService.snapshot?.id;
     if (userID === undefined) {
-      return Fail('User not logged in');
+      return Fail(FT.Authentication, 'User not logged in');
     }
 
     return await this.ListAllImages(count, page, userID);
@@ -93,6 +93,7 @@ export class ImageService {
 
     if (result.images.length !== 1) {
       return Fail(
+        FT.Unknown,
         `Image ${image} was not deleted, probably lacking permissions`,
       );
     }

@@ -1,11 +1,11 @@
 import { FormControl } from '@angular/forms';
-import { Fail, Failable } from 'picsur-shared/dist/types';
+import { Fail, Failable, FT } from 'picsur-shared/dist/types';
 import { UserPassModel } from '../forms-dto/userpass.dto';
 import {
   CreatePasswordError,
   CreateUsernameError,
   PasswordValidators,
-  UsernameValidators,
+  UsernameValidators
 } from '../validators/user.validator';
 
 export class LoginControl {
@@ -23,7 +23,7 @@ export class LoginControl {
   // This getter firstly verifies the form, RawData does not
   public getData(): Failable<UserPassModel> {
     if (this.username.errors || this.password.errors)
-      return Fail('Invalid username or password');
+      return Fail(FT.Authentication, 'Invalid username or password');
     else return this.getRawData();
   }
 

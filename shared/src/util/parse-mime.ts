@@ -4,7 +4,7 @@ import {
   SupportedImageMimes,
   SupportedMimeCategory
 } from '../dto/mimes.dto';
-import { Fail, Failable } from '../types';
+import { Fail, Failable, FT } from '../types';
 
 export function ParseMime(mime: string): Failable<FullMime> {
   if (SupportedImageMimes.includes(mime))
@@ -13,5 +13,5 @@ export function ParseMime(mime: string): Failable<FullMime> {
   if (SupportedAnimMimes.includes(mime))
     return { mime, type: SupportedMimeCategory.Animation };
 
-  return Fail('Unsupported mime type');
+  return Fail(FT.Validation, 'Unsupported mime type');
 }

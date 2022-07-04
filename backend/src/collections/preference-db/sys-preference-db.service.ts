@@ -6,7 +6,7 @@ import {
   PrefValueTypeStrings
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
-import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
   SysPreferenceList,
@@ -46,7 +46,7 @@ export class SysPreferenceService {
         conflictPaths: ['key'],
       });
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
 
     return {
@@ -74,13 +74,13 @@ export class SysPreferenceService {
           });
           if (!existing) return null;
         } catch (e) {
-          return Fail(e);
+          return Fail(FT.Database, e);
         }
 
         // Validate
         const result = ESysPreferenceSchema.safeParse(existing);
         if (!result.success) {
-          return Fail(result.error);
+          return Fail(FT.SysValidation, result.error);
         }
 
         // Return
@@ -113,7 +113,7 @@ export class SysPreferenceService {
   ): AsyncFailable<PrefValueType> {
     let pref = await this.getPreference(key);
     if (HasFailed(pref)) return pref;
-    if (pref.type !== type) return Fail('Invalid preference type');
+    if (pref.type !== type) return Fail(FT.UsrValidation, 'Invalid preference type');
 
     return pref.value;
   }
@@ -124,7 +124,7 @@ export class SysPreferenceService {
       SysPreferenceList.map((key) => this.getPreference(key)),
     );
     if (internalSysPrefs.some((pref) => HasFailed(pref))) {
-      return Fail('Could not get all preferences');
+      return Fail(FT.Internal, 'Could not get all preferences');
     }
 
     return internalSysPrefs as DecodedSysPref[];
@@ -157,7 +157,7 @@ export class SysPreferenceService {
     // It should already be valid, but these two validators might go out of sync
     const result = ESysPreferenceSchema.safeParse(verifySysPreference);
     if (!result.success) {
-      return Fail(result.error);
+      return Fail(FT.UsrValidation, result.error);
     }
 
     return result.data;

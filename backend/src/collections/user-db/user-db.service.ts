@@ -5,6 +5,7 @@ import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import {
   AsyncFailable,
   Fail,
+  FT,
   HasFailed,
   HasSuccess
 } from 'picsur-shared/dist/types';
@@ -46,7 +47,8 @@ export class UsersService {
     // Add option to create "invalid" users, should only be used by system
     byPassRoleCheck?: boolean,
   ): AsyncFailable<EUserBackend> {
-    if (await this.exists(username)) return Fail('User already exists');
+    if (await this.exists(username))
+      return Fail(FT.Conflict, 'User already exists');
 
     const strength = await this.getBCryptStrength();
     const hashedPassword = await bcrypt.hash(password, strength);
@@ -66,7 +68,7 @@ export class UsersService {
     try {
       return await this.usersRepository.save(user);
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -75,13 +77,13 @@ export class UsersService {
     if (HasFailed(userToModify)) return userToModify;
 
     if (UndeletableUsersList.includes(userToModify.username)) {
-      return Fail('Cannot delete system user');
+      return Fail(FT.Permission, 'Cannot delete system user');
     }
 
     try {
       return await this.usersRepository.remove(userToModify);
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -110,7 +112,7 @@ export class UsersService {
     try {
       return await this.usersRepository.save(userToModify);
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -125,7 +127,7 @@ export class UsersService {
         .where('roles @> ARRAY[:role]', { role })
         .execute();
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
 
     return true;
@@ -151,7 +153,7 @@ export class UsersService {
     try {
       userToModify = await this.usersRepository.save(userToModify);
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
 
     return userToModify;
@@ -168,11 +170,11 @@ export class UsersService {
 
     if (LockedLoginUsersList.includes(user.username)) {
       // Error should be kept in backend
-      return Fail('Wrong username');
+      return Fail(FT.Authentication, 'Wrong username');
     }
 
     if (!(await bcrypt.compare(password, user.hashed_password ?? '')))
-      return Fail('Wrong password');
+      return Fail(FT.Authentication, 'Wrong password');
 
     return await this.findOne(user.id ?? '');
   }
@@ -191,10 +193,10 @@ export class UsersService {
         select: getPrivate ? GetCols(this.usersRepository) : undefined,
       });
 
-      if (!found) return Fail('User not found');
+      if (!found) return Fail(FT.NotFound, 'User not found');
       return found;
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -204,10 +206,10 @@ export class UsersService {
         where: { id: uuid },
       });
 
-      if (!found) return Fail('User not found');
+      if (!found) return Fail(FT.NotFound, 'User not found');
       return found as EUserBackend;
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -215,8 +217,8 @@ export class UsersService {
     count: number,
     page: number,
   ): AsyncFailable<FindResult<EUserBackend>> {
-    if (count < 1 || page < 0) return Fail('Invalid page');
-    if (count > 100) return Fail('Too many results');
+    if (count < 1 || page < 0) return Fail(FT.UsrValidation, 'Invalid page');
+    if (count > 100) return Fail(FT.UsrValidation, 'Too many results');
 
     try {
       const [users, amount] = await this.usersRepository.findAndCount({
@@ -224,7 +226,7 @@ export class UsersService {
         skip: count * page,
       });
 
-      if (users === undefined) return Fail('Users not found');
+      if (users === undefined) return Fail(FT.NotFound, 'Users not found');
 
       return {
         results: users,
@@ -233,7 +235,7 @@ export class UsersService {
         pages: Math.ceil(amount / count),
       };
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 

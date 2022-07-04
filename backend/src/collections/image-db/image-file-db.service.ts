@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.enum';
-import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { LessThan, Repository } from 'typeorm';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../models/entities/image-file.entity';
@@ -35,7 +35,7 @@ export class ImageFileDBService {
         conflictPaths: ['image_id', 'type'],
       });
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
 
     return true;
@@ -50,10 +50,10 @@ export class ImageFileDBService {
         where: { image_id: imageId ?? '', type: type ?? '' },
       });
 
-      if (!found) return Fail('Image not found');
+      if (!found) return Fail(FT.NotFound, 'Image not found');
       return found;
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -67,7 +67,7 @@ export class ImageFileDBService {
         select: ['type', 'mime'],
       });
 
-      if (!found) return Fail('Image not found');
+      if (!found) return Fail(FT.NotFound, 'Image not found');
 
       const result: { [key in ImageFileType]?: string } = {};
       for (const file of found) {
@@ -76,7 +76,7 @@ export class ImageFileDBService {
 
       return result;
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -96,7 +96,7 @@ export class ImageFileDBService {
     try {
       return await this.imageDerivativeRepo.save(imageDerivative);
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -120,7 +120,7 @@ export class ImageFileDBService {
 
       return derivative;
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -134,7 +134,7 @@ export class ImageFileDBService {
 
       return result.affected ?? 0;
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 }

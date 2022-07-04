@@ -7,6 +7,7 @@ import { Returns } from '../../../decorators/returns.decorator';
 import type AuthFasityRequest from '../../../models/interfaces/authrequest.dto';
 
 @Controller('api/experiment')
+//@NoPermissions()
 @RequiredPermissions(Permission.Settings)
 export class ExperimentController {
   @Get()

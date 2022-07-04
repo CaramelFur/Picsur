@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { WINDOW } from '@ng-web-apis/common';
 import { ApiResponseSchema } from 'picsur-shared/dist/dto/api/api.dto';
 import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
-import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { Subject } from 'rxjs';
 import { ApiBuffer } from 'src/app/models/dto/api-buffer.dto';
@@ -59,7 +59,7 @@ export class ApiService {
     const validateResult = sendSchema.safeParse(data);
     if (!validateResult.success) {
       this.logger.error(validateResult.error);
-      return Fail('Something went wrong');
+      return Fail(FT.SysValidation, 'Something went wrong');
     }
 
     return this.fetchSafeJson(receiveType, url, {
@@ -93,10 +93,11 @@ export class ApiService {
     const validateResult = resultSchema.safeParse(result);
     if (!validateResult.success) {
       this.logger.error(validateResult.error);
-      return Fail('Something went wrong');
+      return Fail(FT.SysValidation, 'Something went wrong');
     }
 
-    if (validateResult.data.success === false) return Fail(result.data.message);
+    if (validateResult.data.success === false)
+      return Fail(FT.Unknown, result.data.message);
 
     return validateResult.data.data;
   }
@@ -113,7 +114,7 @@ export class ApiService {
       return await response.json();
     } catch (e) {
       this.logger.error(e);
-      return Fail('Something went wrong');
+      return Fail(FT.Internal, 'Something went wrong');
     }
   }
 
@@ -124,7 +125,7 @@ export class ApiService {
     const response = await this.fetch(url, options);
     if (HasFailed(response)) return response;
 
-    if (!response.ok) return Fail('Recieved a non-ok response');
+    if (!response.ok) return Fail(FT.Network, 'Recieved a non-ok response');
 
     const mimeType = response.headers.get('Content-Type') ?? 'other/unknown';
     let name = response.headers.get('Content-Disposition');
@@ -150,7 +151,7 @@ export class ApiService {
       };
     } catch (e) {
       this.logger.error(e);
-      return Fail('Something went wrong');
+      return Fail(FT.Internal, 'Something went wrong');
     }
   }
 
@@ -161,7 +162,7 @@ export class ApiService {
     const response = await this.fetch(url, options);
     if (HasFailed(response)) return response;
 
-    if (!response.ok) return Fail('Recieved a non-ok response');
+    if (!response.ok) return Fail(FT.Network, 'Recieved a non-ok response');
 
     return response.headers;
   }
@@ -186,7 +187,7 @@ export class ApiService {
         error: e,
         url,
       });
-      return Fail('Network Error');
+      return Fail(FT.Network, 'Network Error');
     }
   }
 }

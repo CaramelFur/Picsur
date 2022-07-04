@@ -1,12 +1,7 @@
-import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  HttpException,
-  Logger,
-} from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, Logger } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ApiErrorResponse } from 'picsur-shared/dist/dto/api/api.dto';
+import { IsFailure } from 'picsur-shared/dist/types/failable';
 
 // This will catch any exception that is made in any request
 // (As long as its within nest, the earlier fastify stages are not handled here)
@@ -17,22 +12,35 @@ export class MainExceptionFilter implements ExceptionFilter {
   private static readonly logger = new Logger('MainExceptionFilter');
 
   catch(exception: unknown, host: ArgumentsHost) {
-    if (exception instanceof Error) {
-      MainExceptionFilter.logger.warn(exception.message);
-      MainExceptionFilter.logger.debug(exception.stack);
-    } else {
-      MainExceptionFilter.logger.warn(exception);
-    }
-
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
     const request = ctx.getRequest<FastifyRequest>();
-    const status =
-      exception instanceof HttpException ? exception.getStatus() : 500;
-    const message =
-      exception instanceof HttpException
-        ? exception.message
-        : 'Internal server error';
+
+    const traceString = `(${request.ip} -> ${request.method} ${request.url})`;
+
+    if (!IsFailure(exception)) {
+      MainExceptionFilter.logger.error(
+        traceString + ' Unkown exception: ' + exception,
+      );
+      return;
+    }
+
+    if (exception.isImportant()) {
+      MainExceptionFilter.logger.error(
+        `${traceString} ${exception.getName()}: ${exception.getReason()}`,
+      );
+      if (exception.getStack()) {
+        MainExceptionFilter.logger.debug(exception.getStack());
+      }
+    } else {
+      MainExceptionFilter.logger.warn(
+        `${traceString} ${exception.getName()}: ${exception.getReason()}`,
+      );
+    }
+
+    const status = exception.getCode();
+    const type = exception.getType();
+    const message = exception.getReason();
 
     const toSend: ApiErrorResponse = {
       success: false,
@@ -40,6 +48,7 @@ export class MainExceptionFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
 
       data: {
+        type,
         message,
       },
     };

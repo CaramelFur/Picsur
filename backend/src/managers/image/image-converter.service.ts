@@ -6,7 +6,7 @@ import {
   SupportedMimeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
-import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
 import { SharpWrapper } from '../../workers/sharp.wrapper';
 import { ImageResult } from './imageresult';
@@ -22,7 +22,10 @@ export class ImageConverterService {
     options: ImageRequestParams,
   ): AsyncFailable<ImageResult> {
     if (sourcemime.type !== targetmime.type) {
-      return Fail("Can't convert from animated to still or vice versa");
+      return Fail(
+        FT.Impossible,
+        "Can't convert from animated to still or vice versa",
+      );
     }
 
     if (sourcemime.mime === targetmime.mime) {
@@ -37,7 +40,7 @@ export class ImageConverterService {
     } else if (targetmime.type === SupportedMimeCategory.Animation) {
       return this.convertAnimation(image, targetmime, options);
     } else {
-      return Fail('Unsupported mime type');
+      return Fail(FT.SysValidation, 'Unsupported mime type');
     }
   }
 
@@ -52,7 +55,7 @@ export class ImageConverterService {
       this.sysPref.getStringPreference(SysPreference.ConversionTimeLimit),
     ]);
     if (HasFailed(memLimit) || HasFailed(timeLimit)) {
-      return Fail('Failed to get conversion limits');
+      return Fail(FT.Internal, 'Failed to get conversion limits');
     }
     const timeLimitMS = ms(timeLimit);
 

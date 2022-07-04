@@ -8,6 +8,7 @@ import {
   AsyncFailable,
   Fail,
   Failable,
+  FT,
   HasFailed
 } from 'picsur-shared/dist/types';
 
@@ -60,7 +61,7 @@ export class PreferenceCommonService {
         };
     }
 
-    return Fail('Invalid preference value');
+    return Fail(FT.UsrValidation, 'Invalid preference value');
   }
 
   public async EncodePref<E extends Enum>(
@@ -88,7 +89,7 @@ export class PreferenceCommonService {
   ): Failable<V> {
     const keysList = Object.values(prefType);
     if (!keysList.includes(key)) {
-      return Fail('Invalid preference key');
+      return Fail(FT.UsrValidation, 'Invalid preference key');
     }
 
     return key as V;
@@ -100,7 +101,7 @@ export class PreferenceCommonService {
   ): Failable<string> {
     const type = typeof value;
     if (type != expectedType) {
-      return Fail('Invalid preference value');
+      return Fail(FT.UsrValidation, 'Invalid preference value');
     }
 
     switch (type) {
@@ -112,6 +113,6 @@ export class PreferenceCommonService {
         return value ? 'true' : 'false';
     }
 
-    return Fail('Invalid preference value');
+    return Fail(FT.UsrValidation, 'Invalid preference value');
   }
 }

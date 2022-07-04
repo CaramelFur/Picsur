@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { In, Repository } from 'typeorm';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
@@ -28,7 +28,7 @@ export class ImageDBService {
     try {
       imageEntity = await this.imageRepo.save(imageEntity, { reload: true });
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
 
     return imageEntity;
@@ -43,10 +43,10 @@ export class ImageDBService {
         where: { id, user_id: userid },
       });
 
-      if (!found) return Fail('Image not found');
+      if (!found) return Fail(FT.NotFound, 'Image not found');
       return found;
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -55,8 +55,8 @@ export class ImageDBService {
     page: number,
     userid: string | undefined,
   ): AsyncFailable<FindResult<EImageBackend>> {
-    if (count < 1 || page < 0) return Fail('Invalid page');
-    if (count > 100) return Fail('Too many results');
+    if (count < 1 || page < 0) return Fail(FT.UsrValidation, 'Invalid page');
+    if (count > 100) return Fail(FT.UsrValidation, 'Too many results');
 
     try {
       const [found, amount] = await this.imageRepo.findAndCount({
@@ -67,7 +67,7 @@ export class ImageDBService {
         },
       });
 
-      if (found === undefined) return Fail('Images not found');
+      if (found === undefined) return Fail(FT.NotFound, 'Images not found');
 
       return {
         results: found,
@@ -76,7 +76,7 @@ export class ImageDBService {
         pages: Math.ceil(amount / count),
       };
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -85,7 +85,7 @@ export class ImageDBService {
     userid: string | undefined,
   ): AsyncFailable<EImageBackend[]> {
     if (ids.length === 0) return [];
-    if (ids.length > 500) return Fail('Too many results');
+    if (ids.length > 500) return Fail(FT.UsrValidation, 'Too many results');
 
     try {
       const deletable_images = await this.imageRepo.find({
@@ -97,7 +97,7 @@ export class ImageDBService {
 
       const available_ids = deletable_images.map((i) => i.id);
 
-      if (available_ids.length === 0) return Fail('Images not found');
+      if (available_ids.length === 0) return Fail(FT.NotFound, 'Images not found');
 
       await Promise.all([
         this.imageDerivativeRepo.delete({
@@ -112,20 +112,20 @@ export class ImageDBService {
 
       return deletable_images;
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
   public async deleteAll(IAmSure: boolean): AsyncFailable<true> {
     if (!IAmSure)
-      return Fail('You must confirm that you want to delete all images');
+      return Fail(FT.SysValidation, 'You must confirm that you want to delete all images');
 
     try {
       await this.imageDerivativeRepo.delete({});
       await this.imageFileRepo.delete({});
       await this.imageRepo.delete({});
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
     return true;
   }

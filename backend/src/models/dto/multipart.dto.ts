@@ -1,5 +1,5 @@
 import { MultipartFile } from '@fastify/multipart';
-import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { z } from 'zod';
 
 export const MultiPartFileDtoSchema = z.object({
@@ -26,7 +26,7 @@ export async function CreateMultiPartFileDto(
       file: file.file,
     };
   } catch (e) {
-    return Fail(e);
+    return Fail(FT.Internal, e);
   }
 }
 

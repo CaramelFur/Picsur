@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import {
   FullMime,
   ImageMime,
-  SupportedMimeCategory,
+  SupportedMimeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
-import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { QOIColorSpace, QOIencode } from 'qoi-img';
 import { ImageResult } from './imageresult';
 import { UniversalSharp } from './universal-sharp';
@@ -20,7 +20,7 @@ export class ImageProcessorService {
     } else if (mime.type === SupportedMimeCategory.Animation) {
       return await this.processAnimation(image, mime);
     } else {
-      return Fail('Unsupported mime type');
+      return Fail(FT.SysValidation, 'Unsupported mime type');
     }
   }
 
@@ -43,7 +43,7 @@ export class ImageProcessorService {
       processedImage.info.width >= 32768 ||
       processedImage.info.height >= 32768
     ) {
-      return Fail('Image too large');
+      return Fail(FT.UsrValidation, 'Image too large');
     }
 
     // Png can be more efficient than QOI, but its just sooooooo slow

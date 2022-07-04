@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HISTORY } from '@ng-web-apis/common';
 import { InfoResponse } from 'picsur-shared/dist/dto/api/info.dto';
-import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { SemVerRegex } from 'picsur-shared/dist/util/common-regex';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
@@ -53,7 +53,10 @@ export class InfoService {
     const clientVersion = this.getFrontendVersion();
 
     if (!SemVerRegex.test(serverVersion) || !SemVerRegex.test(clientVersion)) {
-      return Fail(`Not a valid semver: ${serverVersion} or ${clientVersion}`);
+      return Fail(
+        FT.SysValidation,
+        `Not a valid semver: ${serverVersion} or ${clientVersion}`,
+      );
     }
 
     const serverDecoded = serverVersion.split('.');

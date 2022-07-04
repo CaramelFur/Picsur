@@ -20,6 +20,9 @@ export const SoulBoundRolesList: string[] = SoulBoundRolesTuple;
 export const ImmutableRolesList: string[] = ImmutableRolesTuple;
 export const UndeletableRolesList: string[] = UndeletableRolesTuple;
 
+// Yes this is the undeletableroles list
+export const SystemRolesList = UndeletableRolesList;
+
 // Defaults
 type SystemRole = typeof UndeletableRolesTuple[number];
 const SystemRoleDefaultsTyped: {

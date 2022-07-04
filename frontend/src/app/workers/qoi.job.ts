@@ -1,4 +1,4 @@
-import { AsyncFailable, Fail } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { QOIdecodeJS } from '../util/qoi/qoi-decode';
 import { QOIImage } from './qoi-worker.dto';
 
@@ -13,7 +13,7 @@ export default async function qoiDecodeJob(
       },
     });
     if (!response.ok) {
-      return Fail('Could not fetch image');
+      return Fail(FT.Network, 'Could not fetch image');
     }
 
     const buffer = await response.arrayBuffer();
@@ -32,6 +32,6 @@ export default async function qoiDecodeJob(
       height: image.height,
     };
   } catch (e) {
-    return Fail(e);
+    return Fail(FT.Internal, e);
   }
 }

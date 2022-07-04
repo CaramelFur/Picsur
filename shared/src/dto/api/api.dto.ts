@@ -17,6 +17,7 @@ const ApiErrorResponse = ApiResponseBase.merge(
   z.object({
     success: z.literal(false),
     data: z.object({
+      type: z.string(),
       message: z.string(),
     }),
   }),

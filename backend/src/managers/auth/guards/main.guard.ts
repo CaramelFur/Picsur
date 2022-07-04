@@ -1,14 +1,12 @@
 import {
-  ExecutionContext,
-  ForbiddenException,
-  Injectable,
+  ExecutionContext, Injectable,
   InternalServerErrorException,
   Logger
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { EUser, EUserSchema } from 'picsur-shared/dist/entities/user.entity';
-import { Fail, Failable, HasFailed } from 'picsur-shared/dist/types';
+import { Fail, Failable, FT, HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/user-db/user-db.service';
 import { Permissions } from '../../../models/constants/permissions.const';
 import { isPermissionsArray } from '../../../models/validators/permissions.validator';
@@ -66,7 +64,7 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
 
     if (permissions.every((permission) => userPermissions.includes(permission)))
       return true;
-    else throw new ForbiddenException('Permission denied');
+    else throw Fail(FT.Permission, 'Permission denied');
   }
 
   private extractPermissions(context: ExecutionContext): Failable<Permissions> {
@@ -79,11 +77,15 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
 
     if (permissions === undefined)
       return Fail(
+        FT.Internal,
         `${handlerName} does not have any permissions defined, denying access`,
       );
 
     if (!isPermissionsArray(permissions))
-      return Fail(`Permissions for ${handlerName} is not a string array`);
+      return Fail(
+        FT.Internal,
+        `Permissions for ${handlerName} is not a string array`,
+      );
 
     return permissions;
   }

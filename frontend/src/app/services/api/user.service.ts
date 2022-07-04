@@ -9,7 +9,7 @@ import {
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { AsyncFailable, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '../logger/logger.service';
 import { KeyService } from '../storage/key.service';
@@ -108,7 +108,7 @@ export class UserService {
     this.userSubject.next(null);
 
     if (value === null) {
-      return Fail('Not logged in');
+      return Fail(FT.Impossible, 'Not logged in');
     } else {
       return value;
     }
@@ -120,13 +120,13 @@ export class UserService {
     try {
       decoded = jwt_decode(token);
     } catch (e) {
-      return Fail('Invalid token');
+      return Fail(FT.UsrValidation, 'Invalid token');
     }
 
     const result = JwtDataSchema.safeParse(decoded);
     if (!result.success) {
       this.logger.error(result.error);
-      return Fail('Invalid token data');
+      return Fail(FT.UsrValidation, 'Invalid token data');
     }
 
     return result.data.user;

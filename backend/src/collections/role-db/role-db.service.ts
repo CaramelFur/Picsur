@@ -4,6 +4,7 @@ import { ERoleSchema } from 'picsur-shared/dist/entities/role.entity';
 import {
   AsyncFailable,
   Fail,
+  FT,
   HasFailed,
   HasSuccess
 } from 'picsur-shared/dist/types';
@@ -29,7 +30,8 @@ export class RolesService {
     name: string,
     permissions: Permissions,
   ): AsyncFailable<ERoleBackend> {
-    if (await this.exists(name)) return Fail('Role already exists');
+    if (await this.exists(name))
+      return Fail(FT.Conflict, 'Role already exists');
 
     let role = new ERoleBackend();
     role.name = name;
@@ -38,7 +40,7 @@ export class RolesService {
     try {
       return await this.rolesRepository.save(role, { reload: true });
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -47,13 +49,13 @@ export class RolesService {
     if (HasFailed(roleToModify)) return roleToModify;
 
     if (UndeletableRolesList.includes(roleToModify.name)) {
-      return Fail('Cannot delete system role');
+      return Fail(FT.Permission, 'Cannot delete system role');
     }
 
     try {
       return await this.rolesRepository.remove(roleToModify);
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -109,7 +111,7 @@ export class RolesService {
     if (HasFailed(roleToModify)) return roleToModify;
 
     if (!allowImmutable && ImmutableRolesList.includes(roleToModify.name)) {
-      return Fail('Cannot modify immutable role');
+      return Fail(FT.Permission, 'Cannot modify immutable role');
     }
 
     roleToModify.permissions = makeUnique(permissions);
@@ -117,7 +119,7 @@ export class RolesService {
     try {
       return await this.rolesRepository.save(roleToModify);
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -127,10 +129,10 @@ export class RolesService {
         where: { name },
       });
 
-      if (!found) return Fail('Role not found');
+      if (!found) return Fail(FT.NotFound, 'Role not found');
       return found;
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -140,20 +142,20 @@ export class RolesService {
         where: { name: In(names) },
       });
 
-      if (!found) return Fail('No roles found');
+      if (!found) return Fail(FT.NotFound, 'No roles found');
       return found;
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
   public async findAll(): AsyncFailable<ERoleBackend[]> {
     try {
       const found = await this.rolesRepository.find();
-      if (!found) return Fail('No roles found');
+      if (!found) return Fail(FT.NotFound, 'No roles found');
       return found;
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
   }
 
@@ -163,14 +165,17 @@ export class RolesService {
 
   public async nukeSystemRoles(IAmSure: boolean = false): AsyncFailable<true> {
     if (!IAmSure)
-      return Fail('You must confirm that you want to delete all roles');
+      return Fail(
+        FT.SysValidation,
+        'You must confirm that you want to delete all roles',
+      );
 
     try {
       await this.rolesRepository.delete({
         name: In(UndeletableRolesList),
       });
     } catch (e) {
-      return Fail(e);
+      return Fail(FT.Database, e);
     }
     return true;
   }
@@ -183,7 +188,7 @@ export class RolesService {
     } else {
       const result = ERoleSchema.safeParse(role);
       if (!result.success) {
-        return Fail(result.error);
+        return Fail(FT.SysValidation, result.error);
       }
       // This is safe
       return result.data as ERoleBackend;
