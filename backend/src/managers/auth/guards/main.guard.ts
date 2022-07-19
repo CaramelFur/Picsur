@@ -1,8 +1,4 @@
-import {
-  ExecutionContext, Injectable,
-  InternalServerErrorException,
-  Logger
-} from '@nestjs/common';
+import { ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { EUser, EUserSchema } from 'picsur-shared/dist/entities/user.entity';
@@ -30,34 +26,42 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
     // Sanity check
     const result = await super.canActivate(context);
     if (result !== true) {
-      this.logger.error('Main Auth has denied access, this should not happen');
-      throw new InternalServerErrorException();
+      throw Fail(
+        FT.Internal,
+        undefined,
+        'Main Auth has denied access, this should not happen',
+      );
     }
 
     const user = await this.validateUser(
       context.switchToHttp().getRequest().user,
     );
     if (!user.id) {
-      this.logger.error('User has no id, this should not happen');
-      throw new InternalServerErrorException();
+      throw Fail(
+        FT.Internal,
+        undefined,
+        'User has no id, this should not happen',
+      );
     }
 
     // These are the permissions required to access the route
     const permissions = this.extractPermissions(context);
     if (HasFailed(permissions)) {
-      this.logger.error(
+      throw Fail(
+        FT.Internal,
+        undefined,
         'Fetching route permission failed: ' + permissions.getReason(),
       );
-      throw new InternalServerErrorException();
     }
 
     // These are the permissions the user has
     const userPermissions = await this.usersService.getPermissions(user.id);
     if (HasFailed(userPermissions)) {
-      this.logger.warn(
+      throw Fail(
+        FT.Internal,
+        undefined,
         'Fetching user permissions failed: ' + userPermissions.getReason(),
       );
-      throw new InternalServerErrorException();
     }
 
     context.switchToHttp().getRequest().userPermissions = userPermissions;
@@ -78,12 +82,14 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
     if (permissions === undefined)
       return Fail(
         FT.Internal,
+        undefined,
         `${handlerName} does not have any permissions defined, denying access`,
       );
 
     if (!isPermissionsArray(permissions))
       return Fail(
         FT.Internal,
+        undefined,
         `Permissions for ${handlerName} is not a string array`,
       );
 
@@ -93,10 +99,11 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
   private async validateUser(user: EUser): Promise<EUser> {
     const result = EUserSchema.safeParse(user);
     if (!result.success) {
-      this.logger.warn(
+      throw Fail(
+        FT.Internal,
+        undefined,
         `Invalid user object, where it should always be valid: ${result.error}`,
       );
-      throw new InternalServerErrorException();
     }
 
     return result.data;

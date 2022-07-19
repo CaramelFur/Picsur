@@ -58,8 +58,11 @@ export class ApiService {
 
     const validateResult = sendSchema.safeParse(data);
     if (!validateResult.success) {
-      this.logger.error(validateResult.error);
-      return Fail(FT.SysValidation, 'Something went wrong');
+      return Fail(
+        FT.SysValidation,
+        'Something went wrong',
+        validateResult.error,
+      );
     }
 
     return this.fetchSafeJson(receiveType, url, {
@@ -92,8 +95,11 @@ export class ApiService {
 
     const validateResult = resultSchema.safeParse(result);
     if (!validateResult.success) {
-      this.logger.error(validateResult.error);
-      return Fail(FT.SysValidation, 'Something went wrong');
+      return Fail(
+        FT.SysValidation,
+        'Something went wrong',
+        validateResult.error,
+      );
     }
 
     if (validateResult.data.success === false)
@@ -113,8 +119,7 @@ export class ApiService {
     try {
       return await response.json();
     } catch (e) {
-      this.logger.error(e);
-      return Fail(FT.Internal, 'Something went wrong');
+      return Fail(FT.Internal, e);
     }
   }
 
@@ -150,8 +155,7 @@ export class ApiService {
         name,
       };
     } catch (e) {
-      this.logger.error(e);
-      return Fail(FT.Internal, 'Something went wrong');
+      return Fail(FT.Internal, e);
     }
   }
 
@@ -187,7 +191,7 @@ export class ApiService {
         error: e,
         url,
       });
-      return Fail(FT.Network, 'Network Error');
+      return Fail(FT.Network, e);
     }
   }
 }

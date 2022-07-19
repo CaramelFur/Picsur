@@ -5,11 +5,11 @@
 
 import {
   ArgumentMetadata,
-  BadRequestException,
   Injectable,
   Optional,
-  PipeTransform,
+  PipeTransform
 } from '@nestjs/common';
+import { Fail, FT } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 
 export interface ZodValidationPipeOptions {
@@ -36,7 +36,11 @@ export class ZodValidationPipe implements PipeTransform {
       const parseResult = zodSchema.safeParse(value);
 
       if (!parseResult.success) {
-        throw new BadRequestException();
+        throw Fail(
+          FT.UsrValidation,
+          'Invalid data',
+          parseResult.error
+        );
       }
 
       return parseResult.data;

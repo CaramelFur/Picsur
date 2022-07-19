@@ -1,15 +1,12 @@
 import { MultipartFields, MultipartFile } from '@fastify/multipart';
 import {
-  ArgumentMetadata,
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
+  ArgumentMetadata, Injectable,
   Logger,
   PipeTransform,
   Scope
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { MultipartConfigService } from '../../config/early/multipart.config.service';
 import {
@@ -32,11 +29,11 @@ export class MultiPartPipe implements PipeTransform {
     let zodSchema = (metadata?.metatype as ZodDtoStatic)?.zodSchema;
     if (!zodSchema) {
       this.logger.error('Invalid scheme on multipart body');
-      throw new InternalServerErrorException('Invalid scheme on backend');
+      throw Fail(FT.Internal, 'Invalid scheme on backend');
     }
 
     let multipartData = {};
-    if (!req.isMultipart()) throw new BadRequestException('Invalid file');
+    if (!req.isMultipart()) throw Fail(FT.UsrValidation, 'Invalid file');
 
     // Fetch all fields from the request
     let fields: MultipartFields | null = null;
@@ -49,7 +46,7 @@ export class MultiPartPipe implements PipeTransform {
     } catch (e) {
       this.logger.warn(e);
     }
-    if (!fields) throw new BadRequestException('Invalid file');
+    if (!fields) throw Fail(FT.UsrValidation, 'Invalid file');
 
     // Loop over every formfield that was sent
     for (const key of Object.keys(fields)) {
@@ -66,10 +63,7 @@ export class MultiPartPipe implements PipeTransform {
         );
       } else {
         const file = await CreateMultiPartFileDto(fields[key] as MultipartFile);
-        if (HasFailed(file)) {
-          this.logger.error(file.getReason());
-          throw new InternalServerErrorException('Invalid file');
-        }
+        if (HasFailed(file)) throw file;
         (multipartData as any)[key] = file;
       }
     }
@@ -78,7 +72,7 @@ export class MultiPartPipe implements PipeTransform {
     const result = zodSchema.safeParse(multipartData);
     if (!result.success) {
       this.logger.warn(result.error);
-      throw new BadRequestException('Invalid file');
+      throw Fail(FT.UsrValidation, 'Invalid file');
     }
 
     return result.data;

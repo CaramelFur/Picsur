@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -15,9 +15,7 @@ export class LocalAuthStrategy extends PassportStrategy(Strategy, 'local') {
   async validate(username: string, password: string): AsyncFailable<EUser> {
     // All this does is call the usersservice authenticate for authentication
     const user = await this.usersService.authenticate(username, password);
-    if (HasFailed(user)) {
-      throw new UnauthorizedException();
-    }
+    if (HasFailed(user)) throw user;
 
     return EUserBackend2EUser(user);
   }

@@ -1,14 +1,13 @@
 import {
   CallHandler,
   ExecutionContext,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
+  Injectable, Logger,
   NestInterceptor,
   Optional
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ApiAnySuccessResponse } from 'picsur-shared/dist/dto/api/api.dto';
+import { Fail, FT } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { map, Observable } from 'rxjs';
 
@@ -55,23 +54,23 @@ export class SuccessInterceptor<T> implements NestInterceptor {
     );
 
     if (!schemaStatic) {
-      this.logger.warn(
+      throw Fail(
+        FT.Internal,
+        "Couldn't find schema",
         `No zodSchema found on handler ${context.getHandler().name}`,
       );
-      throw new InternalServerErrorException("Couldn't find schema");
     }
 
     let schema = schemaStatic.zodSchema;
 
     const parseResult = schema.safeParse(data);
     if (!parseResult.success) {
-      this.logger.warn(
+      throw Fail(
+        FT.Internal,
+        'Server produced invalid response',
         `Function ${context.getHandler().name} failed validation: ${
           parseResult.error
         }`,
-      );
-      throw new InternalServerErrorException(
-        'Server produced invalid response',
       );
     }
 

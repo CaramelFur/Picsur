@@ -13,5 +13,5 @@ export function ParseMime(mime: string): Failable<FullMime> {
   if (SupportedAnimMimes.includes(mime))
     return { mime, type: SupportedMimeCategory.Animation };
 
-  return Fail(FT.Validation, 'Unsupported mime type');
+  return Fail(FT.UsrValidation, 'Unsupported mime type');
 }

@@ -19,13 +19,13 @@ export class AuthManagerService {
     // in case of any failures
     const result = JwtDataSchema.safeParse(jwtData);
     if (!result.success) {
-      return Fail(FT.SysValidation, 'Invalid JWT: ' + result.error);
+      return Fail(FT.SysValidation, undefined, 'Invalid JWT: ' + result.error);
     }
 
     try {
       return await this.jwtService.signAsync(result.data);
     } catch (e) {
-      return Fail(FT.Internal, "Couldn't create JWT: " + e);
+      return Fail(FT.Internal, undefined, "Couldn't create JWT: " + e);
     }
   }
 }

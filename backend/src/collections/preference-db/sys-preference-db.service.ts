@@ -113,7 +113,8 @@ export class SysPreferenceService {
   ): AsyncFailable<PrefValueType> {
     let pref = await this.getPreference(key);
     if (HasFailed(pref)) return pref;
-    if (pref.type !== type) return Fail(FT.UsrValidation, 'Invalid preference type');
+    if (pref.type !== type)
+      return Fail(FT.UsrValidation, 'Invalid preference type');
 
     return pref.value;
   }

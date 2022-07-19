@@ -25,22 +25,26 @@ export class MainExceptionFilter implements ExceptionFilter {
       return;
     }
 
+    const status = exception.getCode();
+    const type = exception.getType();
+
+    const message = exception.getReason();
+    const logmessage =
+      message +
+      (exception.getDebugMessage() ? ' - ' + exception.getDebugMessage() : '');
+
     if (exception.isImportant()) {
       MainExceptionFilter.logger.error(
-        `${traceString} ${exception.getName()}: ${exception.getReason()}`,
+        `${traceString} ${exception.getName()}: ${logmessage}`,
       );
       if (exception.getStack()) {
         MainExceptionFilter.logger.debug(exception.getStack());
       }
     } else {
       MainExceptionFilter.logger.warn(
-        `${traceString} ${exception.getName()}: ${exception.getReason()}`,
+        `${traceString} ${exception.getName()}: ${logmessage}`,
       );
     }
-
-    const status = exception.getCode();
-    const type = exception.getType();
-    const message = exception.getReason();
 
     const toSend: ApiErrorResponse = {
       success: false,
