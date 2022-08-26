@@ -1,4 +1,4 @@
-FROM ghcr.io/rubikscraft/node-docker:1.0.0
+FROM node:18.8
 
 # Sorry for the humongous docker container this generates
 # Maybe I'll trim it down some day

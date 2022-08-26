@@ -18,7 +18,11 @@
       "label": "Start shared",
       "command": "yarn start",
       "options": {
-        "cwd": "${cwd}/shared"
+        "cwd": "${cwd}/shared",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": ["-i", "-c"]
+        }
       },
       "group": "build"
     },
@@ -27,7 +31,11 @@
       "label": "Start backend",
       "command": "yarn start:dev",
       "options": {
-        "cwd": "${cwd}/backend"
+        "cwd": "${cwd}/backend",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": ["-i", "-c"]
+        }
       },
       "group": "build"
     },
@@ -36,16 +44,24 @@
       "label": "Start frontend",
       "command": "yarn watch",
       "options": {
-        "cwd": "${cwd}/frontend"
+        "cwd": "${cwd}/frontend",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": ["-i", "-c"]
+        }
       },
       "group": "build"
     },
     {
       "type": "shell",
       "label": "Start postgres",
-      "command": "podman-compose -f ./dev.docker-compose.yml stop; podman-compose -f ./dev.docker-compose.yml up",
+      "command": "yarn devdb:start",
       "options": {
-        "cwd": "${cwd}/support"
+        "cwd": "${cwd}",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": ["-i", "-c"]
+        }
       },
       "group": "build"
     }

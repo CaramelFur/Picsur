@@ -1,23 +1,8 @@
 #!/bin/bash
 
+yarn workspace shared purge
+yarn workspace backend purge
+yarn workspace frontend purge
+
+yarn devdb:purge
 yarn purge
-
-(
-  cd shared
-  yarn purge
-)
-
-(
-  cd backend
-  yarn purge
-)
-
-(
-  cd frontend
-  yarn purge
-)
-
-(
-  cd support
-  podman-compose -f ./dev.docker-compose.yml down
-)

@@ -11,7 +11,7 @@ fi
 
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-UPDATE_VERSION="yarn version --no-commit-hooks --no-git-tag-version --new-version"
+UPDATE_VERSION="yarn version"
 
 cd $SCRIPT_PATH/..
 $UPDATE_VERSION $VERSION

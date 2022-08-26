@@ -7,27 +7,24 @@
     "frontend"
   ],
   "scripts": {
-    "devdb:start": "podman-compose -f ./dev/docker-compose.yml up -d",
-    "devdb:stop": "podman-compose -f ./dev/docker-compose.yml down",
+    "devdb:start": "docker-compose -f ./support/dev.docker-compose.yml up -d",
+    "devdb:stop": "docker-compose -f ./support/dev.docker-compose.yml down",
+    "devdb:restart": "docker-compose -f ./support/dev.docker-compose.yml restart",
+    "devdb:remove": "docker-compose -f ./support/dev.docker-compose.yml down --rmi all --volumes",
     "build": "./support/build.sh",
     "setversion": "./support/setversion.sh",
     "purge": "rm -rf ./node_modules",
     "purge-all": "./support/purge-all.sh"
   },
   "resolutions": {
-    "fastify": "^4.1.0",
-    "fastify-static": "npm:@fastify/static",
-    "fastify-formbody": "npm:@fastify/formbody",
-    "minimist": "npm:minimist-lite"
-  },
-  "dependencies": {
-    "fastify": "^4.1.0",
-    "fastify-formbody": "npm:@fastify/formbody",
-    "fastify-static": "npm:@fastify/static",
-    "minimist": "npm:minimist-lite"
+    "fastify": "^4.5.2",
+    "fastify-static": "npm:@fastify/static@*",
+    "fastify-formbody": "npm:@fastify/formbody@*",
+    "minimist": "npm:minimist-lite@*"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
-    "prettier-plugin-sh": "^0.12.3"
-  }
+    "prettier-plugin-sh": "^0.12.8"
+  },
+  "packageManager": "yarn@3.2.2"
 }

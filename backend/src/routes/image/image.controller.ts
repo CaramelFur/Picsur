@@ -35,6 +35,25 @@ export class ImageController {
     private readonly userService: UsersService,
   ) {}
 
+  @Head(':id')
+  async headImage(
+    @Res({ passthrough: true }) res: FastifyReply,
+    @ImageFullIdParam() fullid: ImageFullId,
+  ) {
+    if (fullid.type === 'original') {
+      const fullmime = await this.imagesService.getOriginalMime(fullid.id);
+      if (HasFailed(fullmime)) {
+        this.logger.warn(fullmime.getReason());
+        throw new NotFoundException('Could not find image');
+      }
+
+      res.type(fullmime.mime);
+      return;
+    }
+
+    res.type(fullid.mime);
+  }
+
   @Get(':id')
   async getImage(
     // Usually passthrough is for manually sending the response,
@@ -66,25 +85,6 @@ export class ImageController {
 
     res.type(image.mime);
     return image.data;
-  }
-
-  @Head(':id')
-  async headImage(
-    @Res({ passthrough: true }) res: FastifyReply,
-    @ImageFullIdParam() fullid: ImageFullId,
-  ) {
-    if (fullid.type === 'original') {
-      const fullmime = await this.imagesService.getOriginalMime(fullid.id);
-      if (HasFailed(fullmime)) {
-        this.logger.warn(fullmime.getReason());
-        throw new NotFoundException('Could not find image');
-      }
-
-      res.type(fullmime.mime);
-      return;
-    }
-
-    res.type(fullid.mime);
   }
 
   @Get('meta/:id')

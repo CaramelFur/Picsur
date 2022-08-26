@@ -148,7 +148,9 @@ export class SharpWrapper {
         },
       );
 
-      const result = await pTimeout(finishPromise, this.instance_timeout);
+      const result = await pTimeout(finishPromise, {
+        milliseconds: this.instance_timeout,
+      });
 
       this.logger.verbose(
         `Worker ${this.workerID} finished in ${result.processingTime}ms`,
@@ -174,7 +176,7 @@ export class SharpWrapper {
         });
       });
 
-      await pTimeout(waitReadyPromise, this.instance_timeout);
+      await pTimeout(waitReadyPromise, { milliseconds: this.instance_timeout });
       return true;
     } catch (error) {
       return Fail(FT.Internal, error);

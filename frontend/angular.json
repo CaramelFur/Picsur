@@ -33,10 +33,8 @@
             "styles": ["src/styles.scss"],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "validator",
-              "debug",
-              "buffer/",
-              "sha.js"
+              "ngx-auto-unsubscribe-decorator",
+              "moment"
             ],
             "optimization": true,
             "webWorkerTsConfig": "tsconfig.worker.json"
