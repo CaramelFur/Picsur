@@ -2,8 +2,9 @@ import {
   createParamDecorator,
   ExecutionContext,
   SetMetadata,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
+import { Fail, FT } from 'picsur-shared/dist/types';
 import { CombineFCDecorators } from 'picsur-shared/dist/util/decorator';
 import { LocalAuthGuard } from '../managers/auth/guards/local-auth.guard';
 import { Permission, Permissions } from '../models/constants/permissions.const';
@@ -28,7 +29,7 @@ export const HasPermission = createParamDecorator(
     const req: AuthFasityRequest = ctx.switchToHttp().getRequest();
     const permissions = req.userPermissions;
     if (!permissions) {
-      throw new Error('Permissions are missing from request');
+      throw Fail(FT.Internal, undefined, 'Permissions are missing from request');
     }
 
     return permissions.includes(data);
@@ -40,7 +41,7 @@ export const GetPermissions = createParamDecorator(
     const req: AuthFasityRequest = ctx.switchToHttp().getRequest();
     const permissions = req.userPermissions;
     if (!permissions) {
-      throw new Error('Permissions are missing from request');
+      throw Fail(FT.Internal, undefined, 'Permissions are missing from request');
     }
 
     return permissions;

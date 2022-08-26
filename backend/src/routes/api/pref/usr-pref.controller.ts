@@ -1,9 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
-  InternalServerErrorException,
-  Logger,
+  Get, Logger,
   Param,
   Post
 } from '@nestjs/common';
@@ -13,7 +11,7 @@ import {
   UpdatePreferenceRequest,
   UpdatePreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { UsrPreferenceService } from '../../../collections/preference-db/usr-preference-db.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { ReqUserID } from '../../../decorators/request-user.decorator';
@@ -32,11 +30,9 @@ export class UsrPrefController {
   async getAllSysPrefs(
     @ReqUserID() userid: string,
   ): Promise<MultiplePreferencesResponse> {
-    const prefs = await this.prefService.getAllPreferences(userid);
-    if (HasFailed(prefs)) {
-      this.logger.warn(prefs.getReason());
-      throw new InternalServerErrorException('Could not get preferences');
-    }
+    const prefs = ThrowIfFailed(
+      await this.prefService.getAllPreferences(userid),
+    );
 
     return {
       results: prefs,
@@ -50,11 +46,9 @@ export class UsrPrefController {
     @Param('key') key: string,
     @ReqUserID() userid: string,
   ): Promise<GetPreferenceResponse> {
-    const pref = await this.prefService.getPreference(userid, key);
-    if (HasFailed(pref)) {
-      this.logger.warn(pref.getReason());
-      throw new InternalServerErrorException('Could not get preference');
-    }
+    const pref = ThrowIfFailed(
+      await this.prefService.getPreference(userid, key),
+    );
 
     return pref;
   }
@@ -68,11 +62,9 @@ export class UsrPrefController {
   ): Promise<UpdatePreferenceResponse> {
     const value = body.value;
 
-    const pref = await this.prefService.setPreference(userid, key, value);
-    if (HasFailed(pref)) {
-      this.logger.warn(pref.getReason());
-      throw new InternalServerErrorException('Could not set preference');
-    }
+    const pref = ThrowIfFailed(
+      await this.prefService.setPreference(userid, key, value),
+    );
 
     return {
       key,

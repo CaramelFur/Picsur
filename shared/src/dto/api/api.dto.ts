@@ -1,8 +1,9 @@
 import z from 'zod';
 
 const ApiResponseBase = z.object({
-  statusCode: z.number().min(0).max(600),
+  statusCode: z.number().min(0).max(600).int(),
   timestamp: z.string(),
+  timeMs: z.number().min(0).int(),
 });
 
 const ApiSuccessResponse = <T extends z.AnyZodObject>(data: T) =>

@@ -1,7 +1,12 @@
 import { ArgumentsHost, Catch, ExceptionFilter, Logger } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ApiErrorResponse } from 'picsur-shared/dist/dto/api/api.dto';
-import { IsFailure } from 'picsur-shared/dist/types/failable';
+import {
+  Fail,
+  Failure,
+  FT,
+  IsFailure
+} from 'picsur-shared/dist/types/failable';
 
 // This will catch any exception that is made in any request
 // (As long as its within nest, the earlier fastify stages are not handled here)
@@ -11,7 +16,7 @@ import { IsFailure } from 'picsur-shared/dist/types/failable';
 export class MainExceptionFilter implements ExceptionFilter {
   private static readonly logger = new Logger('MainExceptionFilter');
 
-  catch(exception: unknown, host: ArgumentsHost) {
+  catch(exception: Failure, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
     const request = ctx.getRequest<FastifyRequest>();
@@ -22,7 +27,7 @@ export class MainExceptionFilter implements ExceptionFilter {
       MainExceptionFilter.logger.error(
         traceString + ' Unkown exception: ' + exception,
       );
-      return;
+      exception = Fail(FT.Internal, 'Unknown exception', exception);
     }
 
     const status = exception.getCode();
@@ -50,6 +55,7 @@ export class MainExceptionFilter implements ExceptionFilter {
       success: false,
       statusCode: status,
       timestamp: new Date().toISOString(),
+      timeMs: Math.round(response.getResponseTime()),
 
       data: {
         type,

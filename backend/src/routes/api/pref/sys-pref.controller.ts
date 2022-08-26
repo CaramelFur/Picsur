@@ -1,9 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
-  InternalServerErrorException,
-  Logger,
+  Get, Logger,
   Param,
   Post
 } from '@nestjs/common';
@@ -13,7 +11,7 @@ import {
   UpdatePreferenceRequest,
   UpdatePreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../../collections/preference-db/sys-preference-db.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
@@ -29,11 +27,7 @@ export class SysPrefController {
   @Get()
   @Returns(MultiplePreferencesResponse)
   async getAllSysPrefs(): Promise<MultiplePreferencesResponse> {
-    const prefs = await this.prefService.getAllPreferences();
-    if (HasFailed(prefs)) {
-      this.logger.warn(prefs.getReason());
-      throw new InternalServerErrorException('Could not get preferences');
-    }
+    const prefs = ThrowIfFailed(await this.prefService.getAllPreferences());
 
     return {
       results: prefs,
@@ -44,11 +38,7 @@ export class SysPrefController {
   @Get(':key')
   @Returns(GetPreferenceResponse)
   async getSysPref(@Param('key') key: string): Promise<GetPreferenceResponse> {
-    const pref = await this.prefService.getPreference(key);
-    if (HasFailed(pref)) {
-      this.logger.warn(pref.getReason());
-      throw new InternalServerErrorException('Could not get preference');
-    }
+    const pref = ThrowIfFailed(await this.prefService.getPreference(key));
 
     return pref;
   }
@@ -61,11 +51,9 @@ export class SysPrefController {
   ): Promise<UpdatePreferenceResponse> {
     const value = body.value;
 
-    const pref = await this.prefService.setPreference(key, value);
-    if (HasFailed(pref)) {
-      this.logger.warn(pref.getReason());
-      throw new InternalServerErrorException('Could not set preference');
-    }
+    const pref = ThrowIfFailed(
+      await this.prefService.setPreference(key, value),
+    );
 
     return {
       key,

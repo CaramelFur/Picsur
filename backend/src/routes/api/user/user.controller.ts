@@ -1,9 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
-  InternalServerErrorException,
-  Logger,
+  Get, Logger,
   Post
 } from '@nestjs/common';
 import {
@@ -14,7 +12,7 @@ import {
   UserRegisterResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
 import type { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/user-db/user-db.service';
 import {
   NoPermissions,
@@ -40,11 +38,7 @@ export class UserController {
   @Returns(UserLoginResponse)
   @UseLocalAuth(Permission.UserLogin)
   async login(@ReqUser() user: EUser): Promise<UserLoginResponse> {
-    const jwt_token = await this.authService.createToken(user);
-    if (HasFailed(jwt_token)) {
-      this.logger.warn(jwt_token.getReason());
-      throw new InternalServerErrorException('Could not get new token');
-    }
+    const jwt_token = ThrowIfFailed(await this.authService.createToken(user));
 
     return { jwt_token };
   }
@@ -55,14 +49,9 @@ export class UserController {
   async register(
     @Body() register: UserRegisterRequest,
   ): Promise<UserRegisterResponse> {
-    const user = await this.usersService.create(
-      register.username,
-      register.password,
+    const user = ThrowIfFailed(
+      await this.usersService.create(register.username, register.password),
     );
-    if (HasFailed(user)) {
-      this.logger.warn(user.getReason());
-      throw new InternalServerErrorException('Could not register user');
-    }
 
     return EUserBackend2EUser(user);
   }
@@ -71,20 +60,11 @@ export class UserController {
   @Returns(UserMeResponse)
   @RequiredPermissions(Permission.UserKeepLogin)
   async me(@ReqUserID() userid: string): Promise<UserMeResponse> {
-    const backenduser = await this.usersService.findOne(userid);
-
-    if (HasFailed(backenduser)) {
-      this.logger.warn(backenduser.getReason());
-      throw new InternalServerErrorException('Could not get user');
-    }
+    const backenduser = ThrowIfFailed(await this.usersService.findOne(userid));
 
     const user = EUserBackend2EUser(backenduser);
 
-    const token = await this.authService.createToken(user);
-    if (HasFailed(token)) {
-      this.logger.warn(token.getReason());
-      throw new InternalServerErrorException('Could not get new token');
-    }
+    const token = ThrowIfFailed(await this.authService.createToken(user));
 
     return { user, token };
   }
@@ -96,11 +76,7 @@ export class UserController {
   async refresh(
     @ReqUserID() userid: string,
   ): Promise<UserMePermissionsResponse> {
-    const permissions = await this.usersService.getPermissions(userid);
-    if (HasFailed(permissions)) {
-      this.logger.warn(permissions.getReason());
-      throw new InternalServerErrorException('Could not get permissions');
-    }
+    const permissions = ThrowIfFailed(await this.usersService.getPermissions(userid));
 
     return { permissions };
   }

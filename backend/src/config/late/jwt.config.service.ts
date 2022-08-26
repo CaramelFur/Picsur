@@ -1,6 +1,6 @@
 import { FactoryProvider, Injectable, Logger } from '@nestjs/common';
 import { JwtModuleOptions, JwtOptionsFactory } from '@nestjs/jwt';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
 
 @Injectable()
@@ -19,20 +19,18 @@ export class JwtConfigService implements JwtOptionsFactory {
   }
 
   public async getJwtSecret(): Promise<string> {
-    const secret = await this.prefService.getStringPreference('jwt_secret');
-    if (HasFailed(secret)) {
-      throw new Error('JWT secret could not be retrieved');
-    }
+    const secret = ThrowIfFailed(
+      await this.prefService.getStringPreference('jwt_secret'),
+    );
+
     return secret;
   }
 
   public async getJwtExpiresIn(): Promise<string> {
-    const expiresIn = await this.prefService.getStringPreference(
-      'jwt_expires_in',
+    const expiresIn = ThrowIfFailed(
+      await this.prefService.getStringPreference('jwt_expires_in'),
     );
-    if (HasFailed(expiresIn)) {
-      throw new Error('JWT expiresIn could not be retrieved');
-    }
+
     return expiresIn;
   }
 

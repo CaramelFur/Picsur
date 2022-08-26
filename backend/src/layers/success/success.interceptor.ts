@@ -1,11 +1,13 @@
 import {
   CallHandler,
   ExecutionContext,
-  Injectable, Logger,
+  Injectable,
+  Logger,
   NestInterceptor,
   Optional
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { FastifyReply } from 'fastify';
 import { ApiAnySuccessResponse } from 'picsur-shared/dist/dto/api/api.dto';
 import { Fail, FT } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
@@ -81,15 +83,17 @@ export class SuccessInterceptor<T> implements NestInterceptor {
     context: ExecutionContext,
     data: unknown,
   ): ApiAnySuccessResponse {
-    const status = context.switchToHttp().getResponse().statusCode;
-    const response = {
+    const response = context.switchToHttp().getResponse<FastifyReply>();
+
+    const newResponse: ApiAnySuccessResponse = {
       success: true as true, // really typescript
-      statusCode: status,
+      statusCode: response.statusCode,
       timestamp: new Date().toISOString(),
+      timeMs: Math.round(response.getResponseTime()),
 
       data,
     };
 
-    return response;
+    return newResponse;
   }
 }

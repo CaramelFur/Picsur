@@ -56,7 +56,7 @@ export class PreferenceCommonService {
       case 'boolean':
         return {
           key: preference.key,
-          value: preference.value == 'true',
+          value: preference.value === 'true',
           type: 'boolean',
         };
     }
@@ -100,7 +100,7 @@ export class PreferenceCommonService {
     expectedType: PrefValueTypeStrings,
   ): Failable<string> {
     const type = typeof value;
-    if (type != expectedType) {
+    if (type !== expectedType) {
       return Fail(FT.UsrValidation, 'Invalid preference value');
     }
 

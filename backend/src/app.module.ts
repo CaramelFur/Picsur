@@ -25,7 +25,7 @@ const imageCorsConfig = cors({
   maxAge: 30 * 24 * 60 * 60,
 });
 
-const imageCorpOverride = (
+const imageCorsOverride = (
   req: IncomingMessage,
   res: ServerResponse,
   next: Function,
@@ -54,6 +54,6 @@ const imageCorpOverride = (
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(mainCorsConfig).exclude('/i').forRoutes('/');
-    consumer.apply(imageCorsConfig, imageCorpOverride).forRoutes('/i');
+    consumer.apply(imageCorsConfig, imageCorsOverride).forRoutes('/i');
   }
 }

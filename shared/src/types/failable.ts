@@ -134,34 +134,51 @@ export class Failure {
 }
 
 export function Fail(type: FT, reason?: any, dbgReason?: any): Failure {
-  const strReason = reason.toString();
+  if (IsFailure(reason) || IsFailure(dbgReason)) {
+    throw new Error('Cannot fail with another failure, just return it');
+  }
 
-  if (typeof dbgReason === 'string') {
-    return new Failure(type, strReason, undefined, dbgReason);
-  } else if (dbgReason instanceof Error) {
-    return new Failure(type, strReason, dbgReason.stack, dbgReason.message);
-  } else if (dbgReason instanceof Failure) {
-    throw new Error('Cannot fail with a failure, just return it');
-  } else {
-    if (typeof reason === 'string') {
-      return new Failure(type, strReason, undefined, undefined);
+  if (dbgReason === undefined || dbgReason === null) {
+    if (reason === undefined || reason === null) {
+      // If both are null, just return a default error message
+      return new Failure(type, FTProps[type].message, undefined, undefined);
+    } else if (typeof reason === 'string') {
+      // If it is a string, this was intentionally specified, so pass it through
+      return new Failure(type, reason, undefined, undefined);
     } else if (reason instanceof Error) {
+      // In case of an error, we want to keep that hidden, so return the default message
+      // Only send the specifics to debug
       return new Failure(
         type,
         FTProps[type].message,
         reason.stack,
         reason.message,
       );
-    } else if (dbgReason instanceof Failure) {
-      throw new Error('Cannot fail with a failure, just return it');
     } else {
-      return new Failure(type, FTProps[type].message, undefined, undefined);
+      // No clue what it is, so just transform it to a string and return the default message
+      return new Failure(
+        type,
+        FTProps[type].message,
+        undefined,
+        String(reason),
+      );
+    }
+  } else {
+    // In this case we only accept strings for the reason
+    const strReason = reason?.toString() ?? FTProps[type].message;
+
+    if (typeof dbgReason === 'string') {
+      return new Failure(type, strReason, undefined, dbgReason);
+    } else if (dbgReason instanceof Error) {
+      return new Failure(type, strReason, dbgReason.stack, dbgReason.message);
+    } else {
+      return new Failure(type, strReason, undefined, String(dbgReason));
     }
   }
 }
 
 export function IsFailure(value: any): value is Failure {
-  return value.__68351953531423479708__id_failure === 1148363914;
+  return value?.__68351953531423479708__id_failure === 1148363914;
 }
 
 export type Failable<T> = T | Failure;
@@ -176,6 +193,14 @@ export function HasFailed<T>(failable: Failable<T>): failable is Failure {
 export function HasSuccess<T>(failable: Failable<T>): failable is T {
   if (failable instanceof Promise) throw new Error('Invalid use of HasSuccess');
   return (failable as any).__68351953531423479708__id_failure !== 1148363914;
+}
+
+export function ThrowIfFailed<V>(failable: Failable<V>): V {
+  if (HasFailed(failable)) {
+    throw failable;
+  }
+
+  return failable;
 }
 
 export function Map<T, U>(

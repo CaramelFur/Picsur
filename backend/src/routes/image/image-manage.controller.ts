@@ -1,8 +1,6 @@
 import {
-  BadRequestException,
   Body,
   Controller,
-  InternalServerErrorException,
   Logger,
   Post
 } from '@nestjs/common';
@@ -14,7 +12,7 @@ import {
   ImageUploadResponse
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart/multipart.decorator';
 import {
   HasPermission,
@@ -38,14 +36,9 @@ export class ImageManageController {
     @MultiPart() multipart: ImageUploadDto,
     @ReqUserID() userid: string,
   ): Promise<ImageUploadResponse> {
-    const image = await this.imagesService.upload(
-      multipart.image.buffer,
-      userid,
+    const image = ThrowIfFailed(
+      await this.imagesService.upload(multipart.image.buffer, userid),
     );
-    if (HasFailed(image)) {
-      this.logger.warn(image.getReason(), image.getStack());
-      throw new InternalServerErrorException('Could not upload image');
-    }
 
     return image;
   }
@@ -61,15 +54,9 @@ export class ImageManageController {
       body.user_id = userid;
     }
 
-    const found = await this.imagesService.findMany(
-      body.count,
-      body.page,
-      body.user_id,
+    const found = ThrowIfFailed(
+      await this.imagesService.findMany(body.count, body.page, body.user_id),
     );
-    if (HasFailed(found)) {
-      this.logger.warn(found.getReason());
-      throw new InternalServerErrorException('Could not list images');
-    }
 
     return found;
   }
@@ -81,14 +68,12 @@ export class ImageManageController {
     @ReqUserID() userid: string,
     @HasPermission(Permission.ImageAdmin) isImageAdmin: boolean,
   ): Promise<ImageDeleteResponse> {
-    const deletedImages = await this.imagesService.deleteMany(
-      body.ids,
-      isImageAdmin ? undefined : userid,
+    const deletedImages = ThrowIfFailed(
+      await this.imagesService.deleteMany(
+        body.ids,
+        isImageAdmin ? undefined : userid,
+      ),
     );
-    if (HasFailed(deletedImages)) {
-      this.logger.warn(deletedImages.getReason());
-      throw new BadRequestException('Could not delete images');
-    }
 
     return {
       images: deletedImages,

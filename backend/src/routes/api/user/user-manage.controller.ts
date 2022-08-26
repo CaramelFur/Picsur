@@ -1,9 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
-  InternalServerErrorException,
-  Logger,
+  Get, Logger,
   Post
 } from '@nestjs/common';
 import {
@@ -19,7 +17,7 @@ import {
   UserUpdateRequest,
   UserUpdateResponse
 } from 'picsur-shared/dist/dto/api/user-manage.dto';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../../collections/user-db/user-db.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
@@ -43,11 +41,9 @@ export class UserAdminController {
   async listUsersPaged(
     @Body() body: UserListRequest,
   ): Promise<UserListResponse> {
-    const found = await this.usersService.findMany(body.count, body.page);
-    if (HasFailed(found)) {
-      this.logger.warn(found.getReason());
-      throw new InternalServerErrorException('Could not list users');
-    }
+    const found = ThrowIfFailed(
+      await this.usersService.findMany(body.count, body.page),
+    );
 
     found.results = found.results.map(EUserBackend2EUser);
     return found;
@@ -58,15 +54,13 @@ export class UserAdminController {
   async register(
     @Body() create: UserCreateRequest,
   ): Promise<UserCreateResponse> {
-    const user = await this.usersService.create(
-      create.username,
-      create.password,
-      create.roles,
+    const user = ThrowIfFailed(
+      await this.usersService.create(
+        create.username,
+        create.password,
+        create.roles,
+      ),
     );
-    if (HasFailed(user)) {
-      this.logger.warn(user.getReason());
-      throw new InternalServerErrorException('Could not create user');
-    }
 
     return EUserBackend2EUser(user);
   }
@@ -74,11 +68,7 @@ export class UserAdminController {
   @Post('delete')
   @Returns(UserDeleteResponse)
   async delete(@Body() body: UserDeleteRequest): Promise<UserDeleteResponse> {
-    const user = await this.usersService.delete(body.id);
-    if (HasFailed(user)) {
-      this.logger.warn(user.getReason());
-      throw new InternalServerErrorException('Could not delete user');
-    }
+    const user = ThrowIfFailed(await this.usersService.delete(body.id));
 
     return EUserBackend2EUser(user);
   }
@@ -86,11 +76,7 @@ export class UserAdminController {
   @Post('info')
   @Returns(UserInfoResponse)
   async getUser(@Body() body: UserInfoRequest): Promise<UserInfoResponse> {
-    const user = await this.usersService.findOne(body.id);
-    if (HasFailed(user)) {
-      this.logger.warn(user.getReason());
-      throw new InternalServerErrorException('Could not find user');
-    }
+    const user = ThrowIfFailed(await this.usersService.findOne(body.id));
 
     return EUserBackend2EUser(user);
   }
@@ -100,26 +86,18 @@ export class UserAdminController {
   async setPermissions(
     @Body() body: UserUpdateRequest,
   ): Promise<UserUpdateResponse> {
-    let user = await this.usersService.findOne(body.id);
-    if (HasFailed(user)) {
-      this.logger.warn(user.getReason());
-      throw new InternalServerErrorException('Could not find user');
-    }
+    let user = ThrowIfFailed(await this.usersService.findOne(body.id));
 
     if (body.roles) {
-      user = await this.usersService.setRoles(body.id, body.roles);
-      if (HasFailed(user)) {
-        this.logger.warn(user.getReason());
-        throw new InternalServerErrorException('Could not update user');
-      }
+      user = ThrowIfFailed(
+        await this.usersService.setRoles(body.id, body.roles),
+      );
     }
 
     if (body.password) {
-      user = await this.usersService.updatePassword(body.id, body.password);
-      if (HasFailed(user)) {
-        this.logger.warn(user.getReason());
-        throw new InternalServerErrorException('Could not update user');
-      }
+      user = ThrowIfFailed(
+        await this.usersService.updatePassword(body.id, body.password),
+      );
     }
 
     return EUserBackend2EUser(user);
