@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { ImageMime } from 'picsur-shared/dist/dto/mimes.dto';
+import { ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
@@ -71,7 +71,7 @@ export class ImagesComponent implements OnInit {
 
   getThumbnailUrl(image: EImage) {
     return (
-      this.imageService.GetImageURL(image.id, ImageMime.QOI) + '?height=480'
+      this.imageService.GetImageURL(image.id, ImageFileType.QOI) + '?height=480'
     );
   }
 

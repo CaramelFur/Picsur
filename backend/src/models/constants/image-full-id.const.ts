@@ -1,15 +1,15 @@
 interface NormalImage {
-  type: 'normal';
+  variant: 'normal';
   id: string;
   ext: string;
-  mime: string;
+  filetype: string;
 }
 
 interface OriginalImage {
-  type: 'original';
+  variant: 'original';
   id: string;
   ext: null;
-  mime: null;
+  filetype: null;
 }
 
 export type ImageFullId = NormalImage | OriginalImage;

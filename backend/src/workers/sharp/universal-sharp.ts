@@ -1,5 +1,5 @@
 import { BMPdecode, BMPencode } from 'bmp-img';
-import { FullMime, ImageMime } from 'picsur-shared/dist/dto/mimes.dto';
+import { FileType, ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { QOIdecode, QOIencode } from 'qoi-img';
 import sharp, { Sharp, SharpOptions } from 'sharp';
 
@@ -10,16 +10,21 @@ export interface SharpResult {
 
 export function UniversalSharpIn(
   image: Buffer,
-  mime: FullMime,
+  filetype: FileType,
   options?: SharpOptions,
 ): Sharp {
-  // if (mime.mime === ImageMime.ICO) {
+  // if (mime.mime === ImageFileType.ICO) {
   //   return icoSharpIn(image, options);
   // } else
-  if (mime.mime === ImageMime.BMP) {
+  if (filetype.identifier === ImageFileType.BMP) {
     return bmpSharpIn(image, options);
-  } else if (mime.mime === ImageMime.QOI) {
+  } else if (filetype.identifier === ImageFileType.QOI) {
     return qoiSharpIn(image, options);
+  // } else if (filetype.identifier === AnimFileType.GIF) {
+  //   return sharp(image, {
+  //     ...options,
+  //     animated: true,
+  //   });
   } else {
     return sharp(image, options);
   }
@@ -67,40 +72,43 @@ function qoiSharpIn(image: Buffer, options?: SharpOptions) {
 
 export async function UniversalSharpOut(
   image: Sharp,
-  mime: FullMime,
+  filetype: FileType,
   options?: {
     quality?: number;
   },
 ): Promise<SharpResult> {
   let result: SharpResult | undefined;
 
-  switch (mime.mime) {
-    case ImageMime.PNG:
+  switch (filetype.identifier) {
+    case ImageFileType.PNG:
       result = await image
         .png({ quality: options?.quality })
         .toBuffer({ resolveWithObject: true });
       break;
-    case ImageMime.JPEG:
+    case ImageFileType.JPEG:
       result = await image
         .jpeg({ quality: options?.quality })
         .toBuffer({ resolveWithObject: true });
       break;
-    case ImageMime.TIFF:
+    case ImageFileType.TIFF:
       result = await image
         .tiff({ quality: options?.quality })
         .toBuffer({ resolveWithObject: true });
       break;
-    case ImageMime.WEBP:
+    case ImageFileType.WEBP:
       result = await image
         .webp({ quality: options?.quality })
         .toBuffer({ resolveWithObject: true });
       break;
-    case ImageMime.BMP:
+    case ImageFileType.BMP:
       result = await bmpSharpOut(image);
       break;
-    case ImageMime.QOI:
+    case ImageFileType.QOI:
       result = await qoiSharpOut(image);
       break;
+    // case AnimFileType.GIF:
+    //   result = await image.gif().toBuffer({ resolveWithObject: true });
+    //   break;
     default:
       throw new Error('Unsupported mime type');
   }

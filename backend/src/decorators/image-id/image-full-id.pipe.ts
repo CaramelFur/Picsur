@@ -1,9 +1,6 @@
-import {
-  ArgumentMetadata, Injectable,
-  PipeTransform
-} from '@nestjs/common';
-import { Ext2Mime } from 'picsur-shared/dist/dto/mimes.dto';
-import { Fail, FT } from 'picsur-shared/dist/types';
+import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
+import { Ext2FileType } from 'picsur-shared/dist/dto/mimes.dto';
+import { Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { UUIDRegex } from 'picsur-shared/dist/util/common-regex';
 import { ImageFullId } from '../../models/constants/image-full-id.const';
 
@@ -16,19 +13,19 @@ export class ImageFullIdPipe implements PipeTransform<string, ImageFullId> {
       if (!UUIDRegex.test(id))
         throw Fail(FT.UsrValidation, 'Invalid image identifier');
 
-      const mime = Ext2Mime(ext);
+      const filetype = Ext2FileType(ext);
 
-      if (mime === undefined)
+      if (HasFailed(filetype))
         throw Fail(FT.UsrValidation, 'Invalid image identifier');
 
-      return { type: 'normal', id, ext, mime };
+      return { variant: 'normal', id, ext, filetype };
     } else if (split.length === 1) {
       const [id] = split;
 
       if (!UUIDRegex.test(id))
         throw Fail(FT.UsrValidation, 'Invalid image identifier');
 
-      return { type: 'original', id, ext: null, mime: null };
+      return { variant: 'original', id, ext: null, filetype: null };
     } else {
       throw Fail(FT.UsrValidation, 'Invalid image identifier');
     }

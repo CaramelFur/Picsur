@@ -1,4 +1,4 @@
-import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
+import { FileType } from 'picsur-shared/dist/dto/mimes.dto';
 import posix from 'posix.js';
 import { Sharp } from 'sharp';
 import {
@@ -47,7 +47,7 @@ export class SharpWorker {
     } else if (message.type === 'operation') {
       this.operation(message);
     } else if (message.type === 'finish') {
-      this.finish(message.mime, message.options);
+      this.finish(message.filetype, message.options);
     } else {
       return this.purge('Unknown message type');
     }
@@ -59,7 +59,7 @@ export class SharpWorker {
     }
 
     this.startTime = Date.now();
-    this.sharpi = UniversalSharpIn(message.image, message.mime);
+    this.sharpi = UniversalSharpIn(message.image, message.filetype);
   }
 
   private operation(message: SharpWorkerOperationMessage): void {
@@ -74,7 +74,7 @@ export class SharpWorker {
   }
 
   private async finish(
-    mime: FullMime,
+    filetype: FileType,
     options: SharpWorkerFinishOptions,
   ): Promise<void> {
     if (this.sharpi === null) {
@@ -85,7 +85,7 @@ export class SharpWorker {
     this.sharpi = null;
 
     try {
-      const result = await UniversalSharpOut(sharpi, mime, options);
+      const result = await UniversalSharpOut(sharpi, filetype, options);
       const processingTime = Date.now() - this.startTime;
 
       this.sendMessage({

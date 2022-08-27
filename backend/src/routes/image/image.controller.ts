@@ -1,14 +1,11 @@
-import {
-  Controller,
-  Get,
-  Head, Logger, Query,
-  Res
-} from '@nestjs/common';
+import { Controller, Get, Head, Logger, Query, Res } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
 import {
   ImageMetaResponse,
   ImageRequestParams
 } from 'picsur-shared/dist/dto/api/image.dto';
+import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
+import { FileType2Mime } from 'picsur-shared/dist/dto/mimes.dto';
 import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../collections/user-db/user-db.service';
 import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decorator';
@@ -36,16 +33,16 @@ export class ImageController {
     @Res({ passthrough: true }) res: FastifyReply,
     @ImageFullIdParam() fullid: ImageFullId,
   ) {
-    if (fullid.type === 'original') {
-      const fullmime = ThrowIfFailed(
-        await this.imagesService.getOriginalMime(fullid.id),
+    if (fullid.variant === ImageEntryVariant.ORIGINAL) {
+      const filetype = ThrowIfFailed(
+        await this.imagesService.getOriginalFileType(fullid.id),
       );
 
-      res.type(fullmime.mime);
+      res.type(ThrowIfFailed(FileType2Mime(filetype.identifier)));
       return;
     }
 
-    res.type(fullid.mime);
+    res.type(ThrowIfFailed(FileType2Mime(fullid.filetype)));
   }
 
   @Get(':id')
@@ -56,20 +53,20 @@ export class ImageController {
     @ImageFullIdParam() fullid: ImageFullId,
     @Query() params: ImageRequestParams,
   ): Promise<Buffer> {
-    if (fullid.type === 'original') {
+    if (fullid.variant === ImageEntryVariant.ORIGINAL) {
       const image = ThrowIfFailed(
         await this.imagesService.getOriginal(fullid.id),
       );
 
-      res.type(image.mime);
+      res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
       return image.data;
     }
 
     const image = ThrowIfFailed(
-      await this.imagesService.getConverted(fullid.id, fullid.mime, params),
+      await this.imagesService.getConverted(fullid.id, fullid.filetype, params),
     );
 
-    res.type(image.mime);
+    res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
     return image.data;
   }
 
@@ -81,11 +78,11 @@ export class ImageController {
     const [fileMimesRes, imageUserRes] = await Promise.all([
       this.imagesService.getFileMimes(id),
       this.userService.findOne(image.user_id),
-    ])
+    ]);
 
-    const fileMimes = ThrowIfFailed(fileMimesRes);
+    const fileTypes = ThrowIfFailed(fileMimesRes);
     const imageUser = ThrowIfFailed(imageUserRes);
 
-    return { image, user: EUserBackend2EUser(imageUser), fileMimes };
+    return { image, user: EUserBackend2EUser(imageUser), fileTypes };
   }
 }

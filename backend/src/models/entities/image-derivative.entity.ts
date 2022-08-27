@@ -15,7 +15,7 @@ export class EImageDerivativeBackend {
   key: string;
 
   @Column({ nullable: false })
-  mime: string;
+  filetype: string;
 
   @Column({ name: 'last_read', nullable: false })
   last_read: Date;

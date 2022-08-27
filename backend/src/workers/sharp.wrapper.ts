@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common';
 import { ChildProcess, fork } from 'child_process';
 import pTimeout from 'p-timeout';
 import path from 'path';
-import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
+import { FileType } from 'picsur-shared/dist/dto/mimes.dto';
 import {
   AsyncFailable,
   Fail,
@@ -41,7 +41,7 @@ export class SharpWrapper {
     private readonly memory_limit: number,
   ) {}
 
-  public async start(image: Buffer, mime: FullMime): AsyncFailable<true> {
+  public async start(image: Buffer, filetype: FileType): AsyncFailable<true> {
     this.worker = fork(SharpWrapper.WORKER_PATH, {
       serialization: 'advanced',
       timeout: this.instance_timeout,
@@ -79,7 +79,7 @@ export class SharpWrapper {
     const hasSent = this.sendToWorker({
       type: 'init',
       image,
-      mime,
+      filetype,
     });
     if (HasFailed(hasSent)) {
       this.purge();
@@ -117,7 +117,7 @@ export class SharpWrapper {
   }
 
   public async finish(
-    targetMime: FullMime,
+    targetFiletype: FileType,
     options?: SharpWorkerFinishOptions,
   ): AsyncFailable<SharpResult> {
     if (!this.worker) {
@@ -126,7 +126,7 @@ export class SharpWrapper {
 
     const hasSent = this.sendToWorker({
       type: 'finish',
-      mime: targetMime,
+      filetype: targetFiletype,
       options: options ?? {},
     });
     if (HasFailed(hasSent)) {

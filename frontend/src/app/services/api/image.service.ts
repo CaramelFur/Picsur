@@ -12,10 +12,10 @@ import {
   ImageRequestParams
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
-import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
+import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { AsyncFailable } from 'picsur-shared/dist/types';
-import { Fail, FT, HasFailed, Open } from 'picsur-shared/dist/types/failable';
+import { Fail, FT, HasFailed, HasSuccess, Open } from 'picsur-shared/dist/types/failable';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
 import { UserService } from './user.service';
@@ -103,19 +103,19 @@ export class ImageService {
 
   // Non api calls
 
-  public GetImageURL(image: string, mime: string | null): string {
+  public GetImageURL(image: string, filetype: string | null): string {
     const baseURL = this.location.protocol + '//' + this.location.host;
-    const extension = mime !== null ? Mime2Ext(mime) : null;
+    const extension = FileType2Ext(filetype ?? '');
 
-    return `${baseURL}/i/${image}${extension !== null ? '.' + extension : ''}`;
+    return `${baseURL}/i/${image}${HasSuccess(extension) ? '.' + extension : ''}`;
   }
 
   public GetImageURLCustomized(
     image: string,
-    mime: string | null,
+    filetype: string | null,
     options: ImageRequestParams,
   ): string {
-    const baseURL = this.GetImageURL(image, mime);
+    const baseURL = this.GetImageURL(image, filetype);
     const betterOptions = ImageRequestParams.zodSchema.safeParse(options);
 
     if (!betterOptions.success) return baseURL;

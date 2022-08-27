@@ -1,4 +1,4 @@
-import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
+import { FileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { Sharp } from 'sharp';
 import { SharpResult } from './universal-sharp';
 
@@ -33,7 +33,7 @@ export interface SharpWorkerFinishOptions {
 export interface SharpWorkerInitMessage {
   type: 'init';
   image: Buffer;
-  mime: FullMime;
+  filetype: FileType;
 }
 
 export interface SharpWorkerOperationMessage {
@@ -43,7 +43,7 @@ export interface SharpWorkerOperationMessage {
 
 export interface SharpWorkerFinishMessage {
   type: 'finish';
-  mime: FullMime;
+  filetype: FileType;
   options: SharpWorkerFinishOptions;
 }
 

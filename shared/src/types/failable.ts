@@ -141,10 +141,20 @@ export function Fail(type: FT, reason?: any, dbgReason?: any): Failure {
   if (dbgReason === undefined || dbgReason === null) {
     if (reason === undefined || reason === null) {
       // If both are null, just return a default error message
-      return new Failure(type, FTProps[type].message, undefined, undefined);
+      return new Failure(
+        type,
+        FTProps[type].message,
+        new Error(String(FTProps[type].message)).stack,
+        undefined,
+      );
     } else if (typeof reason === 'string') {
       // If it is a string, this was intentionally specified, so pass it through
-      return new Failure(type, reason, undefined, undefined);
+      return new Failure(
+        type,
+        reason,
+        new Error(String(reason)).stack,
+        undefined,
+      );
     } else if (reason instanceof Error) {
       // In case of an error, we want to keep that hidden, so return the default message
       // Only send the specifics to debug
@@ -159,7 +169,7 @@ export function Fail(type: FT, reason?: any, dbgReason?: any): Failure {
       return new Failure(
         type,
         FTProps[type].message,
-        undefined,
+        new Error(String(reason)).stack,
         String(reason),
       );
     }
@@ -168,11 +178,21 @@ export function Fail(type: FT, reason?: any, dbgReason?: any): Failure {
     const strReason = reason?.toString() ?? FTProps[type].message;
 
     if (typeof dbgReason === 'string') {
-      return new Failure(type, strReason, undefined, dbgReason);
+      return new Failure(
+        type,
+        strReason,
+        new Error(String(dbgReason)).stack,
+        dbgReason,
+      );
     } else if (dbgReason instanceof Error) {
       return new Failure(type, strReason, dbgReason.stack, dbgReason.message);
     } else {
-      return new Failure(type, strReason, undefined, String(dbgReason));
+      return new Failure(
+        type,
+        strReason,
+        new Error(String(dbgReason)).stack,
+        String(dbgReason),
+      );
     }
   }
 }

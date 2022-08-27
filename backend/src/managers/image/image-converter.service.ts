@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import ms from 'ms';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import {
-  FullMime,
-  SupportedMimeCategory
+  FileType,
+  SupportedFileTypeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
@@ -17,28 +17,29 @@ export class ImageConverterService {
 
   public async convert(
     image: Buffer,
-    sourcemime: FullMime,
-    targetmime: FullMime,
+    sourceFiletype: FileType,
+    targetFiletype: FileType,
     options: ImageRequestParams,
   ): AsyncFailable<ImageResult> {
-    if (sourcemime.type !== targetmime.type) {
+    if (sourceFiletype.category !== sourceFiletype.category) {
       return Fail(
         FT.Impossible,
         "Can't convert from animated to still or vice versa",
       );
     }
 
-    if (sourcemime.mime === targetmime.mime) {
+    if (sourceFiletype.identifier === targetFiletype.identifier) {
       return {
-        mime: targetmime.mime,
+        filetype: targetFiletype.identifier,
         image,
       };
     }
 
-    if (targetmime.type === SupportedMimeCategory.Image) {
-      return this.convertStill(image, sourcemime, targetmime, options);
-    } else if (targetmime.type === SupportedMimeCategory.Animation) {
-      return this.convertAnimation(image, targetmime, options);
+    if (targetFiletype.category === SupportedFileTypeCategory.Image) {
+      return this.convertStill(image, sourceFiletype, targetFiletype, options);
+    } else if (targetFiletype.category === SupportedFileTypeCategory.Animation) {
+      return this.convertStill(image, sourceFiletype, targetFiletype, options);
+      //return this.convertAnimation(image, targetmime, options);
     } else {
       return Fail(FT.SysValidation, 'Unsupported mime type');
     }
@@ -46,8 +47,8 @@ export class ImageConverterService {
 
   private async convertStill(
     image: Buffer,
-    sourcemime: FullMime,
-    targetmime: FullMime,
+    sourceFiletype: FileType,
+    targetFiletype: FileType,
     options: ImageRequestParams,
   ): AsyncFailable<ImageResult> {
     const [memLimit, timeLimit] = await Promise.all([
@@ -60,7 +61,7 @@ export class ImageConverterService {
     const timeLimitMS = ms(timeLimit);
 
     const sharpWrapper = new SharpWrapper(timeLimitMS, memLimit);
-    const hasStarted = await sharpWrapper.start(image, sourcemime);
+    const hasStarted = await sharpWrapper.start(image, sourceFiletype);
     if (HasFailed(hasStarted)) return hasStarted;
 
     // Do modifications
@@ -103,24 +104,24 @@ export class ImageConverterService {
     }
 
     // Export
-    const result = await sharpWrapper.finish(targetmime, options);
+    const result = await sharpWrapper.finish(targetFiletype, options);
     if (HasFailed(result)) return result;
 
     return {
       image: result.data,
-      mime: targetmime.mime,
+      filetype: targetFiletype.identifier,
     };
   }
 
   private async convertAnimation(
     image: Buffer,
-    targetmime: FullMime,
+    targetFiletype: FileType,
     options: ImageRequestParams,
   ): AsyncFailable<ImageResult> {
     // Apng and gif are stored as is for now
     return {
       image: image,
-      mime: targetmime.mime,
+      filetype: targetFiletype.identifier,
     };
   }
 }

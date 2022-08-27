@@ -4,10 +4,7 @@ import {
   AllPermissionsResponse,
   InfoResponse
 } from 'picsur-shared/dist/dto/api/info.dto';
-import {
-  AnimMime2ExtMap,
-  ImageMime2ExtMap
-} from 'picsur-shared/dist/dto/mimes.dto';
+import { FileType2Ext, FileType2Mime, SupportedAnimFileTypes, SupportedImageFileTypes } from 'picsur-shared/dist/dto/mimes.dto';
 import { HostConfigService } from '../../../config/early/host.config.service';
 import { NoPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
@@ -42,8 +39,18 @@ export class InfoController {
   @Returns(AllFormatsResponse)
   async getFormats(): Promise<AllFormatsResponse> {
     return {
-      image: ImageMime2ExtMap,
-      anim: AnimMime2ExtMap,
+      image: Object.fromEntries(
+        SupportedImageFileTypes.map((filetype) => [
+          FileType2Mime(filetype),
+          FileType2Ext(filetype),
+        ]),
+      ),
+      anim: Object.fromEntries(
+        SupportedAnimFileTypes.map((filetype) => [
+          FileType2Mime(filetype),
+          FileType2Ext(filetype),
+        ]),
+      ),
     };
   }
 }

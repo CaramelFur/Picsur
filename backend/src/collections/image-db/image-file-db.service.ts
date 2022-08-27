@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.enum';
+import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { LessThan, Repository } from 'typeorm';
 import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
@@ -20,19 +20,19 @@ export class ImageFileDBService {
 
   public async setFile(
     imageId: string,
-    type: ImageFileType,
+    variant: ImageEntryVariant,
     file: Buffer,
-    mime: string,
+    filetype: string,
   ): AsyncFailable<true> {
     const imageFile = new EImageFileBackend();
     imageFile.image_id = imageId;
-    imageFile.type = type;
-    imageFile.mime = mime;
+    imageFile.variant = variant;
+    imageFile.filetype = filetype;
     imageFile.data = file;
 
     try {
       await this.imageFileRepo.upsert(imageFile, {
-        conflictPaths: ['image_id', 'type'],
+        conflictPaths: ['image_id', 'variant'],
       });
     } catch (e) {
       return Fail(FT.Database, e);
@@ -43,11 +43,11 @@ export class ImageFileDBService {
 
   public async getFile(
     imageId: string,
-    type: ImageFileType,
+    variant: ImageEntryVariant,
   ): AsyncFailable<EImageFileBackend> {
     try {
       const found = await this.imageFileRepo.findOne({
-        where: { image_id: imageId ?? '', type: type ?? '' },
+        where: { image_id: imageId ?? '', variant: variant ?? '' },
       });
 
       if (!found) return Fail(FT.NotFound, 'Image not found');
@@ -58,20 +58,20 @@ export class ImageFileDBService {
   }
 
   // This is useful because you dont have to pull the whole image file
-  public async getFileMimes(
+  public async getFileTypes(
     imageId: string,
-  ): AsyncFailable<{ [key in ImageFileType]?: string }> {
+  ): AsyncFailable<{ [key in ImageEntryVariant]?: string }> {
     try {
       const found = await this.imageFileRepo.find({
         where: { image_id: imageId },
-        select: ['type', 'mime'],
+        select: ['variant', 'filetype'],
       });
 
       if (!found) return Fail(FT.NotFound, 'Image not found');
 
-      const result: { [key in ImageFileType]?: string } = {};
+      const result: { [key in ImageEntryVariant]?: string } = {};
       for (const file of found) {
-        result[file.type] = file.mime;
+        result[file.variant] = file.filetype;
       }
 
       return result;
@@ -83,13 +83,13 @@ export class ImageFileDBService {
   public async addDerivative(
     imageId: string,
     key: string,
-    mime: string,
+    filetype: string,
     file: Buffer,
   ): AsyncFailable<EImageDerivativeBackend> {
     const imageDerivative = new EImageDerivativeBackend();
     imageDerivative.image_id = imageId;
     imageDerivative.key = key;
-    imageDerivative.mime = mime;
+    imageDerivative.filetype = filetype;
     imageDerivative.data = file;
     imageDerivative.last_read = new Date();
 

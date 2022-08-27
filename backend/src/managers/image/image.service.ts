@@ -2,13 +2,16 @@ import { Injectable, Logger } from '@nestjs/common';
 import Crypto from 'crypto';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
-import { ImageFileType } from 'picsur-shared/dist/dto/image-file-types.enum';
-import { FullMime } from 'picsur-shared/dist/dto/mimes.dto';
+import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
+import { FileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
-import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
+import {
+  ParseFileType,
+  ParseMime2FileType
+} from 'picsur-shared/dist/util/parse-mime';
 import { IsQOI } from 'qoi-img';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
@@ -57,8 +60,8 @@ export class ImageManagerService {
     image: Buffer,
     userid: string,
   ): AsyncFailable<EImageBackend> {
-    const fullMime = await this.getFullMimeFromBuffer(image);
-    if (HasFailed(fullMime)) return fullMime;
+    const fileType = await this.getFileTypeFromBuffer(image);
+    if (HasFailed(fileType)) return fileType;
 
     // Check if need to save orignal
     const keepOriginal = await this.userPref.getBooleanPreference(
@@ -68,7 +71,7 @@ export class ImageManagerService {
     if (HasFailed(keepOriginal)) return keepOriginal;
 
     // Process
-    const processResult = await this.processService.process(image, fullMime);
+    const processResult = await this.processService.process(image, fileType);
     if (HasFailed(processResult)) return processResult;
 
     // Save processed to db
@@ -77,18 +80,18 @@ export class ImageManagerService {
 
     const imageFileEntity = await this.imageFilesService.setFile(
       imageEntity.id,
-      ImageFileType.MASTER,
+      ImageEntryVariant.MASTER,
       processResult.image,
-      processResult.mime,
+      processResult.filetype,
     );
     if (HasFailed(imageFileEntity)) return imageFileEntity;
 
     if (keepOriginal) {
       const originalFileEntity = await this.imageFilesService.setFile(
         imageEntity.id,
-        ImageFileType.ORIGINAL,
+        ImageEntryVariant.ORIGINAL,
         image,
-        fullMime.mime,
+        fileType.identifier,
       );
       if (HasFailed(originalFileEntity)) return originalFileEntity;
     }
@@ -98,13 +101,13 @@ export class ImageManagerService {
 
   public async getConverted(
     imageId: string,
-    mime: string,
+    fileType: string,
     options: ImageRequestParams,
   ): AsyncFailable<EImageDerivativeBackend> {
-    const targetMime = ParseMime(mime);
-    if (HasFailed(targetMime)) return targetMime;
+    const targetFileType = ParseFileType(fileType);
+    if (HasFailed(targetFileType)) return targetFileType;
 
-    const converted_key = this.getConvertHash({ mime, ...options });
+    const converted_key = this.getConvertHash({ mime: fileType, ...options });
 
     const [save_derivatives, allow_editing] = await Promise.all([
       this.sysPref.getBooleanPreference(SysPreference.SaveDerivatives),
@@ -124,21 +127,21 @@ export class ImageManagerService {
         const masterImage = await this.getMaster(imageId);
         if (HasFailed(masterImage)) return masterImage;
 
-        const sourceMime = ParseMime(masterImage.mime);
-        if (HasFailed(sourceMime)) return sourceMime;
+        const sourceFileType = ParseFileType(masterImage.filetype);
+        if (HasFailed(sourceFileType)) return sourceFileType;
 
         const startTime = Date.now();
         const convertResult = await this.convertService.convert(
           masterImage.data,
-          sourceMime,
-          targetMime,
+          sourceFileType,
+          targetFileType,
           allow_editing ? options : {},
         );
         if (HasFailed(convertResult)) return convertResult;
 
         this.logger.verbose(
-          `Converted ${imageId} from ${sourceMime.mime} to ${
-            targetMime.mime
+          `Converted ${imageId} from ${sourceFileType.identifier} to ${
+            targetFileType.identifier
           } in ${Date.now() - startTime}ms`,
         );
 
@@ -146,12 +149,12 @@ export class ImageManagerService {
           return await this.imageFilesService.addDerivative(
             imageId,
             converted_key,
-            convertResult.mime,
+            convertResult.filetype,
             convertResult.image,
           );
         } else {
           const derivative = new EImageDerivativeBackend();
-          derivative.mime = convertResult.mime;
+          derivative.filetype = convertResult.filetype;
           derivative.data = convertResult.image;
           derivative.image_id = imageId;
           derivative.key = converted_key;
@@ -164,52 +167,52 @@ export class ImageManagerService {
   // File getters ==============================================================
 
   public async getMaster(imageId: string): AsyncFailable<EImageFileBackend> {
-    return this.imageFilesService.getFile(imageId, ImageFileType.MASTER);
+    return this.imageFilesService.getFile(imageId, ImageEntryVariant.MASTER);
   }
 
-  public async getMasterMime(imageId: string): AsyncFailable<FullMime> {
-    const mime = await this.imageFilesService.getFileMimes(imageId);
+  public async getMasterFileType(imageId: string): AsyncFailable<FileType> {
+    const mime = await this.imageFilesService.getFileTypes(imageId);
     if (HasFailed(mime)) return mime;
 
-    if (mime.master === undefined) return Fail(FT.NotFound, 'No master file');
+    if (mime['master'] === undefined) return Fail(FT.NotFound, 'No master file');
 
-    return ParseMime(mime.master);
+    return ParseFileType(mime['master']);
   }
 
   public async getOriginal(imageId: string): AsyncFailable<EImageFileBackend> {
-    return this.imageFilesService.getFile(imageId, ImageFileType.ORIGINAL);
+    return this.imageFilesService.getFile(imageId, ImageEntryVariant.ORIGINAL);
   }
 
-  public async getOriginalMime(imageId: string): AsyncFailable<FullMime> {
-    const mime = await this.imageFilesService.getFileMimes(imageId);
-    if (HasFailed(mime)) return mime;
+  public async getOriginalFileType(imageId: string): AsyncFailable<FileType> {
+    const filetypes = await this.imageFilesService.getFileTypes(imageId);
+    if (HasFailed(filetypes)) return filetypes;
 
-    if (mime.original === undefined)
+    if (filetypes['original'] === undefined)
       return Fail(FT.NotFound, 'No original file');
 
-    return ParseMime(mime.original);
+    return ParseFileType(filetypes['original']);
   }
 
   public async getFileMimes(imageId: string): AsyncFailable<{
-    [ImageFileType.MASTER]: string;
-    [ImageFileType.ORIGINAL]: string | undefined;
+    [ImageEntryVariant.MASTER]: string;
+    [ImageEntryVariant.ORIGINAL]: string | undefined;
   }> {
-    const result = await this.imageFilesService.getFileMimes(imageId);
+    const result = await this.imageFilesService.getFileTypes(imageId);
     if (HasFailed(result)) return result;
 
-    if (result[ImageFileType.MASTER] === undefined) {
+    if (result[ImageEntryVariant.MASTER] === undefined) {
       return Fail(FT.NotFound, 'No master file found');
     }
 
     return {
-      [ImageFileType.MASTER]: result[ImageFileType.MASTER]!,
-      [ImageFileType.ORIGINAL]: result[ImageFileType.ORIGINAL],
+      [ImageEntryVariant.MASTER]: result[ImageEntryVariant.MASTER]!,
+      [ImageEntryVariant.ORIGINAL]: result[ImageEntryVariant.ORIGINAL],
     };
   }
 
   // Util stuff ==================================================================
 
-  private async getFullMimeFromBuffer(image: Buffer): AsyncFailable<FullMime> {
+  private async getFileTypeFromBuffer(image: Buffer): AsyncFailable<FileType> {
     const filetypeResult: FileTypeResult | undefined = await fileTypeFromBuffer(
       image,
     );
@@ -221,8 +224,7 @@ export class ImageManagerService {
       mime = filetypeResult.mime;
     }
 
-    const fullMime = ParseMime(mime ?? 'other/unknown');
-    return fullMime;
+    return ParseMime2FileType(mime ?? 'other/unknown');
   }
 
   private getConvertHash(options: object) {

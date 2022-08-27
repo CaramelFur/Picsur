@@ -1,24 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import {
-  FullMime,
-  ImageMime,
-  SupportedMimeCategory
+  FileType,
+  ImageFileType,
+  SupportedFileTypeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
-import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
-import { QOIColorSpace, QOIencode } from 'qoi-img';
+
+import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
+import { ImageConverterService } from './image-converter.service';
 import { ImageResult } from './imageresult';
-import { UniversalSharp } from './universal-sharp';
 
 @Injectable()
 export class ImageProcessorService {
+  constructor(private readonly imageConverter: ImageConverterService) {}
+
   public async process(
     image: Buffer,
-    mime: FullMime,
+    filetype: FileType,
   ): AsyncFailable<ImageResult> {
-    if (mime.type === SupportedMimeCategory.Image) {
-      return await this.processStill(image, mime);
-    } else if (mime.type === SupportedMimeCategory.Animation) {
-      return await this.processAnimation(image, mime);
+    if (filetype.category === SupportedFileTypeCategory.Image) {
+      return await this.processStill(image, filetype);
+    } else if (filetype.category === SupportedFileTypeCategory.Animation) {
+      return await this.processAnimation(image, filetype);
     } else {
       return Fail(FT.SysValidation, 'Unsupported mime type');
     }
@@ -26,48 +29,22 @@ export class ImageProcessorService {
 
   private async processStill(
     image: Buffer,
-    mime: FullMime,
+    filetype: FileType,
   ): AsyncFailable<ImageResult> {
-    let processedMime = mime.mime;
+    const outputFileType = ParseFileType(ImageFileType.QOI);
+    if (HasFailed(outputFileType)) return outputFileType;
 
-    let sharpImage = UniversalSharp(image, mime);
-    processedMime = ImageMime.QOI;
-
-    sharpImage = sharpImage.toColorspace('srgb');
-
-    const processedImage = await sharpImage.raw().toBuffer({
-      resolveWithObject: true,
-    });
-
-    if (
-      processedImage.info.width >= 32768 ||
-      processedImage.info.height >= 32768
-    ) {
-      return Fail(FT.UsrValidation, 'Image too large');
-    }
-
-    // Png can be more efficient than QOI, but its just sooooooo slow
-    const qoiImage = QOIencode(processedImage.data, {
-      channels: processedImage.info.channels,
-      colorspace: QOIColorSpace.SRGB,
-      height: processedImage.info.height,
-      width: processedImage.info.width,
-    });
-
-    return {
-      image: qoiImage,
-      mime: processedMime,
-    };
+    return this.imageConverter.convert(image, filetype, outputFileType, {});
   }
 
   private async processAnimation(
     image: Buffer,
-    mime: FullMime,
+    filetype: FileType,
   ): AsyncFailable<ImageResult> {
     // Apng and gif are stored as is for now
     return {
       image: image,
-      mime: mime.mime,
+      filetype: filetype.identifier,
     };
   }
 }

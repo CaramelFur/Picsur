@@ -1,9 +1,16 @@
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW } from '@ng-web-apis/common';
 import { ApiResponseSchema } from 'picsur-shared/dist/dto/api/api.dto';
-import { Mime2Ext } from 'picsur-shared/dist/dto/mimes.dto';
-import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
+import {
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
+  HasSuccess
+} from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
+import { ParseMime2FileType } from 'picsur-shared/dist/util/parse-mime';
 import { Subject } from 'rxjs';
 import { ApiBuffer } from 'src/app/models/dto/api-buffer.dto';
 import { ApiError } from 'src/app/models/dto/api-error.dto';
@@ -142,9 +149,14 @@ export class ApiService {
       }
     }
 
-    const mimeTypeExt = Mime2Ext(mimeType);
-    if (mimeTypeExt !== undefined && !name.endsWith(mimeTypeExt)) {
-      name += '.' + mimeTypeExt;
+    const filetype = ParseMime2FileType(mimeType);
+    if (HasSuccess(filetype)) {
+      const ext = FileType2Ext(filetype.identifier);
+      if (HasSuccess(ext)) {
+        if (name.endsWith(ext)) {
+          name += '.' + ext;
+        }
+      }
     }
 
     try {

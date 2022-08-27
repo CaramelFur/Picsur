@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { EImageSchema } from '../../entities/image.entity';
 import { EUserSchema } from '../../entities/user.entity';
 import { createZodDto } from '../../util/create-zod-dto';
-import { ImageFileType } from '../image-file-types.enum';
+import { ImageEntryVariant } from '../image-entry-variant.enum';
 
 const parseBool = (value: unknown): boolean | null => {
   if (value === true || value === 'true' || value === '1' || value === 'yes')
@@ -36,9 +36,9 @@ export class ImageRequestParams extends createZodDto(
 export const ImageMetaResponseSchema = z.object({
   image: EImageSchema,
   user: EUserSchema,
-  fileMimes: z.object({
-    [ImageFileType.MASTER]: z.string(),
-    [ImageFileType.ORIGINAL]: z.union([z.string(), z.undefined()]),
+  fileTypes: z.object({
+    [ImageEntryVariant.MASTER]: z.string(),
+    [ImageEntryVariant.ORIGINAL]: z.union([z.string(), z.undefined()]),
   }),
 });
 export class ImageMetaResponse extends createZodDto(ImageMetaResponseSchema) {}

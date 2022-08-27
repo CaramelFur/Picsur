@@ -2,19 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import {
-  AnimMime,
-  FullMime,
-  ImageMime,
-  Mime2Ext,
-  SupportedAnimMimes,
-  SupportedImageMimes,
-  SupportedMimeCategory
+  AnimFileType,
+  FileType,
+  FileType2Ext,
+  ImageFileType,
+  SupportedAnimFileTypes,
+  SupportedFileTypeCategory,
+  SupportedImageFileTypes
 } from 'picsur-shared/dist/dto/mimes.dto';
+
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed, HasSuccess } from 'picsur-shared/dist/types';
 import { UUIDRegex } from 'picsur-shared/dist/util/common-regex';
-import { ParseMime } from 'picsur-shared/dist/util/parse-mime';
+import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
 import { ImageService } from 'src/app/services/api/image.service';
 import { UtilService } from 'src/app/util/util-module/util.service';
 import {
@@ -36,18 +37,18 @@ export class ViewComponent implements OnInit {
 
   private id: string;
   private hasOriginal: boolean = false;
-  private masterMime: FullMime = {
-    mime: ImageMime.JPEG,
-    type: SupportedMimeCategory.Image,
+  private masterFileType: FileType = {
+    identifier: ImageFileType.JPEG,
+    category: SupportedFileTypeCategory.Image,
   };
-  private currentSelectedFormat: string = ImageMime.JPEG;
+  private currentSelectedFormat: string = ImageFileType.JPEG;
 
   public formatOptions: {
     value: string;
     key: string;
   }[] = [];
 
-  public setSelectedFormat: string = ImageMime.JPEG;
+  public setSelectedFormat: string = ImageFileType.JPEG;
 
   public previewLink = '';
   public imageLinks = new ImageLinks();
@@ -69,25 +70,27 @@ export class ViewComponent implements OnInit {
 
     this.previewLink = this.imageService.GetImageURL(
       this.id,
-      metadata.fileMimes.master,
+      metadata.fileTypes.master,
     );
 
-    this.hasOriginal = metadata.fileMimes.original !== undefined;
+    this.hasOriginal = metadata.fileTypes.original !== undefined;
 
     this.imageUser = metadata.user;
     this.image = metadata.image;
 
-    const masterMime = ParseMime(metadata.fileMimes.master);
-    if (HasSuccess(masterMime)) {
-      this.masterMime = masterMime;
+    const masterFiletype = ParseFileType(metadata.fileTypes.master);
+    if (HasSuccess(masterFiletype)) {
+      this.masterFileType = masterFiletype;
     }
 
-    if (this.masterMime.type === SupportedMimeCategory.Image) {
-      this.setSelectedFormat = ImageMime.JPEG;
-    } else if (this.masterMime.type === SupportedMimeCategory.Animation) {
-      this.setSelectedFormat = AnimMime.GIF;
+    if (this.masterFileType.category === SupportedFileTypeCategory.Image) {
+      this.setSelectedFormat = ImageFileType.JPEG;
+    } else if (
+      this.masterFileType.category === SupportedFileTypeCategory.Animation
+    ) {
+      this.setSelectedFormat = AnimFileType.GIF;
     } else {
-      this.setSelectedFormat = metadata.fileMimes.master;
+      this.setSelectedFormat = metadata.fileTypes.master;
     }
 
     this.selectedFormat(this.setSelectedFormat);
@@ -122,7 +125,7 @@ export class ViewComponent implements OnInit {
     };
 
     if (options.selectedFormat === 'original') {
-      options.selectedFormat = this.masterMime.mime;
+      options.selectedFormat = this.masterFileType.identifier;
     }
 
     await this.utilService.showCustomDialog(CustomizeDialogComponent, options, {
@@ -157,19 +160,29 @@ export class ViewComponent implements OnInit {
       key: string;
     }[] = [];
 
-    if (this.masterMime.type === SupportedMimeCategory.Image) {
+    if (this.masterFileType.category === SupportedFileTypeCategory.Image) {
       newOptions.push(
-        ...SupportedImageMimes.map((mime) => ({
-          value: Mime2Ext(mime)?.toUpperCase() ?? 'Error',
-          key: mime,
-        })),
+        ...SupportedImageFileTypes.map((mime) => {
+          let ext = FileType2Ext(mime);
+          if (HasFailed(ext)) ext = 'Error';
+          return {
+            value: ext.toUpperCase(),
+            key: mime,
+          };
+        }),
       );
-    } else if (this.masterMime.type === SupportedMimeCategory.Animation) {
+    } else if (
+      this.masterFileType.category === SupportedFileTypeCategory.Animation
+    ) {
       newOptions.push(
-        ...SupportedAnimMimes.map((mime) => ({
-          value: Mime2Ext(mime)?.toUpperCase() ?? 'Error',
-          key: mime,
-        })),
+        ...SupportedAnimFileTypes.map((mime) => {
+          let ext = FileType2Ext(mime);
+          if (HasFailed(ext)) ext = 'Error';
+          return {
+            value: ext.toUpperCase(),
+            key: mime,
+          };
+        }),
       );
     }
 
