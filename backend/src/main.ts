@@ -27,7 +27,7 @@ async function bootstrap() {
     AppModule,
     fastifyAdapter,
     {
-      bufferLogs: false,
+      bufferLogs: true,
     },
   );
 

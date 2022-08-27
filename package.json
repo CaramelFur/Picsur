@@ -18,6 +18,7 @@
   },
   "resolutions": {
     "fastify": "^4.5.2",
+    "terser": "^5.14.2",
     "fastify-static": "npm:@fastify/static@*",
     "fastify-formbody": "npm:@fastify/formbody@*",
     "minimist": "npm:minimist-lite@*"
