@@ -107,4 +107,4 @@ volumes:
 
 Here is a usually up to date documentation of the api:
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/rubikscraft/workspace/picsur/collection/1841871-78e559b6-4f39-4092-87c3-92fa29547d03)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/rubikscraft-team/workspace/picsur/collection/1841871-78e559b6-4f39-4092-87c3-92fa29547d03)
