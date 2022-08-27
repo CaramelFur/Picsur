@@ -33,6 +33,7 @@ export class PicsurImgComponent implements OnChanges {
   private readonly logger = new Logger('ZodImgComponent');
 
   @ViewChild('targetcanvas') private canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('targetimg') private img: ElementRef<HTMLImageElement>;
 
   private isInView = false;
 
@@ -63,6 +64,7 @@ export class PicsurImgComponent implements OnChanges {
         if (HasFailed(result)) {
           this.state = PicsurImgState.Error;
           this.logger.error(result.getReason());
+          this.changeDetector.markForCheck();
         }
       })
       .catch((e) => this.logger.error);
@@ -83,6 +85,16 @@ export class PicsurImgComponent implements OnChanges {
 
       this.state = PicsurImgState.Canvas;
     } else {
+      const result = await this.apiService.getBuffer(url);
+      if (HasFailed(result)) return result;
+
+
+
+      const img = this.img.nativeElement;
+
+      const blob = new Blob([result.buffer]);
+      img.src = URL.createObjectURL(blob);
+
       this.state = PicsurImgState.Image;
     }
     this.changeDetector.markForCheck();

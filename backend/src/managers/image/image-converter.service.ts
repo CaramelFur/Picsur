@@ -7,6 +7,7 @@ import {
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import { SharpOptions } from 'sharp';
 import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
 import { SharpWrapper } from '../../workers/sharp.wrapper';
 import { ImageResult } from './imageresult';
@@ -21,14 +22,10 @@ export class ImageConverterService {
     targetFiletype: FileType,
     options: ImageRequestParams,
   ): AsyncFailable<ImageResult> {
-    if (sourceFiletype.category !== sourceFiletype.category) {
-      return Fail(
-        FT.Impossible,
-        "Can't convert from animated to still or vice versa",
-      );
-    }
-
-    if (sourceFiletype.identifier === targetFiletype.identifier) {
+    if (
+      sourceFiletype.identifier === targetFiletype.identifier &&
+      Object.keys(options).length === 0
+    ) {
       return {
         filetype: targetFiletype.identifier,
         image,
@@ -37,7 +34,9 @@ export class ImageConverterService {
 
     if (targetFiletype.category === SupportedFileTypeCategory.Image) {
       return this.convertStill(image, sourceFiletype, targetFiletype, options);
-    } else if (targetFiletype.category === SupportedFileTypeCategory.Animation) {
+    } else if (
+      targetFiletype.category === SupportedFileTypeCategory.Animation
+    ) {
       return this.convertStill(image, sourceFiletype, targetFiletype, options);
       //return this.convertAnimation(image, targetmime, options);
     } else {
@@ -61,7 +60,14 @@ export class ImageConverterService {
     const timeLimitMS = ms(timeLimit);
 
     const sharpWrapper = new SharpWrapper(timeLimitMS, memLimit);
-    const hasStarted = await sharpWrapper.start(image, sourceFiletype);
+    const sharpOptions: SharpOptions = {
+      animated: targetFiletype.category === SupportedFileTypeCategory.Animation,
+    };
+    const hasStarted = await sharpWrapper.start(
+      image,
+      sourceFiletype,
+      sharpOptions,
+    );
     if (HasFailed(hasStarted)) return hasStarted;
 
     // Do modifications

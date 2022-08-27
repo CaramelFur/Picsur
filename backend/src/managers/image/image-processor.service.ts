@@ -41,7 +41,7 @@ export class ImageProcessorService {
     image: Buffer,
     filetype: FileType,
   ): AsyncFailable<ImageResult> {
-    // Apng and gif are stored as is for now
+    // Webps and gifs are stored as is for now
     return {
       image: image,
       filetype: filetype.identifier,

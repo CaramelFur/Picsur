@@ -59,7 +59,7 @@ export class SharpWorker {
     }
 
     this.startTime = Date.now();
-    this.sharpi = UniversalSharpIn(message.image, message.filetype);
+    this.sharpi = UniversalSharpIn(message.image, message.filetype, message.options);
   }
 
   private operation(message: SharpWorkerOperationMessage): void {

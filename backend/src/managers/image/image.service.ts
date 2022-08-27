@@ -3,14 +3,13 @@ import Crypto from 'crypto';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
-import { FileType } from 'picsur-shared/dist/dto/mimes.dto';
+import { AnimFileType, FileType, ImageFileType, Mime2FileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import {
-  ParseFileType,
-  ParseMime2FileType
+  ParseFileType
 } from 'picsur-shared/dist/util/parse-mime';
 import { IsQOI } from 'qoi-img';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
@@ -23,6 +22,7 @@ import { EImageBackend } from '../../models/entities/image.entity';
 import { MutexFallBack } from '../../models/util/mutex-fallback';
 import { ImageConverterService } from './image-converter.service';
 import { ImageProcessorService } from './image-processor.service';
+import { WebPInfo } from './webpinfo/webpinfo';
 
 @Injectable()
 export class ImageManagerService {
@@ -224,7 +224,21 @@ export class ImageManagerService {
       mime = filetypeResult.mime;
     }
 
-    return ParseMime2FileType(mime ?? 'other/unknown');
+    if (mime === undefined) mime = "other/unknown";
+
+    let filetype: string | undefined;
+    if (mime === "image/webp") {
+      const header = await WebPInfo.from(image);
+      if (header.summary.isAnimated) filetype = AnimFileType.WEBP;
+      else filetype = ImageFileType.WEBP;
+    }
+    if (filetype === undefined) {
+      const parsed = Mime2FileType(mime);
+      if (HasFailed(parsed)) return parsed;
+      filetype = parsed;
+    }
+
+    return ParseFileType(filetype);
   }
 
   private getConvertHash(options: object) {

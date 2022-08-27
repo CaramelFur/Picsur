@@ -1,5 +1,5 @@
 import { FileType } from 'picsur-shared/dist/dto/mimes.dto';
-import { Sharp } from 'sharp';
+import { Sharp, SharpOptions } from 'sharp';
 import { SharpResult } from './universal-sharp';
 
 type MapSharpFunctions<T extends keyof Sharp> = T extends any
@@ -34,6 +34,7 @@ export interface SharpWorkerInitMessage {
   type: 'init';
   image: Buffer;
   filetype: FileType;
+  options?: SharpOptions;
 }
 
 export interface SharpWorkerOperationMessage {

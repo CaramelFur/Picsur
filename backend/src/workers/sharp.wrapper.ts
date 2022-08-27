@@ -10,7 +10,7 @@ import {
   FT,
   HasFailed
 } from 'picsur-shared/dist/types';
-import { Sharp } from 'sharp';
+import { Sharp, SharpOptions } from 'sharp';
 import {
   SharpWorkerFinishOptions,
   SharpWorkerOperation,
@@ -41,7 +41,7 @@ export class SharpWrapper {
     private readonly memory_limit: number,
   ) {}
 
-  public async start(image: Buffer, filetype: FileType): AsyncFailable<true> {
+  public async start(image: Buffer, filetype: FileType, sharpOptions?: SharpOptions): AsyncFailable<true> {
     this.worker = fork(SharpWrapper.WORKER_PATH, {
       serialization: 'advanced',
       timeout: this.instance_timeout,
@@ -80,6 +80,7 @@ export class SharpWrapper {
       type: 'init',
       image,
       filetype,
+      options: sharpOptions,
     });
     if (HasFailed(hasSent)) {
       this.purge();

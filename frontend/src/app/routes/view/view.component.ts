@@ -5,10 +5,8 @@ import {
   AnimFileType,
   FileType,
   FileType2Ext,
-  ImageFileType,
-  SupportedAnimFileTypes,
-  SupportedFileTypeCategory,
-  SupportedImageFileTypes
+  ImageFileType, SupportedFileTypeCategory,
+  SupportedFileTypes
 } from 'picsur-shared/dist/dto/mimes.dto';
 
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
@@ -160,31 +158,16 @@ export class ViewComponent implements OnInit {
       key: string;
     }[] = [];
 
-    if (this.masterFileType.category === SupportedFileTypeCategory.Image) {
-      newOptions.push(
-        ...SupportedImageFileTypes.map((mime) => {
-          let ext = FileType2Ext(mime);
-          if (HasFailed(ext)) ext = 'Error';
-          return {
-            value: ext.toUpperCase(),
-            key: mime,
-          };
-        }),
-      );
-    } else if (
-      this.masterFileType.category === SupportedFileTypeCategory.Animation
-    ) {
-      newOptions.push(
-        ...SupportedAnimFileTypes.map((mime) => {
-          let ext = FileType2Ext(mime);
-          if (HasFailed(ext)) ext = 'Error';
-          return {
-            value: ext.toUpperCase(),
-            key: mime,
-          };
-        }),
-      );
-    }
+    newOptions.push(
+      ...SupportedFileTypes.map((mime) => {
+        let ext = FileType2Ext(mime);
+        if (HasFailed(ext)) ext = 'Error';
+        return {
+          value: ext.toUpperCase(),
+          key: mime,
+        };
+      }),
+    );
 
     return newOptions;
   }

@@ -1,5 +1,9 @@
 import { BMPdecode, BMPencode } from 'bmp-img';
-import { FileType, ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
+import {
+  AnimFileType,
+  FileType,
+  ImageFileType
+} from 'picsur-shared/dist/dto/mimes.dto';
 import { QOIdecode, QOIencode } from 'qoi-img';
 import sharp, { Sharp, SharpOptions } from 'sharp';
 
@@ -20,11 +24,6 @@ export function UniversalSharpIn(
     return bmpSharpIn(image, options);
   } else if (filetype.identifier === ImageFileType.QOI) {
     return qoiSharpIn(image, options);
-  // } else if (filetype.identifier === AnimFileType.GIF) {
-  //   return sharp(image, {
-  //     ...options,
-  //     animated: true,
-  //   });
   } else {
     return sharp(image, options);
   }
@@ -95,20 +94,21 @@ export async function UniversalSharpOut(
         .tiff({ quality: options?.quality })
         .toBuffer({ resolveWithObject: true });
       break;
-    case ImageFileType.WEBP:
-      result = await image
-        .webp({ quality: options?.quality })
-        .toBuffer({ resolveWithObject: true });
-      break;
     case ImageFileType.BMP:
       result = await bmpSharpOut(image);
       break;
     case ImageFileType.QOI:
       result = await qoiSharpOut(image);
       break;
-    // case AnimFileType.GIF:
-    //   result = await image.gif().toBuffer({ resolveWithObject: true });
-    //   break;
+    case ImageFileType.WEBP:
+    case AnimFileType.WEBP:
+      result = await image
+        .webp({ quality: options?.quality })
+        .toBuffer({ resolveWithObject: true });
+      break;
+    case AnimFileType.GIF:
+      result = await image.gif().toBuffer({ resolveWithObject: true });
+      break;
     default:
       throw new Error('Unsupported mime type');
   }

@@ -4895,7 +4895,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:2.6.9":
+"debug@npm:2, debug@npm:2.6.9":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
   dependencies:
@@ -8929,6 +8929,8 @@ __metadata:
     rxjs: ^7.5.6
     sharp: ^0.30.7
     source-map-support: ^0.5.21
+    stream-parser: ^0.3.1
+    thunks: ^4.9.6
     ts-loader: ^9.3.1
     ts-node: ^10.9.1
     tsconfig-paths: ^4.1.0
@@ -10811,6 +10813,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"stream-parser@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "stream-parser@npm:0.3.1"
+  dependencies:
+    debug: 2
+  checksum: 4d86ff8cffe7c7587dc91433fff9dce38a93ea7e9f47560055addc81eae6b6befab22b75643ce539faf325fe2b17d371778242566bed086e75f6cffb1e76c06c
+  languageName: node
+  linkType: hard
+
 "stream-wormhole@npm:^1.1.0":
   version: 1.1.0
   resolution: "stream-wormhole@npm:1.1.0"
@@ -11133,6 +11144,13 @@ __metadata:
   version: 2.3.8
   resolution: "through@npm:2.3.8"
   checksum: a38c3e059853c494af95d50c072b83f8b676a9ba2818dcc5b108ef252230735c54e0185437618596c790bbba8fcdaef5b290405981ffa09dce67b1f1bf190cbd
+  languageName: node
+  linkType: hard
+
+"thunks@npm:^4.9.6":
+  version: 4.9.6
+  resolution: "thunks@npm:4.9.6"
+  checksum: 116b46dfd9426de6d3832e56486bfea55b35a240d2eeaa411fa765f16f93c0243a8d05a9c4fe5d40018b29c5bb84eec09d60cc6cd213724647a254332fdaaf12
   languageName: node
   linkType: hard
 
