@@ -5,6 +5,7 @@ import {
   ServeStaticModuleOptionsFactory
 } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ParseString } from 'picsur-shared/dist/util/parse-simple';
 import { EnvPrefix, PackageRoot } from '../config.static';
 
 @Injectable()
@@ -20,11 +21,12 @@ export class ServeStaticConfigService
   }
 
   public getStaticDirectory(): string {
-    const directory = this.configService.get<string>(
-      `${EnvPrefix}STATIC_FRONTEND_ROOT`,
-      this.defaultLocation,
+    return ParseString(
+      this.configService.get(
+        `${EnvPrefix}STATIC_FRONTEND_ROOT`,
+        this.defaultLocation,
+      ),
     );
-    return directory;
   }
 
   public createLoggerOptions(): ServeStaticModuleOptions[] {

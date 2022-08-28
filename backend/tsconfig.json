@@ -1,5 +1,7 @@
 {
   "extends": "../tsconfig.base.json",
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"],
   "compilerOptions": {
     "target": "es2020",
     "module": "es2020",
@@ -8,5 +10,8 @@
     "declaration": true,
     "sourceMap": true,
     "emitDecoratorMetadata": true
+  },
+  "ts-node": {
+    "experimentalSpecifierResolution": "node"
   }
 }

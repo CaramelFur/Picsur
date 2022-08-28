@@ -9,13 +9,13 @@ import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
+  ESysPreferenceBackend,
+  ESysPreferenceSchema
+} from '../../database/entities/sys-preference.entity';
+import {
   SysPreferenceList,
   SysPreferenceValueTypes
 } from '../../models/constants/syspreferences.const';
-import {
-  ESysPreferenceBackend,
-  ESysPreferenceSchema
-} from '../../models/entities/sys-preference.entity';
 import { MutexFallBack } from '../../models/util/mutex-fallback';
 import { PreferenceCommonService } from './preference-common.service';
 import { PreferenceDefaultsService } from './preference-defaults.service';

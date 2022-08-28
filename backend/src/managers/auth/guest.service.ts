@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../collections/user-db/user-db.service';
-import { EUserBackend } from '../../models/entities/user.entity';
+import { EUserBackend } from '../../database/entities/user.entity';
 
 @Injectable()
 export class GuestService {

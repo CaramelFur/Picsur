@@ -5,6 +5,7 @@
   "license": "GPL-3.0",
   "repository": "https://github.com/rubikscraft/Picsur",
   "author": "Rubikscraft <contact@rubikscraft.nl>",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
@@ -41,6 +42,7 @@
     "zone.js": "~0.11.8"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^14.0.1",
     "@angular-devkit/build-angular": "14.2.0",
     "@angular/cli": "^14.2.0",
     "@angular/compiler-cli": "^14.2.0",

@@ -1,11 +1,10 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import cors from 'cors';
 import { IncomingMessage, ServerResponse } from 'http';
 import { EarlyConfigModule } from './config/early/early-config.module';
 import { ServeStaticConfigService } from './config/early/serve-static.config.service';
-import { TypeOrmConfigService } from './config/early/type-orm.config.service';
+import { DatabaseModule } from './database/database.module';
 import { PicsurLoggerModule } from './logger/logger.module';
 import { AuthManagerModule } from './managers/auth/auth.module';
 import { DemoManagerModule } from './managers/demo/demo.module';
@@ -37,15 +36,12 @@ const imageCorsOverride = (
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      useExisting: TypeOrmConfigService,
-      imports: [EarlyConfigModule],
-    }),
+    PicsurLoggerModule,
     ServeStaticModule.forRootAsync({
       useExisting: ServeStaticConfigService,
       imports: [EarlyConfigModule],
     }),
-    PicsurLoggerModule,
+    DatabaseModule,
     AuthManagerModule,
     DemoManagerModule,
     PicsurRoutesModule,

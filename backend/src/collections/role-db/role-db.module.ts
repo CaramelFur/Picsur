@@ -3,12 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { EarlyConfigModule } from '../../config/early/early-config.module';
 import { HostConfigService } from '../../config/early/host.config.service';
+import { ERoleBackend } from '../../database/entities/role.entity';
 import {
   ImmutableRolesList,
   SystemRoleDefaults,
   SystemRolesList
 } from '../../models/constants/roles.const';
-import { ERoleBackend } from '../../models/entities/role.entity';
 import { RolesService } from './role-db.service';
 
 @Module({

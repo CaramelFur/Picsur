@@ -10,10 +10,11 @@ services:
       # PICSUR_PORT: 8080
 
       PICSUR_DB_HOST: picsur_postgres
+
       # PICSUR_DB_PORT: 5432
-      # PICSUR_DB_USER: picsur
+      # PICSUR_DB_USERNAME: picsur
       # PICSUR_DB_PASSWORD: picsur
-      # PICSUR_DB_NAME: picsur
+      # PICSUR_DB_DATABASE: picsur
 
       # PICSUR_ADMIN_PASSWORD: picsur
 
@@ -24,7 +25,7 @@ services:
       # PICSUR_STATIC_FRONTEND_ROOT: "/picsur/frontend/dist"
     restart: unless-stopped
   picsur_postgres:
-    image: postgres:11-alpine
+    image: postgres:14-alpine
     container_name: picsur_postgres
     environment:
       POSTGRES_DB: picsur

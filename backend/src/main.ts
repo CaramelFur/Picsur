@@ -1,5 +1,5 @@
 import fastifyHelmet from '@fastify/helmet';
-import * as multipart from '@fastify/multipart';
+import multipart from '@fastify/multipart';
 import { NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -31,15 +31,17 @@ async function bootstrap() {
     },
   );
 
+  // Configure logger
+  app.useLogger(app.get(PicsurLoggerService));
+
+  app.flushLogs();
+
   app.useGlobalFilters(new MainExceptionFilter());
   app.useGlobalInterceptors(new SuccessInterceptor(app.get(Reflector)));
   app.useGlobalPipes(new ZodValidationPipe());
   app.useGlobalGuards(
     new MainAuthGuard(app.get(Reflector), app.get(UsersService)),
   );
-
-  // Configure logger
-  app.useLogger(app.get(PicsurLoggerService));
 
   // Start app
   const hostConfigService = app.get(HostConfigService);

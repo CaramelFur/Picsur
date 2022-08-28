@@ -77,9 +77,9 @@ services:
 
       PICSUR_DB_HOST: picsur_postgres
       # PICSUR_DB_PORT: 5432
-      # PICSUR_DB_USER: picsur
+      # PICSUR_DB_USERNAME: picsur
       # PICSUR_DB_PASSWORD: picsur
-      # PICSUR_DB_NAME: picsur
+      # PICSUR_DB_DATABASE: picsur
 
       # PICSUR_ADMIN_PASSWORD: picsur
 

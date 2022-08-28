@@ -12,6 +12,7 @@ import {
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { Repository } from 'typeorm';
+import { EUserBackend } from '../../database/entities/user.entity';
 import { Permissions } from '../../models/constants/permissions.const';
 import {
   DefaultRolesList,
@@ -22,7 +23,6 @@ import {
   LockedLoginUsersList,
   UndeletableUsersList
 } from '../../models/constants/special-users.const';
-import { EUserBackend } from '../../models/entities/user.entity';
 import { GetCols } from '../../models/util/collection';
 import { SysPreferenceService } from '../preference-db/sys-preference-db.service';
 import { RolesService } from '../role-db/role-db.service';

@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ParseInt } from 'picsur-shared/dist/util/parse-simple';
 import { EnvPrefix } from '../config.static';
 
 @Injectable()
@@ -11,8 +12,8 @@ export class MultipartConfigService {
   }
 
   public getMaxFileSize(): number {
-    return this.configService.get<number>(
-      `${EnvPrefix}MAX_FILE_SIZE`,
+    return ParseInt(
+      this.configService.get(`${EnvPrefix}MAX_FILE_SIZE`),
       128000000,
     );
   }

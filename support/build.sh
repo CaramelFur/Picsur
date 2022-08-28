@@ -10,13 +10,18 @@ VERSION=$(cat ../package.json | grep version | head -1 | awk -F: '{ print $2 }' 
 
 echo "Building version $VERSION"
 
-docker build -t "$PACKAGE_URL:$VERSION" -t "$PACKAGE_URL:latest" -f ./skala.Dockerfile ..
+docker build -t "$PACKAGE_URL:$VERSION" -t "$PACKAGE_URL:latest" -f ./picsur.Dockerfile ..
 
 echo "Done"
 
-echo "Pushing to registry"
+# only push if argument is set to "push"
+if [ "$1" == "push" ]; then
+  echo "Pushing to registry"
 
-docker push "$PACKAGE_URL:$VERSION"
-docker push "$PACKAGE_URL:latest"
+  docker push "$PACKAGE_URL:$VERSION"
+  docker push "$PACKAGE_URL:latest"
 
-echo "Done"
+  echo "Done"
+else 
+  echo "Not pushing to registry"
+fi

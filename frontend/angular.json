@@ -21,7 +21,7 @@
       "sourceRoot": "src",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
@@ -37,15 +37,18 @@
               "moment"
             ],
             "optimization": true,
-            "webWorkerTsConfig": "tsconfig.worker.json"
+            "webWorkerTsConfig": "tsconfig.worker.json",
+            "customWebpackConfig": {
+              "path": "./custom-webpack.config.js"
+            }
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1500kb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",

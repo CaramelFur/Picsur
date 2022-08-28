@@ -1,5 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import {
+  ParseBool,
+  ParseInt,
+  ParseString
+} from 'picsur-shared/dist/util/parse-simple';
 import { EnvPrefix } from '../config.static';
 
 @Injectable()
@@ -7,6 +12,7 @@ export class HostConfigService {
   private readonly logger = new Logger('HostConfigService');
 
   constructor(private readonly configService: ConfigService) {
+    this.logger.log('Production: ' + this.isProduction());
     this.logger.log('Host: ' + this.getHost());
     this.logger.log('Port: ' + this.getPort());
     this.logger.log('Demo: ' + this.isDemo());
@@ -14,41 +20,29 @@ export class HostConfigService {
   }
 
   public getHost(): string {
-    const host = this.configService.get<string>(`${EnvPrefix}HOST`, '0.0.0.0');
-    return host;
+    return ParseString(this.configService.get(`${EnvPrefix}HOST`), '0.0.0.0');
   }
 
   public getPort(): number {
-    const port = this.configService.get<number>(`${EnvPrefix}PORT`, 8080);
-    return port;
+    return ParseInt(this.configService.get(`${EnvPrefix}PORT`), 8080);
   }
 
   public isDemo() {
-    const enabled = this.configService.get<boolean>(`${EnvPrefix}DEMO`, false);
-    return enabled;
+    return ParseBool(this.configService.get(`${EnvPrefix}DEMO`), false);
   }
 
   public getDemoInterval() {
-    const interval = this.configService.get<number>(
-      `${EnvPrefix}DEMO_INTERVAL`,
+    return ParseInt(
+      this.configService.get(`${EnvPrefix}DEMO_INTERVAL`),
       1000 * 60 * 5,
     );
-    return interval;
   }
 
   public isProduction() {
-    const enabled = this.configService.get<boolean>(
-      `${EnvPrefix}PRODUCTION`,
-      false,
-    );
-    return enabled;
+    return ParseBool(this.configService.get(`${EnvPrefix}PRODUCTION`), false);
   }
 
   public getVersion() {
-    const version = this.configService.get<string>(
-      `npm_package_version`,
-      '0.0.0',
-    );
-    return version;
+    return ParseString(this.configService.get(`npm_package_version`), '0.0.0');
   }
 }

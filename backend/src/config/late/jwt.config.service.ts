@@ -1,5 +1,6 @@
 import { FactoryProvider, Injectable, Logger } from '@nestjs/common';
 import { JwtModuleOptions, JwtOptionsFactory } from '@nestjs/jwt';
+import ms from 'ms';
 import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
 
@@ -26,12 +27,17 @@ export class JwtConfigService implements JwtOptionsFactory {
     return secret;
   }
 
-  public async getJwtExpiresIn(): Promise<string> {
+  public async getJwtExpiresIn(): Promise<number> {
     const expiresIn = ThrowIfFailed(
       await this.prefService.getStringPreference('jwt_expires_in'),
     );
 
-    return expiresIn;
+    let milliseconds = ms(expiresIn);
+    if (milliseconds === undefined) {
+      milliseconds = 1000 * 60 * 60 * 24; // 1 day
+    }
+
+    return milliseconds / 1000;
   }
 
   public async createJwtOptions(): Promise<JwtModuleOptions> {

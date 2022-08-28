@@ -1,7 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { EntityList } from '../../models/entities';
+import { TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { ParseInt, ParseString } from 'picsur-shared/dist/util/parse-simple';
+import { EntityList } from '../../database/entities';
+import { MigrationList } from '../../database/migrations';
 import { DefaultName, EnvPrefix } from '../config.static';
 import { HostConfigService } from './host.config.service';
 
@@ -25,31 +27,45 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
 
   public getTypeOrmServerOptions() {
     const varOptions = {
-      host: this.configService.get<string>(`${EnvPrefix}DB_HOST`, 'localhost'),
-      port: this.configService.get<number>(`${EnvPrefix}DB_PORT`, 5432),
-      username: this.configService.get<string>(
-        `${EnvPrefix}DB_USERNAME`,
+      host: ParseString(
+        this.configService.get(`${EnvPrefix}DB_HOST`),
+        'localhost',
+      ),
+      port: ParseInt(
+        this.configService.get<number>(`${EnvPrefix}DB_PORT`),
+        5432,
+      ),
+      username: ParseString(
+        this.configService.get<string>(`${EnvPrefix}DB_USERNAME`),
         DefaultName,
       ),
-      password: this.configService.get<string>(
-        `${EnvPrefix}DB_PASSWORD`,
+      password: ParseString(
+        this.configService.get<string>(`${EnvPrefix}DB_PASSWORD`),
         DefaultName,
       ),
-      database: this.configService.get<string>(
-        `${EnvPrefix}DB_DATABASE`,
+      database: ParseString(
+        this.configService.get<string>(`${EnvPrefix}DB_DATABASE`),
         DefaultName,
       ),
     };
     return varOptions;
   }
 
-  public createTypeOrmOptions(connectionName?: string): TypeOrmModuleOptions {
+  public createTypeOrmOptions(connectionName?: string) {
     const varOptions = this.getTypeOrmServerOptions();
     return {
-      type: 'postgres',
-      synchronize: !this.hostService.isProduction(),
+      type: 'postgres' as 'postgres',
+      synchronize: false,
+
+      migrationsRun: true,
 
       entities: EntityList,
+      migrations: MigrationList,
+
+      cli: {
+        migrationsDir: 'src/database/migrations',
+        entitiesDir: 'src/database/entities',
+      },
 
       ...varOptions,
     };

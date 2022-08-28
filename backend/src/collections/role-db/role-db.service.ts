@@ -10,12 +10,12 @@ import {
 } from 'picsur-shared/dist/types';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { In, Repository } from 'typeorm';
+import { ERoleBackend } from '../../database/entities/role.entity';
 import { Permissions } from '../../models/constants/permissions.const';
 import {
   ImmutableRolesList,
   UndeletableRolesList
 } from '../../models/constants/roles.const';
-import { ERoleBackend } from '../../models/entities/role.entity';
 
 @Injectable()
 export class RolesService {
@@ -24,7 +24,8 @@ export class RolesService {
   constructor(
     @InjectRepository(ERoleBackend)
     private readonly rolesRepository: Repository<ERoleBackend>,
-  ) {}
+  ) {
+  }
 
   public async create(
     name: string,

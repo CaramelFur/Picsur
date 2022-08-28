@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { In, Repository } from 'typeorm';
-import { EImageDerivativeBackend } from '../../models/entities/image-derivative.entity';
-import { EImageFileBackend } from '../../models/entities/image-file.entity';
-import { EImageBackend } from '../../models/entities/image.entity';
+import { EImageDerivativeBackend } from '../../database/entities/image-derivative.entity';
+import { EImageFileBackend } from '../../database/entities/image-file.entity';
+import { EImageBackend } from '../../database/entities/image.entity';
 
 @Injectable()
 export class ImageDBService {

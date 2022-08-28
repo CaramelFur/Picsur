@@ -9,13 +9,13 @@ import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
+  EUsrPreferenceBackend,
+  EUsrPreferenceSchema
+} from '../../database/entities/usr-preference.entity';
+import {
   UsrPreferenceList,
   UsrPreferenceValueTypes
 } from '../../models/constants/usrpreferences.const';
-import {
-  EUsrPreferenceBackend,
-  EUsrPreferenceSchema
-} from '../../models/entities/usr-preference.entity';
 import { MutexFallBack } from '../../models/util/mutex-fallback';
 import { PreferenceCommonService } from './preference-common.service';
 import { PreferenceDefaultsService } from './preference-defaults.service';

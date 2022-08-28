@@ -2,15 +2,8 @@ import { z } from 'zod';
 import { EImageSchema } from '../../entities/image.entity';
 import { EUserSchema } from '../../entities/user.entity';
 import { createZodDto } from '../../util/create-zod-dto';
+import { ParseBool } from '../../util/parse-simple';
 import { ImageEntryVariant } from '../image-entry-variant.enum';
-
-const parseBool = (value: unknown): boolean | null => {
-  if (value === true || value === 'true' || value === '1' || value === 'yes')
-    return true;
-  if (value === false || value === 'false' || value === '0' || value === 'no')
-    return false;
-  return null;
-};
 
 export const ImageRequestParamsSchema = z
   .object({
@@ -20,11 +13,11 @@ export const ImageRequestParamsSchema = z
       Number,
       z.number().int().multipleOf(90).min(0).max(360),
     ),
-    flipx: z.preprocess(parseBool, z.boolean()),
-    flipy: z.preprocess(parseBool, z.boolean()),
-    greyscale: z.preprocess(parseBool, z.boolean()),
-    noalpha: z.preprocess(parseBool, z.boolean()),
-    negative: z.preprocess(parseBool, z.boolean()),
+    flipx: z.preprocess(ParseBool, z.boolean()),
+    flipy: z.preprocess(ParseBool, z.boolean()),
+    greyscale: z.preprocess(ParseBool, z.boolean()),
+    noalpha: z.preprocess(ParseBool, z.boolean()),
+    negative: z.preprocess(ParseBool, z.boolean()),
     quality: z.preprocess(Number, z.number().int().min(1).max(100)),
   })
   .partial();

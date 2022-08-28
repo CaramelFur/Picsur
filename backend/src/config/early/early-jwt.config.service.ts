@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ParseString } from 'picsur-shared/dist/util/parse-simple';
 import { EnvPrefix } from '../config.static';
 
 @Injectable()
@@ -7,10 +8,14 @@ export class EarlyJwtConfigService {
   constructor(private readonly configService: ConfigService) {}
 
   public getJwtSecret(): string | undefined {
-    return this.configService.get<string>(`${EnvPrefix}JWT_SECRET`);
+    return (
+      ParseString(this.configService.get(`${EnvPrefix}JWT_SECRET`)) ?? undefined
+    );
   }
 
   public getJwtExpiresIn(): string | undefined {
-    return this.configService.get<string>(`${EnvPrefix}JWT_EXPIRY`);
+    return (
+      ParseString(this.configService.get(`${EnvPrefix}JWT_EXPIRY`)) ?? undefined
+    );
   }
 }

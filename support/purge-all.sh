@@ -1,8 +1,8 @@
 #!/bin/bash
 
-yarn workspace shared purge
-yarn workspace backend purge
-yarn workspace frontend purge
+yarn workspace picsur-shared purge
+yarn workspace picsur-backend purge
+yarn workspace picsur-frontend purge
 
-yarn devdb:purge
+yarn devdb:remove
 yarn purge

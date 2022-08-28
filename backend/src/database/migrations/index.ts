@@ -1,0 +1,3 @@
+import { V030A1661692206479 } from './1661692206479-V_0_3_0_a';
+
+export const MigrationList: Function[] = [V030A1661692206479];

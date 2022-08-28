@@ -1,8 +1,22 @@
 node_modules
 **/node_modules
-dist
-**/dist
 
-Dockerfile
-docker-compose.yml
 support
+backend/dist
+frontend/dist
+shared/dist
+**/.angular
+
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+yarn-error.log
+temp
+
+.vscode
+.git
