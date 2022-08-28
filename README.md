@@ -30,7 +30,7 @@ The images are deleted every five minutes, and the maximum filesize is 16MB. But
 Here is a list of done features, and what is planned.
 For a more detailed list, you can always visit [the project](https://github.com/rubikscraft/Picsur/projects/1).
 
-Right now, not every done feature here is available in the current release. But these will all be available with the next one.
+Every featured marked here should work in the latest release.
 
 - [x] Uploading and viewing images
 - [x] Anonymous uploads
@@ -39,11 +39,25 @@ Right now, not every done feature here is available in the current release. But 
 - [x] Proper CORS restrictions
 - [x] Exif stripping
 - [x] Ability to keep original
-- [x] Support for [QOI format](https://qoiformat.org/)
+- [x] Support for many formats
+  - QOI
+  - JPG
+  - PNG
+  - WEBP (animated supported)
+  - TIFF
+  - BMP
+  - GIF (animated supported)
 - [x] Convert images
-- [x] Resize images
-- [x] Apply filters
+- [x] Edit images
+  - Resize
+  - Rotate
+  - Flip
+  - Strip transparency
+  - Negative
+  - Greyscale
 - [x] Deletable images
+- [x] Proper DB migrations
+- [x] Show own images in list
 
 - [ ] Correct previews on chats
 - [ ] Expiring images
@@ -90,7 +104,7 @@ services:
       # PICSUR_STATIC_FRONTEND_ROOT: "/picsur/frontend/dist"
     restart: unless-stopped
   picsur_postgres:
-    image: postgres:11-alpine
+    image: postgres:14-alpine
     container_name: picsur_postgres
     environment:
       POSTGRES_DB: picsur
