@@ -19,7 +19,7 @@
   "resolutions": {
     "fastify": "^4.5.2",
     "terser": "^5.14.2",
-    "typeorm": "0.3.7",
+    "typeorm": "^0.3.9",
     "fastify-static": "npm:@fastify/static@*",
     "fastify-formbody": "npm:@fastify/formbody@*",
     "minimist": "npm:minimist-lite@*"

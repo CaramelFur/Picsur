@@ -11566,9 +11566,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:0.3.7":
-  version: 0.3.7
-  resolution: "typeorm@npm:0.3.7"
+"typeorm@npm:^0.3.9":
+  version: 0.3.9
+  resolution: "typeorm@npm:0.3.9"
   dependencies:
     "@sqltools/formatter": ^1.2.2
     app-root-path: ^3.0.0
@@ -11644,7 +11644,7 @@ __metadata:
     typeorm: cli.js
     typeorm-ts-node-commonjs: cli-ts-node-commonjs.js
     typeorm-ts-node-esm: cli-ts-node-esm.js
-  checksum: b9a709fa1c103c98340ff055419f5de7fde478e35f246b2f6b212ad6c8954085f347c5a97ed2d94634cf9d51577035d8d71c4c4ccfd58b5f7a9579f434e71802
+  checksum: 5de1e5ac352640ea0b4c41cdfc4da2d3715709e8d0899dc7ec74a81a879dd22d0f99bd8244be3fc6353c2574e6657d3d863b4e4f0337278bb098e81afdacc473
   languageName: node
   linkType: hard
 

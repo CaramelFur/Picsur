@@ -2,6 +2,7 @@
 {
   "extends": "../tsconfig.base.json",
   "compileOnSave": false,
+
   "compilerOptions": {
     "baseUrl": "./",
 
@@ -19,6 +20,8 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "enableIvy": true,
+
   }
 }

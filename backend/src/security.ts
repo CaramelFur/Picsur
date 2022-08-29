@@ -12,7 +12,6 @@ export const HelmetOptions: FastifyHelmetOptions = {
       'object-src': ["'none'"],
       'script-src': ["'self'", "'unsafe-inline'"],
       'style-src': ["'self'", "'unsafe-inline'"],
-      'upgrade-insecure-requests': [],
     },
     useDefaults: false,
     reportOnly: false,
