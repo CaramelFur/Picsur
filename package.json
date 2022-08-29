@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "0.3.0",
+  "version": "0.3.1",
   "workspaces": [
     "shared",
     "backend",
@@ -18,7 +18,7 @@
   },
   "resolutions": {
     "fastify": "^4.5.2",
-    "terser": "5.14.2",
+    "terser": "^5.14.2",
     "typeorm": "0.3.7",
     "fastify-static": "npm:@fastify/static@*",
     "fastify-formbody": "npm:@fastify/formbody@*",

@@ -32,19 +32,19 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         'localhost',
       ),
       port: ParseInt(
-        this.configService.get<number>(`${EnvPrefix}DB_PORT`),
+        this.configService.get(`${EnvPrefix}DB_PORT`),
         5432,
       ),
       username: ParseString(
-        this.configService.get<string>(`${EnvPrefix}DB_USERNAME`),
+        this.configService.get(`${EnvPrefix}DB_USERNAME`),
         DefaultName,
       ),
       password: ParseString(
-        this.configService.get<string>(`${EnvPrefix}DB_PASSWORD`),
+        this.configService.get(`${EnvPrefix}DB_PASSWORD`),
         DefaultName,
       ),
       database: ParseString(
-        this.configService.get<string>(`${EnvPrefix}DB_DATABASE`),
+        this.configService.get(`${EnvPrefix}DB_DATABASE`),
         DefaultName,
       ),
     };

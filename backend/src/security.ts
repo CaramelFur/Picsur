@@ -10,7 +10,7 @@ export const HelmetOptions: FastifyHelmetOptions = {
       'frame-ancestors': ["'self'"],
       'img-src': ["'self'", 'data:', 'blob:'],
       'object-src': ["'none'"],
-      'script-src': ["'self'"],
+      'script-src': ["'self'", "'unsafe-inline'"],
       'style-src': ["'self'", "'unsafe-inline'"],
       'upgrade-insecure-requests': [],
     },
