@@ -1,6 +1,6 @@
 {
   "name": "picsur-frontend",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Frontend for Picsur",
   "license": "GPL-3.0",
   "repository": "https://github.com/rubikscraft/Picsur",
@@ -43,15 +43,15 @@
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^14.0.1",
-    "@angular-devkit/build-angular": "14.2.0",
-    "@angular/cli": "^14.2.0",
+    "@angular-devkit/build-angular": "14.2.1",
+    "@angular/cli": "^14.2.1",
     "@angular/compiler-cli": "^14.2.0",
     "@fontsource/material-icons": "^4.5.4",
     "@fontsource/material-icons-outlined": "^4.5.4",
     "@fontsource/roboto": "^4.5.8",
-    "@types/node": "^18.7.13",
+    "@types/node": "^18.7.14",
     "@types/resize-observer-browser": "^0.1.7",
-    "@types/validator": "^13.7.5",
+    "@types/validator": "^13.7.6",
     "typescript": "4.8.2"
   }
 }
