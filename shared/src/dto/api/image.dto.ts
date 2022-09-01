@@ -2,15 +2,15 @@ import { z } from 'zod';
 import { EImageSchema } from '../../entities/image.entity';
 import { EUserSchema } from '../../entities/user.entity';
 import { createZodDto } from '../../util/create-zod-dto';
-import { ParseBool } from '../../util/parse-simple';
+import { ParseBool, ParseInt } from '../../util/parse-simple';
 import { ImageEntryVariant } from '../image-entry-variant.enum';
 
 export const ImageRequestParamsSchema = z
   .object({
-    height: z.preprocess(Number, z.number().int().min(1).max(32767)),
-    width: z.preprocess(Number, z.number().int().min(1).max(32767)),
+    height: z.preprocess(ParseInt, z.number().int().min(1).max(32767)),
+    width: z.preprocess(ParseInt, z.number().int().min(1).max(32767)),
     rotate: z.preprocess(
-      Number,
+      ParseInt,
       z.number().int().multipleOf(90).min(0).max(360),
     ),
     flipx: z.preprocess(ParseBool, z.boolean()),
@@ -18,7 +18,8 @@ export const ImageRequestParamsSchema = z
     greyscale: z.preprocess(ParseBool, z.boolean()),
     noalpha: z.preprocess(ParseBool, z.boolean()),
     negative: z.preprocess(ParseBool, z.boolean()),
-    quality: z.preprocess(Number, z.number().int().min(1).max(100)),
+    shrinkonly: z.preprocess(ParseBool, z.boolean()),
+    quality: z.preprocess(ParseInt, z.number().int().min(1).max(100)),
   })
   .partial();
 

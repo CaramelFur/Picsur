@@ -72,19 +72,22 @@ export class ImageConverterService {
 
     // Do modifications
     if (options.height || options.width) {
-      if (options.height && options.width) {
+      if ((options.height && options.width)) {
         sharpWrapper.operation('resize', {
           width: options.width,
           height: options.height,
           fit: 'fill',
           kernel: 'cubic',
+          withoutEnlargement: options.shrinkonly,
         });
       } else {
         sharpWrapper.operation('resize', {
           width: options.width,
           height: options.height,
-          fit: 'contain',
+          fit: 'inside',
           kernel: 'cubic',
+
+          withoutEnlargement: options.shrinkonly,
         });
       }
     }

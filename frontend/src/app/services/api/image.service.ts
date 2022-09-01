@@ -15,7 +15,13 @@ import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { AsyncFailable } from 'picsur-shared/dist/types';
-import { Fail, FT, HasFailed, HasSuccess, Open } from 'picsur-shared/dist/types/failable';
+import {
+  Fail,
+  FT,
+  HasFailed,
+  HasSuccess,
+  Open
+} from 'picsur-shared/dist/types/failable';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
 import { UserService } from './user.service';
@@ -107,7 +113,9 @@ export class ImageService {
     const baseURL = this.location.protocol + '//' + this.location.host;
     const extension = FileType2Ext(filetype ?? '');
 
-    return `${baseURL}/i/${image}${HasSuccess(extension) ? '.' + extension : ''}`;
+    return `${baseURL}/i/${image}${
+      HasSuccess(extension) ? '.' + extension : ''
+    }`;
   }
 
   public GetImageURLCustomized(
@@ -129,6 +137,8 @@ export class ImageService {
       queryParams.push(`rotate=${options.rotate}`);
     if (options.flipx !== undefined) queryParams.push(`flipx=${options.flipx}`);
     if (options.flipy !== undefined) queryParams.push(`flipy=${options.flipy}`);
+    if (options.shrinkonly !== undefined)
+      queryParams.push(`shrinkonly=${options.shrinkonly}`);
     if (options.greyscale !== undefined)
       queryParams.push(`greyscale=${options.greyscale}`);
     if (options.noalpha !== undefined)

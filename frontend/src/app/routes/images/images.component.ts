@@ -71,7 +71,7 @@ export class ImagesComponent implements OnInit {
 
   getThumbnailUrl(image: EImage) {
     return (
-      this.imageService.GetImageURL(image.id, ImageFileType.QOI) + '?height=480'
+      this.imageService.GetImageURL(image.id, ImageFileType.QOI) + '?height=480&shrinkonly=yes'
     );
   }
 

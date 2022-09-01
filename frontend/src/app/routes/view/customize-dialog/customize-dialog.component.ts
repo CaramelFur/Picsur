@@ -32,6 +32,7 @@ export class CustomizeDialogComponent implements OnInit {
   public rotate: number;
   public flipx: boolean;
   public flipy: boolean;
+  public shrinkonly: boolean;
   public greyscale: boolean;
   public noalpha: boolean;
   public negative: boolean;
@@ -64,6 +65,7 @@ export class CustomizeDialogComponent implements OnInit {
         quality: this.quality ?? undefined,
         flipx: this.flipx,
         flipy: this.flipy,
+        shrinkonly: this.shrinkonly,
         greyscale: this.greyscale,
         noalpha: this.noalpha,
         negative: this.negative,

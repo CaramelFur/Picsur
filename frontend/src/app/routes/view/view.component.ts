@@ -80,11 +80,13 @@ export class ViewComponent implements OnInit {
     if (HasFailed(metadata))
       return this.utilService.quitError(metadata.getReason());
 
+    // Get width of screen in pixels
+    const width = window.innerWidth * window.devicePixelRatio;
+
     // Populate fields with metadata
-    this.previewLink = this.imageService.GetImageURL(
-      this.id,
-      metadata.fileTypes.master,
-    );
+    this.previewLink =
+      this.imageService.GetImageURL(this.id, metadata.fileTypes.master) +
+      (width > 1 ? `?width=${width}&shrinkonly=yes` : '');
 
     this.hasOriginal = metadata.fileTypes.original !== undefined;
 
@@ -162,10 +164,7 @@ export class ViewComponent implements OnInit {
         );
       }
 
-      this.utilService.showSnackBar(
-        'Image deleted',
-        SnackBarType.Success,
-      );
+      this.utilService.showSnackBar('Image deleted', SnackBarType.Success);
 
       this.router.navigate(['/']);
     }

@@ -14,13 +14,17 @@ export const ParseInt = <T extends number | null = null>(
   value: unknown,
   fallback?: T,
 ): number | T => {
-  if (typeof value === 'number') return value;
+  if (typeof value === 'number') return Math.round(value);
   if (typeof value === 'boolean') return value ? 1 : 0;
   if (typeof value === 'string') {
-    const parsed = parseInt(value);
-    if (!isNaN(parsed)) return parsed;
+    const parsed = Number(value);
+    if (!isNaN(parsed)) return Math.round(parsed);
   }
-  return fallback === undefined ? (null as T) : fallback;
+  return fallback === undefined
+    ? (null as T)
+    : fallback === null
+    ? fallback
+    : Math.round(fallback);
 };
 
 export const ParseString = <T extends string | null = null>(
