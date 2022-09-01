@@ -9,7 +9,7 @@
     <div *ngFor="let image of images" class="m-2" masonry-item>
       <mat-card>
         <mat-card-header>
-          <mat-card-title>Image by you</mat-card-title>
+          <mat-card-title>{{image.file_name | truncate}}</mat-card-title>
           <mat-card-subtitle>
             Uploaded {{ image.created | amTimeAgo }}
           </mat-card-subtitle>

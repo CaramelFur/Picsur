@@ -18,7 +18,7 @@ import { UtilService } from 'src/app/util/util-module/util.service';
   styleUrls: ['./images.component.scss'],
 })
 export class ImagesComponent implements OnInit {
-  private readonly logger: Logger = new Logger('ImagesComponent');
+  private readonly logger: Logger = new Logger(ImagesComponent.name);
 
   images: EImage[] | null = null;
   columns = 1;

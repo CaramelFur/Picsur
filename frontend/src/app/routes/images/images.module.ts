@@ -7,6 +7,7 @@ import { MomentModule } from 'ngx-moment';
 import { MasonryModule } from 'src/app/components/masonry/masonry.module';
 import { PaginatorModule } from 'src/app/components/paginator/paginator.module';
 import { PicsurImgModule } from 'src/app/components/picsur-img/picsur-img.module';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 import { ImagesComponent } from './images.component';
 import { ImagesRoutingModule } from './images.routing.module';
 
@@ -22,6 +23,7 @@ import { ImagesRoutingModule } from './images.routing.module';
     PaginatorModule,
     PicsurImgModule,
     MomentModule,
+    PipesModule
   ],
 })
 export class ImagesRouteModule {}
