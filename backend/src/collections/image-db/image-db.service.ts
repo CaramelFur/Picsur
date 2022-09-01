@@ -66,6 +66,7 @@ export class ImageDBService {
       const [found, amount] = await this.imageRepo.findAndCount({
         skip: count * page,
         take: count,
+        order: { created: 'DESC' },
         where: {
           user_id: userid,
         },
