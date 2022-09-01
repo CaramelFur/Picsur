@@ -20,3 +20,20 @@ ngx-dropzone {
 .centered {
   padding-inline: 1rem;
 }
+
+// unstyle a href
+a {
+  color: inherit;
+  text-decoration: inherit;
+
+  &:hover {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+

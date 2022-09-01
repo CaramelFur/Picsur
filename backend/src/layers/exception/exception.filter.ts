@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, ExceptionFilter, Logger } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, ForbiddenException, Logger, MethodNotAllowedException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ApiErrorResponse } from 'picsur-shared/dist/dto/api/api.dto';
 import {
@@ -24,10 +24,7 @@ export class MainExceptionFilter implements ExceptionFilter {
     const traceString = `(${request.ip} -> ${request.method} ${request.url})`;
 
     if (!IsFailure(exception)) {
-      MainExceptionFilter.logger.error(
-        traceString + ' Unkown exception: ' + exception,
-      );
-      exception = Fail(FT.Internal, 'Unknown exception', exception);
+      exception = this.transformKnownExceptions(exception);
     }
 
     const status = exception.getCode();
@@ -64,5 +61,21 @@ export class MainExceptionFilter implements ExceptionFilter {
     };
 
     response.status(status).send(toSend);
+  }
+
+  private transformKnownExceptions(exception: any): Failure {
+    if (exception instanceof UnauthorizedException) {
+      return Fail(FT.Permission, exception);
+    } else if (exception instanceof ForbiddenException) {
+      return Fail(FT.Permission, exception);
+    } else if (exception instanceof NotFoundException) {
+      return Fail(FT.NotFound, exception);
+    } else if (exception instanceof MethodNotAllowedException) {
+      return Fail(FT.NotFound, exception);
+    } else if (exception instanceof Error) {
+      return Fail(FT.Internal, exception);
+    } else {
+      return Fail(FT.Unknown, exception);
+    }
   }
 }
