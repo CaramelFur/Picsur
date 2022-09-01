@@ -11,6 +11,7 @@ export enum FT {
   UsrValidation = 'usrvalidation',
   Permission = 'permission',
   NotFound = 'notfound',
+  RouteNotFound = 'routenotfound',
   Conflict = 'conflict',
   Internal = 'internal',
   Authentication = 'authentication',
@@ -66,6 +67,11 @@ const FTProps: {
     important: false,
     code: 404,
     message: 'Item(s) could not be found',
+  },
+  [FT.RouteNotFound]: {
+    important: false,
+    code: 404,
+    message: 'Route not found',
   },
   [FT.Conflict]: {
     important: false,

@@ -5,7 +5,7 @@ import { HostConfigService } from '../config/early/host.config.service';
 export class PicsurLoggerService extends ConsoleLogger {
   constructor(hostService: HostConfigService) {
     super();
-    if (hostService.isProduction()) {
+    if (hostService.isProduction() && !hostService.isVerbose()) {
       super.setLogLevels(['error', 'warn', 'log']);
     }
   }

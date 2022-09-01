@@ -48,7 +48,10 @@ export class RolesModule implements OnModuleInit {
       this.logger.verbose(`Ensuring system role "${systemRole}" exists`);
 
       const exists = await this.rolesService.exists(systemRole);
-      if (exists) continue;
+      if (exists) {
+        this.logger.verbose(`System role "${systemRole}" already exists`);
+        continue;
+      }
 
       const newRole = await this.rolesService.create(
         systemRole,

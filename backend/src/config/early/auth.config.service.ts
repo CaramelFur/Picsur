@@ -10,7 +10,7 @@ export class AuthConfigService {
   public getDefaultAdminPassword(): string {
     return ParseString(
       this.configService.get(`${EnvPrefix}ADMIN_PASSWORD`),
-      'admin',
+      'picsur',
     );
   }
 }

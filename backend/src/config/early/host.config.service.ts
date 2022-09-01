@@ -13,6 +13,7 @@ export class HostConfigService {
 
   constructor(private readonly configService: ConfigService) {
     this.logger.log('Production: ' + this.isProduction());
+    this.logger.log('Verbose: ' + this.isVerbose());
     this.logger.log('Host: ' + this.getHost());
     this.logger.log('Port: ' + this.getPort());
     this.logger.log('Demo: ' + this.isDemo());
@@ -40,6 +41,10 @@ export class HostConfigService {
 
   public isProduction() {
     return ParseBool(this.configService.get(`${EnvPrefix}PRODUCTION`), false);
+  }
+
+  public isVerbose() {
+    return ParseBool(this.configService.get(`${EnvPrefix}VERBOSE`), false);
   }
 
   public getVersion() {

@@ -69,9 +69,9 @@ export class MainExceptionFilter implements ExceptionFilter {
     } else if (exception instanceof ForbiddenException) {
       return Fail(FT.Permission, exception);
     } else if (exception instanceof NotFoundException) {
-      return Fail(FT.NotFound, exception);
+      return Fail(FT.RouteNotFound, exception);
     } else if (exception instanceof MethodNotAllowedException) {
-      return Fail(FT.NotFound, exception);
+      return Fail(FT.RouteNotFound, exception);
     } else if (exception instanceof Error) {
       return Fail(FT.Internal, exception);
     } else {

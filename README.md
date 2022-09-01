@@ -58,8 +58,8 @@ Every featured marked here should work in the latest release.
 - [x] Deletable images
 - [x] Proper DB migrations
 - [x] Show own images in list
+- [X] Correct previews on chats
 
-- [ ] Correct previews on chats
 - [ ] Expiring images
 - [ ] White mode
 - [ ] ShareX endpoint
@@ -97,11 +97,17 @@ services:
 
       # PICSUR_ADMIN_PASSWORD: picsur
 
+      ## Optional, random secret will be generated if not set
       # PICSUR_JWT_SECRET: CHANGE_ME
-      # PICSUR_JWT_EXPIRY: 1d
+      # PICSUR_JWT_EXPIRY: 7d
 
+      ## Maximum accepted size for uploads in bytes
       # PICSUR_MAX_FILE_SIZE: 128000000
+      ## No need to touch this, unless you use a custom frontend
       # PICSUR_STATIC_FRONTEND_ROOT: "/picsur/frontend/dist"
+
+      ## Warning: Verbose mode might log sensitive data
+      # PICSUR_VERBOSE: "true"
     restart: unless-stopped
   picsur_postgres:
     image: postgres:14-alpine
