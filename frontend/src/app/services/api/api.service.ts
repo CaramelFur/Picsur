@@ -153,7 +153,7 @@ export class ApiService {
     if (HasSuccess(filetype)) {
       const ext = FileType2Ext(filetype.identifier);
       if (HasSuccess(ext)) {
-        if (name.endsWith(ext)) {
+        if (!name.endsWith(ext)) {
           name += '.' + ext;
         }
       }
