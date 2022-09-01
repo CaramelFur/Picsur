@@ -20,10 +20,14 @@ export class ImageDBService {
     private readonly imageDerivativeRepo: Repository<EImageDerivativeBackend>,
   ) {}
 
-  public async create(userid: string): AsyncFailable<EImageBackend> {
+  public async create(
+    userid: string,
+    filename: string,
+  ): AsyncFailable<EImageBackend> {
     let imageEntity = new EImageBackend();
     imageEntity.user_id = userid;
     imageEntity.created = new Date();
+    imageEntity.file_name = filename;
 
     try {
       imageEntity = await this.imageRepo.save(imageEntity, { reload: true });
@@ -97,7 +101,8 @@ export class ImageDBService {
 
       const available_ids = deletable_images.map((i) => i.id);
 
-      if (available_ids.length === 0) return Fail(FT.NotFound, 'Images not found');
+      if (available_ids.length === 0)
+        return Fail(FT.NotFound, 'Images not found');
 
       await Promise.all([
         this.imageDerivativeRepo.delete({
@@ -118,7 +123,10 @@ export class ImageDBService {
 
   public async deleteAll(IAmSure: boolean): AsyncFailable<true> {
     if (!IAmSure)
-      return Fail(FT.SysValidation, 'You must confirm that you want to delete all images');
+      return Fail(
+        FT.SysValidation,
+        'You must confirm that you want to delete all images',
+      );
 
     try {
       await this.imageDerivativeRepo.delete({});

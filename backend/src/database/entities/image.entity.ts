@@ -15,4 +15,10 @@ export class EImageBackend implements EImage {
     nullable: false,
   })
   created: Date;
+
+  @Column({
+    nullable: false,
+    default: "image",
+  })
+  file_name: string;
 }

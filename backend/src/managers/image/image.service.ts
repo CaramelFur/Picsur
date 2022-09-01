@@ -3,14 +3,17 @@ import Crypto from 'crypto';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
-import { AnimFileType, FileType, ImageFileType, Mime2FileType } from 'picsur-shared/dist/dto/mimes.dto';
+import {
+  AnimFileType,
+  FileType,
+  ImageFileType,
+  Mime2FileType
+} from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
-import {
-  ParseFileType
-} from 'picsur-shared/dist/util/parse-mime';
+import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
 import { IsQOI } from 'qoi-img';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
@@ -57,8 +60,9 @@ export class ImageManagerService {
   }
 
   public async upload(
-    image: Buffer,
     userid: string,
+    filename: string,
+    image: Buffer,
   ): AsyncFailable<EImageBackend> {
     const fileType = await this.getFileTypeFromBuffer(image);
     if (HasFailed(fileType)) return fileType;
@@ -74,8 +78,15 @@ export class ImageManagerService {
     const processResult = await this.processService.process(image, fileType);
     if (HasFailed(processResult)) return processResult;
 
+    // Strip extension from filename
+    const name = (() => {
+      const index = filename.lastIndexOf('.');
+      if (index === -1) return filename;
+      return filename.substring(0, index);
+    })();
+
     // Save processed to db
-    const imageEntity = await this.imagesService.create(userid);
+    const imageEntity = await this.imagesService.create(userid, name);
     if (HasFailed(imageEntity)) return imageEntity;
 
     const imageFileEntity = await this.imageFilesService.setFile(
@@ -174,7 +185,8 @@ export class ImageManagerService {
     const mime = await this.imageFilesService.getFileTypes(imageId);
     if (HasFailed(mime)) return mime;
 
-    if (mime['master'] === undefined) return Fail(FT.NotFound, 'No master file');
+    if (mime['master'] === undefined)
+      return Fail(FT.NotFound, 'No master file');
 
     return ParseFileType(mime['master']);
   }
@@ -224,10 +236,10 @@ export class ImageManagerService {
       mime = filetypeResult.mime;
     }
 
-    if (mime === undefined) mime = "other/unknown";
+    if (mime === undefined) mime = 'other/unknown';
 
     let filetype: string | undefined;
-    if (mime === "image/webp") {
+    if (mime === 'image/webp') {
       const header = await WebPInfo.from(image);
       if (header.summary.isAnimated) filetype = AnimFileType.WEBP;
       else filetype = ImageFileType.WEBP;

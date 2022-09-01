@@ -12,6 +12,7 @@ import { MomentModule } from 'ngx-moment';
 import { CopyFieldModule } from 'src/app/components/copy-field/copy-field.module';
 import { FabModule } from 'src/app/components/fab/fab.module';
 import { PicsurImgModule } from 'src/app/components/picsur-img/picsur-img.module';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 import { CustomizeDialogComponent } from './customize-dialog/customize-dialog.component';
 import { ViewComponent } from './view.component';
 import { ViewRoutingModule } from './view.routing.module';
@@ -33,6 +34,7 @@ import { ViewRoutingModule } from './view.routing.module';
     MatIconModule,
     MomentModule,
     FabModule,
+    PipesModule,
   ],
 })
 export class ViewRouteModule {}

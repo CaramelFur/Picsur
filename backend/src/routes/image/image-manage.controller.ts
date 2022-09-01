@@ -1,9 +1,4 @@
-import {
-  Body,
-  Controller,
-  Logger,
-  Post
-} from '@nestjs/common';
+import { Body, Controller, Logger, Post } from '@nestjs/common';
 import {
   ImageDeleteRequest,
   ImageDeleteResponse,
@@ -37,7 +32,11 @@ export class ImageManageController {
     @ReqUserID() userid: string,
   ): Promise<ImageUploadResponse> {
     const image = ThrowIfFailed(
-      await this.imagesService.upload(multipart.image.buffer, userid),
+      await this.imagesService.upload(
+        userid,
+        multipart.image.filename,
+        multipart.image.buffer,
+      ),
     );
 
     return image;
