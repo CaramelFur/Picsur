@@ -1,12 +1,10 @@
-<img align="left" width="100" height="100" src="branding/logo/picsur.svg"/>
+<img align="left" width="100" height="100" style="border-radius: 15%" src="branding/logo/picsur.svg"/>
 
 <a  href="https://discord.gg/GPZNwV3VKE">
 <img align="right" style="margin: 5px" src="https://img.shields.io/discord/986634827337965638?color=454FBF&label=Chat%20on%20Discord"/>
 </a>
 
 # Picsur
-
-<br>
 
 > Totally not an imgur clone
 
