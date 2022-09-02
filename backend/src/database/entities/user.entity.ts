@@ -1,6 +1,7 @@
 import { EUserSchema } from 'picsur-shared/dist/entities/user.entity';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { z } from 'zod';
+import { EApiKeyBackend } from './apikey.entity';
 
 // Different data for public and private
 const OverriddenEUserSchema = EUserSchema.omit({ hashedPassword: true }).merge(
@@ -24,4 +25,8 @@ export class EUserBackend implements OverriddenEUser {
 
   @Column({ nullable: false, select: false })
   hashed_password?: string;
+
+  // This will never be populated, it is only here to auto delete apikeys when a user is deleted
+  @OneToMany(() => EApiKeyBackend, (apikey) => apikey.user)
+  apikeys?: EApiKeyBackend[];
 }

@@ -55,7 +55,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     const varOptions = this.getTypeOrmServerOptions();
     return {
       type: 'postgres' as 'postgres',
-      synchronize: false,
+      synchronize: !this.hostService.isProduction(),
 
       migrationsRun: true,
 

@@ -57,11 +57,7 @@ export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
     // These are the permissions the user has
     const userPermissions = await this.usersService.getPermissions(user.id);
     if (HasFailed(userPermissions)) {
-      throw Fail(
-        FT.Internal,
-        undefined,
-        'Fetching user permissions failed: ' + userPermissions.getReason(),
-      );
+      throw userPermissions
     }
 
     context.switchToHttp().getRequest().userPermissions = userPermissions;

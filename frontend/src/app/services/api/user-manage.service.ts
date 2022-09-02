@@ -63,7 +63,7 @@ export class UserAdminService {
     );
   }
 
-  public async deleteUser(id: string): AsyncFailable<EUser> {
+  public async deleteUser(id: string): AsyncFailable<Omit<EUser, 'id'>> {
     return await this.api.post(
       UserDeleteRequest,
       UserDeleteResponse,

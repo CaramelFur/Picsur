@@ -73,15 +73,15 @@ export class UserDbService {
   }
 
   public async delete(uuid: string): AsyncFailable<EUserBackend> {
-    const userToModify = await this.findOne(uuid);
-    if (HasFailed(userToModify)) return userToModify;
+    const userToDelete = await this.findOne(uuid);
+    if (HasFailed(userToDelete)) return userToDelete;
 
-    if (UndeletableUsersList.includes(userToModify.username)) {
+    if (UndeletableUsersList.includes(userToDelete.username)) {
       return Fail(FT.Permission, 'Cannot delete system user');
     }
 
     try {
-      return await this.usersRepository.remove(userToModify);
+      return await this.usersRepository.remove(userToDelete);
     } catch (e) {
       return Fail(FT.Database, e);
     }

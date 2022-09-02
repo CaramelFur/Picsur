@@ -33,7 +33,7 @@ export class UserCreateResponse extends createZodDto(
 export const UserDeleteRequestSchema = EntityIDObjectSchema;
 export class UserDeleteRequest extends createZodDto(UserDeleteRequestSchema) {}
 
-export const UserDeleteResponseSchema = EUserSchema;
+export const UserDeleteResponseSchema = EUserSchema.partial({ id: true });
 export class UserDeleteResponse extends createZodDto(
   UserDeleteResponseSchema,
 ) {}
