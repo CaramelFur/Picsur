@@ -1,5 +1,4 @@
 {
   "vsicons.presets.angular": true,
-  "skipRefreshExplorerOnWindowFocus": true,
   "angular.log": "verbose"
 }

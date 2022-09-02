@@ -13,7 +13,7 @@
   "include": [
     "src/**/*.d.ts",
     "src/app/**/*.ts",
-    "src/app/util/qoi/qoi-encode.ts.disabled"
+    "src/app/**/*.html",
   ],
   "exclude": ["src/**/*.worker.ts", "src/**/*.exclude.ts"]
 }

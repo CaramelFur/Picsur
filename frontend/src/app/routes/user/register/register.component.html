@@ -56,18 +56,18 @@
       </div>
 
       <div class="col-12 py-2">
-        <button mat-raised-button color="accent" class="mx-2" type="submit">
-          REGISTER
-        </button>
         <button
           *ngIf="showLogin"
-          mat-raised-button
+          mat-flat-button
           color="primary"
           class="mx-2"
           (click)="onLogin()"
           type="button"
         >
           LOGIN
+        </button>
+        <button mat-flat-button color="accent" class="mx-2" type="submit">
+          REGISTER
         </button>
       </div>
     </form>

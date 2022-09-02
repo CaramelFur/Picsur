@@ -17,7 +17,7 @@ import { RolesService } from './role-db.service';
   exports: [RolesService],
 })
 export class RolesModule implements OnModuleInit {
-  private readonly logger = new Logger('RolesModule');
+  private readonly logger = new Logger(RolesModule.name);
 
   constructor(
     private readonly rolesService: RolesService,
@@ -28,7 +28,7 @@ export class RolesModule implements OnModuleInit {
     // Nuking roles in dev environment makes testing easier
     // This ensures that the roles are always started with their default permissions
     if (!this.hostConfig.isProduction()) {
-      await this.nukeRoles();
+      //await this.nukeRoles();
     }
 
     await this.ensureSystemRolesExist();
