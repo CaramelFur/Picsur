@@ -71,7 +71,35 @@ If you encounter any bugs or oddities, please open an issue [here](https://githu
 
 If you like this project, don't forget to give it a star. It tells me that I'm not wasting my time on something that people don't like.
 
-## Running
+## Faq
+
+### Why do my images dissapear of the public instance?
+
+The public instance is only a demo, and therefore only keeps images for 5 minutes. This is to prevent the server from running out of disk space, and to prevent people from using it to host questionable images.
+
+If you wish to keep your images, you will have to host your own instance.
+
+### How do I allow users to register their own accounts?
+
+By default, users can't register their own accounts. This is to prevent users from accidentally allowing anyone to upload to their instance.
+
+If you want to allow this you can though. To change this you go to `settings -> roles -> guest -> edit`, and then give the guest role the `Register` permission. Upon saving the role, the register button will appear on the login page.
+
+### I want to keep my original image files, how?
+
+By default, Picsur will not keep your original image files. Since for most purposes this is not needed, and it saves disk space.
+
+If you want to enable this however, you can do so by going to `settings -> general`, and then enabling the `Keep original` option. Upon saving the settings, the original files will be kept.
+
+Do keep in mind here, that the exif data will NOT be removed from the original image. So make sure you do not accidentally share sensitive data.
+
+### This service says its supports the QOI format, what is this?
+
+QOI is a new lossless image format that is designed to be very fast to encode and decode. All while still offering good compression ratios. This is the primary format the server will store images in when uploaded.
+
+You can [read more about QOI here](https://qoiformat.org/).
+
+## Running your own instance
 
 You easily run this service yourself via Docker. Here is an example docker-compose file:
 
