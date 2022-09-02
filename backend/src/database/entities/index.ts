@@ -1,3 +1,4 @@
+import { EApiKeyBackend } from './apikey.entity';
 import { EImageDerivativeBackend } from './image-derivative.entity';
 import { EImageFileBackend } from './image-file.entity';
 import { EImageBackend } from './image.entity';
@@ -14,4 +15,5 @@ export const EntityList = [
   ERoleBackend,
   ESysPreferenceBackend,
   EUsrPreferenceBackend,
+  EApiKeyBackend,
 ];
