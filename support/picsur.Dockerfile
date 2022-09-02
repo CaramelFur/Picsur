@@ -1,4 +1,4 @@
-FROM node:18.8-bullseye
+FROM node:18.8
 
 # Sorry for the humongous docker container this generates
 # Maybe I'll trim it down some day
@@ -14,4 +14,4 @@ RUN yarn workspace picsur-shared build
 RUN yarn workspace picsur-frontend build
 RUN yarn workspace picsur-backend build
 
-CMD /bin/bash -c "yarn workspace picsur-backend start:prod"
+CMD yarn workspace picsur-backend start:prod
