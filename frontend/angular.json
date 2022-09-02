@@ -29,7 +29,11 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/assets"],
+            "assets": ["src/assets", {
+              "glob": "**/*",
+              "input": "../branding",
+              "output": "./assets/branding"
+            }],
             "styles": ["src/styles.scss"],
             "scripts": [],
             "allowedCommonJsDependencies": [
