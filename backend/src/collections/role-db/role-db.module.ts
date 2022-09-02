@@ -9,18 +9,18 @@ import {
   SystemRoleDefaults,
   SystemRolesList
 } from '../../models/constants/roles.const';
-import { RolesService } from './role-db.service';
+import { RoleDbService } from './role-db.service';
 
 @Module({
   imports: [EarlyConfigModule, TypeOrmModule.forFeature([ERoleBackend])],
-  providers: [RolesService],
-  exports: [RolesService],
+  providers: [RoleDbService],
+  exports: [RoleDbService],
 })
-export class RolesModule implements OnModuleInit {
-  private readonly logger = new Logger(RolesModule.name);
+export class RoleDbModule implements OnModuleInit {
+  private readonly logger = new Logger(RoleDbModule.name);
 
   constructor(
-    private readonly rolesService: RolesService,
+    private readonly rolesService: RoleDbService,
     private readonly hostConfig: HostConfigService,
   ) {}
 

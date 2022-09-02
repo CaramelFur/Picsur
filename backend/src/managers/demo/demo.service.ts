@@ -1,15 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
-import { RolesService } from '../../collections/role-db/role-db.service';
+import { RoleDbService } from '../../collections/role-db/role-db.service';
 import { Permission } from '../../models/constants/permissions.const';
 
 @Injectable()
 export class DemoManagerService {
-  private readonly logger = new Logger('DemoManagerService');
+  private readonly logger = new Logger(DemoManagerService.name);
 
   constructor(
     private readonly imagesService: ImageDBService,
-    private readonly rolesService: RolesService,
+    private readonly rolesService: RoleDbService,
   ) {}
 
   public async setupRoles() {

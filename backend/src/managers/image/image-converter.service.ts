@@ -8,13 +8,13 @@ import {
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { SharpOptions } from 'sharp';
-import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
+import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
 import { SharpWrapper } from '../../workers/sharp.wrapper';
 import { ImageResult } from './imageresult';
 
 @Injectable()
 export class ImageConverterService {
-  constructor(private readonly sysPref: SysPreferenceService) {}
+  constructor(private readonly sysPref: SysPreferenceDbService) {}
 
   public async convert(
     image: Buffer,

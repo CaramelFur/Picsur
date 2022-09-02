@@ -5,8 +5,8 @@ import { ESysPreferenceBackend } from '../../database/entities/sys-preference.en
 import { EUsrPreferenceBackend } from '../../database/entities/usr-preference.entity';
 import { PreferenceCommonService } from './preference-common.service';
 import { PreferenceDefaultsService } from './preference-defaults.service';
-import { SysPreferenceService } from './sys-preference-db.service';
-import { UsrPreferenceService } from './usr-preference-db.service';
+import { SysPreferenceDbService } from './sys-preference-db.service';
+import { UsrPreferenceDbService } from './usr-preference-db.service';
 
 @Module({
   imports: [
@@ -14,11 +14,11 @@ import { UsrPreferenceService } from './usr-preference-db.service';
     EarlyConfigModule,
   ],
   providers: [
-    SysPreferenceService,
-    UsrPreferenceService,
+    SysPreferenceDbService,
+    UsrPreferenceDbService,
     PreferenceDefaultsService,
     PreferenceCommonService,
   ],
-  exports: [SysPreferenceService, UsrPreferenceService],
+  exports: [SysPreferenceDbService, UsrPreferenceDbService],
 })
-export class PreferenceModule {}
+export class PreferenceDbModule {}

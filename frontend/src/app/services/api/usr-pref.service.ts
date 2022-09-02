@@ -30,7 +30,7 @@ import { PermissionService } from './permission.service';
   providedIn: 'root',
 })
 export class UsrPrefService {
-  private readonly logger = new Logger('UsrPrefService');
+  private readonly logger = new Logger(UsrPrefService.name);
 
   private hasPermission = false;
 

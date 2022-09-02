@@ -1,6 +1,6 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
-import { PreferenceModule } from '../../collections/preference-db/preference-db.module';
-import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
+import { PreferenceDbModule } from '../../collections/preference-db/preference-db.module';
+import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
 import { EarlyConfigModule } from '../early/early-config.module';
 import { EarlyJwtConfigService } from '../early/early-jwt.config.service';
 import { JwtConfigService } from './jwt.config.service';
@@ -11,16 +11,16 @@ import { JwtConfigService } from './jwt.config.service';
 // Otherwise we will create a circular depedency
 
 @Module({
-  imports: [PreferenceModule, EarlyConfigModule],
+  imports: [PreferenceDbModule, EarlyConfigModule],
   providers: [JwtConfigService],
   exports: [JwtConfigService, EarlyConfigModule],
 })
 export class LateConfigModule implements OnModuleInit {
-  private readonly logger = new Logger('LateConfigModule');
+  private readonly logger = new Logger(LateConfigModule.name);
 
   constructor(
     private readonly envJwtConfigService: EarlyJwtConfigService,
-    private readonly prefService: SysPreferenceService,
+    private readonly prefService: SysPreferenceDbService,
   ) {}
 
   async onModuleInit() {

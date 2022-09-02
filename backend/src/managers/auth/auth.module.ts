@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { PreferenceModule } from '../../collections/preference-db/preference-db.module';
-import { UsersModule } from '../../collections/user-db/user-db.module';
+import { PreferenceDbModule } from '../../collections/preference-db/preference-db.module';
+import { UserDbModule } from '../../collections/user-db/user-db.module';
 import {
   JwtConfigService,
-  JwtSecretProvider,
+  JwtSecretProvider
 } from '../../config/late/jwt.config.service';
 import { LateConfigModule } from '../../config/late/late-config.module';
 import { AuthManagerService } from './auth.service';
@@ -16,9 +16,9 @@ import { GuestService } from './guest.service';
 
 @Module({
   imports: [
-    UsersModule,
+    UserDbModule,
     PassportModule,
-    PreferenceModule,
+    PreferenceDbModule,
     LateConfigModule,
     JwtModule.registerAsync({
       useExisting: JwtConfigService,
@@ -33,6 +33,6 @@ import { GuestService } from './guest.service';
     JwtSecretProvider,
     GuestService,
   ],
-  exports: [UsersModule, AuthManagerService],
+  exports: [UserDbModule, AuthManagerService],
 })
 export class AuthManagerModule {}

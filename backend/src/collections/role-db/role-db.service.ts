@@ -18,8 +18,8 @@ import {
 } from '../../models/constants/roles.const';
 
 @Injectable()
-export class RolesService {
-  private readonly logger = new Logger('UsersService');
+export class RoleDbService {
+  private readonly logger = new Logger(RoleDbService.name);
 
   constructor(
     @InjectRepository(ERoleBackend)

@@ -4,10 +4,10 @@ import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import {
-    AnimFileType,
-    FileType,
-    ImageFileType,
-    Mime2FileType
+  AnimFileType,
+  FileType,
+  ImageFileType,
+  Mime2FileType
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
@@ -17,8 +17,8 @@ import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
 import { IsQOI } from 'qoi-img';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
-import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
-import { UsrPreferenceService } from '../../collections/preference-db/usr-preference-db.service';
+import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
+import { UsrPreferenceDbService } from '../../collections/preference-db/usr-preference-db.service';
 import { EImageDerivativeBackend } from '../../database/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../database/entities/image-file.entity';
 import { EImageBackend } from '../../database/entities/image.entity';
@@ -36,8 +36,8 @@ export class ImageManagerService {
     private readonly imageFilesService: ImageFileDBService,
     private readonly processService: ImageProcessorService,
     private readonly convertService: ImageConverterService,
-    private readonly userPref: UsrPreferenceService,
-    private readonly sysPref: SysPreferenceService,
+    private readonly userPref: UsrPreferenceDbService,
+    private readonly sysPref: SysPreferenceDbService,
   ) {}
 
   public async findOne(id: string): AsyncFailable<EImageBackend> {

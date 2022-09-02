@@ -3,12 +3,12 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
-import { UsersService } from '../../../collections/user-db/user-db.service';
+import { UserDbService } from '../../../collections/user-db/user-db.service';
 import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 
 @Injectable()
 export class LocalAuthStrategy extends PassportStrategy(Strategy, 'local') {
-  constructor(private readonly usersService: UsersService) {
+  constructor(private readonly usersService: UserDbService) {
     super();
   }
 

@@ -20,7 +20,7 @@ enum EditMode {
   styleUrls: ['./settings-roles-edit.component.scss'],
 })
 export class SettingsRolesEditComponent implements OnInit {
-  private readonly logger = new Logger('SettingsRolesEditComponent');
+  private readonly logger = new Logger(SettingsRolesEditComponent.name);
 
   private mode: EditMode = EditMode.edit;
 

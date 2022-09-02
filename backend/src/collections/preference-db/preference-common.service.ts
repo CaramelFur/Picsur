@@ -24,7 +24,7 @@ type EncodedPref = {
 
 @Injectable()
 export class PreferenceCommonService {
-  private readonly logger = new Logger('PreferenceCommonService');
+  private readonly logger = new Logger(PreferenceCommonService.name);
 
   // Preferences values are only validated upon encoding, not decoding
   // The preference keys are always validated

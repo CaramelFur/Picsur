@@ -16,7 +16,7 @@ import { Logger } from '../services/logger/logger.service';
   providedIn: 'root',
 })
 export class PermissionGuard implements CanActivate, CanActivateChild {
-  private readonly logger = new Logger('PermissionGuard');
+  private readonly logger = new Logger(PermissionGuard.name);
   private allPermissionsArray: string[] | null = null;
 
   constructor(

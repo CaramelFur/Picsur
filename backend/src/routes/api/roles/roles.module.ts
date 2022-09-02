@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { RolesModule } from '../../../collections/role-db/role-db.module';
-import { UsersModule } from '../../../collections/user-db/user-db.module';
+import { RoleDbModule } from '../../../collections/role-db/role-db.module';
+import { UserDbModule } from '../../../collections/user-db/user-db.module';
 import { RolesController } from './roles.controller';
 
 @Module({
-  imports: [RolesModule, UsersModule],
+  imports: [RoleDbModule, UserDbModule],
   controllers: [RolesController],
 })
 export class RolesApiModule {}

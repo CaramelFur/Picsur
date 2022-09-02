@@ -7,7 +7,7 @@ import {
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { FileType2Mime } from 'picsur-shared/dist/dto/mimes.dto';
 import { FT, IsFailure, ThrowIfFailed } from 'picsur-shared/dist/types';
-import { UsersService } from '../../collections/user-db/user-db.service';
+import { UserDbService } from '../../collections/user-db/user-db.service';
 import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decorator';
 import { ImageIdParam } from '../../decorators/image-id/image-id.decorator';
 import { RequiredPermissions } from '../../decorators/permissions.decorator';
@@ -22,11 +22,11 @@ import { BrandMessageType, GetBrandMessage } from '../../util/branding';
 @Controller('i')
 @RequiredPermissions(Permission.ImageView)
 export class ImageController {
-  private readonly logger = new Logger('ImageController');
+  private readonly logger = new Logger(ImageController.name);
 
   constructor(
     private readonly imagesService: ImageManagerService,
-    private readonly userService: UsersService,
+    private readonly userService: UserDbService,
   ) {}
 
   @Head(':id')

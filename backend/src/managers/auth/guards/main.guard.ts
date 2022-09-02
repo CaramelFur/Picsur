@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { EUser, EUserSchema } from 'picsur-shared/dist/entities/user.entity';
 import { Fail, Failable, FT, HasFailed } from 'picsur-shared/dist/types';
-import { UsersService } from '../../../collections/user-db/user-db.service';
+import { UserDbService } from '../../../collections/user-db/user-db.service';
 import { Permissions } from '../../../models/constants/permissions.const';
 import { isPermissionsArray } from '../../../models/validators/permissions.validator';
 
@@ -13,11 +13,11 @@ import { isPermissionsArray } from '../../../models/validators/permissions.valid
 
 @Injectable()
 export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
-  private readonly logger = new Logger('MainAuthGuard');
+  private readonly logger = new Logger(MainAuthGuard.name);
 
   constructor(
     private readonly reflector: Reflector,
-    private readonly usersService: UsersService,
+    private readonly usersService: UserDbService,
   ) {
     super();
   }

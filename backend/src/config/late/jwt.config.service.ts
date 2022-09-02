@@ -2,13 +2,13 @@ import { FactoryProvider, Injectable, Logger } from '@nestjs/common';
 import { JwtModuleOptions, JwtOptionsFactory } from '@nestjs/jwt';
 import ms from 'ms';
 import { ThrowIfFailed } from 'picsur-shared/dist/types';
-import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
+import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
 
 @Injectable()
 export class JwtConfigService implements JwtOptionsFactory {
-  private readonly logger = new Logger('JwtConfigService');
+  private readonly logger = new Logger(JwtConfigService.name);
 
-  constructor(private readonly prefService: SysPreferenceService) {
+  constructor(private readonly prefService: SysPreferenceDbService) {
     this.printDebug().catch(this.logger.error);
   }
 

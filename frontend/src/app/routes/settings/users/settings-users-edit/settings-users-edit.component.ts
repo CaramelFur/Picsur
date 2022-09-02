@@ -23,7 +23,7 @@ enum EditMode {
   styleUrls: ['./settings-users-edit.component.scss'],
 })
 export class SettingsUsersEditComponent implements OnInit {
-  private readonly logger = new Logger('SettingsUsersEditComponent');
+  private readonly logger = new Logger(SettingsUsersEditComponent.name);
 
   private ImmutableUsersList: string[] = [];
   private mode: EditMode = EditMode.edit;

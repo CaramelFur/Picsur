@@ -17,8 +17,8 @@ import {
   SpecialRolesResponse
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { Fail, FT, ThrowIfFailed } from 'picsur-shared/dist/types';
-import { RolesService } from '../../../collections/role-db/role-db.service';
-import { UsersService } from '../../../collections/user-db/user-db.service';
+import { RoleDbService } from '../../../collections/role-db/role-db.service';
+import { UserDbService } from '../../../collections/user-db/user-db.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
 import { Permission } from '../../../models/constants/permissions.const';
@@ -33,11 +33,11 @@ import { isPermissionsArray } from '../../../models/validators/permissions.valid
 @Controller('api/roles')
 @RequiredPermissions(Permission.RoleAdmin)
 export class RolesController {
-  private readonly logger = new Logger('RolesController');
+  private readonly logger = new Logger(RolesController.name);
 
   constructor(
-    private readonly rolesService: RolesService,
-    private readonly usersService: UsersService,
+    private readonly rolesService: RoleDbService,
+    private readonly usersService: UserDbService,
   ) {}
 
   @Get('list')

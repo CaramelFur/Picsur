@@ -6,7 +6,7 @@ import {
   NestFastifyApplication
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
-import { UsersService } from './collections/user-db/user-db.service';
+import { UserDbService } from './collections/user-db/user-db.service';
 import { HostConfigService } from './config/early/host.config.service';
 import { MainExceptionFilter } from './layers/exception/exception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
@@ -40,7 +40,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new SuccessInterceptor(app.get(Reflector)));
   app.useGlobalPipes(new ZodValidationPipe());
   app.useGlobalGuards(
-    new MainAuthGuard(app.get(Reflector), app.get(UsersService)),
+    new MainAuthGuard(app.get(Reflector), app.get(UserDbService)),
   );
 
   // Start app

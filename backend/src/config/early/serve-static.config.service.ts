@@ -12,7 +12,7 @@ import { EnvPrefix, PackageRoot } from '../config.static';
 export class ServeStaticConfigService
   implements ServeStaticModuleOptionsFactory
 {
-  private readonly logger = new Logger('ServeStaticConfigService');
+  private readonly logger = new Logger(ServeStaticConfigService.name);
 
   private defaultLocation = join(PackageRoot, '../frontend/dist');
 

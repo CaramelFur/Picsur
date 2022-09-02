@@ -19,7 +19,7 @@ import { ApiService } from './api.service';
   providedIn: 'root',
 })
 export class UserService {
-  private readonly logger = new Logger('UserService');
+  private readonly logger = new Logger(UserService.name);
   private userSubject = new BehaviorSubject<EUser | null>(null);
 
   public get live() {

@@ -9,7 +9,7 @@ import { HostConfigService } from './host.config.service';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
-  private readonly logger = new Logger('TypeOrmConfigService');
+  private readonly logger = new Logger(TypeOrmConfigService.name);
 
   constructor(
     private readonly configService: ConfigService,

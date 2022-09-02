@@ -6,7 +6,7 @@ import { EUser } from 'picsur-shared/dist/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(JwtPassportStrategy, 'jwt') {
-  private readonly logger = new Logger('JwtStrategy');
+  private readonly logger = new Logger(JwtStrategy.name);
 
   constructor(@Inject('JWT_SECRET') jwtSecret: string) {
     // This will validate the jwt token itself

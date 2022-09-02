@@ -4,14 +4,14 @@ import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { ImageDBModule } from '../../collections/image-db/image-db.module';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
-import { PreferenceModule } from '../../collections/preference-db/preference-db.module';
-import { SysPreferenceService } from '../../collections/preference-db/sys-preference-db.service';
+import { PreferenceDbModule } from '../../collections/preference-db/preference-db.module';
+import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
 import { ImageConverterService } from './image-converter.service';
 import { ImageProcessorService } from './image-processor.service';
 import { ImageManagerService } from './image.service';
 
 @Module({
-  imports: [ImageDBModule, PreferenceModule],
+  imports: [ImageDBModule, PreferenceDbModule],
   providers: [
     ImageManagerService,
     ImageProcessorService,
@@ -20,11 +20,11 @@ import { ImageManagerService } from './image.service';
   exports: [ImageManagerService],
 })
 export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
-  private readonly logger = new Logger('ImageManagerModule');
+  private readonly logger = new Logger(ImageManagerModule.name);
   private interval: NodeJS.Timeout;
 
   constructor(
-    private readonly prefManager: SysPreferenceService,
+    private readonly prefManager: SysPreferenceDbService,
     private readonly imageFileDB: ImageFileDBService,
   ) {}
 

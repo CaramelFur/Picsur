@@ -24,7 +24,7 @@ import { PermissionService } from './permission.service';
   providedIn: 'root',
 })
 export class SysPrefService {
-  private readonly logger = new Logger('SysPrefService');
+  private readonly logger = new Logger(SysPrefService.name);
 
   private hasPermission = false;
 

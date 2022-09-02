@@ -18,7 +18,7 @@ import {
   UserUpdateResponse
 } from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { ThrowIfFailed } from 'picsur-shared/dist/types';
-import { UsersService } from '../../../collections/user-db/user-db.service';
+import { UserDbService } from '../../../collections/user-db/user-db.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
 import { Permission } from '../../../models/constants/permissions.const';
@@ -32,9 +32,9 @@ import { EUserBackend2EUser } from '../../../models/transformers/user.transforme
 @Controller('api/user')
 @RequiredPermissions(Permission.UserAdmin)
 export class UserAdminController {
-  private readonly logger = new Logger('UserAdminController');
+  private readonly logger = new Logger(UserAdminController.name);
 
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UserDbService) {}
 
   @Post('list')
   @Returns(UserListResponse)

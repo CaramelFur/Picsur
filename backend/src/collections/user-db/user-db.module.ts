@@ -5,25 +5,25 @@ import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { AuthConfigService } from '../../config/early/auth.config.service';
 import { EarlyConfigModule } from '../../config/early/early-config.module';
 import { EUserBackend } from '../../database/entities/user.entity';
-import { PreferenceModule } from '../preference-db/preference-db.module';
-import { RolesModule } from '../role-db/role-db.module';
-import { UsersService } from './user-db.service';
+import { PreferenceDbModule } from '../preference-db/preference-db.module';
+import { RoleDbModule } from '../role-db/role-db.module';
+import { UserDbService } from './user-db.service';
 
 @Module({
   imports: [
     EarlyConfigModule,
-    RolesModule,
-    PreferenceModule,
+    RoleDbModule,
+    PreferenceDbModule,
     TypeOrmModule.forFeature([EUserBackend]),
   ],
-  providers: [UsersService],
-  exports: [UsersService],
+  providers: [UserDbService],
+  exports: [UserDbService],
 })
-export class UsersModule implements OnModuleInit {
-  private readonly logger = new Logger('UsersModule');
+export class UserDbModule implements OnModuleInit {
+  private readonly logger = new Logger(UserDbModule.name);
 
   constructor(
-    private readonly usersService: UsersService,
+    private readonly usersService: UserDbService,
     private readonly authConfigService: AuthConfigService,
   ) {}
 

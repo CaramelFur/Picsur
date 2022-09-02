@@ -11,7 +11,7 @@ import { EarlyJwtConfigService } from '../../config/early/early-jwt.config.servi
 
 @Injectable()
 export class PreferenceDefaultsService {
-  private readonly logger = new Logger('PreferenceDefaultsService');
+  private readonly logger = new Logger(PreferenceDefaultsService.name);
 
   constructor(private readonly jwtConfigService: EarlyJwtConfigService) {}
 

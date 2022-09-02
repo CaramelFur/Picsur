@@ -6,7 +6,7 @@ import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 
 @Injectable()
 export class AuthManagerService {
-  private readonly logger = new Logger('AuthService');
+  private readonly logger = new Logger(AuthManagerService.name);
 
   constructor(private readonly jwtService: JwtService) {}
 

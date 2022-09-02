@@ -16,7 +16,7 @@ import { RegisterControl } from '../../../models/forms/register.control';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  private readonly logger = new Logger('RegisterComponent');
+  private readonly logger = new Logger(RegisterComponent.name);
 
   public showLogin = false;
 

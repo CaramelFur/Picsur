@@ -13,7 +13,7 @@ import {
 } from 'picsur-shared/dist/dto/api/user.dto';
 import type { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { ThrowIfFailed } from 'picsur-shared/dist/types';
-import { UsersService } from '../../../collections/user-db/user-db.service';
+import { UserDbService } from '../../../collections/user-db/user-db.service';
 import {
   NoPermissions,
   RequiredPermissions,
@@ -27,10 +27,10 @@ import { EUserBackend2EUser } from '../../../models/transformers/user.transforme
 
 @Controller('api/user')
 export class UserController {
-  private readonly logger = new Logger('UserController');
+  private readonly logger = new Logger(UserController.name);
 
   constructor(
-    private readonly usersService: UsersService,
+    private readonly usersService: UserDbService,
     private readonly authService: AuthManagerService,
   ) {}
 

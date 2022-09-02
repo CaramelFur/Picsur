@@ -9,7 +9,7 @@ import { UtilService } from './util.service';
   providedIn: 'root',
 })
 export class ApiErrorService {
-  private readonly logger = new Logger('ApiErrorService');
+  private readonly logger = new Logger(ApiErrorService.name);
 
   constructor(
     private readonly apiSerivce: ApiService,

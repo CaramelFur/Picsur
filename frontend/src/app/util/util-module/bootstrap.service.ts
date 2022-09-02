@@ -17,7 +17,7 @@ export enum BSScreenSize {
   providedIn: 'root',
 })
 export class BootstrapService {
-  private readonly logger = new Logger('BootstrapService');
+  private readonly logger = new Logger(BootstrapService.name);
 
   private smObservable: Observable<boolean>;
   private mdObservable: Observable<boolean>;

@@ -27,7 +27,7 @@ import { KeyService } from '../storage/key.service';
   providedIn: 'root',
 })
 export class ApiService {
-  private readonly logger = new Logger('ApiService');
+  private readonly logger = new Logger(ApiService.name);
 
   private errorSubject = new Subject<ApiError>();
 

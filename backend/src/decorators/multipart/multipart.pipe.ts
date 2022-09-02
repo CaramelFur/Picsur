@@ -16,7 +16,7 @@ import {
 
 @Injectable({ scope: Scope.REQUEST })
 export class MultiPartPipe implements PipeTransform {
-  private readonly logger = new Logger('MultiPartPipe');
+  private readonly logger = new Logger(MultiPartPipe.name);
 
   constructor(
     private readonly multipartConfigService: MultipartConfigService,

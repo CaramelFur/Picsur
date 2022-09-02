@@ -18,7 +18,7 @@ import { UtilService } from 'src/app/util/util-module/util.service';
   styleUrls: ['./settings-users.component.scss'],
 })
 export class SettingsUsersComponent implements OnInit {
-  private readonly logger = new Logger('SettingsUsersComponent');
+  private readonly logger = new Logger(SettingsUsersComponent.name);
 
   private UndeletableUsersList: string[] = [];
 

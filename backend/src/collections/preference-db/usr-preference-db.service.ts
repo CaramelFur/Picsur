@@ -1,28 +1,28 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-    DecodedUsrPref,
-    PrefValueType,
-    PrefValueTypeStrings
+  DecodedUsrPref,
+  PrefValueType,
+  PrefValueTypeStrings
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
-    EUsrPreferenceBackend,
-    EUsrPreferenceSchema
+  EUsrPreferenceBackend,
+  EUsrPreferenceSchema
 } from '../../database/entities/usr-preference.entity';
 import {
-    UsrPreferenceList,
-    UsrPreferenceValueTypes
+  UsrPreferenceList,
+  UsrPreferenceValueTypes
 } from '../../models/constants/usrpreferences.const';
 import { MutexFallBack } from '../../util/mutex-fallback';
 import { PreferenceCommonService } from './preference-common.service';
 import { PreferenceDefaultsService } from './preference-defaults.service';
 
 @Injectable()
-export class UsrPreferenceService {
-  private readonly logger = new Logger('UsrPreferenceService');
+export class UsrPreferenceDbService {
+  private readonly logger = new Logger(UsrPreferenceDbService.name);
 
   constructor(
     @InjectRepository(EUsrPreferenceBackend)

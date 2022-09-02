@@ -11,7 +11,7 @@ import { MultipartConfigService } from '../../config/early/multipart.config.serv
 
 @Injectable({ scope: Scope.REQUEST })
 export class PostFilePipe implements PipeTransform {
-  private readonly logger = new Logger('PostFilePipe');
+  private readonly logger = new Logger(PostFilePipe.name);
 
   constructor(
     private readonly multipartConfigService: MultipartConfigService,

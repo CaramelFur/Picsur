@@ -18,7 +18,7 @@ import { DownloadDialogComponent } from './download-dialog/download-dialog.compo
   providedIn: 'any',
 })
 export class UtilService {
-  private readonly logger = new Logger('UtilService');
+  private readonly logger = new Logger(UtilService.name);
 
   constructor(
     private readonly snackBar: MatSnackBar,

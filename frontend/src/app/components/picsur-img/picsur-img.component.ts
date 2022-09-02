@@ -30,7 +30,7 @@ enum PicsurImgState {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PicsurImgComponent implements OnChanges {
-  private readonly logger = new Logger('ZodImgComponent');
+  private readonly logger = new Logger(ZodImgComponent.name);
 
   @ViewChild('targetcanvas') private canvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('targetimg') private img: ElementRef<HTMLImageElement>;

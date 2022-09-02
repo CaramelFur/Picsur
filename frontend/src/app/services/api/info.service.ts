@@ -15,7 +15,7 @@ import { ApiService } from './api.service';
   providedIn: 'root',
 })
 export class InfoService {
-  private readonly logger = new Logger('InfoService');
+  private readonly logger = new Logger(InfoService.name);
 
   public get live() {
     return this.infoSubject;

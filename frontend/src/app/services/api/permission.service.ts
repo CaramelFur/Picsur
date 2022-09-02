@@ -11,7 +11,7 @@ import { UserService } from './user.service';
 
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
-  private readonly logger = new Logger('PermissionService');
+  private readonly logger = new Logger(PermissionService.name);
 
   private allPermissions: string[] = [];
   private permissionsSubject = new BehaviorSubject<string[] | null>(null);

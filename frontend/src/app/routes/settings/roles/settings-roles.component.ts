@@ -18,7 +18,7 @@ import { UtilService } from 'src/app/util/util-module/util.service';
   styleUrls: ['./settings-roles.component.scss'],
 })
 export class SettingsRolesComponent implements OnInit, AfterViewInit {
-  private readonly logger = new Logger('SettingsRolesComponent');
+  private readonly logger = new Logger(SettingsRolesComponent.name);
 
   public readonly displayedColumns: string[] = [
     'name',

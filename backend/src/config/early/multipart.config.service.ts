@@ -5,7 +5,7 @@ import { EnvPrefix } from '../config.static';
 
 @Injectable()
 export class MultipartConfigService {
-  private readonly logger = new Logger('MultipartConfigService');
+  private readonly logger = new Logger(MultipartConfigService.name);
 
   constructor(private readonly configService: ConfigService) {
     this.logger.log('Max file size: ' + this.getMaxFileSize());

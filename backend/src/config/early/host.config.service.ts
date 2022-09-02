@@ -9,7 +9,7 @@ import { EnvPrefix } from '../config.static';
 
 @Injectable()
 export class HostConfigService {
-  private readonly logger = new Logger('HostConfigService');
+  private readonly logger = new Logger(HostConfigService.name);
 
   constructor(private readonly configService: ConfigService) {
     this.logger.log('Production: ' + this.isProduction());

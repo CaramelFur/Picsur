@@ -21,7 +21,7 @@ import { ImageUploadDto } from '../../models/dto/image-upload.dto';
 @Controller('api/image')
 @RequiredPermissions(Permission.ImageUpload)
 export class ImageManageController {
-  private readonly logger = new Logger('ImageManageController');
+  private readonly logger = new Logger(ImageManageController.name);
 
   constructor(private readonly imagesService: ImageManagerService) {}
 
