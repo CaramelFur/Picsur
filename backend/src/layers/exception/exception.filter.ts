@@ -1,4 +1,12 @@
-import { ArgumentsHost, Catch, ExceptionFilter, ForbiddenException, Logger, MethodNotAllowedException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  Catch, ExceptionFilter,
+  ForbiddenException,
+  Logger,
+  MethodNotAllowedException,
+  NotFoundException,
+  UnauthorizedException
+} from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ApiErrorResponse } from 'picsur-shared/dist/dto/api/api.dto';
 import {

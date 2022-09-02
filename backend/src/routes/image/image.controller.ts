@@ -6,7 +6,7 @@ import {
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { FileType2Mime } from 'picsur-shared/dist/dto/mimes.dto';
-import { ThrowIfFailed } from 'picsur-shared/dist/types';
+import { FT, IsFailure, ThrowIfFailed } from 'picsur-shared/dist/types';
 import { UsersService } from '../../collections/user-db/user-db.service';
 import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decorator';
 import { ImageIdParam } from '../../decorators/image-id/image-id.decorator';
@@ -16,6 +16,7 @@ import { ImageManagerService } from '../../managers/image/image.service';
 import type { ImageFullId } from '../../models/constants/image-full-id.const';
 import { Permission } from '../../models/constants/permissions.const';
 import { EUserBackend2EUser } from '../../models/transformers/user.transformer';
+import { BrandMessageType, GetBrandMessage } from '../../util/branding';
 
 // This is the only controller with CORS enabled
 @Controller('i')
@@ -53,21 +54,35 @@ export class ImageController {
     @ImageFullIdParam() fullid: ImageFullId,
     @Query() params: ImageRequestParams,
   ): Promise<Buffer> {
-    if (fullid.variant === ImageEntryVariant.ORIGINAL) {
+    try {
+      if (fullid.variant === ImageEntryVariant.ORIGINAL) {
+        const image = ThrowIfFailed(
+          await this.imagesService.getOriginal(fullid.id),
+        );
+
+        res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
+        return image.data;
+      }
+
       const image = ThrowIfFailed(
-        await this.imagesService.getOriginal(fullid.id),
+        await this.imagesService.getConverted(
+          fullid.id,
+          fullid.filetype,
+          params,
+        ),
       );
 
       res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
       return image.data;
+    } catch (e) {
+      if (!IsFailure(e) || e.getType() !== FT.NotFound) throw e;
+
+      const message = ThrowIfFailed(
+        await GetBrandMessage(BrandMessageType.NotFound),
+      );
+      res.type(message.type);
+      return message.data;
     }
-
-    const image = ThrowIfFailed(
-      await this.imagesService.getConverted(fullid.id, fullid.filetype, params),
-    );
-
-    res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
-    return image.data;
   }
 
   @Get('meta/:id')

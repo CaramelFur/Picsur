@@ -4,10 +4,10 @@ import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import {
-  AnimFileType,
-  FileType,
-  ImageFileType,
-  Mime2FileType
+    AnimFileType,
+    FileType,
+    ImageFileType,
+    Mime2FileType
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
@@ -22,7 +22,7 @@ import { UsrPreferenceService } from '../../collections/preference-db/usr-prefer
 import { EImageDerivativeBackend } from '../../database/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../database/entities/image-file.entity';
 import { EImageBackend } from '../../database/entities/image.entity';
-import { MutexFallBack } from '../../models/util/mutex-fallback';
+import { MutexFallBack } from '../../util/mutex-fallback';
 import { ImageConverterService } from './image-converter.service';
 import { ImageProcessorService } from './image-processor.service';
 import { WebPInfo } from './webpinfo/webpinfo';
