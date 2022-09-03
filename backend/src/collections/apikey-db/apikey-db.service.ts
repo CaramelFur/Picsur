@@ -20,6 +20,11 @@ export class ApiKeyDbService {
     const apikey = new EApiKeyBackend<string>();
     apikey.user = userid;
     apikey.created = new Date();
+    // YYYY-MM-DD- followed by a random number
+    apikey.name =
+      new Date().toISOString().slice(0, 10) +
+      '_' +
+      Math.round(Math.random() * 100);
     apikey.key = generateRandomString(32); // Might collide, probably not
 
     /*
@@ -36,7 +41,7 @@ export class ApiKeyDbService {
   }
 
   async findOne(
-    key: string,
+    id: string,
     userid: string | undefined,
   ): AsyncFailable<EApiKeyBackend<string>> {
     try {
@@ -47,7 +52,7 @@ export class ApiKeyDbService {
               ? // This is stupid, but typeorm do typeorm
                 ({ id: userid } as any)
               : undefined,
-          key,
+          id,
         },
         loadRelationIds: true,
       });
@@ -92,11 +97,28 @@ export class ApiKeyDbService {
     }
   }
 
-  async deleteApiKey(
-    key: string,
+  async updateApiKey(
+    id: string,
+    name: string,
     userid: string | undefined,
   ): AsyncFailable<EApiKeyBackend<string>> {
-    const apikeyToDelete = await this.findOne(key, userid);
+    const apikey = await this.findOne(id, userid);
+    if (HasFailed(apikey)) return apikey;
+
+    try {
+      apikey.name = name;
+
+      return this.apikeyRepo.save(apikey);
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
+  async deleteApiKey(
+    id: string,
+    userid: string | undefined,
+  ): AsyncFailable<EApiKeyBackend<string>> {
+    const apikeyToDelete = await this.findOne(id, userid);
     if (HasFailed(apikeyToDelete)) return apikeyToDelete;
 
     const apiKeyCopy = { ...apikeyToDelete };

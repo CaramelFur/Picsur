@@ -1,15 +1,13 @@
 <h1>Api Keys</h1>
 
 <mat-table [dataSource]="dataSubject" class="mat-elevation-z2">
-  <ng-container matColumnDef="key">
-    <mat-header-cell *matHeaderCellDef>Key</mat-header-cell>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
     <mat-cell *matCellDef="let apikey">
-      <copy-field
-        label="Key"
-        [value]="apikey.key"
-        [hidden]="true"
-        [showHideButton]="true"
-      ></copy-field>
+      <mat-form-field class="editfield" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput [value]="apikey.name" maxlength="255" (change)="updateKeyName($event, apikey.id)">
+      </mat-form-field>
     </mat-cell>
   </ng-container>
 
@@ -34,7 +32,12 @@
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
     <mat-cell *matCellDef="let apikey">
-      <button mat-icon-button (click)="deleteApiKey(apikey.key)">
+      <button mat-icon-button (click)="copyKey(apikey.key)">
+        <mat-icon fontSet="material-icons-outlined" aria-label="Copy Key">
+          content_copy
+        </mat-icon>
+      </button>
+      <button mat-icon-button (click)="deleteApiKey(apikey.id)">
         <mat-icon
           fontSet="material-icons-outlined"
           class="icon-red"

@@ -7,6 +7,7 @@ import { SidebarResolverService } from 'src/app/services/sidebar-resolver/sideba
 import { SettingsApiKeysRouteModule } from './apikeys/settings-apikeys.module';
 import { SettingsGeneralRouteModule } from './general/settings-general.module';
 import { SettingsRolesRouteModule } from './roles/settings-roles.module';
+import { SettingsShareXRouteModule } from './sharex/settings-sharex.module';
 import { SettingsSidebarComponent } from './sidebar/settings-sidebar.component';
 import { SettingsSysprefRouteModule } from './sys-pref/settings-sys-pref.module';
 import { SettingsUsersRouteModule } from './users/settings-users.module';
@@ -40,6 +41,18 @@ const SettingsRoutes: PRoutes = [
           page: {
             title: 'Api Keys',
             icon: 'key',
+            category: 'personal',
+          },
+        },
+      },
+      {
+        path: 'sharex',
+        loadChildren: () => SettingsShareXRouteModule,
+        data: {
+          permissions: [Permission.ApiKey],
+          page: {
+            title: 'ShareX',
+            icon: 'install_desktop',
             category: 'personal',
           },
         },

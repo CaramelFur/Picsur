@@ -1,8 +1,8 @@
 import { EApiKeySchema } from 'picsur-shared/dist/entities/apikey.entity';
 import {
   Column, Entity,
-  ManyToOne,
-  PrimaryColumn
+  Index,
+  ManyToOne, PrimaryGeneratedColumn
 } from 'typeorm';
 import { z } from 'zod';
 import { EUserBackend } from './user.entity';
@@ -19,7 +19,11 @@ export class EApiKeyBackend<
   T extends string | EUserBackend = string | EUserBackend,
 > implements OverriddenEApiKey
 {
-  @PrimaryColumn({
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Index()
+  @Column({
     nullable: false,
     unique: true,
   })
@@ -30,6 +34,9 @@ export class EApiKeyBackend<
     onDelete: 'CASCADE',
   })
   user: T;
+
+  @Column({ nullable: false })
+  name: string;
 
   @Column({
     nullable: false,

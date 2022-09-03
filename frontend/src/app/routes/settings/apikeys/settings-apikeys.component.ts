@@ -21,7 +21,7 @@ export class SettingsApiKeysComponent implements OnInit {
   private readonly logger = new Logger(SettingsApiKeysComponent.name);
 
   public readonly displayedColumns: string[] = [
-    'key',
+    'name',
     'created',
     'last_used',
     'actions',
@@ -82,7 +82,22 @@ export class SettingsApiKeysComponent implements OnInit {
     );
   }
 
-  public async deleteApiKey(apikey: string) {
+  public copyKey(apikey: string) {
+    const result = this.clipboard.copy(apikey);
+    if (!result) {
+      this.utilService.showSnackBar(
+        'Failed to copy api key to clipboard',
+        SnackBarType.Error,
+      );
+    } else {
+      this.utilService.showSnackBar(
+        'Api key copied to clipboard',
+        SnackBarType.Success,
+      );
+    }
+  }
+
+  public async deleteApiKey(apikeyId: string) {
     const pressedButton = await this.utilService.showDialog({
       title: `Are you sure you want to delete this api key?`,
       description: 'This action cannot be undone.',
@@ -100,7 +115,7 @@ export class SettingsApiKeysComponent implements OnInit {
     });
 
     if (pressedButton === 'delete') {
-      const result = await this.apikeysService.deleteApiKey(apikey);
+      const result = await this.apikeysService.deleteApiKey(apikeyId);
       if (HasFailed(result)) {
         this.utilService.showSnackBar(
           'Failed to delete api key',
@@ -117,6 +132,33 @@ export class SettingsApiKeysComponent implements OnInit {
     );
     if (!success) {
       this.paginator.firstPage();
+    }
+  }
+
+  async updateKeyName(event: Event, apikeyID: string) {
+    const name = (event.target as HTMLInputElement).value;
+
+    if (name.length < 3) {
+      this.utilService.showSnackBar(
+        'Name must be at least 3 characters long',
+        SnackBarType.Warning,
+      );
+      return;
+    }
+
+    const result = await this.apikeysService.updateApiKey(apikeyID, name);
+
+    if (HasFailed(result)) {
+      this.logger.warn(result.print());
+      this.utilService.showSnackBar(
+        'Failed to update api key name',
+        SnackBarType.Error,
+      );
+    } else {
+      this.utilService.showSnackBar(
+        'Api key name updated',
+        SnackBarType.Success,
+      );
     }
   }
 
@@ -156,14 +198,9 @@ export class SettingsApiKeysComponent implements OnInit {
       this.logger.warn(response.print());
       return false;
     }
-    console.log(response.results);
 
-    if (response.results.length > 0) {
-      this.dataSubject.next(response.results);
-      this.totalApiKeys = response.total;
-      return true;
-    }
-
-    return false;
+    this.dataSubject.next(response.results);
+    this.totalApiKeys = response.total;
+    return true;
   }
 }

@@ -6,7 +6,9 @@ import {
   ApiKeyInfoRequest,
   ApiKeyInfoResponse,
   ApiKeyListRequest,
-  ApiKeyListResponse
+  ApiKeyListResponse,
+  ApiKeyUpdateRequest,
+  ApiKeyUpdateResponse
 } from 'picsur-shared/dist/dto/api/apikeys.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { ThrowIfFailed } from 'picsur-shared/dist/types';
@@ -31,7 +33,7 @@ export class ApiKeysController {
     @HasPermission(Permission.ApiKeyAdmin) isAdmin: boolean,
   ): Promise<ApiKeyInfoResponse> {
     return ThrowIfFailed(
-      await this.apikeyDB.findOne(body.key, isAdmin ? undefined : userid),
+      await this.apikeyDB.findOne(body.id, isAdmin ? undefined : userid),
     );
   }
 
@@ -57,6 +59,22 @@ export class ApiKeysController {
     return ThrowIfFailed(await this.apikeyDB.createApiKey(userID));
   }
 
+  @Post('update')
+  @Returns(ApiKeyUpdateResponse)
+  async updateApiKey(
+    @ReqUserID() userID: string,
+    @Body() body: ApiKeyUpdateRequest,
+    @HasPermission(Permission.ApiKeyAdmin) isAdmin: boolean,
+  ): Promise<ApiKeyUpdateResponse> {
+    return ThrowIfFailed(
+      await this.apikeyDB.updateApiKey(
+        body.id,
+        body.name,
+        isAdmin ? undefined : userID,
+      ),
+    );
+  }
+
   @Post('delete')
   @Returns(ApiKeyDeleteResponse)
   async deleteApiKey(
@@ -65,7 +83,7 @@ export class ApiKeysController {
     @HasPermission(Permission.ApiKeyAdmin) isAdmin: boolean,
   ): Promise<ApiKeyDeleteResponse> {
     return ThrowIfFailed(
-      await this.apikeyDB.deleteApiKey(body.key, isAdmin ? undefined : userID),
+      await this.apikeyDB.deleteApiKey(body.id, isAdmin ? undefined : userID),
     );
   }
 }

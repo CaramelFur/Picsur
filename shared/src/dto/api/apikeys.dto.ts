@@ -1,11 +1,12 @@
 import { z } from 'zod';
 import { EApiKeySchema } from '../../entities/apikey.entity';
 import { createZodDto } from '../../util/create-zod-dto';
+import { IsEntityID } from '../../validators/entity-id.validator';
 import { IsPosInt } from '../../validators/positive-int.validator';
 
 // ApiKeyInfo
-export const ApiKeyInfoRequestSchema = EApiKeySchema.pick({
-  key: true,
+export const ApiKeyInfoRequestSchema = z.object({
+  id: IsEntityID(),
 });
 export class ApiKeyInfoRequest extends createZodDto(ApiKeyInfoRequestSchema) {}
 
@@ -39,15 +40,31 @@ export class ApiKeyCreateResponse extends createZodDto(
   ApiKeyCreateResponseSchema,
 ) {}
 
+// ApiKeyUpdate
+export const ApiKeyUpdateRequestSchema = z.object({
+  id: IsEntityID(),
+  name: z.string().max(255),
+});
+export class ApiKeyUpdateRequest extends createZodDto(
+  ApiKeyUpdateRequestSchema,
+) {}
+
+export const ApiKeyUpdateResponseSchema = EApiKeySchema;
+export class ApiKeyUpdateResponse extends createZodDto(
+  ApiKeyUpdateResponseSchema,
+) {}
+
 // ApiKeyDelete
-export const ApiKeyDeleteRequestSchema = EApiKeySchema.pick({
-  key: true,
+export const ApiKeyDeleteRequestSchema = z.object({
+  id: IsEntityID(),
 });
 export class ApiKeyDeleteRequest extends createZodDto(
   ApiKeyDeleteRequestSchema,
 ) {}
 
-export const ApiKeyDeleteResponseSchema = EApiKeySchema;
+export const ApiKeyDeleteResponseSchema = EApiKeySchema.omit({
+  id: true,
+});
 export class ApiKeyDeleteResponse extends createZodDto(
   ApiKeyDeleteResponseSchema,
 ) {}

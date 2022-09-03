@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MomentModule } from 'ngx-moment';
-import { CopyFieldModule } from 'src/app/components/copy-field/copy-field.module';
 import { FabModule } from 'src/app/components/fab/fab.module';
 import { SettingsApiKeysComponent } from './settings-apikeys.component';
 import { SettingsApiKeysRoutingModule } from './settings-apikeys.routing.module';
@@ -26,7 +25,6 @@ import { SettingsApiKeysRoutingModule } from './settings-apikeys.routing.module'
     MatChipsModule,
     MomentModule,
     ClipboardModule,
-    CopyFieldModule,
     FabModule,
   ],
 })
