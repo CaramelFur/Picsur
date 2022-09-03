@@ -4,6 +4,7 @@ import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { PermissionGuard } from 'src/app/guards/permission.guard';
 import { PRoutes } from 'src/app/models/dto/picsur-routes.dto';
 import { SidebarResolverService } from 'src/app/services/sidebar-resolver/sidebar-resolver.service';
+import { SettingsApiKeysRouteModule } from './apikeys/settings-apikeys.module';
 import { SettingsGeneralRouteModule } from './general/settings-general.module';
 import { SettingsRolesRouteModule } from './roles/settings-roles.module';
 import { SettingsSidebarComponent } from './sidebar/settings-sidebar.component';
@@ -27,6 +28,18 @@ const SettingsRoutes: PRoutes = [
           page: {
             title: 'General',
             icon: 'settings',
+            category: 'personal',
+          },
+        },
+      },
+      {
+        path: 'apikeys',
+        loadChildren: () => SettingsApiKeysRouteModule,
+        data: {
+          permissions: [Permission.ApiKey],
+          page: {
+            title: 'Api Keys',
+            icon: 'key',
             category: 'personal',
           },
         },
