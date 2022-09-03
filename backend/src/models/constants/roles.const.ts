@@ -35,6 +35,7 @@ const SystemRoleDefaultsTyped: {
     Permission.UserLogin,
     Permission.Settings,
     Permission.ImageUpload,
+    Permission.ApiKey,
   ],
   // Grant all permissions to admin
   admin: PermissionsList,

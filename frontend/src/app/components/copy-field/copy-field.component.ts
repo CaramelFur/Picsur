@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UtilService } from 'src/app/util/util-module/util.service';
 
@@ -13,6 +13,12 @@ export class CopyFieldComponent {
   @Input() label: string = 'Loading...';
   @Input() value: string = 'Loading...';
 
+  @Input() showHideButton: boolean = false;
+  @Input() hidden: boolean = false;
+
+  @Output('copy') onCopy = new EventEmitter<string>();
+  @Output('hide') onHide = new EventEmitter<boolean>();
+
   constructor(
     private readonly utilService: UtilService,
     private readonly clipboard: Clipboard,
@@ -21,6 +27,7 @@ export class CopyFieldComponent {
   public copy() {
     if (this.clipboard.copy(this.value)) {
       this.utilService.showSnackBar(`Copied ${this.label}!`, SnackBarType.Info);
+      this.onCopy.emit(this.value);
       return;
     }
 
@@ -28,5 +35,10 @@ export class CopyFieldComponent {
       'Copying to clipboard failed',
       SnackBarType.Error,
     );
+  }
+
+  public toggleHide() {
+    this.hidden = !this.hidden;
+    this.onHide.emit(this.hidden);
   }
 }

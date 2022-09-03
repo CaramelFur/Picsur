@@ -19,6 +19,7 @@ export class ApiKeyDbService {
   async createApiKey(userid: string): AsyncFailable<EApiKeyBackend<string>> {
     const apikey = new EApiKeyBackend<string>();
     apikey.user = userid;
+    apikey.created = new Date();
     apikey.key = generateRandomString(32); // Might collide, probably not
 
     /*

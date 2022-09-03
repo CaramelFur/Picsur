@@ -1,6 +1,20 @@
 <mat-form-field appearance="outline" color="accent">
   <mat-label>{{ label }}</mat-label>
-  <input matInput [value]="value" readonly="readonly" />
+  <input
+    matInput
+    [value]="value"
+    readonly="readonly"
+    [type]="hidden ? 'password' : 'text'"
+  />
+  <button
+    *ngIf="showHideButton"
+    mat-icon-button
+    matSuffix
+    [attr.aria-label]="'Hide'"
+    (click)="toggleHide()"
+  >
+    <mat-icon>{{ hidden ? 'visibility_off' : 'visibility' }}</mat-icon>
+  </button>
   <button mat-icon-button matSuffix [attr.aria-label]="'Copy'" (click)="copy()">
     <mat-icon>content_copy</mat-icon>
   </button>

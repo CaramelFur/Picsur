@@ -1,8 +1,6 @@
 import { EApiKeySchema } from 'picsur-shared/dist/entities/apikey.entity';
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
+  Column, Entity,
   ManyToOne,
   PrimaryColumn
 } from 'typeorm';
@@ -33,7 +31,7 @@ export class EApiKeyBackend<
   })
   user: T;
 
-  @CreateDateColumn({
+  @Column({
     nullable: false,
   })
   created: Date;

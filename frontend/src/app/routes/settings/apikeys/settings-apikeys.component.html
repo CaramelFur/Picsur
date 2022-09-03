@@ -4,24 +4,31 @@
   <ng-container matColumnDef="key">
     <mat-header-cell *matHeaderCellDef>Key</mat-header-cell>
     <mat-cell *matCellDef="let apikey">
-      <copy-field label="Key" [value]="apikey.key"></copy-field>
+      <copy-field
+        label="Key"
+        [value]="apikey.key"
+        [hidden]="true"
+        [showHideButton]="true"
+      ></copy-field>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="created">
-    <mat-header-cell class="d-none d-md-flex" *matHeaderCellDef>
+    <mat-header-cell class="d-none d-lg-flex" *matHeaderCellDef>
       Created
     </mat-header-cell>
-    <mat-cell class="d-none d-md-flex" *matCellDef="let apikey">{{
-      apikey.created | amTimeAgo
-    }}</mat-cell>
+    <mat-cell class="d-none d-lg-flex" *matCellDef="let apikey">
+      {{ apikey.created | amTimeAgo }}
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="last_used">
-    <mat-header-cell *matHeaderCellDef>Last Used</mat-header-cell>
-    <mat-cell *matCellDef="let apikey">{{
-      apikey.last_used === null ? 'Never' : (apikey.last_used | amTimeAgo)
-    }}</mat-cell>
+    <mat-header-cell class="d-none d-sm-flex" *matHeaderCellDef>
+      Last Used
+    </mat-header-cell>
+    <mat-cell class="d-none d-sm-flex" *matCellDef="let apikey">
+      {{ apikey.last_used === null ? 'Never' : (apikey.last_used | amTimeAgo) }}
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="actions">
