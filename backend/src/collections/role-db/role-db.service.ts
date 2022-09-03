@@ -141,6 +141,7 @@ export class RoleDbService {
     try {
       const found = await this.rolesRepository.find({
         where: { name: In(names) },
+        order: { name: 'ASC' },
       });
 
       if (!found) return Fail(FT.NotFound, 'No roles found');
@@ -152,7 +153,9 @@ export class RoleDbService {
 
   public async findAll(): AsyncFailable<ERoleBackend[]> {
     try {
-      const found = await this.rolesRepository.find();
+      const found = await this.rolesRepository.find({
+        order: { name: 'ASC' },
+      });
       if (!found) return Fail(FT.NotFound, 'No roles found');
       return found;
     } catch (e) {

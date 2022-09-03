@@ -33,12 +33,15 @@ export class ImageDBService {
     if (withDeleteKey) imageEntity.delete_key = generateRandomString(32);
 
     try {
-      imageEntity = await this.imageRepo.save(imageEntity, { reload: true });
+      imageEntity = await this.imageRepo.save(imageEntity, {
+        reload: true,
+      });
+
+      if (imageEntity.delete_key === null) delete imageEntity.delete_key;
+      return imageEntity;
     } catch (e) {
       return Fail(FT.Database, e);
     }
-
-    return imageEntity;
   }
 
   public async findOne(

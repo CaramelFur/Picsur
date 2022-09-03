@@ -24,10 +24,7 @@ export class EImageBackend implements EImage {
 
   @Column({
     nullable: true,
-    transformer: {
-      from: (value: string | null) => (value === null ? undefined : value),
-      to: (value: string | undefined) => (value === undefined ? null : value),
-    },
+    select: false,
   })
   delete_key?: string;
 }

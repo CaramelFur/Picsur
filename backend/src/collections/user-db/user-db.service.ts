@@ -224,6 +224,7 @@ export class UserDbService {
       const [users, amount] = await this.usersRepository.findAndCount({
         take: count,
         skip: count * page,
+        order: { username: 'ASC' },
       });
 
       if (users === undefined) return Fail(FT.NotFound, 'Users not found');
