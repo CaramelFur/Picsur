@@ -74,6 +74,7 @@ export class ApiKeyDbService {
                 ({ id: userid } as any)
               : undefined,
         },
+        order: { created: 'DESC' },
         skip: count * page,
         take: count,
         loadRelationIds: true,

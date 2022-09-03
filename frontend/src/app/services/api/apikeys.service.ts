@@ -9,7 +9,8 @@ import {
   ApiKeyListResponse
 } from 'picsur-shared/dist/dto/api/apikeys.dto';
 import { EApiKey } from 'picsur-shared/dist/entities/apikey.entity';
-import { AsyncFailable, Open } from 'picsur-shared/dist/types';
+import { AsyncFailable } from 'picsur-shared/dist/types';
+import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -22,7 +23,7 @@ export class ApiKeysService {
     count: number,
     page: number,
     userID?: string,
-  ): AsyncFailable<EApiKey[]> {
+  ): AsyncFailable<FindResult<EApiKey>> {
     const response = await this.api.post(
       ApiKeyListRequest,
       ApiKeyListResponse,
@@ -34,7 +35,7 @@ export class ApiKeysService {
       },
     );
 
-    return Open(response, 'results');
+    return response;
   }
 
   public async getApiKey(key: string): AsyncFailable<EApiKey> {

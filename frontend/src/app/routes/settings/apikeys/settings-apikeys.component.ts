@@ -1,13 +1,13 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { EUser } from 'picsur-shared/dist/entities/user.entity';
+import { EApiKey } from 'picsur-shared/dist/entities/apikey.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
-import { StaticInfoService } from 'src/app/services/api/static-info.service';
-import { UserAdminService } from 'src/app/services/api/user-manage.service';
+import { ApiKeysService } from 'src/app/services/api/apikeys.service';
+import { UserService } from 'src/app/services/api/user.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { Throttle } from 'src/app/util/throttle';
 import { BootstrapService } from 'src/app/util/util-module/bootstrap.service';
@@ -20,24 +20,26 @@ import { UtilService } from 'src/app/util/util-module/util.service';
 export class SettingsApiKeysComponent implements OnInit {
   private readonly logger = new Logger(SettingsApiKeysComponent.name);
 
-  private UndeletableUsersList: string[] = [];
-
-  public readonly displayedColumns: string[] = ['username', 'roles', 'actions'];
+  public readonly displayedColumns: string[] = [
+    'key',
+    'created',
+    'last_used',
+    'actions',
+  ];
   public readonly pageSizeOptions: number[] = [5, 10, 25, 100];
   public readonly startingPageSize = this.pageSizeOptions[2];
-  public readonly rolesTruncate = 5;
 
-  public dataSubject = new BehaviorSubject<EUser[]>([]);
+  public dataSubject = new BehaviorSubject<EApiKey[]>([]);
   public updateSubject = new Subject<PageEvent>();
-  public totalUsers: number = 0;
+  public totalApiKeys: number = 0;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private readonly utilService: UtilService,
-    private readonly userManageService: UserAdminService,
-    private readonly staticInfo: StaticInfoService,
-    private readonly router: Router,
+    private readonly apikeysService: ApiKeysService,
+    private readonly userService: UserService,
+    private readonly clipboard: Clipboard,
     // Public because used in template
     public readonly bootstrapService: BootstrapService,
   ) {}
@@ -45,23 +47,44 @@ export class SettingsApiKeysComponent implements OnInit {
   ngOnInit() {
     this.subscribeToUpdate();
 
-    Promise.all([
-      this.fetchUsers(this.startingPageSize, 0),
-      this.initSpecialUsers(),
-    ]).catch(this.logger.error);
+    this.fetchApiKeys(this.startingPageSize, 0);
   }
 
-  public addUser() {
-    this.router.navigate(['/settings/users/add']);
+  public async addApiKey() {
+    const result = await this.apikeysService.createApiKey();
+    if (HasFailed(result)) {
+      this.utilService.showSnackBar(
+        'Failed to create api key',
+        SnackBarType.Error,
+      );
+      return;
+    }
+
+    const success = await this.fetchApiKeys(
+      this.paginator.pageSize,
+      this.paginator.pageIndex,
+    );
+    if (!success) {
+      this.paginator.firstPage();
+    }
+
+    const clipboardResult = this.clipboard.copy(result.key);
+    if (!clipboardResult) {
+      this.utilService.showSnackBar(
+        'Failed to copy api key to clipboard',
+        SnackBarType.Error,
+      );
+    }
+
+    this.utilService.showSnackBar(
+      'Api key created and copied to clipboard',
+      SnackBarType.Success,
+    );
   }
 
-  public editUser(user: EUser) {
-    this.router.navigate(['/settings/users/edit', user.id]);
-  }
-
-  public async deleteUser(user: EUser) {
+  public async deleteApiKey(apikey: string) {
     const pressedButton = await this.utilService.showDialog({
-      title: `Are you sure you want to delete ${user.username}?`,
+      title: `Are you sure you want to delete this api key?`,
       description: 'This action cannot be undone.',
       buttons: [
         {
@@ -77,18 +100,18 @@ export class SettingsApiKeysComponent implements OnInit {
     });
 
     if (pressedButton === 'delete') {
-      const result = await this.userManageService.deleteUser(user.id ?? '');
+      const result = await this.apikeysService.deleteApiKey(apikey);
       if (HasFailed(result)) {
         this.utilService.showSnackBar(
-          'Failed to delete user',
+          'Failed to delete api key',
           SnackBarType.Error,
         );
       } else {
-        this.utilService.showSnackBar('User deleted', SnackBarType.Success);
+        this.utilService.showSnackBar('Api key deleted', SnackBarType.Success);
       }
     }
 
-    const success = await this.fetchUsers(
+    const success = await this.fetchApiKeys(
       this.paginator.pageSize,
       this.paginator.pageIndex,
     );
@@ -102,7 +125,7 @@ export class SettingsApiKeysComponent implements OnInit {
     return this.updateSubject
       .pipe(Throttle(500))
       .subscribe(async (pageEvent: PageEvent) => {
-        let success = await this.fetchUsers(
+        let success = await this.fetchApiKeys(
           pageEvent.pageSize,
           pageEvent.pageIndex,
         );
@@ -116,34 +139,31 @@ export class SettingsApiKeysComponent implements OnInit {
       });
   }
 
-  private async fetchUsers(
+  private async fetchApiKeys(
     pageSize: number,
     pageIndex: number,
   ): Promise<boolean> {
-    const response = await this.userManageService.getUsers(pageSize, pageIndex);
+    const response = await this.apikeysService.getApiKeys(
+      pageSize,
+      pageIndex,
+      this.userService.snapshot?.id,
+    );
     if (HasFailed(response)) {
       this.utilService.showSnackBar(
-        'Failed to fetch users',
+        'Failed to fetch api keys',
         SnackBarType.Error,
       );
+      this.logger.warn(response.print());
       return false;
     }
+    console.log(response.results);
 
     if (response.results.length > 0) {
       this.dataSubject.next(response.results);
-      this.totalUsers = response.total;
+      this.totalApiKeys = response.total;
       return true;
     }
 
     return false;
-  }
-
-  private async initSpecialUsers() {
-    const specialUsers = await this.staticInfo.getSpecialUsers();
-    this.UndeletableUsersList = specialUsers.UndeletableUsersList;
-  }
-
-  isSystem(user: EUser): boolean {
-    return this.UndeletableUsersList.includes(user.username);
   }
 }

@@ -6,15 +6,18 @@ mat-table {
   justify-content: end;
 }
 
-.mat-column-roles {
+.mat-column-key {
   flex-grow: 2;
+}
+
+.mat-column-last_used {
+  flex-grow: .5;
 }
 
 .icon-red {
   color: #f44336;
 }
 
-mat-chip-list {
-  margin-top: 8px;
-  margin-bottom: 8px;
+copy-field {
+  margin-top: 1rem;
 }

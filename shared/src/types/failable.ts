@@ -130,6 +130,12 @@ export class Failure {
     return FTProps[this.type].important;
   }
 
+  print(): string {
+    return `${this.getName()}: ${this.getReason()}\n(${
+      this.debugMessage
+    })\n${this.getStack()}`;
+  }
+
   static deserialize(data: any): Failure {
     if (data.__68351953531423479708__id_failure !== 1148363914) {
       throw new Error('Invalid failure data');
