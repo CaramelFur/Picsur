@@ -12,7 +12,7 @@ import { isPermissionsArray } from '../../../models/validators/permissions.valid
 // This way a user will get his own account when logged in, but received guest permissions when not
 
 @Injectable()
-export class MainAuthGuard extends AuthGuard(['jwt', 'guest']) {
+export class MainAuthGuard extends AuthGuard(['apikey', 'jwt', 'guest']) {
   private readonly logger = new Logger(MainAuthGuard.name);
 
   constructor(

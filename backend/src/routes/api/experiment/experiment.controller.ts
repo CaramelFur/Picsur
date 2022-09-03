@@ -20,10 +20,6 @@ export class ExperimentController {
     @Request() req: AuthFasityRequest,
     @ReqUserID() thing: string,
   ): Promise<UserInfoResponse> {
-    const key = await this.apikeyDB.findOne("0SB7nCIkfhnAmf3Glejf0naUbI7dimhh", undefined);
-    
-    console.log(key);
-    
     return req.user;
   }
 }

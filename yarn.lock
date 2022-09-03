@@ -8741,6 +8741,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"passport-headerapikey@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "passport-headerapikey@npm:1.2.2"
+  dependencies:
+    lodash: ^4.17.15
+    passport-strategy: ^1.0.0
+  checksum: 509b0d72225845fcb4d6a95acd76f98042bdee256bf11731ece2c8be8341235013f2150207148d7e8ed939e28857dea18503969842ad40bba7a9724396b94481
+  languageName: node
+  linkType: hard
+
 "passport-jwt@npm:^4.0.0":
   version: 4.0.0
   resolution: "passport-jwt@npm:4.0.0"
@@ -8991,6 +9001,7 @@ __metadata:
     ms: ^2.1.3
     p-timeout: ^6.0.0
     passport: ^0.6.0
+    passport-headerapikey: ^1.2.2
     passport-jwt: ^4.0.0
     passport-local: ^1.0.0
     passport-strategy: ^1.0.0
