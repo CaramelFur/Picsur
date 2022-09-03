@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
+import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { In, Repository } from 'typeorm';
 import { EImageDerivativeBackend } from '../../database/entities/image-derivative.entity';
 import { EImageFileBackend } from '../../database/entities/image-file.entity';
@@ -23,11 +24,13 @@ export class ImageDBService {
   public async create(
     userid: string,
     filename: string,
+    withDeleteKey: boolean,
   ): AsyncFailable<EImageBackend> {
     let imageEntity = new EImageBackend();
     imageEntity.user_id = userid;
     imageEntity.created = new Date();
     imageEntity.file_name = filename;
+    if (withDeleteKey) imageEntity.delete_key = generateRandomString(32);
 
     try {
       imageEntity = await this.imageRepo.save(imageEntity, { reload: true });
@@ -117,6 +120,34 @@ export class ImageDBService {
       ]);
 
       return deletable_images;
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
+  public async deleteWithKey(
+    id: string,
+    key: string,
+  ): AsyncFailable<EImageBackend> {
+    try {
+      const found = await this.imageRepo.findOne({
+        where: { id, delete_key: key },
+      });
+
+      if (!found) return Fail(FT.NotFound, 'Image not found');
+
+      await Promise.all([
+        this.imageDerivativeRepo.delete({
+          image_id: found.id,
+        }),
+        this.imageFileRepo.delete({
+          image_id: found.id,
+        }),
+
+        this.imageRepo.delete({ id: found.id }),
+      ]);
+
+      return found;
     } catch (e) {
       return Fail(FT.Database, e);
     }

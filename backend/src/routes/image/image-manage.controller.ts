@@ -1,13 +1,24 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Res
+} from '@nestjs/common';
+import type { FastifyReply } from 'fastify';
 import {
   ImageDeleteRequest,
   ImageDeleteResponse,
+  ImageDeleteWithKeyRequest,
+  ImageDeleteWithKeyResponse,
   ImageListRequest,
   ImageListResponse,
   ImageUploadResponse
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
-import { ThrowIfFailed } from 'picsur-shared/dist/types';
+import { HasFailed, ThrowIfFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart/multipart.decorator';
 import {
   HasPermission,
@@ -17,7 +28,6 @@ import { ReqUserID } from '../../decorators/request-user.decorator';
 import { Returns } from '../../decorators/returns.decorator';
 import { ImageManagerService } from '../../managers/image/image.service';
 import { ImageUploadDto } from '../../models/dto/image-upload.dto';
-
 @Controller('api/image')
 @RequiredPermissions(Permission.ImageUpload)
 export class ImageManageController {
@@ -30,12 +40,14 @@ export class ImageManageController {
   async uploadImage(
     @MultiPart() multipart: ImageUploadDto,
     @ReqUserID() userid: string,
+    @HasPermission(Permission.ImageDeleteKey) withDeleteKey: boolean,
   ): Promise<ImageUploadResponse> {
     const image = ThrowIfFailed(
       await this.imagesService.upload(
         userid,
         multipart.image.filename,
         multipart.image.buffer,
+        withDeleteKey,
       ),
     );
 
@@ -79,5 +91,33 @@ export class ImageManageController {
     return {
       images: deletedImages,
     };
+  }
+
+  @Post('delete/key')
+  @RequiredPermissions(Permission.ImageDeleteKey)
+  @Returns(ImageDeleteWithKeyResponse)
+  async deleteImageWithKeyGet(
+    @Body() body: ImageDeleteWithKeyRequest,
+  ): Promise<ImageDeleteWithKeyResponse> {
+    return ThrowIfFailed(
+      await this.imagesService.deleteWithKey(body.id, body.key),
+    );
+  }
+
+  @Get('delete/:id/:key')
+  @RequiredPermissions(Permission.ImageDeleteKey)
+  async deleteImageWithKeyPost(
+    @Param() params: ImageDeleteWithKeyRequest,
+    @Res({ passthrough: true }) res: FastifyReply,
+  ): Promise<string> {
+    const image = await this.imagesService.deleteWithKey(params.id, params.key);
+    if (HasFailed(image)) {
+      res.code(image.getCode());
+      res.type('text/html');
+      return `<html><body><h1>Error</h1><p>${image.getReason()}</p></body></html>`;
+    }
+
+    res.type('text/html');
+    return '<html><body><h1>Image deleted</h1></body></html>';
   }
 }

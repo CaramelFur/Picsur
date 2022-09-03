@@ -18,11 +18,16 @@ export class EImageBackend implements EImage {
 
   @Column({
     nullable: false,
-    default: "image",
+    default: 'image',
   })
   file_name: string;
 
-  // @Column({
-  //   nullable: false,
-  // })
+  @Column({
+    nullable: true,
+    transformer: {
+      from: (value: string | null) => (value === null ? undefined : value),
+      to: (value: string | undefined) => (value === undefined ? null : value),
+    },
+  })
+  delete_key?: string;
 }

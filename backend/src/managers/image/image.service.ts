@@ -59,10 +59,18 @@ export class ImageManagerService {
     return await this.imagesService.delete(ids, userid);
   }
 
+  public async deleteWithKey(
+    imageId: string,
+    key: string,
+  ): AsyncFailable<EImageBackend> {
+    return await this.imagesService.deleteWithKey(imageId, key);
+  }
+
   public async upload(
     userid: string,
     filename: string,
     image: Buffer,
+    withDeleteKey: boolean,
   ): AsyncFailable<EImageBackend> {
     const fileType = await this.getFileTypeFromBuffer(image);
     if (HasFailed(fileType)) return fileType;
@@ -86,7 +94,11 @@ export class ImageManagerService {
     })();
 
     // Save processed to db
-    const imageEntity = await this.imagesService.create(userid, name);
+    const imageEntity = await this.imagesService.create(
+      userid,
+      name,
+      withDeleteKey,
+    );
     if (HasFailed(imageEntity)) return imageEntity;
 
     const imageFileEntity = await this.imageFilesService.setFile(

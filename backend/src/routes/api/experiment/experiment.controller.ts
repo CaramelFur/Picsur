@@ -1,20 +1,21 @@
-import { Controller, Get, Request } from '@nestjs/common';
+import { Controller, Get, Request, Response } from '@nestjs/common';
+import type { FastifyReply } from 'fastify';
 import { UserInfoResponse } from 'picsur-shared/dist/dto/api/user-manage.dto';
-import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
-import { RequiredPermissions } from '../../../decorators/permissions.decorator';
+import { NoPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
-import type AuthFasityRequest from '../../../models/interfaces/authrequest.dto';
-
+import type AuthFastifyRequest from '../../../models/interfaces/authrequest.dto';
 @Controller('api/experiment')
-@RequiredPermissions(Permission.SysPrefAdmin)
+@NoPermissions()
 export class ExperimentController {
   constructor() {}
 
   @Get()
   @Returns(UserInfoResponse)
   async testRoute(
-    @Request() req: AuthFasityRequest,
+    @Request() req: AuthFastifyRequest,
+    @Response() res: FastifyReply,
   ): Promise<UserInfoResponse> {
+    res.header('Location', '/penis');
     return req.user;
   }
 }
