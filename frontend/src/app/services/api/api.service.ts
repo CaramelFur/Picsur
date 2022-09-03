@@ -78,6 +78,13 @@ export class ApiService {
     });
   }
 
+  public async postEmpty<T extends z.AnyZodObject>(
+    type: ZodDtoStatic<T>,
+    url: string,
+  ): AsyncFailable<z.infer<T>> {
+    return this.fetchSafeJson(type, url, { method: 'POST' });
+  }
+
   public async postForm<T extends z.AnyZodObject>(
     receiveType: ZodDtoStatic<T>,
     url: string,
