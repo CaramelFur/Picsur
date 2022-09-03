@@ -1,2 +1,12 @@
 // Include bootstrap-grid.scss from node_modules
-@use '../node_modules/bootstrap/scss/bootstrap-grid.scss';
+@use '../node_modules/bootstrap/scss/bootstrap-grid.scss' with (
+  $grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px,
+    xxxl: 1600px,
+  )
+);

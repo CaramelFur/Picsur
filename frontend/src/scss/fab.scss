@@ -10,7 +10,7 @@
     bottom: 2rem;
     z-index: 8;
 
-    @include bs.media-breakpoint-down(xxl) {
+    @include bs.media-breakpoint-down(xxxl) {
       right: 4rem;
     }
 
@@ -22,7 +22,7 @@
       bottom: 4rem;
     }
 
-    @include bs.media-breakpoint-up(xxl) {
+    @include bs.media-breakpoint-up(xxxl) {
       transform: translateX(3rem);
     }
   }
