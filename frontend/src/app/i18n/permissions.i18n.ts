@@ -5,6 +5,8 @@ export const UIFriendlyPermissions: {
 } = {
   [Permission.ImageView]: 'View Images',
   [Permission.ImageUpload]: 'Upload Images',
+  [Permission.ImageManage]: 'Manage Own Images',
+  [Permission.ImageDeleteKey]: 'Use Deletekey',
 
   [Permission.UserLogin]: 'Login',
   [Permission.UserKeepLogin]: 'Stay Logged In',

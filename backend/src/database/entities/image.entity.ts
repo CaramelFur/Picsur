@@ -21,4 +21,8 @@ export class EImageBackend implements EImage {
     default: "image",
   })
   file_name: string;
+
+  // @Column({
+  //   nullable: false,
+  // })
 }

@@ -43,6 +43,7 @@ export class ImageManageController {
   }
 
   @Post('list')
+  @RequiredPermissions(Permission.ImageManage)
   @Returns(ImageListResponse)
   async listMyImagesPaged(
     @Body() body: ImageListRequest,
@@ -61,6 +62,7 @@ export class ImageManageController {
   }
 
   @Post('delete')
+  @RequiredPermissions(Permission.ImageManage)
   @Returns(ImageDeleteResponse)
   async deleteImage(
     @Body() body: ImageDeleteRequest,

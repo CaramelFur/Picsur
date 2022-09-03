@@ -3,6 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { EUser, EUserSchema } from 'picsur-shared/dist/entities/user.entity';
 import { Fail, Failable, FT, HasFailed } from 'picsur-shared/dist/types';
+import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { UserDbService } from '../../../collections/user-db/user-db.service';
 import { Permissions } from '../../../models/constants/permissions.const';
 import { isPermissionsArray } from '../../../models/validators/permissions.validator';
@@ -57,7 +58,7 @@ export class MainAuthGuard extends AuthGuard(['apikey', 'jwt', 'guest']) {
     // These are the permissions the user has
     const userPermissions = await this.usersService.getPermissions(user.id);
     if (HasFailed(userPermissions)) {
-      throw userPermissions
+      throw userPermissions;
     }
 
     context.switchToHttp().getRequest().userPermissions = userPermissions;
@@ -71,16 +72,23 @@ export class MainAuthGuard extends AuthGuard(['apikey', 'jwt', 'guest']) {
     const handlerName = context.getHandler().name;
     // Fall back to class permissions if none on function
     // But function has higher priority than class
-    const permissions =
-      this.reflector.get<Permissions>('permissions', context.getHandler()) ??
+    const permissionsHandler: Permissions | undefined =
+      this.reflector.get<Permissions>('permissions', context.getHandler());
+    const permissionsClass: Permissions | undefined =
       this.reflector.get<Permissions>('permissions', context.getClass());
 
-    if (permissions === undefined)
+    if (permissionsHandler === undefined && permissionsClass === undefined) {
       return Fail(
         FT.Internal,
         undefined,
         `${handlerName} does not have any permissions defined, denying access`,
       );
+    }
+
+    const permissions = makeUnique([
+      ...(permissionsHandler ?? []),
+      ...(permissionsClass ?? []),
+    ]);
 
     if (!isPermissionsArray(permissions))
       return Fail(

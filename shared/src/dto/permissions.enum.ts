@@ -3,8 +3,10 @@
 // This does not have to be a complete list of all permissions
 // -> the frontend and backend can be somewhat out of sync
 export enum Permission {
-  ImageView = 'image-view',
-  ImageUpload = 'image-upload', // Ability to upload and manage own images
+  ImageView = 'image-view', // Ability to view images
+  ImageUpload = 'image-upload', // Ability to upload images
+  ImageDeleteKey = 'image-delete-key', // Ability to delete images by a secret key
+  ImageManage = 'image-manage', // List and delete own images
 
   UserLogin = 'user-login', // Ability to log in
   UserKeepLogin = 'user-keep-login', // Ability to view own user details and refresh token

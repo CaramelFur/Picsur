@@ -28,13 +28,19 @@ type SystemRole = typeof UndeletableRolesTuple[number];
 const SystemRoleDefaultsTyped: {
   [key in SystemRole]: Permissions;
 } = {
-  guest: [Permission.ImageView, Permission.UserLogin],
+  guest: [
+    Permission.ImageView,
+    Permission.ImageDeleteKey,
+    Permission.UserLogin,
+  ],
   user: [
     Permission.ImageView,
+    Permission.ImageDeleteKey,
+    Permission.ImageManage,
+    Permission.ImageUpload,
     Permission.UserKeepLogin,
     Permission.UserLogin,
     Permission.Settings,
-    Permission.ImageUpload,
     Permission.ApiKey,
   ],
   // Grant all permissions to admin
