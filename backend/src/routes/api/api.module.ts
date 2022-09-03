@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ApiKeysModule } from './apikeys/apikeys.module';
 import { ExperimentModule } from './experiment/experiment.module';
 import { InfoModule } from './info/info.module';
 import { PrefModule } from './pref/pref.module';
@@ -12,6 +13,7 @@ import { UserApiModule } from './user/user.module';
     ExperimentModule,
     InfoModule,
     RolesApiModule,
+    ApiKeysModule,
   ],
 })
 export class PicsurApiModule {}

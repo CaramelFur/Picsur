@@ -12,8 +12,11 @@ export enum Permission {
 
   Settings = 'settings', // Ability to view (personal) settings
 
+  ApiKey = 'apikey', // Ability to create and remove your own api keys
+
   ImageAdmin = 'image-admin', // Ability to manage everyones manage images
   UserAdmin = 'user-admin', // Allow modification of users
   RoleAdmin = 'role-admin', // Allow modification of roles
+  ApiKeyAdmin = 'apikey-admin', // Allow modification of all api keys
   SysPrefAdmin = 'syspref-admin',
 }

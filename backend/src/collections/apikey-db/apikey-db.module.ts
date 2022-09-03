@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EApiKeyBackend } from '../../database/entities/apikey.entity';
-import { ApikeyDbService } from './apikey-db.service';
+import { ApiKeyDbService } from './apikey-db.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([EApiKeyBackend])],
-  providers: [ApikeyDbService],
-  exports: [ApikeyDbService],
+  providers: [ApiKeyDbService],
+  exports: [ApiKeyDbService],
 })
-export class ApikeyDbModule {}
+export class ApiKeyDbModule {}

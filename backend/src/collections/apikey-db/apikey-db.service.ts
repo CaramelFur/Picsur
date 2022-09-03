@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
@@ -8,7 +8,9 @@ import { EApiKeyBackend } from '../../database/entities/apikey.entity';
 import { EUserBackend } from '../../database/entities/user.entity';
 
 @Injectable()
-export class ApikeyDbService {
+export class ApiKeyDbService {
+  private readonly logger = new Logger(ApiKeyDbService.name);
+
   constructor(
     @InjectRepository(EApiKeyBackend)
     private readonly apikeyRepo: Repository<EApiKeyBackend>,
@@ -32,28 +34,20 @@ export class ApikeyDbService {
     }
   }
 
-  async resolve(
-    key: string
-  ): AsyncFailable<EApiKeyBackend<EUserBackend>> {
-    try {
-      const apikey = await this.apikeyRepo.findOne({
-        where: { key },
-        relations: ['user'],
-      });
-      if (!apikey) return Fail(FT.NotFound, 'API key not found');
-      return apikey as EApiKeyBackend<EUserBackend>;
-    } catch (e) {
-      return Fail(FT.Database, e);
-    }
-  }
-
   async findOne(
     key: string,
     userid: string | undefined,
   ): AsyncFailable<EApiKeyBackend<string>> {
     try {
       const apikey = await this.apikeyRepo.findOne({
-        where: { user: userid, key },
+        where: {
+          user:
+            userid !== undefined
+              ? // This is stupid, but typeorm do typeorm
+                ({ id: userid } as any)
+              : undefined,
+          key,
+        },
         loadRelationIds: true,
       });
       if (!apikey) return Fail(FT.NotFound, 'API key not found');
@@ -73,7 +67,13 @@ export class ApikeyDbService {
 
     try {
       const [apikeys, amount] = await this.apikeyRepo.findAndCount({
-        where: { user: userid },
+        where: {
+          user:
+            userid !== undefined
+              ? // This is stupid, but typeorm do typeorm
+                ({ id: userid } as any)
+              : undefined,
+        },
         skip: count * page,
         take: count,
         loadRelationIds: true,
@@ -97,12 +97,35 @@ export class ApikeyDbService {
     const apikeyToDelete = await this.findOne(key, userid);
     if (HasFailed(apikeyToDelete)) return apikeyToDelete;
 
+    const apiKeyCopy = { ...apikeyToDelete };
     try {
-      return (await this.apikeyRepo.remove(
-        apikeyToDelete,
-      )) as EApiKeyBackend<string>;
+      await this.apikeyRepo.remove(apikeyToDelete);
+      return apiKeyCopy as EApiKeyBackend<string>;
     } catch (e) {
       return Fail(FT.Database, e);
     }
+  }
+
+  async resolve(key: string): AsyncFailable<EApiKeyBackend<EUserBackend>> {
+    try {
+      const apikey = await this.apikeyRepo.findOne({
+        where: { key },
+        relations: ['user'],
+      });
+      if (!apikey) return Fail(FT.NotFound, 'API key not found');
+
+      this.updateLastUsed(apikey);
+
+      return apikey as EApiKeyBackend<EUserBackend>;
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
+  private updateLastUsed(apikey: EApiKeyBackend) {
+    (async () => {
+      apikey.last_used = new Date();
+      this.apikeyRepo.save(apikey);
+    })().catch(this.logger.error.bind(this.logger));
   }
 }

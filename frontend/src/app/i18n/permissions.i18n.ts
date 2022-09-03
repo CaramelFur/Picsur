@@ -12,8 +12,11 @@ export const UIFriendlyPermissions: {
 
   [Permission.Settings]: 'View settings',
 
+  [Permission.ApiKey]: 'Use API keys',
+
   [Permission.ImageAdmin]: 'Image Admin',
   [Permission.UserAdmin]: 'User Admin',
   [Permission.RoleAdmin]: 'Role Admin',
+  [Permission.ApiKeyAdmin]: 'API Key Admin',
   [Permission.SysPrefAdmin]: 'System Admin',
 };
