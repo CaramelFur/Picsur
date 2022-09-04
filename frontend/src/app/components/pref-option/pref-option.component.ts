@@ -7,9 +7,9 @@ import {
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { Subject } from 'rxjs';
 import { Required } from 'src/app/models/decorators/required.decorator';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
+import { Logger } from 'src/app/services/logger/logger.service';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
 import { Throttle } from 'src/app/util/throttle';
-import { UtilService } from 'src/app/util/util-module/util.service';
 
 @Component({
   selector: 'pref-option',
@@ -17,6 +17,8 @@ import { UtilService } from 'src/app/util/util-module/util.service';
   styleUrls: ['./pref-option.component.scss'],
 })
 export class PrefOptionComponent implements OnInit {
+  private readonly logger = new Logger(PrefOptionComponent.name);
+
   @Input() @Required pref: DecodedPref;
   @Input('update') @Required updateFunction: (
     key: string,
@@ -28,7 +30,7 @@ export class PrefOptionComponent implements OnInit {
 
   private updateSubject = new Subject<PrefValueType>();
 
-  constructor(private readonly utilService: UtilService) {}
+  constructor(private readonly errorService: ErrorService) {}
 
   ngOnInit(): void {
     this.subscribeUpdate();
@@ -87,12 +89,9 @@ export class PrefOptionComponent implements OnInit {
             ? `Enabled ${this.name}`
             : `Disabled ${this.name}`
           : '';
-      this.utilService.showSnackBar(message, SnackBarType.Success);
+      this.errorService.success(message);
     } else {
-      this.utilService.showSnackBar(
-        `Failed to update ${this.name}`,
-        SnackBarType.Error,
-      );
+      this.errorService.showFailure(result, this.logger);
     }
   }
 

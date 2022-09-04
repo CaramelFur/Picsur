@@ -1,11 +1,8 @@
-import { Inject, Injectable } from '@angular/core';
-import { HISTORY } from '@ng-web-apis/common';
+import { Injectable } from '@angular/core';
 import { InfoResponse } from 'picsur-shared/dist/dto/api/info.dto';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { SemVerRegex } from 'picsur-shared/dist/util/common-regex';
 import { BehaviorSubject } from 'rxjs';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
-import { UtilService } from 'src/app/util/util-module/util.service';
 import pkg from '../../../../package.json';
 import { ServerInfo } from '../../models/dto/server-info.dto';
 import { Logger } from '../logger/logger.service';
@@ -23,13 +20,7 @@ export class InfoService {
 
   private infoSubject = new BehaviorSubject<ServerInfo>(new ServerInfo());
 
-  constructor(
-    private readonly api: ApiService,
-    private readonly utilService: UtilService,
-    @Inject(HISTORY) private readonly history: History,
-  ) {
-    this.checkCompatibility().catch(this.logger.error);
-  }
+  constructor(private readonly api: ApiService) {}
 
   public async pollInfo(): AsyncFailable<ServerInfo> {
     const response = await this.api.get(InfoResponse, '/api/info');
@@ -70,48 +61,6 @@ export class InfoService {
       }
     } else {
       return serverDecoded[0] === clientDecoded[0];
-    }
-  }
-
-  private async checkCompatibility() {
-    const isCompatible = await this.isCompatibleWithServer();
-
-    if (HasFailed(isCompatible)) {
-      this.utilService.showSnackBar(
-        'There was an error checking compatibility',
-        SnackBarType.Warning,
-      );
-      return;
-    }
-
-    if (!isCompatible) {
-      this.utilService
-        .showDialog({
-          title: 'Server is not compatible',
-          description:
-            'The server is not compatible with this version of the client. You can ignore this, but expect things to not work.',
-          buttons: [
-            {
-              text: 'Back',
-              name: 'back',
-              color: 'accent',
-            },
-            {
-              text: 'Ignore',
-              name: 'ignore',
-              color: 'warn',
-            },
-          ],
-        })
-        .then((button) => {
-          if (button === 'ignore') {
-            this.logger.warn('Ignoring server compatibility');
-          } else {
-            this.checkCompatibility();
-            // Go to previous page
-            this.history.back();
-          }
-        });
     }
   }
 }

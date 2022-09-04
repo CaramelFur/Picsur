@@ -6,12 +6,12 @@ import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { Logger } from 'src/app/services/logger/logger.service';
-import { BootstrapService } from 'src/app/util/util-module/bootstrap.service';
-import { UtilService } from 'src/app/util/util-module/util.service';
+import { BootstrapService } from 'src/app/util/bootstrap.service';
+import { DialogService } from 'src/app/util/dialog-manager/dialog.service';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
 
 @Component({
   templateUrl: './settings-roles.component.html',
@@ -37,10 +37,11 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    private readonly utilService: UtilService,
     private readonly rolesService: RolesService,
     private readonly staticInfo: StaticInfoService,
     private readonly router: Router,
+    private readonly errorService: ErrorService,
+    private readonly dialogService: DialogService,
     // Public because used in template
     public readonly bootstrapService: BootstrapService,
   ) {}
@@ -62,7 +63,7 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
   }
 
   async deleteRole(role: ERole) {
-    const pressedButton = await this.utilService.showDialog({
+    const pressedButton = await this.dialogService.showDialog({
       title: `Are you sure you want to delete ${role.name}?`,
       description: 'This action cannot be undone.',
       buttons: [
@@ -81,12 +82,9 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
     if (pressedButton === 'delete') {
       const result = await this.rolesService.deleteRole(role.name);
       if (HasFailed(result)) {
-        this.utilService.showSnackBar(
-          'Failed to delete role',
-          SnackBarType.Error,
-        );
+        this.errorService.showFailure(result, this.logger);
       } else {
-        this.utilService.showSnackBar('Role deleted', SnackBarType.Success);
+        this.errorService.success('Role deleted');
       }
     }
 
@@ -113,10 +111,8 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
     this.UndeletableRolesList = specialRoles.UndeletableRoles;
     this.ImmutableRolesList = specialRoles.ImmutableRoles;
 
-    if (HasFailed(roles)) {
-      this.utilService.showSnackBar('Failed to load roles', SnackBarType.Error);
-      return;
-    }
+    if (HasFailed(roles))
+      return this.errorService.showFailure(roles, this.logger);
     this.dataSource.data = roles;
   }
 }

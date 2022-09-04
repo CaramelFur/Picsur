@@ -11,11 +11,16 @@ import {
   DecodedPref,
   PrefValueType
 } from 'picsur-shared/dist/dto/preferences.dto';
-import { AsyncFailable, Fail, FT, HasFailed, Map } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
+  Map
+} from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
 import { Throttle } from 'src/app/util/throttle';
-import { UtilService } from 'src/app/util/util-module/util.service';
 import { Logger } from '../logger/logger.service';
 import { ApiService } from './api.service';
 import { PermissionService } from './permission.service';
@@ -41,7 +46,7 @@ export class SysPrefService {
   constructor(
     private readonly api: ApiService,
     private readonly permissionsService: PermissionService,
-    private readonly utilService: UtilService,
+    private readonly errorService: ErrorService,
   ) {
     this.subscribePermissions();
   }
@@ -49,10 +54,7 @@ export class SysPrefService {
   private async refresh() {
     const result = await this.getPreferences();
     if (HasFailed(result)) {
-      this.utilService.showSnackBar(
-        "Couldn't load system preferences",
-        SnackBarType.Error,
-      );
+      this.errorService.showFailure(result, this.logger);
       this.flush();
     }
   }

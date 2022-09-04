@@ -9,7 +9,9 @@ import { AppRoutingModule } from './app.routing.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
 import { GuardsModule } from './guards/guards.module';
-import { UtilModule } from './util/util-module/util.module';
+import { ApiErrorManagerModule } from './util/api-error-manager/api-error-manager.module';
+import { CompatibilityManagerModule } from './util/compatibilitiy-manager/compatibility-manager.module';
+import { SnackBarManagerModule } from './util/snackbar-manager/snackbar-manager.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,7 +21,10 @@ import { UtilModule } from './util/util-module/util.module';
     PortalModule,
     MatSidenavModule,
 
-    UtilModule.forRoot(),
+    SnackBarManagerModule.forRoot(),
+    CompatibilityManagerModule,
+    ApiErrorManagerModule,
+
     GuardsModule,
     AppRoutingModule,
 

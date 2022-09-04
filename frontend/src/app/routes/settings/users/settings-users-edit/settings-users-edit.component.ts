@@ -4,13 +4,12 @@ import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UpdateUserControl } from 'src/app/models/forms/update-user.control';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { UserAdminService } from 'src/app/services/api/user-manage.service';
 import { Logger } from 'src/app/services/logger/logger.service';
-import { UtilService } from 'src/app/util/util-module/util.service';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
 
 enum EditMode {
   edit = 'edit',
@@ -46,9 +45,9 @@ export class SettingsUsersEditComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly userManageService: UserAdminService,
-    private readonly utilService: UtilService,
     private readonly rolesService: RolesService,
     private readonly staticInfo: StaticInfoService,
+    private readonly errorService: ErrorService,
   ) {}
 
   ngOnInit() {
@@ -80,10 +79,8 @@ export class SettingsUsersEditComponent implements OnInit {
 
     // Fetch more data
     const user = await this.userManageService.getUser(uuid);
-    if (HasFailed(user)) {
-      this.utilService.showSnackBar('Failed to get user', SnackBarType.Error);
-      return;
-    }
+    if (HasFailed(user))
+      return this.errorService.showFailure(user, this.logger);
 
     // Set that data instead
     this.model.putUsername(user.username);
@@ -97,10 +94,8 @@ export class SettingsUsersEditComponent implements OnInit {
 
   private async initRoles() {
     const roles = await this.rolesService.getRoles();
-    if (HasFailed(roles)) {
-      this.utilService.showSnackBar('Failed to get roles', SnackBarType.Error);
-      return;
-    }
+    if (HasFailed(roles))
+      return this.errorService.showFailure(roles, this.logger);
 
     this.allFullRoles = roles;
   }
@@ -131,29 +126,19 @@ export class SettingsUsersEditComponent implements OnInit {
     if (this.adding) {
       const data = this.model.getDataCreate();
       const resultUser = await this.userManageService.createUser(data);
-      if (HasFailed(resultUser)) {
-        this.utilService.showSnackBar(
-          'Failed to create user',
-          SnackBarType.Error,
-        );
-        return;
-      }
+      if (HasFailed(resultUser))
+        return this.errorService.showFailure(resultUser, this.logger);
 
-      this.utilService.showSnackBar('User created', SnackBarType.Success);
+      this.errorService.success('User created');
     } else {
       const data = this.model.getDataUpdate();
       if (!data.password) delete data.password;
 
       const resultUser = await this.userManageService.updateUser(data);
-      if (HasFailed(resultUser)) {
-        this.utilService.showSnackBar(
-          'Failed to update user',
-          SnackBarType.Error,
-        );
-        return;
-      }
+      if (HasFailed(resultUser))
+        return this.errorService.showFailure(resultUser, this.logger);
 
-      this.utilService.showSnackBar('User updated', SnackBarType.Success);
+      this.errorService.success('User updated');
     }
 
     this.router.navigate(['/settings/users']);

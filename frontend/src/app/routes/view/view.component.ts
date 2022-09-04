@@ -4,7 +4,8 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import {
   AnimFileType,
-  FileType, ImageFileType,
+  FileType,
+  ImageFileType,
   SupportedFileTypeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
@@ -14,12 +15,15 @@ import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed, HasSuccess } from 'picsur-shared/dist/types';
 import { UUIDRegex } from 'picsur-shared/dist/util/common-regex';
 import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { ImageService } from 'src/app/services/api/image.service';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UserService } from 'src/app/services/api/user.service';
-import { SimpleUtilService } from 'src/app/util/util-module/simple-util.service';
-import { UtilService } from 'src/app/util/util-module/util.service';
+import { Logger } from 'src/app/services/logger/logger.service';
+import { DialogService } from 'src/app/util/dialog-manager/dialog.service';
+import { DownloadService } from 'src/app/util/download-manager/download.service';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
+import { UtilService } from 'src/app/util/util.service';
+
 import {
   CustomizeDialogComponent,
   CustomizeDialogData
@@ -30,14 +34,19 @@ import {
   styleUrls: ['./view.component.scss'],
 })
 export class ViewComponent implements OnInit {
+  private readonly logger = new Logger(ViewComponent.name);
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly imageService: ImageService,
-    private readonly utilService: UtilService,
-    private readonly simpleUtil: SimpleUtilService,
     private readonly permissionService: PermissionService,
     private readonly userService: UserService,
+
+    private readonly errorService: ErrorService,
+    private readonly downloadService: DownloadService,
+    private readonly dialogService: DialogService,
+    private readonly utilService: UtilService,
   ) {}
 
   private id: string;
@@ -71,13 +80,13 @@ export class ViewComponent implements OnInit {
 
     this.id = params.get('id') ?? '';
     if (!UUIDRegex.test(this.id)) {
-      return this.utilService.quitError('Invalid image link');
+      return this.errorService.quitError('Invalid image link', this.logger);
     }
 
     // Get metadata
     const metadata = await this.imageService.GetImageMeta(this.id);
     if (HasFailed(metadata))
-      return this.utilService.quitError(metadata.getReason());
+      return this.errorService.quitFailure(metadata, this.logger);
 
     // Get width of screen in pixels
     const width = window.innerWidth * window.devicePixelRatio;
@@ -126,11 +135,11 @@ export class ViewComponent implements OnInit {
   }
 
   download() {
-    this.utilService.downloadFile(this.imageLinks.source);
+    this.downloadService.downloadFile(this.imageLinks.source);
   }
 
   share() {
-    this.utilService.shareFile(this.imageLinks.source);
+    this.downloadService.shareFile(this.imageLinks.source);
   }
 
   goBackHome() {
@@ -138,7 +147,7 @@ export class ViewComponent implements OnInit {
   }
 
   async deleteImage() {
-    const pressedButton = await this.utilService.showDialog({
+    const pressedButton = await this.dialogService.showDialog({
       title: `Are you sure you want to delete the image?`,
       description: 'This action cannot be undone.',
       buttons: [
@@ -156,14 +165,10 @@ export class ViewComponent implements OnInit {
 
     if (pressedButton === 'delete') {
       const result = await this.imageService.DeleteImage(this.id);
-      if (HasFailed(result)) {
-        return this.utilService.showSnackBar(
-          'Failed to delete image',
-          SnackBarType.Error,
-        );
-      }
+      if (HasFailed(result))
+        return this.errorService.showFailure(result, this.logger);
 
-      this.utilService.showSnackBar('Image deleted', SnackBarType.Success);
+      this.errorService.success('Image deleted');
 
       this.router.navigate(['/']);
     }
@@ -173,16 +178,20 @@ export class ViewComponent implements OnInit {
     const options: CustomizeDialogData = {
       imageID: this.id,
       selectedFormat: this.currentSelectedFormat,
-      formatOptions: this.simpleUtil.getBaseFormatOptions(),
+      formatOptions: this.utilService.getBaseFormatOptions(),
     };
 
     if (options.selectedFormat === 'original') {
       options.selectedFormat = this.masterFileType.identifier;
     }
 
-    await this.utilService.showCustomDialog(CustomizeDialogComponent, options, {
-      dismissable: false,
-    });
+    await this.dialogService.showCustomDialog(
+      CustomizeDialogComponent,
+      options,
+      {
+        dismissable: false,
+      },
+    );
   }
 
   @AutoUnsubscribe()
@@ -224,7 +233,7 @@ export class ViewComponent implements OnInit {
       });
     }
 
-    newOptions = newOptions.concat(this.simpleUtil.getBaseFormatOptions());
+    newOptions = newOptions.concat(this.utilService.getBaseFormatOptions());
 
     this.formatOptions = newOptions;
   }

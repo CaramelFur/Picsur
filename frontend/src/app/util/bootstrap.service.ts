@@ -11,6 +11,7 @@ export enum BSScreenSize {
   lg = 3,
   xl = 4,
   xxl = 5,
+  xxxl = 6,
 }
 
 @Injectable({
@@ -24,6 +25,7 @@ export class BootstrapService {
   private lgObservable: Observable<boolean>;
   private xlObservable: Observable<boolean>;
   private xxlObservable: Observable<boolean>;
+  private xxxlObservable: Observable<boolean>;
 
   private screenSizeSubject: BehaviorSubject<BSScreenSize> =
     new BehaviorSubject<BSScreenSize>(BSScreenSize.xs);
@@ -34,6 +36,7 @@ export class BootstrapService {
     this.lgObservable = this.createObserver('(min-width: 992px)');
     this.xlObservable = this.createObserver('(min-width: 1200px)');
     this.xxlObservable = this.createObserver('(min-width: 1400px)');
+    this.xxxlObservable = this.createObserver('(min-width: 1600px)');
 
     this.subscribeObservables();
   }
@@ -52,8 +55,11 @@ export class BootstrapService {
       this.lgObservable,
       this.xlObservable,
       this.xxlObservable,
-    ]).subscribe(([sm, md, lg, xl, xxl]) => {
-      const size = xxl
+      this.xxxlObservable,
+    ]).subscribe(([sm, md, lg, xl, xxl, xxxl]) => {
+      const size = xxxl
+        ? BSScreenSize.xxxl
+        : xxl
         ? BSScreenSize.xxl
         : xl
         ? BSScreenSize.xl

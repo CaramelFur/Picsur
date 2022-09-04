@@ -3,12 +3,11 @@ import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UserPassModel } from 'src/app/models/forms-dto/userpass.dto';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UserService } from 'src/app/services/api/user.service';
 import { Logger } from 'src/app/services/logger/logger.service';
-import { UtilService } from 'src/app/util/util-module/util.service';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
 import { RegisterControl } from '../../../models/forms/register.control';
 
 @Component({
@@ -27,7 +26,7 @@ export class RegisterComponent implements OnInit {
     private readonly userService: UserService,
     private readonly permissionService: PermissionService,
     private readonly router: Router,
-    private readonly utilService: UtilService,
+    private readonly errorService: ErrorService,
   ) {}
 
   ngOnInit(): void {
@@ -58,12 +57,7 @@ export class RegisterComponent implements OnInit {
     if (HasFailed(user)) {
       this.loading = false;
 
-      this.logger.error(user.getReason());
-      this.utilService.showSnackBar(
-        'Register failed, please try again',
-        SnackBarType.Error,
-      );
-      return;
+      return this.errorService.showFailure(user, this.logger);
     }
 
     if (!this.userService.isLoggedIn) {
@@ -72,22 +66,14 @@ export class RegisterComponent implements OnInit {
         data.password,
       );
       if (HasFailed(loginResult)) {
-        this.logger.error(loginResult.getReason());
-        this.utilService.showSnackBar(
-          'Failed to login after register',
-          SnackBarType.Error,
-        );
+        this.loading = false;
+
+        return this.errorService.showFailure(loginResult, this.logger);
       }
 
-      this.utilService.showSnackBar(
-        'Register successful',
-        SnackBarType.Success,
-      );
+      this.errorService.success('Register successful');
     } else {
-      this.utilService.showSnackBar(
-        'Register successful, did not log in',
-        SnackBarType.Success,
-      );
+      this.errorService.success('Register successful, did not log in');
     }
 
     this.loading = false;

@@ -12,10 +12,10 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UserService } from 'src/app/services/api/user.service';
-import { UtilService } from 'src/app/util/util-module/util.service';
+import { Logger } from 'src/app/services/logger/logger.service';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
 
 @Component({
   selector: 'app-header',
@@ -24,12 +24,14 @@ import { UtilService } from 'src/app/util/util-module/util.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
+  private readonly logger = new Logger(HeaderComponent.name);
+
   constructor(
     private readonly router: Router,
     private readonly userService: UserService,
     private readonly permissionService: PermissionService,
-    private readonly utilService: UtilService,
     private readonly changeDetector: ChangeDetectorRef,
+    private readonly errorService: ErrorService
   ) {}
 
   @Input('enableHamburger') public set enableHamburger(value: boolean) {
@@ -90,12 +92,10 @@ export class HeaderComponent implements OnInit {
 
   async doLogout() {
     const user = await this.userService.logout();
-    if (HasFailed(user)) {
-      this.utilService.showSnackBar(user.getReason(), SnackBarType.Error);
-      return;
-    }
+    if (HasFailed(user))
+      return this.errorService.showFailure(user, this.logger);
 
-    this.utilService.showSnackBar('Logout successful', SnackBarType.Success);
+    this.errorService.success('Logout successful');
   }
 
   doSettings() {

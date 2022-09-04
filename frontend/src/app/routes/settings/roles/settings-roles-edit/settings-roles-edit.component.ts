@@ -3,12 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { UpdateRoleControl } from 'src/app/models/forms/update-role.control';
 import { RolesService } from 'src/app/services/api/roles.service';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { Logger } from 'src/app/services/logger/logger.service';
-import { UtilService } from 'src/app/util/util-module/util.service';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
 
 enum EditMode {
   edit = 'edit',
@@ -37,9 +36,9 @@ export class SettingsRolesEditComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly utilService: UtilService,
     private readonly rolesService: RolesService,
     private readonly staticInfo: StaticInfoService,
+    private readonly errorService: ErrorService,
   ) {}
 
   ngOnInit() {
@@ -60,10 +59,8 @@ export class SettingsRolesEditComponent implements OnInit {
 
     // Fetch data and populate form
     const role = await this.rolesService.getRole(rolename);
-    if (HasFailed(role)) {
-      this.utilService.showSnackBar('Failed to get role', SnackBarType.Error);
-      return;
-    }
+    if (HasFailed(role))
+      return this.errorService.showFailure(role, this.logger);
     this.model.putRoleName(role.name);
     this.model.putPermissions(role.permissions);
   }
@@ -78,26 +75,16 @@ export class SettingsRolesEditComponent implements OnInit {
 
     if (this.adding) {
       const resultRole = await this.rolesService.createRole(data);
-      if (HasFailed(resultRole)) {
-        this.utilService.showSnackBar(
-          'Failed to create role',
-          SnackBarType.Error,
-        );
-        return;
-      }
+      if (HasFailed(resultRole))
+        return this.errorService.showFailure(resultRole, this.logger);
 
-      this.utilService.showSnackBar('Role created', SnackBarType.Success);
+      this.errorService.success('Role created');
     } else {
       const resultRole = await this.rolesService.updateRole(data);
-      if (HasFailed(resultRole)) {
-        this.utilService.showSnackBar(
-          'Failed to update role',
-          SnackBarType.Error,
-        );
-        return;
-      }
+      if (HasFailed(resultRole))
+        return this.errorService.showFailure(resultRole, this.logger);
 
-      this.utilService.showSnackBar('Role updated', SnackBarType.Success);
+      this.errorService.success('Role updated');
     }
 
     this.router.navigate(['/settings/roles']);

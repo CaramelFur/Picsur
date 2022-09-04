@@ -1,7 +1,8 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
-import { UtilService } from 'src/app/util/util-module/util.service';
+import { Fail, FT } from 'picsur-shared/dist/types';
+import { Logger } from 'src/app/services/logger/logger.service';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
 
 @Component({
   selector: 'copy-field',
@@ -9,6 +10,8 @@ import { UtilService } from 'src/app/util/util-module/util.service';
   styleUrls: ['./copy-field.component.scss'],
 })
 export class CopyFieldComponent {
+  private readonly logger = new Logger(CopyFieldComponent.name);
+
   // Two parameters: name, value
   @Input() label: string = 'Loading...';
   @Input() value: string = 'Loading...';
@@ -20,20 +23,20 @@ export class CopyFieldComponent {
   @Output('hide') onHide = new EventEmitter<boolean>();
 
   constructor(
-    private readonly utilService: UtilService,
     private readonly clipboard: Clipboard,
+    private readonly errorService: ErrorService,
   ) {}
 
   public copy() {
     if (this.clipboard.copy(this.value)) {
-      this.utilService.showSnackBar(`Copied ${this.label}!`, SnackBarType.Info);
+      this.errorService.info(`Copied ${this.label}!`);
       this.onCopy.emit(this.value);
       return;
     }
 
-    return this.utilService.showSnackBar(
-      'Copying to clipboard failed',
-      SnackBarType.Error,
+    return this.errorService.showFailure(
+      Fail(FT.Internal, 'Copying to clipboard failed'),
+      this.logger,
     );
   }
 

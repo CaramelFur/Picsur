@@ -6,12 +6,11 @@ import { EApiKey } from 'picsur-shared/dist/entities/apikey.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { scan } from 'rxjs/operators';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { ApiKeysService } from 'src/app/services/api/apikeys.service';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { Logger } from 'src/app/services/logger/logger.service';
-import { SimpleUtilService } from 'src/app/util/util-module/simple-util.service';
-import { UtilService } from 'src/app/util/util-module/util.service';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
+import { UtilService } from 'src/app/util/util.service';
 import { BuildShareX } from './sharex-builder';
 
 @Component({
@@ -41,13 +40,13 @@ export class SettingsShareXComponent implements OnInit {
 
   constructor(
     private readonly apikeysService: ApiKeysService,
-    private readonly utilService: UtilService,
-    private readonly simpleUtil: SimpleUtilService,
     private readonly permissionService: PermissionService,
+    private readonly utilService: UtilService,
+    private readonly errorService: ErrorService,
   ) {}
 
   ngOnInit(): void {
-    this.formatOptions = this.simpleUtil.getBaseFormatOptions();
+    this.formatOptions = this.utilService.getBaseFormatOptions();
     this.getNextBatch();
   }
 
@@ -67,22 +66,19 @@ export class SettingsShareXComponent implements OnInit {
     }
 
     const sharexConfig = BuildShareX(
-      this.simpleUtil.getHost(),
+      this.utilService.getHost(),
       this.key,
       '.' + ext,
       canUseDelete,
     );
 
-    this.simpleUtil.downloadBuffer(
+    this.utilService.downloadBuffer(
       JSON.stringify(sharexConfig),
       'Pisur-ShareX-target.sxcu',
       'application/json',
     );
 
-    this.utilService.showSnackBar(
-      'Exported ShareX config',
-      SnackBarType.Success,
-    );
+    this.errorService.success('Exported ShareX config');
   }
 
   async getNextBatch() {
@@ -90,10 +86,7 @@ export class SettingsShareXComponent implements OnInit {
       50,
       Math.floor(this.loaded / 50),
     );
-    if (HasFailed(newApiKeys)) {
-      this.utilService.showSnackBar(newApiKeys.getReason(), SnackBarType.Error);
-      return;
-    }
+    if (HasFailed(newApiKeys)) return this.errorService.showFailure(newApiKeys, this.logger);
     this.loaded += newApiKeys.results.length;
     this.available = newApiKeys.total;
 

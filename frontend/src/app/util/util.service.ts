@@ -2,13 +2,13 @@ import { Inject, Injectable } from '@angular/core';
 import { LOCATION } from '@ng-web-apis/common';
 import { FileType2Ext, SupportedFileTypes } from 'picsur-shared/dist/dto/mimes.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
-import { Logger } from '../../services/logger/logger.service';
+import { Logger } from '../services/logger/logger.service';
 
 @Injectable({
   providedIn: 'any',
 })
-export class SimpleUtilService {
-  private readonly logger = new Logger(SimpleUtilService.name);
+export class UtilService {
+  private readonly logger = new Logger(UtilService.name);
 
   constructor(@Inject(LOCATION) private readonly location: Location) {}
 
@@ -48,5 +48,9 @@ export class SimpleUtilService {
     );
 
     return newOptions;
+  }
+
+  public async sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

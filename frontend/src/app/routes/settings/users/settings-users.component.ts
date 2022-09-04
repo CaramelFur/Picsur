@@ -5,13 +5,13 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { StaticInfoService } from 'src/app/services/api/static-info.service';
 import { UserAdminService } from 'src/app/services/api/user-manage.service';
 import { Logger } from 'src/app/services/logger/logger.service';
+import { BootstrapService } from 'src/app/util/bootstrap.service';
+import { DialogService } from 'src/app/util/dialog-manager/dialog.service';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
 import { Throttle } from 'src/app/util/throttle';
-import { BootstrapService } from 'src/app/util/util-module/bootstrap.service';
-import { UtilService } from 'src/app/util/util-module/util.service';
 
 @Component({
   templateUrl: './settings-users.component.html',
@@ -34,10 +34,11 @@ export class SettingsUsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    private readonly utilService: UtilService,
     private readonly userManageService: UserAdminService,
     private readonly staticInfo: StaticInfoService,
     private readonly router: Router,
+    private readonly errorService: ErrorService,
+    private readonly dialogService: DialogService,
     // Public because used in template
     public readonly bootstrapService: BootstrapService,
   ) {}
@@ -60,7 +61,7 @@ export class SettingsUsersComponent implements OnInit {
   }
 
   public async deleteUser(user: EUser) {
-    const pressedButton = await this.utilService.showDialog({
+    const pressedButton = await this.dialogService.showDialog({
       title: `Are you sure you want to delete ${user.username}?`,
       description: 'This action cannot be undone.',
       buttons: [
@@ -79,12 +80,9 @@ export class SettingsUsersComponent implements OnInit {
     if (pressedButton === 'delete') {
       const result = await this.userManageService.deleteUser(user.id ?? '');
       if (HasFailed(result)) {
-        this.utilService.showSnackBar(
-          'Failed to delete user',
-          SnackBarType.Error,
-        );
+        this.errorService.showFailure(result, this.logger);
       } else {
-        this.utilService.showSnackBar('User deleted', SnackBarType.Success);
+        this.errorService.success('User deleted');
       }
     }
 
@@ -122,10 +120,7 @@ export class SettingsUsersComponent implements OnInit {
   ): Promise<boolean> {
     const response = await this.userManageService.getUsers(pageSize, pageIndex);
     if (HasFailed(response)) {
-      this.utilService.showSnackBar(
-        'Failed to fetch users',
-        SnackBarType.Error,
-      );
+      this.errorService.showFailure(response, this.logger);
       return false;
     }
 

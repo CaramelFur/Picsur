@@ -10,6 +10,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { FabModule } from 'src/app/components/fab/fab.module';
 import { ValuesPickerModule } from 'src/app/components/values-picker/values-picker.module';
+import { DialogManagerModule } from 'src/app/util/dialog-manager/dialog-manager.module';
+import { ErrorManagerModule } from 'src/app/util/error-manager/error-manager.module';
 import { SettingsRolesEditComponent } from './settings-roles-edit/settings-roles-edit.component';
 import { SettingsRolesComponent } from './settings-roles.component';
 import { SettingsRolesRoutingModule } from './settings-roles.routing.module';
@@ -18,6 +20,9 @@ import { SettingsRolesRoutingModule } from './settings-roles.routing.module';
   declarations: [SettingsRolesComponent, SettingsRolesEditComponent],
   imports: [
     CommonModule,
+    ErrorManagerModule,
+    DialogManagerModule,
+
     SettingsRolesRoutingModule,
     MatIconModule,
     MatButtonModule,

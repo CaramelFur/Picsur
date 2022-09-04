@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
-import { UtilModule } from 'src/app/util/util-module/util.module';
+import { ErrorManagerModule } from 'src/app/util/error-manager/error-manager.module';
 import { SettingsShareXComponent } from './settings-sharex.component';
 import { SettingsShareXRoutingModule } from './settings-sharex.routing.module';
 
@@ -13,13 +13,14 @@ import { SettingsShareXRoutingModule } from './settings-sharex.routing.module';
   declarations: [SettingsShareXComponent],
   imports: [
     CommonModule,
+    ErrorManagerModule,
+
     SettingsShareXRoutingModule,
     MatSelectModule,
     MatSelectInfiniteScrollModule,
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    UtilModule,
   ],
 })
 export class SettingsShareXRouteModule {}

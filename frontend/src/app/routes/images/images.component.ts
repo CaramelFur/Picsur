@@ -4,14 +4,11 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { ImageService } from 'src/app/services/api/image.service';
 import { Logger } from 'src/app/services/logger/logger.service';
-import {
-  BootstrapService,
-  BSScreenSize
-} from 'src/app/util/util-module/bootstrap.service';
-import { UtilService } from 'src/app/util/util-module/util.service';
+import { BootstrapService, BSScreenSize } from 'src/app/util/bootstrap.service';
+import { DialogService } from 'src/app/util/dialog-manager/dialog.service';
+import { ErrorService } from 'src/app/util/error-manager/error.service';
 
 @Component({
   templateUrl: './images.component.html',
@@ -30,8 +27,9 @@ export class ImagesComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly bootstrapService: BootstrapService,
-    private readonly utilService: UtilService,
     private readonly imageService: ImageService,
+    private readonly errorService: ErrorService,
+    private readonly dialogService: DialogService,
   ) {}
 
   ngOnInit() {
@@ -71,7 +69,8 @@ export class ImagesComponent implements OnInit {
 
   getThumbnailUrl(image: EImage) {
     return (
-      this.imageService.GetImageURL(image.id, ImageFileType.QOI) + '?height=480&shrinkonly=yes'
+      this.imageService.GetImageURL(image.id, ImageFileType.QOI) +
+      '?height=480&shrinkonly=yes'
     );
   }
 
@@ -80,7 +79,7 @@ export class ImagesComponent implements OnInit {
   }
 
   async deleteImage(image: EImage) {
-    const pressedButton = await this.utilService.showDialog({
+    const pressedButton = await this.dialogService.showDialog({
       title: `Are you sure you want to delete the image?`,
       description: 'This action cannot be undone.',
       buttons: [
@@ -98,15 +97,11 @@ export class ImagesComponent implements OnInit {
 
     if (pressedButton === 'delete') {
       const result = await this.imageService.DeleteImage(image.id ?? '');
-      if (HasFailed(result)) {
-        this.utilService.showSnackBar(
-          'Failed to delete image',
-          SnackBarType.Error,
-        );
-      } else {
-        this.utilService.showSnackBar('Image deleted', SnackBarType.Success);
-        this.images = this.images?.filter((i) => i.id !== image.id) ?? null;
-      }
+      if (HasFailed(result))
+        return this.errorService.showFailure(result, this.logger);
+
+      this.errorService.success('Image deleted');
+      this.images = this.images?.filter((i) => i.id !== image.id) ?? null;
     }
   }
 

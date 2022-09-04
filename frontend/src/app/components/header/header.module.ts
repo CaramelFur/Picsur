@@ -6,11 +6,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
+import { ErrorManagerModule } from 'src/app/util/error-manager/error-manager.module';
 import { HeaderComponent } from './header.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    ErrorManagerModule,
+
     MatToolbarModule,
     MatButtonModule,
     RouterModule,

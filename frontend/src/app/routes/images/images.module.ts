@@ -8,6 +8,8 @@ import { MasonryModule } from 'src/app/components/masonry/masonry.module';
 import { PaginatorModule } from 'src/app/components/paginator/paginator.module';
 import { PicsurImgModule } from 'src/app/components/picsur-img/picsur-img.module';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { DialogManagerModule } from 'src/app/util/dialog-manager/dialog-manager.module';
+import { ErrorManagerModule } from 'src/app/util/error-manager/error-manager.module';
 import { ImagesComponent } from './images.component';
 import { ImagesRoutingModule } from './images.routing.module';
 
@@ -15,6 +17,9 @@ import { ImagesRoutingModule } from './images.routing.module';
   declarations: [ImagesComponent],
   imports: [
     CommonModule,
+    ErrorManagerModule,
+    DialogManagerModule,
+
     ImagesRoutingModule,
     MatCardModule,
     MatButtonModule,
@@ -23,7 +28,7 @@ import { ImagesRoutingModule } from './images.routing.module';
     PaginatorModule,
     PicsurImgModule,
     MomentModule,
-    PipesModule
+    PipesModule,
   ],
 })
 export class ImagesRouteModule {}
