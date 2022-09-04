@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 import { PRoutes } from 'src/app/models/dto/picsur-routes.dto';
 import { E401Component } from './401.component';
 import { E404Component } from './404.component';
+import { ImageDeleteFailureComponent } from './delete-failure.component';
+import { ImageDeleteSuccessComponent } from './delete-success.component';
 
 const routes: PRoutes = [
   {
@@ -12,6 +14,14 @@ const routes: PRoutes = [
   {
     path: '401',
     component: E401Component,
+  },
+  {
+    path: 'delete-success',
+    component: ImageDeleteSuccessComponent,
+  },
+  {
+    path: 'delete-failure',
+    component: ImageDeleteFailureComponent,
   },
 ];
 

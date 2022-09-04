@@ -112,12 +112,13 @@ export class ImageManageController {
   ): Promise<string> {
     const image = await this.imagesService.deleteWithKey(params.id, params.key);
     if (HasFailed(image)) {
-      res.code(image.getCode());
-      res.type('text/html');
-      return `<html><body><h1>Error</h1><p>${image.getReason()}</p></body></html>`;
+      res.header('Location', '/error/delete-failure');
+      res.code(302);
+      return 'Failed to delete image';
     }
 
-    res.type('text/html');
-    return '<html><body><h1>Image deleted</h1></body></html>';
+    res.header('Location', '/error/delete-success');
+    res.code(302);
+    return 'Successsfully deleted image';
   }
 }
