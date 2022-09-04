@@ -189,6 +189,21 @@ export class UserDbService {
 
   // Listing
 
+  public async checkUsername(username: string): AsyncFailable<{
+    available: boolean;
+  }> {
+    try {
+      const found = await this.usersRepository.findOne({
+        where: { username },
+        select: ['id'],
+      });
+
+      return { available: !found};
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
   public async findByUsername(
     username: string,
     // Also fetch fields that aren't normally sent to the client

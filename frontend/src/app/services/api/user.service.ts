@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import jwt_decode from 'jwt-decode';
 import {
+  UserCheckNameRequest,
+  UserCheckNameResponse,
   UserLoginRequest,
   UserLoginResponse,
   UserMeResponse,
@@ -9,7 +11,13 @@ import {
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
+  Open
+} from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '../logger/logger.service';
 import { KeyService } from '../storage/key.service';
@@ -84,6 +92,20 @@ export class UserService {
 
     this.userSubject.next(user);
     return user;
+  }
+
+  public async checkNameIsAvailable(username: string): AsyncFailable<boolean> {
+    return Open(
+      await this.api.post(
+        UserCheckNameRequest,
+        UserCheckNameResponse,
+        '/api/user/checkname',
+        {
+          username,
+        },
+      ),
+      'available',
+    );
   }
 
   public async register(

@@ -1,10 +1,7 @@
+import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import {
-  Body,
-  Controller,
-  Get, Logger,
-  Post
-} from '@nestjs/common';
-import {
+  UserCheckNameRequest,
+  UserCheckNameResponse,
   UserLoginResponse,
   UserMePermissionsResponse,
   UserMeResponse,
@@ -56,6 +53,17 @@ export class UserController {
     return EUserBackend2EUser(user);
   }
 
+  @Post('checkname')
+  @Returns(UserCheckNameResponse)
+  @RequiredPermissions(Permission.UserRegister)
+  async checkName(
+    @Body() checkName: UserCheckNameRequest,
+  ): Promise<UserCheckNameResponse> {
+    return ThrowIfFailed(
+      await this.usersService.checkUsername(checkName.username),
+    );
+  }
+
   @Get('me')
   @Returns(UserMeResponse)
   @RequiredPermissions(Permission.UserKeepLogin)
@@ -76,7 +84,9 @@ export class UserController {
   async refresh(
     @ReqUserID() userid: string,
   ): Promise<UserMePermissionsResponse> {
-    const permissions = ThrowIfFailed(await this.usersService.getPermissions(userid));
+    const permissions = ThrowIfFailed(
+      await this.usersService.getPermissions(userid),
+    );
 
     return { permissions };
   }

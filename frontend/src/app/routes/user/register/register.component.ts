@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { HasFailed } from 'picsur-shared/dist/types';
+import { debounceTime } from 'rxjs';
 import { UserPassModel } from 'src/app/models/forms-dto/userpass.dto';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UserService } from 'src/app/services/api/user.service';
@@ -35,6 +36,20 @@ export class RegisterComponent implements OnInit {
       this.model.putData(state);
       history.replaceState(null, '');
     }
+
+    this.model.username.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe(async (value) => {
+        if (this.model.username.errors || value === null) return;
+
+        const result = await this.userService.checkNameIsAvailable(value);
+        if (HasFailed(result))
+          return this.errorService.showFailure(result, this.logger);
+
+        if (!result) {
+          this.model.username.setErrors({ unavailable: true });
+        }
+      });
 
     this.onPermissions();
   }

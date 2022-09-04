@@ -23,6 +23,8 @@ export const CreateUsernameError = (
       return 'Username is too long';
     case 'pattern':
       return 'Username can only contain letters and numbers';
+    case 'unavailable':
+      return 'Username is already taken';
     default:
       return 'Invalid username';
   }

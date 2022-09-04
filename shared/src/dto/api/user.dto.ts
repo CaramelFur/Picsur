@@ -30,6 +30,21 @@ export class UserRegisterResponse extends createZodDto(
   UserRegisterResponseSchema,
 ) {}
 
+// UserCheckName
+export const UserCheckNameRequestSchema = z.object({
+  username: IsUsername(),
+});
+export class UserCheckNameRequest extends createZodDto(
+  UserCheckNameRequestSchema,
+) {}
+
+export const UserCheckNameResponseSchema = z.object({
+  available: z.boolean(),
+});
+export class UserCheckNameResponse extends createZodDto(
+  UserCheckNameResponseSchema,
+) {}
+
 // UserMe
 export const UserMeResponseSchema = z.object({
   user: EUserSchema,
