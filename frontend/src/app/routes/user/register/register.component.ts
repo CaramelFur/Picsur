@@ -37,20 +37,7 @@ export class RegisterComponent implements OnInit {
       history.replaceState(null, '');
     }
 
-    this.model.username.valueChanges
-      .pipe(debounceTime(500))
-      .subscribe(async (value) => {
-        if (this.model.username.errors || value === null) return;
-
-        const result = await this.userService.checkNameIsAvailable(value);
-        if (HasFailed(result))
-          return this.errorService.showFailure(result, this.logger);
-
-        if (!result) {
-          this.model.username.setErrors({ unavailable: true });
-        }
-      });
-
+    this.subscribeUsernameCheck();
     this.onPermissions();
   }
 
@@ -100,5 +87,22 @@ export class RegisterComponent implements OnInit {
     this.router.navigate(['/user/login'], {
       state: this.model.getRawData(),
     });
+  }
+
+  @AutoUnsubscribe()
+  private subscribeUsernameCheck() {
+    return this.model.username.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe(async (value) => {
+        if (this.model.username.errors || value === null) return;
+
+        const result = await this.userService.checkNameIsAvailable(value);
+        if (HasFailed(result))
+          return this.errorService.showFailure(result, this.logger);
+
+        if (!result) {
+          this.model.username.setErrors({ unavailable: true });
+        }
+      });
   }
 }
