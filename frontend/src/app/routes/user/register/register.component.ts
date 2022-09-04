@@ -19,6 +19,7 @@ export class RegisterComponent implements OnInit {
   private readonly logger = new Logger(RegisterComponent.name);
 
   public showLogin = false;
+  public loading = false;
 
   public readonly model = new RegisterControl();
 
@@ -52,8 +53,11 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
+    this.loading = true;
     const user = await this.userService.register(data.username, data.password);
     if (HasFailed(user)) {
+      this.loading = false;
+
       this.logger.error(user.getReason());
       this.utilService.showSnackBar(
         'Register failed, please try again',
@@ -85,6 +89,8 @@ export class RegisterComponent implements OnInit {
         SnackBarType.Success,
       );
     }
+
+    this.loading = false;
 
     this.router.navigate(['/']);
   }

@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   private readonly logger = new Logger(LoginComponent.name);
 
   public showRegister = false;
+  public loading = false;
 
   public readonly model = new LoginControl();
 
@@ -52,7 +53,10 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    this.loading = true;
     const user = await this.userService.login(data.username, data.password);
+    this.loading = false;
+
     if (HasFailed(user)) {
       this.logger.error(user.getReason());
       this.utilService.showSnackBar(

@@ -66,8 +66,14 @@
         >
           LOGIN
         </button>
-        <button mat-flat-button color="accent" class="mx-2" type="submit">
-          REGISTER
+        <button
+          mat-flat-button
+          color="accent"
+          class="mx-2"
+          type="submit"
+          [disabled]="loading"
+        >
+          {{ loading ? 'LOADING...' : 'REGISTER' }}
         </button>
       </div>
     </form>

@@ -40,8 +40,14 @@
       </div>
 
       <div class="col-12 py-2">
-        <button mat-raised-button color="accent" class="mx-2" type="submit">
-          LOGIN
+        <button
+          mat-raised-button
+          color="accent"
+          class="mx-2"
+          type="submit"
+          [disabled]="loading"
+        >
+          {{ loading ? 'LOADING...' : 'LOGIN' }}
         </button>
         <button
           *ngIf="showRegister"
