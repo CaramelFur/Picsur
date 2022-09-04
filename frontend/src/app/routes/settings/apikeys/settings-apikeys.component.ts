@@ -135,17 +135,7 @@ export class SettingsApiKeysComponent implements OnInit {
     }
   }
 
-  async updateKeyName(event: Event, apikeyID: string) {
-    const name = (event.target as HTMLInputElement).value;
-
-    if (name.length < 3) {
-      this.utilService.showSnackBar(
-        'Name must be at least 3 characters long',
-        SnackBarType.Warning,
-      );
-      return;
-    }
-
+  async updateKeyName(name: string, apikeyID: string) {
     const result = await this.apikeysService.updateApiKey(apikeyID, name);
 
     if (HasFailed(result)) {

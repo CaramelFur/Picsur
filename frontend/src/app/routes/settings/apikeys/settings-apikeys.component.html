@@ -4,10 +4,10 @@
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
     <mat-cell *matCellDef="let apikey">
-      <mat-form-field class="editfield" appearance="outline">
-        <mat-label>Name</mat-label>
-        <input matInput [value]="apikey.name" maxlength="255" (change)="updateKeyName($event, apikey.id)">
-      </mat-form-field>
+      <app-settings-apikey-editor
+        [value]="apikey.name"
+        (changed)="updateKeyName($event, apikey.id)"
+      ></app-settings-apikey-editor>
     </mat-cell>
   </ng-container>
 
