@@ -9,16 +9,27 @@
 
   display: flex;
   align-items: center;
+
+  img {
+    height: 48px;
+    width: 48px;
+    border-radius: 20%;
+  }
+}
+
+.svg-logo-text {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  img {
+    height: 32px;
+  }
 }
 
 .mat-menu-item[disabled] {
   color: inherit;
-}
-
-img {
-  height: 48px;
-  width: 48px;
-  border-radius: 20%;
 }
 
 h2 {

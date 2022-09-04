@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
   <button
-    *ngIf="enableHamburger"
+    *ngIf="_enableHamburger"
     class="me-3"
     mat-icon-button
     (click)="onHamburgerClick.emit()"
@@ -12,8 +12,12 @@
     <div class="svg-logo">
       <img src="/assets/branding/logo/picsur.svg" alt="Picsur" />
     </div>
-
-    <span class="ms-3 d-none d-sm-block">Picsur</span>
+    <div class="svg-logo-text">
+      <img
+        src="/assets/branding/text/picsur_light.svg"
+        class="ms-3 d-none d-sm-block"
+      />
+    </div>
   </a>
 
   <span class="spacer"></span>

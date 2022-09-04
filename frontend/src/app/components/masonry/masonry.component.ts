@@ -1,12 +1,14 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
   Input,
   OnDestroy,
   QueryList,
-  ViewChildren,
+  ViewChildren
 } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { combineLatest, Subscription } from 'rxjs';
@@ -18,9 +20,16 @@ import { MasonryItemDirective } from './masonry-item.directive';
   selector: 'masonry',
   templateUrl: './masonry.component.html',
   styleUrls: ['./masonry.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MasonryComponent implements AfterViewInit, OnDestroy {
-  @Input('columns') column_count: number = 1;
+  constructor(private readonly changeDetector: ChangeDetectorRef) {}
+
+  @Input('columns') public set column_count(value: number) {
+    this._column_count = value;
+    this.changeDetector.markForCheck();
+  }
+  public _column_count = 1;
   @Input('update-speed') update_speed: number = 200;
 
   @ContentChildren(MasonryItemDirective)
@@ -55,6 +64,8 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
       });
 
     this.resortItems(items);
+
+    this.changeDetector.markForCheck();
   }
 
   private resortItems(items: QueryList<MasonryItemDirective>) {

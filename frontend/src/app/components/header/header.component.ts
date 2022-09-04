@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
@@ -13,9 +21,22 @@ import { UtilService } from 'src/app/util/util-module/util.service';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
-  @Input('enableHamburger') enableHamburger: boolean = false;
+  constructor(
+    private readonly router: Router,
+    private readonly userService: UserService,
+    private readonly permissionService: PermissionService,
+    private readonly utilService: UtilService,
+    private readonly changeDetector: ChangeDetectorRef,
+  ) {}
+
+  @Input('enableHamburger') public set enableHamburger(value: boolean) {
+    this._enableHamburger = value;
+    this.changeDetector.markForCheck();
+  }
+  public _enableHamburger: boolean = true;
   @Output('onHamburgerClick') onHamburgerClick = new EventEmitter<void>();
 
   private currentUser: EUser | null = null;
@@ -33,13 +54,6 @@ export class HeaderComponent implements OnInit {
     return this.currentUser !== null;
   }
 
-  constructor(
-    private readonly router: Router,
-    private readonly userService: UserService,
-    private readonly permissionService: PermissionService,
-    private readonly utilService: UtilService,
-  ) {}
-
   ngOnInit(): void {
     this.subscribeUser();
     this.subscribePermissions();
@@ -49,6 +63,8 @@ export class HeaderComponent implements OnInit {
   subscribeUser() {
     return this.userService.live.subscribe((user) => {
       this.currentUser = user;
+
+      this.changeDetector.markForCheck();
     });
   }
 
@@ -59,6 +75,8 @@ export class HeaderComponent implements OnInit {
       this.canAccessSettings = permissions.includes(Permission.Settings);
       this.canUpload = permissions.includes(Permission.ImageUpload);
       this.canRegister = permissions.includes(Permission.UserRegister);
+
+      this.changeDetector.markForCheck();
     });
   }
 
