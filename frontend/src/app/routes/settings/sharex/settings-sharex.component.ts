@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
+import { FileType2Ext, ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { EApiKey } from 'picsur-shared/dist/entities/apikey.entity';
 import { HasFailed } from 'picsur-shared/dist/types';
@@ -19,6 +20,12 @@ import { BuildShareX } from './sharex-builder';
 })
 export class SettingsShareXComponent implements OnInit {
   private readonly logger = new Logger(SettingsShareXComponent.name);
+
+  public selectedFormat: string = ImageFileType.PNG;
+  public formatOptions: {
+    value: string;
+    key: string;
+  }[] = [];
 
   public apikeys = new BehaviorSubject<EApiKey[]>([]);
   public apikeys$ = this.apikeys.asObservable().pipe(
@@ -40,6 +47,7 @@ export class SettingsShareXComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.formatOptions = this.simpleUtil.getBaseFormatOptions();
     this.getNextBatch();
   }
 
@@ -53,9 +61,15 @@ export class SettingsShareXComponent implements OnInit {
     const permissions = await this.permissionService.getLoadedSnapshot();
     const canUseDelete = permissions.includes(Permission.ImageDeleteKey);
 
+    const ext = FileType2Ext(this.selectedFormat);
+    if (HasFailed(ext)) {
+      this.logger.error(ext.print());
+    }
+
     const sharexConfig = BuildShareX(
       this.simpleUtil.getHost(),
       this.key,
+      '.' + ext,
       canUseDelete,
     );
 

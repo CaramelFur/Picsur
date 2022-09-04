@@ -1,5 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { LOCATION } from '@ng-web-apis/common';
+import { FileType2Ext, SupportedFileTypes } from 'picsur-shared/dist/dto/mimes.dto';
+import { HasFailed } from 'picsur-shared/dist/types';
 import { Logger } from '../../services/logger/logger.service';
 
 @Injectable({
@@ -26,5 +28,25 @@ export class SimpleUtilService {
     a.download = filename;
     a.target = '_self';
     a.click();
+  }
+
+  public getBaseFormatOptions() {
+    let newOptions: {
+      value: string;
+      key: string;
+    }[] = [];
+
+    newOptions.push(
+      ...SupportedFileTypes.map((mime) => {
+        let ext = FileType2Ext(mime);
+        if (HasFailed(ext)) ext = 'Error';
+        return {
+          value: ext.toUpperCase(),
+          key: mime,
+        };
+      }),
+    );
+
+    return newOptions;
   }
 }

@@ -38,6 +38,7 @@ export interface ShareXObject {
 export function BuildShareX(
   host: string,
   apikey: string,
+  preferredExt: string,
   canDelete: boolean,
 ): ShareXObject {
   const base: ShareXObject = {
@@ -51,8 +52,8 @@ export function BuildShareX(
     },
     Body: 'MultipartFormData',
     FileFormName: 'image',
-    URL: `${host}/view/{json:data.id}`,
-    ThumbnailURL: `${host}/i/{json:data.id}.png?width=256&shrinkonly=yes`,
+    URL: `${host}/i/{json:data.id}${preferredExt}`,
+    ThumbnailURL: `${host}/i/{json:data.id}.jpg?width=128&shrinkonly=yes`,
     ErrorMessage: '{json:data.message}',
   };
 

@@ -4,11 +4,8 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import {
   AnimFileType,
-  FileType,
-  FileType2Ext,
-  ImageFileType,
-  SupportedFileTypeCategory,
-  SupportedFileTypes
+  FileType, ImageFileType,
+  SupportedFileTypeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 
@@ -21,6 +18,7 @@ import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
 import { ImageService } from 'src/app/services/api/image.service';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { UserService } from 'src/app/services/api/user.service';
+import { SimpleUtilService } from 'src/app/util/util-module/simple-util.service';
 import { UtilService } from 'src/app/util/util-module/util.service';
 import {
   CustomizeDialogComponent,
@@ -37,6 +35,7 @@ export class ViewComponent implements OnInit {
     private readonly router: Router,
     private readonly imageService: ImageService,
     private readonly utilService: UtilService,
+    private readonly simpleUtil: SimpleUtilService,
     private readonly permissionService: PermissionService,
     private readonly userService: UserService,
   ) {}
@@ -174,7 +173,7 @@ export class ViewComponent implements OnInit {
     const options: CustomizeDialogData = {
       imageID: this.id,
       selectedFormat: this.currentSelectedFormat,
-      formatOptions: this.getBaseFormatOptions(),
+      formatOptions: this.simpleUtil.getBaseFormatOptions(),
     };
 
     if (options.selectedFormat === 'original') {
@@ -225,28 +224,8 @@ export class ViewComponent implements OnInit {
       });
     }
 
-    newOptions = newOptions.concat(this.getBaseFormatOptions());
+    newOptions = newOptions.concat(this.simpleUtil.getBaseFormatOptions());
 
     this.formatOptions = newOptions;
-  }
-
-  private getBaseFormatOptions() {
-    let newOptions: {
-      value: string;
-      key: string;
-    }[] = [];
-
-    newOptions.push(
-      ...SupportedFileTypes.map((mime) => {
-        let ext = FileType2Ext(mime);
-        if (HasFailed(ext)) ext = 'Error';
-        return {
-          value: ext.toUpperCase(),
-          key: mime,
-        };
-      }),
-    );
-
-    return newOptions;
   }
 }

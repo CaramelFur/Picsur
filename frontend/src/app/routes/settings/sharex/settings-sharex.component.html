@@ -1,10 +1,17 @@
 <div *ngIf="available > 0">
   <h1>Create a ShareX target config</h1>
 
-  <p>Please select an api key to associate with the ShareX target.</p>
+  <p>
+    Please select an api key to associate with the ShareX target, and then the
+    preferred file format you'd like when sharing.
+  </p>
 
   <div class="row">
-    <mat-form-field class="col-12 col-md-6 col-xl-4" appearance="outline">
+    <mat-form-field
+      class="col-12 col-md-6 col-xl-4"
+      appearance="outline"
+      color="accent"
+    >
       <mat-label>Api Key</mat-label>
       <mat-select
         msInfiniteScroll
@@ -17,11 +24,29 @@
         }}</mat-option>
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field
+      class="col-12 col-md-3 col-xl-2"
+      appearance="outline"
+      color="accent"
+    >
+      <mat-label>Image Format</mat-label>
+      <mat-select [(value)]="selectedFormat">
+        <mat-option *ngFor="let format of formatOptions" [value]="format.key">
+          {{ format.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 
   <div class="row">
     <div class="col">
-      <button mat-raised-button color="accent" [disabled]="key === null" (click)="onExport()">
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="key === null"
+        (click)="onExport()"
+      >
         Export Config
       </button>
     </div>
