@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable, ThrowIfFailed
+} from 'picsur-shared/dist/types';
 import { UserDbService } from '../../../collections/user-db/user-db.service';
 import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 
@@ -13,10 +15,14 @@ export class LocalAuthStrategy extends PassportStrategy(Strategy, 'local') {
   }
 
   async validate(username: string, password: string): AsyncFailable<EUser> {
+    const start = Date.now();
     // All this does is call the usersservice authenticate for authentication
     const user = await this.usersService.authenticate(username, password);
-    if (HasFailed(user)) throw user;
 
-    return EUserBackend2EUser(user);
+    // Wait atleast 500ms
+    const wait = 450 - (Date.now() - start);
+    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+
+    return EUserBackend2EUser(ThrowIfFailed(user));
   }
 }

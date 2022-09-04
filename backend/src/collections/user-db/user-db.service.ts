@@ -166,15 +166,23 @@ export class UserDbService {
     password: string,
   ): AsyncFailable<EUserBackend> {
     const user = await this.findByUsername(username, true);
-    if (HasFailed(user)) return user;
+    if (HasFailed(user)) {
+      if (user.getType() === FT.NotFound)
+        return Fail(
+          FT.Authentication,
+          'Wrong username or password',
+          user.getDebugMessage(),
+        );
+      else return user;
+    }
 
     if (LockedLoginUsersList.includes(user.username)) {
       // Error should be kept in backend
-      return Fail(FT.Authentication, 'Wrong username');
+      return Fail(FT.Authentication, 'Wrong username or password');
     }
 
     if (!(await bcrypt.compare(password, user.hashed_password ?? '')))
-      return Fail(FT.Authentication, 'Wrong password');
+      return Fail(FT.Authentication, 'Wrong username or password');
 
     return await this.findOne(user.id ?? '');
   }
