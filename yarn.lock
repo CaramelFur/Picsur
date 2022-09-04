@@ -8067,6 +8067,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ng-mat-select-infinite-scroll@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "ng-mat-select-infinite-scroll@npm:4.0.0"
+  dependencies:
+    tslib: ^2.3.0
+  peerDependencies:
+    "@angular/core": ">=6.0.0 <15.0.0"
+    "@angular/material": ">=6.0.0 <15.0.0"
+  checksum: 94f61ace2b06c8c6951704b55535e66e251e68e4d37fbd177ff13d839b874536b94181a54b633783bde2938b730954c44cb61070cae08859d91f70904fd898eb
+  languageName: node
+  linkType: hard
+
 "ngx-auto-unsubscribe-decorator@npm:^1.1.0":
   version: 1.1.0
   resolution: "ngx-auto-unsubscribe-decorator@npm:1.1.0"
@@ -9058,6 +9070,7 @@ __metadata:
     fuse.js: ^6.6.2
     jwt-decode: ^3.1.2
     moment: ^2.29.4
+    ng-mat-select-infinite-scroll: ^4.0.0
     ngx-auto-unsubscribe-decorator: ^1.1.0
     ngx-dropzone: ^3.1.0
     ngx-moment: ^6.0.2

@@ -1,2 +1,43 @@
-<h1>Create a ShareX target config</h1>
+<div *ngIf="available > 0">
+  <h1>Create a ShareX target config</h1>
 
+  <p>Please select an api key to associate with the ShareX target.</p>
+
+  <div class="row">
+    <mat-form-field class="col-12 col-md-6 col-xl-4" appearance="outline">
+      <mat-label>Api Key</mat-label>
+      <mat-select
+        msInfiniteScroll
+        (selectionChange)="onSelectionChange($event)"
+        (infiniteScroll)="getNextBatch()"
+        [complete]="loaded === available"
+      >
+        <mat-option *ngFor="let key of apikeys$ | async" [value]="key.key">{{
+          key.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button mat-raised-button color="accent" [disabled]="key === null" (click)="onExport()">
+        Export Config
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="available === 0">
+  <h1>No API keys available</h1>
+  <p>You need to have at least one API key to create a ShareX target config.</p>
+
+  <button mat-raised-button color="accent" routerLink="/settings/apikeys">
+    Create an API key here
+  </button>
+</div>
+
+<div *ngIf="available < 0">
+  <h1>Loading</h1>
+  <mat-spinner color="accent"></mat-spinner>
+</div>

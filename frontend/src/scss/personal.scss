@@ -20,6 +20,13 @@
   width: 100%;
 }
 
+.center-horizontally {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .text-center {
   text-align: center;
 }

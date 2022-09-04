@@ -1,5 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
-import { LOCATION } from '@ng-web-apis/common';
+import { Injectable } from '@angular/core';
 import {
   ImageDeleteRequest,
   ImageDeleteResponse,
@@ -22,6 +21,7 @@ import {
   HasSuccess,
   Open
 } from 'picsur-shared/dist/types/failable';
+import { SimpleUtilService } from 'src/app/util/util-module/simple-util.service';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
 import { UserService } from './user.service';
@@ -32,7 +32,7 @@ import { UserService } from './user.service';
 export class ImageService {
   constructor(
     private readonly api: ApiService,
-    @Inject(LOCATION) private readonly location: Location,
+    private readonly simpleUtil: SimpleUtilService,
 
     private readonly userService: UserService,
   ) {}
@@ -110,7 +110,7 @@ export class ImageService {
   // Non api calls
 
   public GetImageURL(image: string, filetype: string | null): string {
-    const baseURL = this.location.protocol + '//' + this.location.host;
+    const baseURL = this.simpleUtil.getHost();
     const extension = FileType2Ext(filetype ?? '');
 
     return `${baseURL}/i/${image}${

@@ -31,6 +31,7 @@
     "fuse.js": "^6.6.2",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
+    "ng-mat-select-infinite-scroll": "^4.0.0",
     "ngx-auto-unsubscribe-decorator": "^1.1.0",
     "ngx-dropzone": "^3.1.0",
     "ngx-moment": "^6.0.2",

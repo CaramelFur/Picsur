@@ -13,6 +13,7 @@ import {
   ConfirmDialogData
 } from './confirm-dialog/confirm-dialog.component';
 import { DownloadDialogComponent } from './download-dialog/download-dialog.component';
+import { SimpleUtilService } from './simple-util.service';
 
 @Injectable({
   providedIn: 'any',
@@ -21,6 +22,7 @@ export class UtilService {
   private readonly logger = new Logger(UtilService.name);
 
   constructor(
+    private readonly simpleUtil: SimpleUtilService,
     private readonly snackBar: MatSnackBar,
     private readonly dialog: MatDialog,
     private readonly router: Router,
@@ -98,14 +100,7 @@ export class UtilService {
       return;
     }
 
-    // Download with the browser
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(
-      new Blob([file.buffer], { type: file.mimeType }),
-    );
-    a.download = file.name;
-    a.target = '_self';
-    a.click();
+    this.simpleUtil.downloadBuffer(file.buffer, file.name, file.mimeType);
 
     closeDialog();
     this.showSnackBar('Image downloaded', SnackBarType.Info);
