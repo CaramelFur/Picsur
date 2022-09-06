@@ -1,9 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get, Logger,
-  Post
-} from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import {
   RoleCreateRequest,
   RoleCreateResponse,
@@ -14,7 +9,7 @@ import {
   RoleListResponse,
   RoleUpdateRequest,
   RoleUpdateResponse,
-  SpecialRolesResponse
+  SpecialRolesResponse,
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { Fail, FT, ThrowIfFailed } from 'picsur-shared/dist/types';
 import { RoleDbService } from '../../../collections/role-db/role-db.service';
@@ -26,7 +21,7 @@ import {
   DefaultRolesList,
   ImmutableRolesList,
   SoulBoundRolesList,
-  UndeletableRolesList
+  UndeletableRolesList,
 } from '../../../models/constants/roles.const';
 import { isPermissionsArray } from '../../../models/validators/permissions.validator';
 
@@ -102,9 +97,7 @@ export class RolesController {
       await this.rolesService.delete(role.name),
     );
 
-    ThrowIfFailed(
-      await this.usersService.removeRoleEveryone(role.name),
-    );
+    ThrowIfFailed(await this.usersService.removeRoleEveryone(role.name));
 
     return deletedRole;
   }

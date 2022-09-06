@@ -2,7 +2,7 @@ import { Controller, Get, Head, Logger, Query, Res } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
 import {
   ImageMetaResponse,
-  ImageRequestParams
+  ImageRequestParams,
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { FileType2Mime } from 'picsur-shared/dist/dto/mimes.dto';

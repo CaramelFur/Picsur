@@ -159,9 +159,9 @@ export class SettingsApiKeysComponent implements OnInit {
       pageIndex,
       this.userService.snapshot?.id,
     );
-    if (HasFailed(response)){
-       this.errorService.showFailure(response, this.logger);
-       return false;
+    if (HasFailed(response)) {
+      this.errorService.showFailure(response, this.logger);
+      return false;
     }
 
     this.dataSubject.next(response.results);

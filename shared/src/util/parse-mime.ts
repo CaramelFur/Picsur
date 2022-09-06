@@ -4,7 +4,7 @@ import {
   Mime2FileType,
   SupportedAnimFileTypes,
   SupportedFileTypeCategory,
-  SupportedImageFileTypes
+  SupportedImageFileTypes,
 } from '../dto/mimes.dto';
 import { Fail, Failable, FT, HasFailed } from '../types';
 

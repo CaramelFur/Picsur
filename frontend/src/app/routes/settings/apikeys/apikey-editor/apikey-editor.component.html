@@ -1,5 +1,5 @@
 <mat-form-field class="editfield" appearance="outline">
   <mat-label>Name</mat-label>
-  <input matInput [formControl]="field" (change)="update($event)">
-  <mat-error *ngIf="field.invalid">{{getErrorMessage()}}</mat-error>
+  <input matInput [formControl]="field" (change)="update($event)" />
+  <mat-error *ngIf="field.invalid">{{ getErrorMessage() }}</mat-error>
 </mat-form-field>

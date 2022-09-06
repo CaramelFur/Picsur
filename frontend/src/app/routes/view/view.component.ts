@@ -6,7 +6,7 @@ import {
   AnimFileType,
   FileType,
   ImageFileType,
-  SupportedFileTypeCategory
+  SupportedFileTypeCategory,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 
@@ -26,7 +26,7 @@ import { UtilService } from 'src/app/util/util.service';
 
 import {
   CustomizeDialogComponent,
-  CustomizeDialogData
+  CustomizeDialogData,
 } from './customize-dialog/customize-dialog.component';
 
 @Component({

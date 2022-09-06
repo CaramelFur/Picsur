@@ -8,7 +8,7 @@ import {
   Fail,
   Failable,
   FT,
-  HasFailed
+  HasFailed,
 } from 'picsur-shared/dist/types';
 import { Sharp, SharpOptions } from 'sharp';
 import {
@@ -17,7 +17,7 @@ import {
   SharpWorkerRecieveMessage,
   SharpWorkerResultMessage,
   SharpWorkerSendMessage,
-  SupportedSharpWorkerFunctions
+  SupportedSharpWorkerFunctions,
 } from './sharp/sharp.message';
 import { SharpResult } from './sharp/universal-sharp';
 
@@ -41,7 +41,11 @@ export class SharpWrapper {
     private readonly memory_limit: number,
   ) {}
 
-  public async start(image: Buffer, filetype: FileType, sharpOptions?: SharpOptions): AsyncFailable<true> {
+  public async start(
+    image: Buffer,
+    filetype: FileType,
+    sharpOptions?: SharpOptions,
+  ): AsyncFailable<true> {
     this.worker = fork(SharpWrapper.WORKER_PATH, {
       serialization: 'advanced',
       timeout: this.instance_timeout,

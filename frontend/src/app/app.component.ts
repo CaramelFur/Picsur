@@ -5,7 +5,7 @@ import {
   ActivatedRoute,
   NavigationEnd,
   NavigationError,
-  Router
+  Router,
 } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { RouteTransitionAnimations } from './app.animation';

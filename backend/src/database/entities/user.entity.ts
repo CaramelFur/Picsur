@@ -1,5 +1,11 @@
 import { EUserSchema } from 'picsur-shared/dist/entities/user.entity';
-import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { z } from 'zod';
 import { EApiKeyBackend } from './apikey.entity';
 

@@ -6,7 +6,7 @@ import {
   SharpWorkerInitMessage,
   SharpWorkerOperationMessage,
   SharpWorkerRecieveMessage,
-  SharpWorkerSendMessage
+  SharpWorkerSendMessage,
 } from './sharp.message';
 import { UniversalSharpIn, UniversalSharpOut } from './universal-sharp';
 
@@ -59,7 +59,11 @@ export class SharpWorker {
     }
 
     this.startTime = Date.now();
-    this.sharpi = UniversalSharpIn(message.image, message.filetype, message.options);
+    this.sharpi = UniversalSharpIn(
+      message.image,
+      message.filetype,
+      message.options,
+    );
   }
 
   private operation(message: SharpWorkerOperationMessage): void {

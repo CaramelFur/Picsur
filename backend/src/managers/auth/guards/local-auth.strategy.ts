@@ -2,9 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import {
-  AsyncFailable, ThrowIfFailed
-} from 'picsur-shared/dist/types';
+import { AsyncFailable, ThrowIfFailed } from 'picsur-shared/dist/types';
 import { UserDbService } from '../../../collections/user-db/user-db.service';
 import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 

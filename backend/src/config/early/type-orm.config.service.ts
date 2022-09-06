@@ -31,10 +31,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         this.configService.get(`${EnvPrefix}DB_HOST`),
         'localhost',
       ),
-      port: ParseInt(
-        this.configService.get(`${EnvPrefix}DB_PORT`),
-        5432,
-      ),
+      port: ParseInt(this.configService.get(`${EnvPrefix}DB_PORT`), 5432),
       username: ParseString(
         this.configService.get(`${EnvPrefix}DB_USERNAME`),
         DefaultName,

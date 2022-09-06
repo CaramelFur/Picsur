@@ -13,7 +13,7 @@ export class ExperimentController {
   @Returns(UserInfoResponse)
   async testRoute(
     @Request() req: AuthFastifyRequest,
-    @Response({passthrough: true}) res: FastifyReply,
+    @Response({ passthrough: true }) res: FastifyReply,
   ): Promise<UserInfoResponse> {
     res.header('Location', '/error/delete-success');
     res.code(302);

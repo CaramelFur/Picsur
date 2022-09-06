@@ -3,12 +3,12 @@
 PACKAGE_URL="ghcr.io/rubikscraft/picsur"
 
 if [ "$1" == "alpha" ]; then
-    PACKAGE_URL="$PACKAGE_URL-alpha"
+  PACKAGE_URL="$PACKAGE_URL-alpha"
 elif [ "$1" == "stable" ]; then
-  true;
+  true
 else
-    echo "Usage: $0 [alpha|stable]"
-    exit 1
+  echo "Usage: $0 [alpha|stable]"
+  exit 1
 fi
 
 # Go to this script

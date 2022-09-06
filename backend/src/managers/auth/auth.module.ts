@@ -6,7 +6,7 @@ import { PreferenceDbModule } from '../../collections/preference-db/preference-d
 import { UserDbModule } from '../../collections/user-db/user-db.module';
 import {
   JwtConfigService,
-  JwtSecretProvider
+  JwtSecretProvider,
 } from '../../config/late/jwt.config.service';
 import { LateConfigModule } from '../../config/late/late-config.module';
 import { AuthManagerService } from './auth.service';

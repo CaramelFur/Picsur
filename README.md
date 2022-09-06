@@ -56,7 +56,7 @@ Every featured marked here should work in the latest release.
 - [x] Deletable images
 - [x] Proper DB migrations
 - [x] Show own images in list
-- [X] Correct previews on chats
+- [x] Correct previews on chats
 
 - [ ] Expiring images
 - [ ] White mode

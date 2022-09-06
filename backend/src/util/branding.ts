@@ -30,7 +30,7 @@ export async function GetBrandMessage(
     BrandMessageCache[name] = {
       type: 'image/png',
       data: file,
-    }
+    };
     return BrandMessageCache[name];
   } catch (e) {
     return Fail(FT.Internal, e);

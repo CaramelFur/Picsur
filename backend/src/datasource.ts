@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import {
-  FastifyAdapter, NestFastifyApplication
+  FastifyAdapter,
+  NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DataSource } from 'typeorm';
 import { TypeOrmConfigService } from './config/early/type-orm.config.service';

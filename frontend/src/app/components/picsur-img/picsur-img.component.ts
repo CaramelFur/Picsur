@@ -6,7 +6,7 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { FileType, ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
@@ -87,8 +87,6 @@ export class PicsurImgComponent implements OnChanges {
     } else {
       const result = await this.apiService.getBuffer(url);
       if (HasFailed(result)) return result;
-
-
 
       const img = this.img.nativeElement;
 

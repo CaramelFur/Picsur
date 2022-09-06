@@ -30,8 +30,7 @@ export class ProcessingComponent implements OnInit {
     history.replaceState(null, '');
 
     const id = await this.imageService.UploadImage(state.imageFile);
-    if (HasFailed(id))
-      return this.errorService.quitFailure(id, this.logger);
+    if (HasFailed(id)) return this.errorService.quitFailure(id, this.logger);
 
     this.router.navigate([`/view/`, id], { replaceUrl: true });
   }

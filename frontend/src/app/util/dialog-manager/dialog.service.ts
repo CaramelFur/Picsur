@@ -2,7 +2,10 @@ import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Logger } from 'src/app/services/logger/logger.service';
-import { ConfirmDialogComponent, ConfirmDialogData } from './confirm-dialog/confirm-dialog.component';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogData,
+} from './confirm-dialog/confirm-dialog.component';
 
 @Injectable({
   providedIn: 'any',
@@ -10,9 +13,7 @@ import { ConfirmDialogComponent, ConfirmDialogData } from './confirm-dialog/conf
 export class DialogService {
   private readonly logger = new Logger(DialogService.name);
 
-  constructor(
-    private readonly dialog: MatDialog,
-  ) {}
+  constructor(private readonly dialog: MatDialog) {}
 
   public async showCustomDialog<T>(
     component: ComponentType<T>,

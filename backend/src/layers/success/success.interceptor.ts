@@ -4,7 +4,7 @@ import {
   Injectable,
   Logger,
   NestInterceptor,
-  Optional
+  Optional,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { FastifyReply } from 'fastify';

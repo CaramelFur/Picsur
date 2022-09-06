@@ -1,6 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { LOCATION } from '@ng-web-apis/common';
-import { FileType2Ext, SupportedFileTypes } from 'picsur-shared/dist/dto/mimes.dto';
+import {
+  FileType2Ext,
+  SupportedFileTypes,
+} from 'picsur-shared/dist/dto/mimes.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { Logger } from '../services/logger/logger.service';
 
@@ -22,9 +25,7 @@ export class UtilService {
     filetype: string = 'application/octet-stream',
   ) {
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(
-      new Blob([buffer], { type: filetype }),
-    );
+    a.href = URL.createObjectURL(new Blob([buffer], { type: filetype }));
     a.download = filename;
     a.target = '_self';
     a.click();

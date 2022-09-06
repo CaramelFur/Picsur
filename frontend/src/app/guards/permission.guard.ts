@@ -4,7 +4,7 @@ import {
   CanActivate,
   CanActivateChild,
   Router,
-  RouterStateSnapshot
+  RouterStateSnapshot,
 } from '@angular/router';
 import { isPermissionsArray } from 'picsur-shared/dist/validators/permissions.validator';
 import { PRouteData } from '../models/dto/picsur-routes.dto';

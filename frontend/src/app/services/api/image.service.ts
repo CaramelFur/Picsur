@@ -4,11 +4,11 @@ import {
   ImageDeleteResponse,
   ImageListRequest,
   ImageListResponse,
-  ImageUploadResponse
+  ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import {
   ImageMetaResponse,
-  ImageRequestParams
+  ImageRequestParams,
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
@@ -19,7 +19,7 @@ import {
   FT,
   HasFailed,
   HasSuccess,
-  Open
+  Open,
 } from 'picsur-shared/dist/types/failable';
 import { UtilService } from 'src/app/util/util.service';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';

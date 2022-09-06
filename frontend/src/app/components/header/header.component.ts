@@ -5,7 +5,7 @@ import {
   EventEmitter,
   Input,
   OnInit,
-  Output
+  Output,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
     private readonly userService: UserService,
     private readonly permissionService: PermissionService,
     private readonly changeDetector: ChangeDetectorRef,
-    private readonly errorService: ErrorService
+    private readonly errorService: ErrorService,
   ) {}
 
   @Input('enableHamburger') public set enableHamburger(value: boolean) {

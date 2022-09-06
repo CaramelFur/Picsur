@@ -2,9 +2,14 @@ import { Controller, Get } from '@nestjs/common';
 import {
   AllFormatsResponse,
   AllPermissionsResponse,
-  InfoResponse
+  InfoResponse,
 } from 'picsur-shared/dist/dto/api/info.dto';
-import { FileType2Ext, FileType2Mime, SupportedAnimFileTypes, SupportedImageFileTypes } from 'picsur-shared/dist/dto/mimes.dto';
+import {
+  FileType2Ext,
+  FileType2Mime,
+  SupportedAnimFileTypes,
+  SupportedImageFileTypes,
+} from 'picsur-shared/dist/dto/mimes.dto';
 import { HostConfigService } from '../../../config/early/host.config.service';
 import { NoPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';

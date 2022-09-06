@@ -1,8 +1,8 @@
 import {
-    createParamDecorator,
-    ExecutionContext,
-    SetMetadata,
-    UseGuards
+  createParamDecorator,
+  ExecutionContext,
+  SetMetadata,
+  UseGuards,
 } from '@nestjs/common';
 import { Fail, FT } from 'picsur-shared/dist/types';
 import { CombineFCDecorators } from 'picsur-shared/dist/util/decorator';
@@ -29,7 +29,11 @@ export const HasPermission = createParamDecorator(
     const req: AuthFastifyRequest = ctx.switchToHttp().getRequest();
     const permissions = req.userPermissions;
     if (!permissions) {
-      throw Fail(FT.Internal, undefined, 'Permissions are missing from request');
+      throw Fail(
+        FT.Internal,
+        undefined,
+        'Permissions are missing from request',
+      );
     }
 
     return permissions.includes(data);
@@ -41,7 +45,11 @@ export const GetPermissions = createParamDecorator(
     const req: AuthFastifyRequest = ctx.switchToHttp().getRequest();
     const permissions = req.userPermissions;
     if (!permissions) {
-      throw Fail(FT.Internal, undefined, 'Permissions are missing from request');
+      throw Fail(
+        FT.Internal,
+        undefined,
+        'Permissions are missing from request',
+      );
     }
 
     return permissions;

@@ -7,7 +7,7 @@ import {
   Fail,
   FT,
   HasFailed,
-  HasSuccess
+  HasSuccess,
 } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
@@ -16,12 +16,12 @@ import { EUserBackend } from '../../database/entities/user.entity';
 import { Permissions } from '../../models/constants/permissions.const';
 import {
   DefaultRolesList,
-  SoulBoundRolesList
+  SoulBoundRolesList,
 } from '../../models/constants/roles.const';
 import {
   ImmutableUsersList,
   LockedLoginUsersList,
-  UndeletableUsersList
+  UndeletableUsersList,
 } from '../../models/constants/special-users.const';
 import { GetCols } from '../../util/collection';
 import { SysPreferenceDbService } from '../preference-db/sys-preference-db.service';
@@ -198,7 +198,7 @@ export class UserDbService {
         select: ['id'],
       });
 
-      return { available: !found};
+      return { available: !found };
     } catch (e) {
       return Fail(FT.Database, e);
     }

@@ -7,7 +7,7 @@ import { ERoleBackend } from '../../database/entities/role.entity';
 import {
   ImmutableRolesList,
   SystemRoleDefaults,
-  SystemRolesList
+  SystemRolesList,
 } from '../../models/constants/roles.const';
 import { RoleDbService } from './role-db.service';
 

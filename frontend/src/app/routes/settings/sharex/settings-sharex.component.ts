@@ -86,7 +86,8 @@ export class SettingsShareXComponent implements OnInit {
       50,
       Math.floor(this.loaded / 50),
     );
-    if (HasFailed(newApiKeys)) return this.errorService.showFailure(newApiKeys, this.logger);
+    if (HasFailed(newApiKeys))
+      return this.errorService.showFailure(newApiKeys, this.logger);
     this.loaded += newApiKeys.results.length;
     this.available = newApiKeys.total;
 

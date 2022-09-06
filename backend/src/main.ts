@@ -3,7 +3,7 @@ import multipart from '@fastify/multipart';
 import { NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
-  NestFastifyApplication
+  NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { UserDbService } from './collections/user-db/user-db.service';

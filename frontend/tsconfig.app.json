@@ -10,10 +10,6 @@
     "lib": ["es2020", "dom"]
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": [
-    "src/**/*.d.ts",
-    "src/app/**/*.ts",
-    "src/app/**/*.html",
-  ],
+  "include": ["src/**/*.d.ts", "src/app/**/*.ts", "src/app/**/*.html"],
   "exclude": ["src/**/*.worker.ts", "src/**/*.exclude.ts"]
 }

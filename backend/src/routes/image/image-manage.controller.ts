@@ -5,7 +5,7 @@ import {
   Logger,
   Param,
   Post,
-  Res
+  Res,
 } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
 import {
@@ -15,14 +15,14 @@ import {
   ImageDeleteWithKeyResponse,
   ImageListRequest,
   ImageListResponse,
-  ImageUploadResponse
+  ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { HasFailed, ThrowIfFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart/multipart.decorator';
 import {
   HasPermission,
-  RequiredPermissions
+  RequiredPermissions,
 } from '../../decorators/permissions.decorator';
 import { ReqUserID } from '../../decorators/request-user.decorator';
 import { Returns } from '../../decorators/returns.decorator';

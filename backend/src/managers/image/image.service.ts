@@ -7,7 +7,7 @@ import {
   AnimFileType,
   FileType,
   ImageFileType,
-  Mime2FileType
+  Mime2FileType,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
