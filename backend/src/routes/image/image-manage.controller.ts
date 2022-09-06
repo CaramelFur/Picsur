@@ -15,6 +15,8 @@ import {
   ImageDeleteWithKeyResponse,
   ImageListRequest,
   ImageListResponse,
+  ImageUpdateRequest,
+  ImageUpdateResponse,
   ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
@@ -71,6 +73,23 @@ export class ImageManageController {
     );
 
     return found;
+  }
+
+  @Post('update')
+  @RequiredPermissions(Permission.ImageManage)
+  @Returns(ImageUpdateResponse)
+  async updateImage(
+    @Body() body: ImageUpdateRequest,
+    @ReqUserID() userid: string,
+    @HasPermission(Permission.ImageAdmin) isImageAdmin: boolean,
+  ): Promise<ImageUpdateResponse> {
+    const user_id = isImageAdmin ? undefined : userid;
+
+    const image = ThrowIfFailed(
+      await this.imagesService.update(body.id, user_id, body),
+    );
+
+    return image;
   }
 
   @Post('delete')

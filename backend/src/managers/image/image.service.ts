@@ -52,6 +52,14 @@ export class ImageManagerService {
     return await this.imagesService.findMany(count, page, userid);
   }
 
+  public async update(
+    id: string,
+    userid: string | undefined,
+    options: Partial<Pick<EImageBackend, 'file_name' | 'expires_at'>>,
+  ): AsyncFailable<EImageBackend> {
+    return await this.imagesService.update(id, userid, options);
+  }
+
   public async deleteMany(
     ids: string[],
     userid: string | undefined,

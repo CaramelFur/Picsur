@@ -1,5 +1,7 @@
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { EImageDerivativeBackend } from './image-derivative.entity';
+import { EImageFileBackend } from './image-file.entity';
 
 @Entity()
 export class EImageBackend implements EImage {
@@ -12,6 +14,7 @@ export class EImageBackend implements EImage {
   user_id: string;
 
   @Column({
+    type: 'timestamp',
     nullable: false,
   })
   created: Date;
@@ -23,8 +26,20 @@ export class EImageBackend implements EImage {
   file_name: string;
 
   @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
+  expires_at: Date | null;
+
+  @Column({
     nullable: true,
     select: false,
   })
   delete_key?: string;
+
+  @OneToMany(() => EImageDerivativeBackend, (derivative) => derivative.image_id)
+  derivatives: EImageDerivativeBackend[];
+
+  @OneToMany(() => EImageFileBackend, (file) => file.image_id)
+  files: EImageFileBackend[];
 }

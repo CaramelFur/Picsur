@@ -30,6 +30,24 @@ export const ImageListResponseSchema = z.object({
 });
 export class ImageListResponse extends createZodDto(ImageListResponseSchema) {}
 
+// Image update
+export const ImageUpdateRequestSchema = EImageSchema.pick({
+  id: true,
+  expires_at: true,
+  file_name: true,
+}).partial({
+  expires_at: true,
+  file_name: true,
+});
+export class ImageUpdateRequest extends createZodDto(
+  ImageUpdateRequestSchema,
+) {}
+
+export const ImageUpdateResponseSchema = EImageSchema;
+export class ImageUpdateResponse extends createZodDto(
+  ImageUpdateResponseSchema,
+) {}
+
 // Image Delete
 
 export const ImageDeleteRequestSchema = z.object({

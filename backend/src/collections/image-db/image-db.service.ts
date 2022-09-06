@@ -3,9 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
-import { In, Repository } from 'typeorm';
-import { EImageDerivativeBackend } from '../../database/entities/image-derivative.entity';
-import { EImageFileBackend } from '../../database/entities/image-file.entity';
+import { In, LessThan, Repository } from 'typeorm';
 import { EImageBackend } from '../../database/entities/image.entity';
 
 @Injectable()
@@ -13,12 +11,6 @@ export class ImageDBService {
   constructor(
     @InjectRepository(EImageBackend)
     private readonly imageRepo: Repository<EImageBackend>,
-
-    @InjectRepository(EImageFileBackend)
-    private readonly imageFileRepo: Repository<EImageFileBackend>,
-
-    @InjectRepository(EImageDerivativeBackend)
-    private readonly imageDerivativeRepo: Repository<EImageDerivativeBackend>,
   ) {}
 
   public async create(
@@ -91,6 +83,31 @@ export class ImageDBService {
     }
   }
 
+  public async update(
+    id: string,
+    userid: string | undefined,
+    options: Partial<Pick<EImageBackend, 'file_name' | 'expires_at'>>,
+  ): AsyncFailable<EImageBackend> {
+    try {
+      const found = await this.imageRepo.findOne({
+        where: { id, user_id: userid },
+      });
+
+      if (!found) return Fail(FT.NotFound, 'Image not found');
+
+      if (options.file_name !== undefined) found.file_name = options.file_name;
+
+      if (options.expires_at !== undefined)
+        found.expires_at = options.expires_at;
+
+      await this.imageRepo.save(found);
+
+      return found;
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
   public async delete(
     ids: string[],
     userid: string | undefined,
@@ -111,16 +128,7 @@ export class ImageDBService {
       if (available_ids.length === 0)
         return Fail(FT.NotFound, 'Images not found');
 
-      await Promise.all([
-        this.imageDerivativeRepo.delete({
-          image_id: In(available_ids),
-        }),
-        this.imageFileRepo.delete({
-          image_id: In(available_ids),
-        }),
-
-        this.imageRepo.delete({ id: In(available_ids) }),
-      ]);
+      await this.imageRepo.delete({ id: In(available_ids) });
 
       return deletable_images;
     } catch (e) {
@@ -139,16 +147,7 @@ export class ImageDBService {
 
       if (!found) return Fail(FT.NotFound, 'Image not found');
 
-      await Promise.all([
-        this.imageDerivativeRepo.delete({
-          image_id: found.id,
-        }),
-        this.imageFileRepo.delete({
-          image_id: found.id,
-        }),
-
-        this.imageRepo.delete({ id: found.id }),
-      ]);
+      await this.imageRepo.delete({ id: found.id });
 
       return found;
     } catch (e) {
@@ -164,12 +163,22 @@ export class ImageDBService {
       );
 
     try {
-      await this.imageDerivativeRepo.delete({});
-      await this.imageFileRepo.delete({});
       await this.imageRepo.delete({});
     } catch (e) {
       return Fail(FT.Database, e);
     }
     return true;
+  }
+
+  public async cleanupExpired(): AsyncFailable<number> {
+    try {
+      const res = await this.imageRepo.delete({
+        expires_at: LessThan(new Date()),
+      });
+
+      return res.affected ?? 0;
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
   }
 }
