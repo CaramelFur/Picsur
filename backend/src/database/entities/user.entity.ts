@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { z } from 'zod';
 import { EApiKeyBackend } from './apikey.entity';
+import { EUsrPreferenceBackend } from './usr-preference.entity';
 
 // Different data for public and private
 const OverriddenEUserSchema = EUserSchema.omit({ hashedPassword: true }).merge(
@@ -35,4 +36,7 @@ export class EUserBackend implements OverriddenEUser {
   // This will never be populated, it is only here to auto delete apikeys when a user is deleted
   @OneToMany(() => EApiKeyBackend, (apikey) => apikey.user)
   apikeys?: EApiKeyBackend[];
+
+  @OneToMany(() => EUsrPreferenceBackend, (pref) => pref.user_id)
+  preferences?: EUsrPreferenceBackend[];
 }

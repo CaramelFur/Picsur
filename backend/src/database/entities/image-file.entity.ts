@@ -23,7 +23,7 @@ export class EImageFileBackend {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'image_id' })
-  private _image: any;
+  private _image?: any;
 
   @Column({
     name: 'image_id'

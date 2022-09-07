@@ -1,6 +1,7 @@
 import { IsEntityID } from 'picsur-shared/dist/validators/entity-id.validator';
-import { Column, Entity, Index, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import z from 'zod';
+import { EUserBackend } from './user.entity';
 
 export const EUsrPreferenceSchema = z.object({
   id: IsEntityID().optional(),
@@ -23,7 +24,17 @@ export class EUsrPreferenceBackend implements EUsrPreference {
   @Column({ nullable: false })
   value: string;
 
+  // We do a little trickery
   @Index()
-  @Column({ nullable: false })
+  @ManyToOne(() => EUserBackend, (user) => user.preferences, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'user_id' })
+  private _user?: any;
+
+  @Column({
+    name: 'user_id'
+  })
   user_id: string;
 }

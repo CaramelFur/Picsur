@@ -10,6 +10,7 @@ export class EImageBackend implements EImage {
 
   @Column({
     nullable: false,
+    type: 'uuid',
   })
   user_id: string;
 
