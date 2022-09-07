@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
+import { JwtData, JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 
@@ -11,8 +11,8 @@ export class AuthManagerService {
   constructor(private readonly jwtService: JwtService) {}
 
   async createToken(user: EUser): AsyncFailable<string> {
-    const jwtData = {
-      user,
+    const jwtData: JwtData = {
+      uid: user.id,
     };
 
     // Validate to be sure, this makes client experience better

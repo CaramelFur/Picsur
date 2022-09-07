@@ -2,7 +2,14 @@ import { ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { EUser, EUserSchema } from 'picsur-shared/dist/entities/user.entity';
-import { Fail, Failable, FT, HasFailed } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable,
+  Fail,
+  Failable,
+  FT,
+  HasFailed,
+  ThrowIfFailed,
+} from 'picsur-shared/dist/types';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { UserDbService } from '../../../collections/user-db/user-db.service';
 import { Permissions } from '../../../models/constants/permissions.const';
@@ -34,9 +41,10 @@ export class MainAuthGuard extends AuthGuard(['apikey', 'jwt', 'guest']) {
       );
     }
 
-    const user = await this.validateUser(
-      context.switchToHttp().getRequest().user,
-    );
+    const unsafeUser: EUser = context.switchToHttp().getRequest().user;
+
+    const user = ThrowIfFailed(await this.validateUser(unsafeUser));
+
     if (!user.id) {
       throw Fail(
         FT.Internal,
@@ -62,6 +70,7 @@ export class MainAuthGuard extends AuthGuard(['apikey', 'jwt', 'guest']) {
     }
 
     context.switchToHttp().getRequest().userPermissions = userPermissions;
+    context.switchToHttp().getRequest().user = user;
 
     if (permissions.every((permission) => userPermissions.includes(permission)))
       return true;
@@ -100,10 +109,10 @@ export class MainAuthGuard extends AuthGuard(['apikey', 'jwt', 'guest']) {
     return permissions;
   }
 
-  private async validateUser(user: EUser): Promise<EUser> {
+  private async validateUser(user: EUser): AsyncFailable<EUser> {
     const result = EUserSchema.safeParse(user);
     if (!result.success) {
-      throw Fail(
+      return Fail(
         FT.Internal,
         undefined,
         `Invalid user object, where it should always be valid: ${result.error}`,

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-strategy';
+import { EUser } from 'picsur-shared/dist/entities/user.entity';
+import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 import { GuestService } from '../guest.service';
 import { ReqType } from './reqtype';
 
@@ -26,7 +28,7 @@ export class GuestStrategy extends PassportStrategy(
   }
 
   // Return the guest user created by the guestservice
-  override async validate(payload: any) {
-    return await this.guestService.getGuestUser();
+  override async validate(payload: any): Promise<EUser> {
+    return EUserBackend2EUser(await this.guestService.getGuestUser());
   }
 }

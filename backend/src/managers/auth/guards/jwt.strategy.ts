@@ -3,12 +3,18 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy as JwtPassportStrategy } from 'passport-jwt';
 import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
+import { ThrowIfFailed } from 'picsur-shared/dist/types';
+import { UserDbService } from '../../../collections/user-db/user-db.service';
+import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(JwtPassportStrategy, 'jwt') {
   private readonly logger = new Logger(JwtStrategy.name);
 
-  constructor(@Inject('JWT_SECRET') jwtSecret: string) {
+  constructor(
+    @Inject('JWT_SECRET') jwtSecret: string,
+    private readonly usersService: UserDbService,
+  ) {
     // This will validate the jwt token itself
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -24,7 +30,11 @@ export class JwtStrategy extends PassportStrategy(JwtPassportStrategy, 'jwt') {
       return false;
     }
 
+    const backendUser = ThrowIfFailed(
+      await this.usersService.findOne(result.data.uid),
+    );
+
     // And return the user
-    return result.data.user;
+    return EUserBackend2EUser(backendUser);
   }
 }

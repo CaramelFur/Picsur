@@ -53,15 +53,6 @@ export class UserService {
     const apikey = await this.key.get();
     if (!apikey) return;
 
-    const user = await this.extractUser(apikey);
-    if (HasFailed(user)) {
-      this.logger.error(user.getReason());
-      await this.logout();
-      return;
-    }
-
-    this.userSubject.next(user);
-
     const fetchedUser = await this.fetchUser();
     if (HasFailed(fetchedUser)) {
       this.logger.error(fetchedUser.getReason());
@@ -137,7 +128,7 @@ export class UserService {
   }
 
   // This extracts the available userdata from the jwt token
-  private async extractUser(token: string): AsyncFailable<EUser> {
+  private async extractUserID(token: string): AsyncFailable<string> {
     let decoded: any;
     try {
       decoded = jwt_decode(token);
@@ -151,7 +142,7 @@ export class UserService {
       return Fail(FT.UsrValidation, 'Invalid token data');
     }
 
-    return result.data.user;
+    return result.data.uid;
   }
 
   // This actually fetches up to date information from the server

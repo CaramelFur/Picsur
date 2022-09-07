@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { EUserSchema } from '../entities/user.entity';
+import { IsEntityID } from '../validators/entity-id.validator';
 
 export const JwtDataSchema = z.object({
-  user: EUserSchema.required(),
+  uid: IsEntityID(),
   iat: z.number().int().optional(),
   exp: z.number().int().optional(),
 });
