@@ -12,8 +12,8 @@
     "zod": "^3.19.0"
   },
   "devDependencies": {
-    "@types/node": "^18.7.15",
-    "typescript": "4.8.2"
+    "@types/node": "^18.7.16",
+    "typescript": "4.8.3"
   },
   "scripts": {
     "clean": "rm -rf ./dist",
