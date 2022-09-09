@@ -47,9 +47,7 @@ export class EditDialogComponent implements OnInit {
     this.image = data.image;
   }
 
-  async ngOnInit() {
-    console.log(this.image);
-  }
+  async ngOnInit() {}
 
   close() {
     this.dialogRef.close(null);
