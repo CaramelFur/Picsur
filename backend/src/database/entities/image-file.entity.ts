@@ -26,7 +26,7 @@ export class EImageFileBackend {
   private _image?: any;
 
   @Column({
-    name: 'image_id'
+    name: 'image_id',
   })
   image_id: string;
 

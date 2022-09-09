@@ -27,7 +27,7 @@ export class EImageBackend implements EImage {
   file_name: string;
 
   @Column({
-    type: "timestamptz",
+    type: 'timestamptz',
     nullable: true,
   })
   expires_at: Date | null;

@@ -1,5 +1,13 @@
 import { IsEntityID } from 'picsur-shared/dist/validators/entity-id.validator';
-import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import z from 'zod';
 import { EUserBackend } from './user.entity';
 
@@ -34,7 +42,7 @@ export class EUsrPreferenceBackend implements EUsrPreference {
   private _user?: any;
 
   @Column({
-    name: 'user_id'
+    name: 'user_id',
   })
   user_id: string;
 }
