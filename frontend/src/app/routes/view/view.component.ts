@@ -28,6 +28,10 @@ import {
   CustomizeDialogComponent,
   CustomizeDialogData,
 } from './customize-dialog/customize-dialog.component';
+import {
+  EditDialogComponent,
+  EditDialogData,
+} from './edit-dialog/edit-dialog.component';
 
 @Component({
   templateUrl: './view.component.html',
@@ -70,7 +74,7 @@ export class ViewComponent implements OnInit {
   public image: EImage | null = null;
   public imageUser: EUser | null = null;
 
-  public canDelete: boolean = false;
+  public canManage: boolean = false;
 
   async ngOnInit() {
     this.subscribePermissions();
@@ -194,6 +198,26 @@ export class ViewComponent implements OnInit {
     );
   }
 
+  async editImage() {
+    if (this.image === null) return;
+
+    const options: EditDialogData = {
+      image: { ...this.image },
+    };
+
+    const res: EImage | null = await this.dialogService.showCustomDialog(
+      EditDialogComponent,
+      options,
+      {
+        dismissable: false,
+      },
+    );
+
+    if (res !== null) {
+      this.image = res;
+    }
+  }
+
   @AutoUnsubscribe()
   private subscribePermissions() {
     return this.permissionService.live.subscribe(
@@ -204,21 +228,21 @@ export class ViewComponent implements OnInit {
   private updatePermissions() {
     const permissions = this.permissionService.snapshot;
     if (permissions.includes(Permission.ImageAdmin)) {
-      this.canDelete = true;
+      this.canManage = true;
       return;
     }
 
     if (this.imageUser === null) return;
 
     if (
-      permissions.includes(Permission.ImageUpload) &&
+      permissions.includes(Permission.ImageManage) &&
       this.imageUser.id === this.userService.snapshot?.id
     ) {
-      this.canDelete = true;
+      this.canManage = true;
       return;
     }
 
-    this.canDelete = false;
+    this.canManage = false;
   }
 
   private updateFormatOptions() {

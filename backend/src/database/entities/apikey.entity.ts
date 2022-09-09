@@ -41,13 +41,13 @@ export class EApiKeyBackend<
   name: string;
 
   @Column({
-    type: 'timestamp',
+    type: 'timestamptz',
     nullable: false,
   })
   created: Date;
 
   @Column({
-    type: 'timestamp',
+    type: 'timestamptz',
     nullable: true,
   })
   last_used: Date;

@@ -57,6 +57,11 @@ export class ImageManagerService {
     userid: string | undefined,
     options: Partial<Pick<EImageBackend, 'file_name' | 'expires_at'>>,
   ): AsyncFailable<EImageBackend> {
+    if (options.expires_at !== undefined && options.expires_at !== null) {
+      if (options.expires_at < new Date()) {
+        return Fail(FT.UsrValidation, 'Expiration date must be in the future');
+      }
+    }
     return await this.imagesService.update(id, userid, options);
   }
 

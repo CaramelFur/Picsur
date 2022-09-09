@@ -8,7 +8,14 @@
     </div>
 
     <div class="col-12" *ngIf="image !== null">
-      <h3>Uploaded {{ image.created | amTimeAgo }}</h3>
+      <h3>
+        Uploaded {{ image.created | amTimeAgo }}
+        {{
+          image.expires_at === null
+            ? ''
+            : '| Expires ' + (image.expires_at | amTimeAgo)
+        }}
+      </h3>
     </div>
 
     <div class="col-12 py-3">
@@ -66,7 +73,15 @@
     <mat-icon fontSet="material-icons-outlined"> share </mat-icon>
   </button>
   <button
-    *ngIf="canDelete"
+    *ngIf="canManage"
+    mat-mini-fab
+    matTooltip="Edit image"
+    (click)="editImage()"
+  >
+    <mat-icon fontSet="material-icons-outlined"> edit </mat-icon>
+  </button>
+  <button
+    *ngIf="canManage"
     mat-mini-fab
     matTooltip="Delete image"
     (click)="deleteImage()"

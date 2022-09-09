@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ParseInt, ParseString } from 'picsur-shared/dist/util/parse-simple';
 import { EntityList } from '../../database/entities';
 import { MigrationList } from '../../database/migrations';
@@ -52,12 +52,14 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     const varOptions = this.getTypeOrmServerOptions();
     return {
       type: 'postgres' as 'postgres',
-      synchronize: false, //!this.hostService.isProduction(),
+      synchronize: !this.hostService.isProduction(),
 
       migrationsRun: true,
 
       entities: EntityList,
       migrations: MigrationList,
+
+      useUTC: true,
 
       cli: {
         migrationsDir: 'src/database/migrations',
@@ -65,6 +67,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       },
 
       ...varOptions,
-    };
+    } as TypeOrmModuleOptions;
   }
 }

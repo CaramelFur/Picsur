@@ -61,7 +61,7 @@ export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
 
     const result = await this.imageFileDB.cleanupDerivatives(after_ms / 1000);
     if (HasFailed(result)) {
-      this.logger.warn(`Failed to cleanup derivatives`);
+      this.logger.warn(result.print());
     }
 
     this.logger.log(`Cleaned up ${result} derivatives`);
@@ -71,7 +71,7 @@ export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
     const cleanedUp = await this.imageDB.cleanupExpired();
 
     if (HasFailed(cleanedUp)) {
-      this.logger.warn(`Failed to cleanup expired images`);
+      this.logger.warn(cleanedUp.print());
     }
 
     this.logger.log(`Cleaned up ${cleanedUp} expired images`);

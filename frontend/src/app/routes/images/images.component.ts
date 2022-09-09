@@ -5,6 +5,7 @@ import { ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { ImageService } from 'src/app/services/api/image.service';
+import { UserService } from 'src/app/services/api/user.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { BootstrapService, BSScreenSize } from 'src/app/util/bootstrap.service';
 import { DialogService } from 'src/app/util/dialog-manager/dialog.service';
@@ -27,6 +28,7 @@ export class ImagesComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly bootstrapService: BootstrapService,
+    private readonly userService: UserService,
     private readonly imageService: ImageService,
     private readonly errorService: ErrorService,
     private readonly dialogService: DialogService,
@@ -44,14 +46,7 @@ export class ImagesComponent implements OnInit {
     this.page = thispage;
 
     this.subscribeMobile();
-
-    const list = await this.imageService.ListMyImages(24, this.page - 1);
-    if (HasFailed(list)) {
-      return this.logger.error(list.getReason());
-    }
-
-    this.pages = list.pages;
-    this.images = list.results;
+    this.subscribeUser();
   }
 
   @AutoUnsubscribe()
@@ -64,6 +59,19 @@ export class ImagesComponent implements OnInit {
       } else {
         this.columns = 3;
       }
+    });
+  }
+
+  @AutoUnsubscribe()
+  private subscribeUser() {
+    return this.userService.live.subscribe(async () => {
+      const list = await this.imageService.ListMyImages(24, this.page - 1);
+      if (HasFailed(list)) {
+        return this.logger.error(list.getReason());
+      }
+
+      this.pages = list.pages;
+      this.images = list.results;
     });
   }
 

@@ -17,7 +17,7 @@ async function createDataSource() {
   const configFactory = app.get(TypeOrmConfigService);
   const config = await configFactory.createTypeOrmOptions();
 
-  return new DataSource(config);
+  return new DataSource(config as any);
 }
 
 export default createDataSource();

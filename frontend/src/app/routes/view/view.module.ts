@@ -17,10 +17,12 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 import { DownloadManagerModule } from 'src/app/util/download-manager/dialog-manager.module';
 import { ErrorManagerModule } from 'src/app/util/error-manager/error-manager.module';
 import { CustomizeDialogComponent } from './customize-dialog/customize-dialog.component';
+import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 import { ViewComponent } from './view.component';
 import { ViewRoutingModule } from './view.routing.module';
+
 @NgModule({
-  declarations: [ViewComponent, CustomizeDialogComponent],
+  declarations: [ViewComponent, CustomizeDialogComponent, EditDialogComponent],
   imports: [
     CommonModule,
     ErrorManagerModule,

@@ -15,7 +15,7 @@ export class EImageBackend implements EImage {
   user_id: string;
 
   @Column({
-    type: 'timestamp',
+    type: 'timestamptz',
     nullable: false,
   })
   created: Date;
@@ -27,7 +27,7 @@ export class EImageBackend implements EImage {
   file_name: string;
 
   @Column({
-    type: 'timestamp',
+    type: "timestamptz",
     nullable: true,
   })
   expires_at: Date | null;

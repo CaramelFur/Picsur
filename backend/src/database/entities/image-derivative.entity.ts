@@ -36,7 +36,11 @@ export class EImageDerivativeBackend {
   @Column({ nullable: false })
   filetype: string;
 
-  @Column({ type: 'timestamp', name: 'last_read', nullable: false })
+  @Column({
+    type: 'timestamptz',
+    name: 'last_read',
+    nullable: false,
+  })
   last_read: Date;
 
   // Binary data

@@ -12,6 +12,11 @@
           <mat-card-title>{{ image.file_name | truncate }}</mat-card-title>
           <mat-card-subtitle>
             Uploaded {{ image.created | amTimeAgo }}
+            {{
+              image.expires_at === null
+                ? ''
+                : '| Expires ' + (image.expires_at | amTimeAgo)
+            }}
           </mat-card-subtitle>
         </mat-card-header>
         <picsur-img

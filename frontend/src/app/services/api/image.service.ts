@@ -4,6 +4,8 @@ import {
   ImageDeleteResponse,
   ImageListRequest,
   ImageListResponse,
+  ImageUpdateRequest,
+  ImageUpdateResponse,
   ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import {
@@ -77,6 +79,21 @@ export class ImageService {
     }
 
     return await this.ListAllImages(count, page, userID);
+  }
+
+  public async UpdateImage(
+    id: string,
+    settings: Partial<Pick<EImage, 'file_name' | 'expires_at'>>,
+  ): AsyncFailable<EImage> {
+    return await this.api.post(
+      ImageUpdateRequest,
+      ImageUpdateResponse,
+      '/api/image/update',
+      {
+        id,
+        ...settings,
+      },
+    );
   }
 
   public async DeleteImages(
