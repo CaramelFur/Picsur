@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Logger } from 'src/app/services/logger/logger.service';
 import {
   ConfirmDialogComponent,
-  ConfirmDialogData,
+  ConfirmDialogData
 } from './confirm-dialog/confirm-dialog.component';
 
 @Injectable({
@@ -26,7 +26,7 @@ export class DialogService {
       const ref = this.dialog.open(component, {
         data,
         panelClass: 'small-dialog-padding',
-        ...(options?.dismissable === false
+        ...(options?.dismissable !== false
           ? {}
           : { disableClose: true, closeOnNavigation: false }),
         maxHeight: '90vh',

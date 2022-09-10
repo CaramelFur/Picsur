@@ -18,11 +18,11 @@ export interface EditDialogData {
 export class EditDialogComponent implements OnInit {
   private readonly logger = new Logger(EditDialogComponent.name);
 
-  public readonly ExpireOptions: Array<[string, null | number]> = [
+  public readonly ExpireOptions: Array<[string, number]> = [
     ['Never', 0],
     ['5 Minutes', 5 * 60],
     ['10 Minutes', 10 * 60],
-    ['30 Minutes', 15 * 60],
+    ['30 Minutes', 30 * 60],
     ['1 Hour', 60 * 60],
     ['6 Hours', 2 * 60 * 60],
     ['12 Hours', 12 * 60 * 60],
@@ -31,7 +31,7 @@ export class EditDialogComponent implements OnInit {
     ['1 Month', 30 * 24 * 60 * 60],
   ];
 
-  public expiresAfter: number = 0;
+  public expiresAfter?: number = undefined;
   public image: EImage;
 
   constructor(
@@ -50,16 +50,13 @@ export class EditDialogComponent implements OnInit {
   async ngOnInit() {}
 
   close() {
-    this.dialogRef.close(null);
+    this.dialogRef.close();
   }
 
   async save() {
     const result = await this.imageService.UpdateImage(this.image.id, {
       file_name: this.image.file_name,
-      expires_at:
-        this.expiresAfter === 0
-          ? null
-          : new Date(Date.now() + this.expiresAfter * 1000),
+      expires_at: this.getExpiresDate(),
     });
 
     if (HasFailed(result)) {
@@ -70,5 +67,11 @@ export class EditDialogComponent implements OnInit {
     this.errorService.success('Image successfully updated');
 
     this.dialogRef.close(result);
+  }
+
+  private getExpiresDate() {
+    if (this.expiresAfter === undefined) return undefined;
+    if (this.expiresAfter === 0) return null;
+    return new Date(Date.now() + this.expiresAfter * 1000);
   }
 }

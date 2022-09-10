@@ -6,7 +6,7 @@ import {
   AnimFileType,
   FileType,
   ImageFileType,
-  SupportedFileTypeCategory,
+  SupportedFileTypeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 
@@ -26,11 +26,11 @@ import { UtilService } from 'src/app/util/util.service';
 
 import {
   CustomizeDialogComponent,
-  CustomizeDialogData,
+  CustomizeDialogData
 } from './customize-dialog/customize-dialog.component';
 import {
   EditDialogComponent,
-  EditDialogData,
+  EditDialogData
 } from './edit-dialog/edit-dialog.component';
 
 @Component({
@@ -192,9 +192,6 @@ export class ViewComponent implements OnInit {
     await this.dialogService.showCustomDialog(
       CustomizeDialogComponent,
       options,
-      {
-        dismissable: false,
-      },
     );
   }
 
@@ -208,12 +205,9 @@ export class ViewComponent implements OnInit {
     const res: EImage | null = await this.dialogService.showCustomDialog(
       EditDialogComponent,
       options,
-      {
-        dismissable: false,
-      },
     );
 
-    if (res !== null) {
+    if (res) {
       this.image = res;
     }
   }

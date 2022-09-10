@@ -66,11 +66,11 @@
   [open-on-hover]="true"
   (main-click)="download()"
 >
-  <button mat-mini-fab matTooltip="Customize Image" (click)="customize()">
-    <mat-icon fontSet="material-icons-outlined"> tune </mat-icon>
-  </button>
   <button mat-mini-fab matTooltip="Share image" (click)="share()">
     <mat-icon fontSet="material-icons-outlined"> share </mat-icon>
+  </button>
+  <button mat-mini-fab matTooltip="Customize Image" (click)="customize()">
+    <mat-icon fontSet="material-icons-outlined"> tune </mat-icon>
   </button>
   <button
     *ngIf="canManage"

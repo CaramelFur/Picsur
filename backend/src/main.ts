@@ -3,7 +3,7 @@ import multipart from '@fastify/multipart';
 import { NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
-  NestFastifyApplication,
+  NestFastifyApplication
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { UserDbService } from './collections/user-db/user-db.service';
@@ -16,6 +16,8 @@ import { MainAuthGuard } from './managers/auth/guards/main.guard';
 import { HelmetOptions } from './security';
 
 async function bootstrap() {
+  const isProduction = process.env['PICSUR_PRODUCTION'] !== undefined;
+
   // Create fasify
   const fastifyAdapter = new FastifyAdapter();
   // TODO: generic error messages
@@ -27,7 +29,7 @@ async function bootstrap() {
     AppModule,
     fastifyAdapter,
     {
-      bufferLogs: false,
+      bufferLogs: isProduction,
     },
   );
 
