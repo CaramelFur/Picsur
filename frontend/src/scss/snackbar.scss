@@ -23,6 +23,31 @@
   }
 }
 
+.theme-alternate .snackbar {
+  background: #f8f9fa;
+  color: black;
+
+  &.snack-success {
+    background: #28a745;
+  }
+
+  &.snack-error {
+    background: #dc3545;
+  }
+
+  &.snack-warning {
+    background: #ffc107;
+  }
+
+  &.snack-info {
+    background: #007bff;
+  }
+
+  &.snack-default {
+    background: #f8f9fa;
+  }
+}
+
 .mat-snack-bar-handset {
   transform: translateY(64px);
 }
