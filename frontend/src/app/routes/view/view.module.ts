@@ -18,11 +18,17 @@ import { DownloadManagerModule } from 'src/app/util/download-manager/dialog-mana
 import { ErrorManagerModule } from 'src/app/util/error-manager/error-manager.module';
 import { CustomizeDialogComponent } from './customize-dialog/customize-dialog.component';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
+import { ViewSpeeddialComponent } from './view-speeddial/view-speeddial.component';
 import { ViewComponent } from './view.component';
 import { ViewRoutingModule } from './view.routing.module';
 
 @NgModule({
-  declarations: [ViewComponent, CustomizeDialogComponent, EditDialogComponent],
+  declarations: [
+    ViewComponent,
+    ViewSpeeddialComponent,
+    CustomizeDialogComponent,
+    EditDialogComponent,
+  ],
   imports: [
     CommonModule,
     ErrorManagerModule,

@@ -1,0 +1,30 @@
+<speed-dial
+  icon="menu"
+  icon-hover="download"
+  tooltip="Download the image"
+  [open-on-hover]="true"
+  (main-click)="download()"
+>
+  <button mat-mini-fab matTooltip="Share image" (click)="share()">
+    <mat-icon fontSet="material-icons-outlined"> share </mat-icon>
+  </button>
+  <button mat-mini-fab matTooltip="Customize Image" (click)="customize()">
+    <mat-icon fontSet="material-icons-outlined"> tune </mat-icon>
+  </button>
+  <button
+    *ngIf="canManage"
+    mat-mini-fab
+    matTooltip="Edit image"
+    (click)="editImage()"
+  >
+    <mat-icon fontSet="material-icons-outlined"> edit </mat-icon>
+  </button>
+  <button
+    *ngIf="canManage"
+    mat-mini-fab
+    matTooltip="Delete image"
+    (click)="deleteImage()"
+  >
+    <mat-icon fontSet="material-icons-outlined"> delete </mat-icon>
+  </button>
+</speed-dial>

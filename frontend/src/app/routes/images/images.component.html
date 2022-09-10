@@ -5,6 +5,8 @@
 </h2>
 
 <ng-container *ngIf="images !== null && images.length > 0">
+  <h1>Your Images</h1>
+
   <masonry [columns]="columns">
     <div *ngFor="let image of images" class="m-2" masonry-item>
       <mat-card>

@@ -2,14 +2,13 @@
   <div class="row">
     <div class="col-12">
       <h1>
-        {{ image?.file_name ?? 'image' | truncate }} uploaded by
-        {{ imageUser?.username }}
+        {{ image?.file_name ?? 'image' | truncate }}
       </h1>
     </div>
 
     <div class="col-12" *ngIf="image !== null">
       <h3>
-        Uploaded {{ image.created | amTimeAgo }}
+        Uploaded {{ image.created | amTimeAgo }} by {{ user?.username }}
         {{
           image.expires_at === null
             ? ''
@@ -29,10 +28,7 @@
     <div class="col-md-6 col-12">
       <mat-form-field appearance="outline" color="accent">
         <mat-label>Image Format</mat-label>
-        <mat-select
-          (valueChange)="selectedFormat($event)"
-          [value]="setSelectedFormat"
-        >
+        <mat-select [(value)]="selectedFormat">
           <mat-option *ngFor="let format of formatOptions" [value]="format.key">
             {{ format.value }}
           </mat-option>
@@ -59,33 +55,8 @@
   </div>
 </div>
 
-<speed-dial
-  icon="menu"
-  icon-hover="download"
-  tooltip="Download the image"
-  [open-on-hover]="true"
-  (main-click)="download()"
->
-  <button mat-mini-fab matTooltip="Share image" (click)="share()">
-    <mat-icon fontSet="material-icons-outlined"> share </mat-icon>
-  </button>
-  <button mat-mini-fab matTooltip="Customize Image" (click)="customize()">
-    <mat-icon fontSet="material-icons-outlined"> tune </mat-icon>
-  </button>
-  <button
-    *ngIf="canManage"
-    mat-mini-fab
-    matTooltip="Edit image"
-    (click)="editImage()"
-  >
-    <mat-icon fontSet="material-icons-outlined"> edit </mat-icon>
-  </button>
-  <button
-    *ngIf="canManage"
-    mat-mini-fab
-    matTooltip="Delete image"
-    (click)="deleteImage()"
-  >
-    <mat-icon fontSet="material-icons-outlined"> delete </mat-icon>
-  </button>
-</speed-dial>
+<view-speeddial
+  [selectedFormat]="selectedFormat"
+  [metadata]="metadata"
+  (metadataChange)="OnMetadata = $event"
+></view-speeddial>

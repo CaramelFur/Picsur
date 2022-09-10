@@ -4,6 +4,15 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
+import {
+  BehaviorSubject,
+  filter,
+  map,
+  merge,
+  Observable,
+  switchMap,
+  timer
+} from 'rxjs';
 import { ImageService } from 'src/app/services/api/image.service';
 import { UserService } from 'src/app/services/api/user.service';
 import { Logger } from 'src/app/services/logger/logger.service';
@@ -18,8 +27,17 @@ import { ErrorService } from 'src/app/util/error-manager/error.service';
 export class ImagesComponent implements OnInit {
   private readonly logger: Logger = new Logger(ImagesComponent.name);
 
-  images: EImage[] | null = null;
+  imagesSub = new BehaviorSubject<EImage[] | null>(null);
   columns = 1;
+
+  public get images() {
+    const value = this.imagesSub.value;
+    return (
+      value?.filter(
+        (i) => i.expires_at === null || i.expires_at > new Date(),
+      ) ?? null
+    );
+  }
 
   page: number = 1;
   pages: number = 1;
@@ -47,6 +65,7 @@ export class ImagesComponent implements OnInit {
 
     this.subscribeMobile();
     this.subscribeUser();
+    this.subscribeImages();
   }
 
   @AutoUnsubscribe()
@@ -64,14 +83,42 @@ export class ImagesComponent implements OnInit {
 
   @AutoUnsubscribe()
   private subscribeUser() {
-    return this.userService.live.subscribe(async () => {
+    return this.userService.live.subscribe(async (user) => {
+      if (user === null) return;
+
       const list = await this.imageService.ListMyImages(24, this.page - 1);
       if (HasFailed(list)) {
         return this.logger.error(list.getReason());
       }
 
       this.pages = list.pages;
-      this.images = list.results;
+      this.imagesSub.next(list.results);
+    });
+  }
+
+  @AutoUnsubscribe()
+  private subscribeImages() {
+    // Make sure we only get populated images
+    const filteredImagesSub: Observable<EImage[]> = this.imagesSub.pipe(
+      filter((images) => images !== null),
+    ) as Observable<EImage[]>;
+
+    const mappedImagesSub: Observable<EImage> = filteredImagesSub.pipe(
+      // Everytime we get a new array, we want merge a mapping of that array
+      // In this mapping, each image will emit itself on the expire date
+      switchMap((images: EImage[]) =>
+        merge(
+          ...images
+            .filter((i) => i.expires_at !== null)
+            .map((i) => timer(i.expires_at!).pipe(map(() => i))),
+        ),
+      ),
+    ) as Observable<EImage>;
+
+    return mappedImagesSub.subscribe((image) => {
+      this.imagesSub.next(
+        this.images?.filter((i) => i.id !== image.id) ?? null,
+      );
     });
   }
 
@@ -109,7 +156,9 @@ export class ImagesComponent implements OnInit {
         return this.errorService.showFailure(result, this.logger);
 
       this.errorService.success('Image deleted');
-      this.images = this.images?.filter((i) => i.id !== image.id) ?? null;
+      this.imagesSub.next(
+        this.images?.filter((i) => i.id !== image.id) ?? null,
+      );
     }
   }
 

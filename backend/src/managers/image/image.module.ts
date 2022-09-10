@@ -34,7 +34,7 @@ export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
     this.interval = setInterval(
       // Run demoManagerService.execute() every interval
       this.imageManagerCron.bind(this),
-      1000 * 60 * 60,
+      1000 * 60,
     );
     await this.imageManagerCron();
   }
