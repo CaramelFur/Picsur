@@ -26,10 +26,16 @@ echo "Building version $VERSION"
 docker buildx create --append --use --name picsur
 
 docker buildx build \
+  --push \
+  -t "$PACKAGE_URL-stage1:$VERSION" \
+  -t "$PACKAGE_URL-stage1:latest" \
+  -f ./picsur-stage1.Dockerfile ..
+
+docker buildx build \
   --platform linux/amd64,linux/arm64 \
   --push \
   -t "$PACKAGE_URL:$VERSION" \
   -t "$PACKAGE_URL:latest" \
-  -f ./picsur.Dockerfile ..
+  -f ./picsur-stage2.Dockerfile ..
 
 echo "Done pushing $PACKAGE_URL:$VERSION"
