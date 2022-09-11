@@ -57,11 +57,12 @@ Every featured marked here should work in the latest release.
 - [x] Proper DB migrations
 - [x] Show own images in list
 - [x] Correct previews on chats
+- [X] Expiring images
+- [X] ShareX endpoint
+- [X] Arm64 image
 
-- [ ] Expiring images
 - [ ] White mode
-- [ ] ShareX endpoint
-- [ ] Arm64 image
+- [ ] Public gallery
 
 ## Bugs
 
