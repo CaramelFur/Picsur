@@ -56,20 +56,18 @@ export class CacheService {
     finalFallback: T,
     ...fallbacks: Array<(key: string) => AsyncFailable<T> | Failable<T>>
   ): Promise<T> {
-    const safeKey = this.transformKey(key);
-
-    const cached = this.get<T>(safeKey);
+    const cached = this.get<T>(key);
     if (cached !== null) {
       return cached;
     }
 
     for (const fallback of fallbacks) {
-      const result = await fallback(safeKey);
+      const result = await fallback(key);
       if (HasFailed(result)) {
         continue;
       }
 
-      this.set(safeKey, result);
+      this.set(key, result);
       return result;
     }
 
