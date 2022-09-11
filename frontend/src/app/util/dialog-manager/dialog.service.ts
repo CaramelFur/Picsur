@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Logger } from 'src/app/services/logger/logger.service';
 import {
   ConfirmDialogComponent,
-  ConfirmDialogData
+  ConfirmDialogData,
 } from './confirm-dialog/confirm-dialog.component';
 
 @Injectable({

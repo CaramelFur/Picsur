@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { AllPermissionsResponse } from 'picsur-shared/dist/dto/api/info.dto';
 import { SpecialRolesResponse } from 'picsur-shared/dist/dto/api/roles.dto';
 import { GetSpecialUsersResponse } from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { Open } from 'picsur-shared/dist/types';
 import { CacheService } from '../storage/cache.service';
 import { ApiService } from './api.service';
+import { InfoService } from './info.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +14,11 @@ import { ApiService } from './api.service';
 export class StaticInfoService {
   constructor(
     private readonly api: ApiService,
+    private readonly info: InfoService,
     private readonly cache: CacheService,
-  ) {}
+  ) {
+    this.subscribeVersion();
+  }
 
   public async getSpecialRoles(): Promise<SpecialRolesResponse> {
     return this.cache.getFallback(
@@ -53,5 +58,12 @@ export class StaticInfoService {
         return Open(res, 'permissions');
       },
     );
+  }
+
+  @AutoUnsubscribe()
+  private subscribeVersion() {
+    return this.info.live.subscribe((info) => {
+      this.cache.setVersion(info.version);
+    });
   }
 }

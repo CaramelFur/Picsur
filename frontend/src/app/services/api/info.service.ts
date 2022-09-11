@@ -18,6 +18,10 @@ export class InfoService {
     return this.infoSubject;
   }
 
+  public get snapshot() {
+    return this.infoSubject.value;
+  }
+
   private infoSubject = new BehaviorSubject<ServerInfo>(new ServerInfo());
 
   constructor(private readonly api: ApiService) {}

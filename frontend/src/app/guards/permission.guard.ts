@@ -4,7 +4,7 @@ import {
   CanActivate,
   CanActivateChild,
   Router,
-  RouterStateSnapshot,
+  RouterStateSnapshot
 } from '@angular/router';
 import { isPermissionsArray } from 'picsur-shared/dist/validators/permissions.validator';
 import { PRouteData } from '../models/dto/picsur-routes.dto';
@@ -17,19 +17,12 @@ import { Logger } from '../services/logger/logger.service';
 })
 export class PermissionGuard implements CanActivate, CanActivateChild {
   private readonly logger = new Logger(PermissionGuard.name);
-  private allPermissionsArray: string[] | null = null;
 
   constructor(
     private readonly permissionService: PermissionService,
     private readonly staticInfo: StaticInfoService,
     private readonly router: Router,
-  ) {
-    this.setupAllPermissions().catch(this.logger.error);
-  }
-
-  private async setupAllPermissions() {
-    this.allPermissionsArray = await this.staticInfo.getAllPermissions();
-  }
+  ) {}
 
   async canActivateChild(
     childRoute: ActivatedRouteSnapshot,
@@ -44,15 +37,16 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
 
   private async can(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const requiredPermissions: string[] = this.nestedPermissions(route);
+    const allPermissionsArray = await this.staticInfo.getAllPermissions();
 
     // Check if permissions array is valid
     // But only if we actually have the data
     if (
-      this.allPermissionsArray !== null &&
-      !isPermissionsArray(requiredPermissions, this.allPermissionsArray)
+      allPermissionsArray !== null &&
+      !isPermissionsArray(requiredPermissions, allPermissionsArray)
     ) {
       this.logger.error(
-        `Permissions array is invalid: "${requiredPermissions}" (available: ${this.allPermissionsArray})`,
+        `Permissions array is invalid: "${requiredPermissions}" (available: ${allPermissionsArray})`,
       );
       return false;
     }
