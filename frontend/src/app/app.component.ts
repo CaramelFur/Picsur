@@ -5,11 +5,12 @@ import {
   ActivatedRoute,
   NavigationEnd,
   NavigationError,
-  Router,
+  Router
 } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { RouteTransitionAnimations } from './app.animation';
 import { PRouteData } from './models/dto/picsur-routes.dto';
+import { UmamiService } from './services/tracking/umami.service';
 import { BootstrapService } from './util/bootstrap.service';
 
 @Component({
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit {
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly bootstrapService: BootstrapService,
+    private readonly umami: UmamiService,
   ) {}
 
   public getRouteAnimData() {
