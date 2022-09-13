@@ -1,5 +1,6 @@
 import fastifyHelmet from '@fastify/helmet';
 import multipart from '@fastify/multipart';
+import fastifyReplyFrom from '@fastify/reply-from';
 import { NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -23,6 +24,7 @@ async function bootstrap() {
   // TODO: generic error messages
   await fastifyAdapter.register(multipart as any);
   await fastifyAdapter.register(fastifyHelmet as any, HelmetOptions);
+  await fastifyAdapter.register(fastifyReplyFrom as any);
 
   // Create nest app
   const app = await NestFactory.create<NestFastifyApplication>(

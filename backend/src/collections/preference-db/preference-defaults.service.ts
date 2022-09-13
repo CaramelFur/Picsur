@@ -45,5 +45,8 @@ export class PreferenceDefaultsService {
 
     [SysPreference.ConversionTimeLimit]: () => '10s',
     [SysPreference.ConversionMemoryLimit]: () => 512,
+
+    [SysPreference.TrackingUrl]: () => '',
+    [SysPreference.TrackingId]: () => '',
   };
 }

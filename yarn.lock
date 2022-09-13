@@ -2024,6 +2024,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fastify/reply-from@npm:^8.2.1":
+  version: 8.2.1
+  resolution: "@fastify/reply-from@npm:8.2.1"
+  dependencies:
+    "@fastify/error": ^3.0.0
+    end-of-stream: ^1.4.4
+    fastify-plugin: ^4.0.0
+    pump: ^3.0.0
+    semver: ^7.3.7
+    tiny-lru: ^8.0.2
+    undici: ^5.5.1
+  checksum: ea512eb8b7c33f68136a09574b653950b7ac832158a8ef59227ce63285154a0801c473ebaa40be553a1ea18178b0b306fec82c3cf9cd3dccf81fb7fc48599558
+  languageName: node
+  linkType: hard
+
 "@fastify/static@npm:^6.5.0":
   version: 6.5.0
   resolution: "@fastify/static@npm:6.5.0"
@@ -2663,6 +2678,13 @@ __metadata:
   version: 1.0.3
   resolution: "@tsconfig/node16@npm:1.0.3"
   checksum: 3a8b657dd047495b7ad23437d6afd20297ce90380ff0bdee93fc7d39a900dbd8d9e26e53ff6b465e7967ce2adf0b218782590ce9013285121e6a5928fbd6819f
+  languageName: node
+  linkType: hard
+
+"@types/ackee-tracker@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "@types/ackee-tracker@npm:5.0.2"
+  checksum: 253cabc3d4b1695fe9af03c36dfc938749678e2ff057ef81f58074f6235d790e9526fa67c621702119d5b5aaef79c4d0b4df55b8e1091dd4d8899ba25df65cc0
   languageName: node
   linkType: hard
 
@@ -3321,6 +3343,15 @@ __metadata:
     mime-types: ~2.1.34
     negotiator: 0.6.3
   checksum: 50c43d32e7b50285ebe84b613ee4a3aa426715a7d131b65b786e2ead0fd76b6b60091b9916d3478a75f11f162628a2139991b6c03ab3f1d9ab7c86075dc8eab4
+  languageName: node
+  linkType: hard
+
+"ackee-tracker@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "ackee-tracker@npm:5.1.0"
+  dependencies:
+    platform: ^1.3.6
+  checksum: f472eb6fe9632eb0a4cc8a4fbdc4048fba1a1da56ecf10f4abf713bf3f69b2f39a5cddb5e3720d95df14ca263f2609fa57491788cf457dacb9502de4b6961519
   languageName: node
   linkType: hard
 
@@ -8492,6 +8523,7 @@ __metadata:
   dependencies:
     "@fastify/helmet": ^10.0.0
     "@fastify/multipart": ^7.1.2
+    "@fastify/reply-from": ^8.2.1
     "@fastify/static": ^6.5.0
     "@nestjs/cli": ^9.1.2
     "@nestjs/common": ^9.0.11
@@ -8575,9 +8607,11 @@ __metadata:
     "@ng-web-apis/common": ^2.0.1
     "@ng-web-apis/resize-observer": ^2.0.0
     "@ngui/common": ^1.0.0
+    "@types/ackee-tracker": ^5.0.2
     "@types/node": ^18.7.16
     "@types/resize-observer-browser": ^0.1.7
     "@types/validator": ^13.7.6
+    ackee-tracker: ^5.1.0
     bootstrap: ^5.2.1
     fuse.js: ^6.6.2
     jwt-decode: ^3.1.2
@@ -8680,6 +8714,13 @@ __metadata:
   dependencies:
     find-up: ^4.0.0
   checksum: 9863e3f35132bf99ae1636d31ff1e1e3501251d480336edb1c211133c8d58906bed80f154a1d723652df1fda91e01c7442c2eeaf9dc83157c7ae89087e43c8d6
+  languageName: node
+  linkType: hard
+
+"platform@npm:^1.3.6":
+  version: 1.3.6
+  resolution: "platform@npm:1.3.6"
+  checksum: 6f472a09c61d418c7e26c1c16d0bdc029549d512dbec6526216a1e59ec68100d07007d0097dcba69dddad883d6f2a83361b4bdfe0094a3d9a2af24158643d85e
   languageName: node
   linkType: hard
 
@@ -11063,6 +11104,13 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 9096d8f6c16cb80ef3bf96fcbbd055bf1c4a43bd14f3b7be45a9fbe7ada46ec977f604d5feed3263b4f2aa7d4c7477ce5f9cd87de0d6feedec69a983f3a4f93e
+  languageName: node
+  linkType: hard
+
+"undici@npm:^5.5.1":
+  version: 5.10.0
+  resolution: "undici@npm:5.10.0"
+  checksum: 7ba2b71dccc74cd2bdf645b83e9aaef374ae04855943d0a2f42a3d0b9e5556f37cc9b5156fb5288277a2fa95fd46a56f3ae0d5cf73db3f008d75ec41104b136c
   languageName: node
   linkType: hard
 

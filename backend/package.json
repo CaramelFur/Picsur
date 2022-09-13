@@ -24,6 +24,7 @@
   "dependencies": {
     "@fastify/helmet": "^10.0.0",
     "@fastify/multipart": "^7.1.2",
+    "@fastify/reply-from": "^8.2.1",
     "@fastify/static": "^6.5.0",
     "@nestjs/common": "^9.0.11",
     "@nestjs/config": "^2.2.0",

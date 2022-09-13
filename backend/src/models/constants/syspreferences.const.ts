@@ -18,4 +18,7 @@ export const SysPreferenceValueTypes: {
 
   [SysPreference.ConversionTimeLimit]: 'string',
   [SysPreference.ConversionMemoryLimit]: 'number',
+
+  [SysPreference.TrackingUrl]: 'string',
+  [SysPreference.TrackingId]: 'string',
 };

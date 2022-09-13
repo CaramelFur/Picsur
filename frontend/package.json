@@ -34,6 +34,7 @@
     "@ng-web-apis/common": "^2.0.1",
     "@ng-web-apis/resize-observer": "^2.0.0",
     "@ngui/common": "^1.0.0",
+    "@types/ackee-tracker": "^5.0.2",
     "@types/node": "^18.7.16",
     "@types/resize-observer-browser": "^0.1.7",
     "@types/validator": "^13.7.6",
@@ -52,5 +53,8 @@
     "typescript": "4.8.3",
     "zod": "^3.19.0",
     "zone.js": "~0.11.8"
+  },
+  "dependencies": {
+    "ackee-tracker": "^5.1.0"
   }
 }

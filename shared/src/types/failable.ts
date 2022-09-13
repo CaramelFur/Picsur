@@ -219,6 +219,7 @@ export type AsyncFailable<T> = Promise<Failable<T>>;
 
 export function HasFailed<T>(failable: Failable<T>): failable is Failure {
   if (failable instanceof Promise) throw new Error('Invalid use of HasFailed');
+  if (!(failable instanceof Object)) return false;
   return (failable as any).__68351953531423479708__id_failure === 1148363914;
 }
 

@@ -10,4 +10,7 @@ export enum SysPreference {
 
   ConversionTimeLimit = 'conversion_time_limit',
   ConversionMemoryLimit = 'conversion_memory_limit',
+
+  TrackingUrl = 'tracking_url',
+  TrackingId = 'tracking_id',
 }
