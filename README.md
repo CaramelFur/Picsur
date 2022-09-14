@@ -19,7 +19,7 @@ But it does function, so feel free to give it a try.
 
 ## Demo
 
-You can view a live demo here: <https://picsur.rubikscraft.nl/>
+You can view a live demo here: <https://picsur.org/>
 
 The images are deleted every five minutes, and the maximum filesize is 16MB. But it should give you an indication of how it works.
 
