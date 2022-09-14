@@ -34,4 +34,4 @@ import { SettingsApiKeysRoutingModule } from './settings-apikeys.routing.module'
     FabModule,
   ],
 })
-export class SettingsApiKeysRouteModule {}
+export default class SettingsApiKeysRouteModule {}

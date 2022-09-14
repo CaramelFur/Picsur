@@ -14,4 +14,4 @@ import { ProcessingRoutingModule } from './processing.routing.module';
     MatProgressSpinnerModule,
   ],
 })
-export class ProcessingRouteModule {}
+export default class ProcessingRouteModule {}

@@ -236,6 +236,19 @@ export function ThrowIfFailed<V>(failable: Failable<V>): V {
   return failable;
 }
 
+export function FallbackIfFailed<V>(
+  failable: Failable<V>,
+  fallback: V,
+  logger?: { warn: (...args: any) => any },
+): V {
+  if (HasFailed(failable)) {
+    if (logger) logger.warn(failable.print());
+    return fallback;
+  }
+
+  return failable;
+}
+
 export function Map<T, U>(
   failable: Failable<T>,
   mapper: (value: T) => U,

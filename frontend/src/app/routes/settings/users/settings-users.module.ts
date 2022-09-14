@@ -37,4 +37,4 @@ import { SettingsUsersRoutingModule } from './settings-users.routing.module';
     ValuesPickerModule,
   ],
 })
-export class SettingsUsersRouteModule {}
+export default class SettingsUsersRouteModule {}

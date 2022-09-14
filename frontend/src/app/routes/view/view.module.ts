@@ -52,4 +52,4 @@ import { ViewRoutingModule } from './view.routing.module';
     PipesModule,
   ],
 })
-export class ViewRouteModule {}
+export default class ViewRouteModule {}

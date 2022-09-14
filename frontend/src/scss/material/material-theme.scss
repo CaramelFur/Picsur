@@ -171,10 +171,10 @@ $mat-theme-light: (
 @include mat.all-component-themes($mat-theme);
 @include custom-mat.custom-material($mat-theme);
 
-.theme-alternate {
-  @include mat.all-component-themes($mat-theme-light);
-  @include custom-mat.custom-material($mat-theme-light);
-}
+// .theme-alternate {
+//   @include mat.all-component-themes($mat-theme-light);
+//   @include custom-mat.custom-material($mat-theme-light);
+// }
 
 .mat-standard-chip {
   padding: 0.5em 0.85em;
