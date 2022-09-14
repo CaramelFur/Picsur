@@ -41,7 +41,8 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "ngx-auto-unsubscribe-decorator",
-              "moment"
+              "moment",
+              "platform"
             ],
             "optimization": true,
             "webWorkerTsConfig": "tsconfig.worker.json",
