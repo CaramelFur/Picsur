@@ -150,6 +150,10 @@ volumes:
   picsur-data:
 ```
 
+## Thanks
+
+- @awg13 for donating 5$
+
 ## Api
 
 Here is a usually up to date documentation of the api:
