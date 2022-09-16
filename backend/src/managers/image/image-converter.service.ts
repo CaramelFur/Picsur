@@ -3,7 +3,7 @@ import ms from 'ms';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import {
   FileType,
-  SupportedFileTypeCategory,
+  SupportedFileTypeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
@@ -57,7 +57,8 @@ export class ImageConverterService {
     if (HasFailed(memLimit) || HasFailed(timeLimit)) {
       return Fail(FT.Internal, 'Failed to get conversion limits');
     }
-    const timeLimitMS = ms(timeLimit);
+    let timeLimitMS = ms(timeLimit as any);
+    if (isNaN(timeLimitMS)) timeLimitMS = 15 * 1000; // 15 seconds
 
     const sharpWrapper = new SharpWrapper(timeLimitMS, memLimit);
     const sharpOptions: SharpOptions = {

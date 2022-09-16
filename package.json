@@ -22,6 +22,7 @@
     "terser": ">=5.14.2",
     "typeorm": ">=0.3.9",
     "typescript": "4.7.4",
+    "ms": "3.0.0-canary.1",
     "fastify-static": "npm:@fastify/static@*",
     "fastify-formbody": "npm:@fastify/formbody@*",
     "minimist": "npm:minimist-lite@*"
