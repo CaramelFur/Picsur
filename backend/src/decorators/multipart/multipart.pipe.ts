@@ -43,7 +43,7 @@ export class MultiPartPipe implements PipeTransform {
         await req.file({
           limits: this.multipartConfigService.getLimits(),
         })
-      ).fields;
+      )?.fields ?? null;
     } catch (e) {
       this.logger.warn(e);
     }

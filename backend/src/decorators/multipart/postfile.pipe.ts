@@ -1,4 +1,4 @@
-import { Multipart } from '@fastify/multipart';
+import { Multipart, MultipartFile } from '@fastify/multipart';
 import { Injectable, Logger, PipeTransform, Scope } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { Fail, FT } from 'picsur-shared/dist/types';
@@ -30,7 +30,9 @@ export class PostFilePipe implements PipeTransform {
     ) as any;
 
     // Remove non-file fields
-    const files = allFields.filter((entry) => entry.file !== undefined);
+    const files: MultipartFile[] = allFields.filter(
+      (entry) => (entry as any).file !== undefined,
+    ) as MultipartFile[];
 
     if (files.length !== 1) throw Fail(FT.UsrValidation, 'Invalid file');
 
