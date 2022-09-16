@@ -6,6 +6,7 @@ import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.en
 import {
   AnimFileType,
   FileType,
+  FileType2Mime,
   ImageFileType,
   Mime2FileType,
 } from 'picsur-shared/dist/dto/mimes.dto';
@@ -256,7 +257,7 @@ export class ImageManagerService {
 
     let mime: string | undefined;
     if (filetypeResult === undefined) {
-      if (IsQOI(image)) mime = 'image/qoi';
+      if (IsQOI(image)) mime = 'image/x-qoi';
     } else {
       mime = filetypeResult.mime;
     }
