@@ -129,7 +129,7 @@ export class ImageFileDBService {
   ): AsyncFailable<number> {
     try {
       const result = await this.imageDerivativeRepo.delete({
-        last_read: LessThan(new Date()),
+        last_read: LessThan(new Date(Date.now() - olderThanSeconds * 1000)),
       });
 
       return result.affected ?? 0;
