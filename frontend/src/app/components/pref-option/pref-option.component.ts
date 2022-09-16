@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import {
   DecodedPref,
-  PrefValueType,
+  PrefValueType
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { Subject } from 'rxjs';
@@ -24,9 +24,9 @@ export class PrefOptionComponent implements OnInit {
     key: string,
     pref: PrefValueType,
   ) => AsyncFailable<any>;
-  @Input() @Required translator: {
-    [key in string]: string;
-  };
+  @Input() @Required name: string = '';
+
+  @Input() helpText: string = '';
 
   private updateSubject = new Subject<PrefValueType>();
 
@@ -34,10 +34,6 @@ export class PrefOptionComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeUpdate();
-  }
-
-  get name(): string {
-    return this.translator[this.pref.key] ?? this.pref.key;
   }
 
   get valString(): string {
@@ -74,6 +70,10 @@ export class PrefOptionComponent implements OnInit {
     if (isNaN(value)) return;
 
     this.update(value);
+  }
+
+  booleanUpdateWrapper(e: boolean) {
+    this.update(e);
   }
 
   private async updatePreference(value: PrefValueType) {

@@ -1,11 +1,10 @@
-import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { LOCATION, NAVIGATOR, WINDOW } from '@ng-web-apis/common';
-import { Logger } from '../logger/logger.service';
-import { InfoService } from '../api/info.service';
+import { NAVIGATOR } from '@ng-web-apis/common';
 import type { AckeeInstance, AckeeTrackingReturn } from 'ackee-tracker';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { TrackingState } from 'picsur-shared/dist/dto/tracking-state.enum';
+import { InfoService } from '../api/info.service';
+import { Logger } from '../logger/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +24,11 @@ export class UsageService {
     this.doNotTrack =
       this.navigator.doNotTrack === '1' || this.navigator.doNotTrack === 'yes';
 
+    if (this.doNotTrack) {
+      this.logger.verbose('Usage reporting disabled by DNT');
+      return;
+    }
+
     this.subscribeInfo();
   }
 
@@ -38,8 +42,7 @@ export class UsageService {
         this.stop();
       } else {
         this.setup(
-          info.tracking.state === TrackingState.Detailed &&
-            this.doNotTrack === false,
+          info.tracking.state === TrackingState.Detailed,
           info.tracking.id,
         );
       }
