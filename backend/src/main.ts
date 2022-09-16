@@ -11,6 +11,7 @@ import { UserDbService } from './collections/user-db/user-db.service';
 import { HostConfigService } from './config/early/host.config.service';
 import { MainExceptionFilter } from './layers/exception/exception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';
+import { PicsurThrottlerGuard } from './layers/throttler/PicsurThrottler.guard';
 import { ZodValidationPipe } from './layers/validate/zod-validator.pipe';
 import { PicsurLoggerService } from './logger/logger.service';
 import { MainAuthGuard } from './managers/auth/guards/main.guard';
@@ -20,7 +21,14 @@ async function bootstrap() {
   const isProduction = process.env['PICSUR_PRODUCTION'] !== undefined;
 
   // Create fasify
-  const fastifyAdapter = new FastifyAdapter();
+  const fastifyAdapter = new FastifyAdapter({
+    trustProxy: [
+      '127.0.0.0/8',
+      '10.0.0.0/8',
+      '172.16.0.0/12',
+      '192.168.0.0/16',
+    ],
+  });
   // TODO: generic error messages
   await fastifyAdapter.register(multipart as any);
   await fastifyAdapter.register(fastifyHelmet as any, HelmetOptions);
@@ -40,12 +48,11 @@ async function bootstrap() {
 
   app.flushLogs();
 
-  app.useGlobalFilters(new MainExceptionFilter());
-  app.useGlobalInterceptors(new SuccessInterceptor(app.get(Reflector)));
-  app.useGlobalPipes(new ZodValidationPipe());
-  app.useGlobalGuards(
-    new MainAuthGuard(app.get(Reflector), app.get(UserDbService)),
-  );
+  app.useGlobalFilters(app.get(MainExceptionFilter));
+  app.useGlobalInterceptors(app.get(SuccessInterceptor));
+  app.useGlobalPipes(app.get(ZodValidationPipe));
+
+  app.useGlobalGuards(app.get(PicsurThrottlerGuard), app.get(MainAuthGuard));
 
   // Start app
   const hostConfigService = app.get(HostConfigService);

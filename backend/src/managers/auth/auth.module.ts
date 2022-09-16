@@ -13,7 +13,9 @@ import { AuthManagerService } from './auth.service';
 import { ApiKeyStrategy } from './guards/apikey.strategy';
 import { GuestStrategy } from './guards/guest.strategy';
 import { JwtStrategy } from './guards/jwt.strategy';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 import { LocalAuthStrategy } from './guards/local-auth.strategy';
+import { MainAuthGuard } from './guards/main.guard';
 import { GuestService } from './guest.service';
 
 @Module({
@@ -30,13 +32,15 @@ import { GuestService } from './guest.service';
   ],
   providers: [
     AuthManagerService,
+    GuestService,
+    JwtSecretProvider,
     LocalAuthStrategy,
     JwtStrategy,
     GuestStrategy,
-    JwtSecretProvider,
     ApiKeyStrategy,
-    GuestService,
+    LocalAuthGuard,
+    MainAuthGuard,
   ],
-  exports: [UserDbModule, AuthManagerService],
+  exports: [UserDbModule, AuthManagerService, LocalAuthGuard, MainAuthGuard],
 })
 export class AuthManagerModule {}
