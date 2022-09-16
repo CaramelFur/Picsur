@@ -5,17 +5,18 @@ import {
   PrefValueType,
   PrefValueTypeStrings,
 } from 'picsur-shared/dist/dto/preferences.dto';
-import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
+import {
+  UsrPreference,
+  UsrPreferenceList,
+  UsrPreferenceValidators,
+  UsrPreferenceValueTypes,
+} from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
   EUsrPreferenceBackend,
   EUsrPreferenceSchema,
 } from '../../database/entities/usr-preference.entity';
-import {
-  UsrPreferenceList,
-  UsrPreferenceValueTypes,
-} from '../../models/constants/usrpreferences.const';
 import { MutexFallBack } from '../../util/mutex-fallback';
 import { PreferenceCommonService } from './preference-common.service';
 import { PreferenceDefaultsService } from './preference-defaults.service';
@@ -91,7 +92,7 @@ export class UsrPreferenceDbService {
 
         // Return
         const unpacked = this.prefCommon.DecodePref(
-          result.data,
+          result.data as any,
           UsrPreference,
           UsrPreferenceValueTypes,
         );
@@ -175,7 +176,7 @@ export class UsrPreferenceDbService {
     return this.setPreference(
       userid,
       key,
-      this.defaultsService.usrDefaults[key](),
+      this.defaultsService.getUsrDefault(key),
     );
   }
 
@@ -191,6 +192,16 @@ export class UsrPreferenceDbService {
       UsrPreferenceValueTypes,
     );
     if (HasFailed(validated)) return validated;
+
+    if (!UsrPreferenceValidators[validated.key](validated.value))
+      throw Fail(
+        FT.UsrValidation,
+        undefined,
+        'Preference validator failed for ' +
+          validated.key +
+          ' with value ' +
+          validated.value,
+      );
 
     let verifySysPreference = new EUsrPreferenceBackend();
     verifySysPreference.key = validated.key;

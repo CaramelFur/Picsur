@@ -39,6 +39,12 @@ export class UsageController {
       throw Fail(FT.NotFound, undefined, 'Tracking URL not set');
     }
 
-    await res.from(`${trackingUrl}/api`);
+    await res.from(`${trackingUrl}/api`, {
+      rewriteRequestHeaders(req, headers) {
+        // remove cookies
+        delete headers.cookie;
+        return headers;
+      },
+    });
   }
 }
