@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class KeyService {
+export class KeyStorageService {
   private key: string | null = null;
 
   constructor() {

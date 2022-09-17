@@ -7,7 +7,7 @@ import {
   Fail,
   FT,
   HasFailed,
-  HasSuccess,
+  HasSuccess
 } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { ParseMime2FileType } from 'picsur-shared/dist/util/parse-mime';
@@ -17,7 +17,7 @@ import { ApiError } from 'src/app/models/dto/api-error.dto';
 import { z } from 'zod';
 import { MultiPartRequest } from '../../models/dto/multi-part-request.dto';
 import { Logger } from '../logger/logger.service';
-import { KeyService } from '../storage/key.service';
+import { KeyStorageService } from '../storage/key-storage.service';
 
 /*
   Proud of this, it works so smoooth
@@ -36,7 +36,7 @@ export class ApiService {
   }
 
   constructor(
-    private readonly keyService: KeyService,
+    private readonly keyService: KeyStorageService,
     @Inject(WINDOW) private readonly windowRef: Window,
   ) {}
 

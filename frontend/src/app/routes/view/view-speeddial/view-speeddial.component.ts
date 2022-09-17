@@ -93,10 +93,7 @@ export class ViewSpeeddialComponent implements OnInit {
     if (this.image === null) return;
 
     this.downloadService.downloadFile(
-      this.imageService.CreateImageLinksFromID(
-        this.image?.id,
-        this.selectedFormat,
-      ).source,
+      this.imageService.GetImageURL(this.image?.id, this.selectedFormat),
     );
   }
 
@@ -104,10 +101,7 @@ export class ViewSpeeddialComponent implements OnInit {
     if (this.image === null) return;
 
     this.downloadService.shareFile(
-      this.imageService.CreateImageLinksFromID(
-        this.image?.id,
-        this.selectedFormat,
-      ).source,
+      this.imageService.GetImageURL(this.image?.id, this.selectedFormat),
     );
   }
 

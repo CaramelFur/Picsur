@@ -7,7 +7,7 @@ import {
   UserLoginResponse,
   UserMeResponse,
   UserRegisterRequest,
-  UserRegisterResponse,
+  UserRegisterResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -16,11 +16,11 @@ import {
   Fail,
   FT,
   HasFailed,
-  Open,
+  Open
 } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '../logger/logger.service';
-import { KeyService } from '../storage/key.service';
+import { KeyStorageService } from '../storage/key-storage.service';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -44,7 +44,7 @@ export class UserService {
 
   constructor(
     private readonly api: ApiService,
-    private readonly key: KeyService,
+    private readonly key: KeyStorageService,
   ) {
     this.init().catch(this.logger.error);
   }
