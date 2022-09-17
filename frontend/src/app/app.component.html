@@ -1,6 +1,7 @@
 <app-header
   [enableHamburger]="hasSidebar && !isDesktop"
   (onHamburgerClick)="sidebar.toggle()"
+  [loading]="loading"
 ></app-header>
 
 <mat-sidenav-container class="grow-full">

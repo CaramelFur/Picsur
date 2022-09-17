@@ -5,7 +5,7 @@ import {
   EventEmitter,
   Input,
   OnInit,
-  Output,
+  Output
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
@@ -40,6 +40,8 @@ export class HeaderComponent implements OnInit {
   }
   public _enableHamburger: boolean = true;
   @Output('onHamburgerClick') onHamburgerClick = new EventEmitter<void>();
+
+  @Input('loading') public loading: boolean = false;
 
   private currentUser: EUser | null = null;
 

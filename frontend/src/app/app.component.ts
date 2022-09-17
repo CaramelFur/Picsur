@@ -5,7 +5,8 @@ import {
   ActivatedRoute,
   NavigationEnd,
   NavigationError,
-  Router,
+  NavigationStart,
+  Router
 } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { RouteTransitionAnimations } from './app.animation';
@@ -23,6 +24,9 @@ export class AppComponent implements OnInit {
   private readonly logger = console;
 
   @ViewChild(MatSidenav) sidebar: MatSidenav;
+
+  loading: boolean = false;
+  private loadingTimeout: number | null = null;
 
   wrapContentWithContainer: boolean = true;
   sidebarPortal: Portal<any> | undefined = undefined;
@@ -54,6 +58,12 @@ export class AppComponent implements OnInit {
   @AutoUnsubscribe()
   private subscribeRouter() {
     return this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.loadingStart();
+      }
+      if (event instanceof NavigationEnd) {
+        this.loadingEnd();
+      }
       if (event instanceof NavigationEnd) this.onNavigationEnd(event);
       if (event instanceof NavigationError) this.onNavigationError(event);
     });
@@ -85,6 +95,21 @@ export class AppComponent implements OnInit {
       this.hasSidebar = false;
     }
     this.updateSidebar();
+  }
+
+  private loadingStart() {
+    if (this.loadingTimeout !== null) clearTimeout(this.loadingTimeout);
+
+    this.loadingTimeout = window.setTimeout(() => {
+      this.loading = true;
+    }, 500);
+  }
+
+  private loadingEnd() {
+    if (this.loadingTimeout !== null) clearTimeout(this.loadingTimeout);
+    this.loadingTimeout = null;
+
+    this.loading = false;
   }
 
   private updateSidebar() {
