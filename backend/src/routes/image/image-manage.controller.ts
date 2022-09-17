@@ -5,8 +5,9 @@ import {
   Logger,
   Param,
   Post,
-  Res,
+  Res
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import type { FastifyReply } from 'fastify';
 import {
   ImageDeleteRequest,
@@ -17,14 +18,14 @@ import {
   ImageListResponse,
   ImageUpdateRequest,
   ImageUpdateResponse,
-  ImageUploadResponse,
+  ImageUploadResponse
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { HasFailed, ThrowIfFailed } from 'picsur-shared/dist/types';
 import { MultiPart } from '../../decorators/multipart/multipart.decorator';
 import {
   HasPermission,
-  RequiredPermissions,
+  RequiredPermissions
 } from '../../decorators/permissions.decorator';
 import { ReqUserID } from '../../decorators/request-user.decorator';
 import { Returns } from '../../decorators/returns.decorator';
@@ -39,6 +40,7 @@ export class ImageManageController {
 
   @Post('upload')
   @Returns(ImageUploadResponse)
+  @Throttle(20)
   async uploadImage(
     @MultiPart() multipart: ImageUploadDto,
     @ReqUserID() userid: string,

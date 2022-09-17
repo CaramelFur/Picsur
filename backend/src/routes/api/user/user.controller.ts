@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import {
   UserCheckNameRequest,
   UserCheckNameResponse,
@@ -6,7 +7,7 @@ import {
   UserMePermissionsResponse,
   UserMeResponse,
   UserRegisterRequest,
-  UserRegisterResponse,
+  UserRegisterResponse
 } from 'picsur-shared/dist/dto/api/user.dto';
 import type { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { ThrowIfFailed } from 'picsur-shared/dist/types';
@@ -14,7 +15,7 @@ import { UserDbService } from '../../../collections/user-db/user-db.service';
 import {
   NoPermissions,
   RequiredPermissions,
-  UseLocalAuth,
+  UseLocalAuth
 } from '../../../decorators/permissions.decorator';
 import { ReqUser, ReqUserID } from '../../../decorators/request-user.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
@@ -34,6 +35,7 @@ export class UserController {
   @Post('login')
   @Returns(UserLoginResponse)
   @UseLocalAuth(Permission.UserLogin)
+  @Throttle(30, 300)
   async login(@ReqUser() user: EUser): Promise<UserLoginResponse> {
     const jwt_token = ThrowIfFailed(await this.authService.createToken(user));
 
@@ -43,6 +45,7 @@ export class UserController {
   @Post('register')
   @Returns(UserRegisterResponse)
   @RequiredPermissions(Permission.UserRegister)
+  @Throttle(5, 300)
   async register(
     @Body() register: UserRegisterRequest,
   ): Promise<UserRegisterResponse> {
@@ -56,6 +59,7 @@ export class UserController {
   @Post('checkname')
   @Returns(UserCheckNameResponse)
   @RequiredPermissions(Permission.UserRegister)
+  @Throttle(20)
   async checkName(
     @Body() checkName: UserCheckNameRequest,
   ): Promise<UserCheckNameResponse> {
@@ -67,6 +71,7 @@ export class UserController {
   @Get('me')
   @Returns(UserMeResponse)
   @RequiredPermissions(Permission.UserKeepLogin)
+  @Throttle(10)
   async me(@ReqUserID() userid: string): Promise<UserMeResponse> {
     const backenduser = ThrowIfFailed(await this.usersService.findOne(userid));
 
@@ -81,6 +86,7 @@ export class UserController {
   @Get('me/permissions')
   @Returns(UserMePermissionsResponse)
   @NoPermissions()
+  @Throttle(20)
   async refresh(
     @ReqUserID() userid: string,
   ): Promise<UserMePermissionsResponse> {

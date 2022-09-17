@@ -6,7 +6,10 @@ import { PicsurThrottlerGuard } from './throttler/PicsurThrottler.guard';
 import { ZodValidationPipe } from './validate/zod-validator.pipe';
 
 @Module({
-  imports: [ThrottlerModule.forRoot()],
+  imports: [ThrottlerModule.forRoot({
+    ttl: 60,
+    limit: 60,
+  })],
   providers: [
     PicsurThrottlerGuard,
     MainExceptionFilter,

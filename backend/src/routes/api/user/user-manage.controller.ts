@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import {
   GetSpecialUsersResponse,
   UserCreateRequest,
@@ -10,7 +11,7 @@ import {
   UserListRequest,
   UserListResponse,
   UserUpdateRequest,
-  UserUpdateResponse,
+  UserUpdateResponse
 } from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { UserDbService } from '../../../collections/user-db/user-db.service';
@@ -20,7 +21,7 @@ import { Permission } from '../../../models/constants/permissions.const';
 import {
   ImmutableUsersList,
   LockedLoginUsersList,
-  UndeletableUsersList,
+  UndeletableUsersList
 } from '../../../models/constants/special-users.const';
 import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 
@@ -46,6 +47,7 @@ export class UserAdminController {
 
   @Post('create')
   @Returns(UserCreateResponse)
+  @Throttle(10)
   async register(
     @Body() create: UserCreateRequest,
   ): Promise<UserCreateResponse> {
@@ -78,6 +80,7 @@ export class UserAdminController {
 
   @Post('update')
   @Returns(UserUpdateResponse)
+  @Throttle(20)
   async setPermissions(
     @Body() body: UserUpdateRequest,
   ): Promise<UserUpdateResponse> {
