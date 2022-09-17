@@ -94,6 +94,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     const links = this.imageService.CreateImageLinksFromID(
       this.id,
       format === 'original' ? null : format,
+      this.image?.file_name
     );
 
     this.imageLinksCache[format] = links;

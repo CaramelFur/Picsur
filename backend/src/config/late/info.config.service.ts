@@ -18,6 +18,8 @@ export class InfoConfigService {
       return undefined;
     }
 
+    if (hostname === '') return undefined;
+
     return hostname;
   }
 }
