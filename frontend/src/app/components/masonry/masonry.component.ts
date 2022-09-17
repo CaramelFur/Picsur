@@ -8,7 +8,7 @@ import {
   Input,
   OnDestroy,
   QueryList,
-  ViewChildren,
+  ViewChildren
 } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { combineLatest, Subscription } from 'rxjs';
@@ -30,7 +30,7 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
     this.changeDetector.markForCheck();
   }
   public _column_count = 1;
-  @Input('update-speed') update_speed: number = 200;
+  @Input('update-speed') update_speed: number = 500;
 
   @ContentChildren(MasonryItemDirective)
   private content: QueryList<MasonryItemDirective>;

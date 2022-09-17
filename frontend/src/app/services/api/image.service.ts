@@ -136,11 +136,11 @@ export class ImageService {
   }
 
   // Use for user facing urls
-  public CreateImageLinks(imageURL: string): ImageLinks {
+  public CreateImageLinks(imageURL: string, name?: string): ImageLinks {
     return {
       source: imageURL,
       markdown: `![image](${imageURL})`,
-      html: `<img src="${imageURL}" alt="image">`,
+      html: `<img src="${imageURL}" alt="${name ?? 'image'}">`,
       rst: `.. image:: ${imageURL}`,
       bbcode: `[img]${imageURL}[/img]`,
     };
@@ -184,7 +184,8 @@ export class ImageService {
   public CreateImageLinksFromID(
     imageID: string,
     mime: string | null,
+    name?: string,
   ): ImageLinks {
-    return this.CreateImageLinks(this.GetImageURL(imageID, mime, true));
+    return this.CreateImageLinks(this.GetImageURL(imageID, mime, true), name);
   }
 }
