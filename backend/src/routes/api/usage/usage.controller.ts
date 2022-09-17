@@ -1,16 +1,16 @@
 import { Controller, Logger, Post, Req, Res } from '@nestjs/common';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { Fail, FT, ThrowIfFailed } from 'picsur-shared/dist/types';
+import { UsageConfigService } from '../../../config/late/usage.config.service';
 import { NoPermissions } from '../../../decorators/permissions.decorator';
 import { ReturnsAnything } from '../../../decorators/returns.decorator';
-import { UsageService } from '../../../managers/usage/usage.service';
 
 @Controller('api/usage')
 @NoPermissions()
 export class UsageController {
   private readonly logger = new Logger(UsageController.name);
 
-  constructor(private readonly usageService: UsageService) {}
+  constructor(private readonly usageService: UsageConfigService) {}
 
   @Post(['report', 'report/*'])
   @ReturnsAnything()

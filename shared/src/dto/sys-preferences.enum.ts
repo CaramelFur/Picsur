@@ -59,7 +59,7 @@ export const SysPreferenceValidators: {
 } = {
   [SysPreference.HostOverride]: z.string().regex(URLRegex).or(z.literal('')),
 
-  [SysPreference.JwtSecret]: z.boolean(),
+  [SysPreference.JwtSecret]: z.string(),
   [SysPreference.JwtExpiresIn]: IsValidMS(),
 
   [SysPreference.BCryptStrength]: IsPosInt(),
