@@ -1,4 +1,5 @@
 import { Controller, Logger, Post, Req, Res } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { Fail, FT, ThrowIfFailed } from 'picsur-shared/dist/types';
 import { UsageConfigService } from '../../../config/late/usage.config.service';
@@ -14,6 +15,7 @@ export class UsageController {
 
   @Post(['report', 'report/*'])
   @ReturnsAnything()
+  @Throttle(120)
   async deleteRole(
     @Req() req: FastifyRequest,
     @Res({

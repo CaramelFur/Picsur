@@ -5,6 +5,6 @@ import { Fail, FT } from 'picsur-shared/dist/types';
 @Injectable()
 export class PicsurThrottlerGuard extends ThrottlerGuard {
   protected override throwThrottlingException(context: ExecutionContext): void {
-    throw Fail(FT.Permission, undefined, 'Too many requests');
+    throw Fail(FT.RateLimit);
   }
 }

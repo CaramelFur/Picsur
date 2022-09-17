@@ -10,6 +10,7 @@ export enum FT {
   SysValidation = 'sysvalidation',
   UsrValidation = 'usrvalidation',
   Permission = 'permission',
+  RateLimit = 'ratelimit',
   NotFound = 'notfound',
   RouteNotFound = 'routenotfound',
   Conflict = 'conflict',
@@ -62,6 +63,11 @@ const FTProps: {
     important: false,
     code: 403,
     message: 'Permission denied',
+  },
+  [FT.RateLimit]: {
+    important: false,
+    code: 429,
+    message: 'Rate limit exceeded',
   },
   [FT.NotFound]: {
     important: false,

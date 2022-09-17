@@ -1,9 +1,10 @@
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import {
   GetPreferenceResponse,
   MultiplePreferencesResponse,
   UpdatePreferenceRequest,
-  UpdatePreferenceResponse,
+  UpdatePreferenceResponse
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { SysPreferenceDbService } from '../../../collections/preference-db/sys-preference-db.service';
@@ -20,6 +21,7 @@ export class SysPrefController {
 
   @Get()
   @Returns(MultiplePreferencesResponse)
+  @Throttle(20)
   async getAllSysPrefs(): Promise<MultiplePreferencesResponse> {
     const prefs = ThrowIfFailed(await this.prefService.getAllPreferences());
 
@@ -39,6 +41,7 @@ export class SysPrefController {
 
   @Post(':key')
   @Returns(UpdatePreferenceResponse)
+  @Throttle(30)
   async setSysPref(
     @Param('key') key: string,
     @Body() body: UpdatePreferenceRequest,
