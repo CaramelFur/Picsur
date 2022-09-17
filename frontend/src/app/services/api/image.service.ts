@@ -6,11 +6,11 @@ import {
   ImageListResponse,
   ImageUpdateRequest,
   ImageUpdateResponse,
-  ImageUploadResponse,
+  ImageUploadResponse
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import {
   ImageMetaResponse,
-  ImageRequestParams,
+  ImageRequestParams
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
@@ -21,11 +21,11 @@ import {
   FT,
   HasFailed,
   HasSuccess,
-  Open,
+  Open
 } from 'picsur-shared/dist/types/failable';
-import { UtilService } from 'src/app/util/util.service';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
+import { InfoService } from './info.service';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -34,7 +34,7 @@ import { UserService } from './user.service';
 export class ImageService {
   constructor(
     private readonly api: ApiService,
-    private readonly util: UtilService,
+    private readonly infoService: InfoService,
     private readonly userService: UserService,
   ) {}
 
@@ -126,7 +126,7 @@ export class ImageService {
   // Non api calls
 
   public GetImageURL(image: string, filetype: string | null): string {
-    const baseURL = this.util.getHost();
+    const baseURL = this.infoService.getHostname();
     const extension = FileType2Ext(filetype ?? '');
 
     return `${baseURL}/i/${image}${

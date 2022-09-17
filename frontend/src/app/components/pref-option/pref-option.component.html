@@ -1,14 +1,13 @@
-<ng-container *ngIf="pref.type === 'string'">
+<ng-container *ngIf="type === 'string'">
   <div class="y-center">
     <mat-form-field appearance="outline" color="accent">
       <mat-label>{{ name }}</mat-label>
       <input
         matInput
-        [value]="pref.value"
-        (change)="stringUpdateWrapper($event)"
         autocorrect="off"
         autocapitalize="none"
         placeholder="Empty"
+        [formControl]="formControl"
       />
       <!-- show tooltip on press -->
       <button
@@ -28,20 +27,22 @@
           help_outline
         </mat-icon>
       </button>
+      <mat-error *ngIf="formControl.invalid">
+        {{ getErrorMessage() }}
+      </mat-error>
     </mat-form-field>
   </div>
 </ng-container>
 
-<ng-container *ngIf="pref.type === 'number'">
+<ng-container *ngIf="type === 'number'">
   <div class="y-center">
     <mat-form-field appearance="outline" color="accent">
       <mat-label>{{ name }}</mat-label>
       <input
         matInput
         type="number"
-        [value]="pref.value"
-        (change)="numberUpdateWrapper($event)"
         placeholder="Empty"
+        [formControl]="formControl"
       />
       <button
         mat-icon-button
@@ -60,18 +61,18 @@
           help_outline
         </mat-icon>
       </button>
+      <mat-error *ngIf="formControl.invalid">
+        {{ getErrorMessage() }}
+      </mat-error>
     </mat-form-field>
   </div>
 </ng-container>
 
-<ng-container *ngIf="pref.type === 'boolean'">
+<ng-container *ngIf="type === 'boolean'">
   <div class="y-center">
     <mat-form-field appearance="outline" color="accent">
       <mat-label>{{ name }}</mat-label>
-      <mat-select
-        [value]="pref.value"
-        (valueChange)="booleanUpdateWrapper($event)"
-      >
+      <mat-select [formControl]="formControl" placeholder="Empty">
         <mat-option [value]="false">No</mat-option>
         <mat-option [value]="true">Yes</mat-option>
       </mat-select>
@@ -91,6 +92,9 @@
           help_outline
         </mat-icon>
       </button>
+      <mat-error *ngIf="formControl.invalid">
+        {{ getErrorMessage() }}
+      </mat-error>
     </mat-form-field>
   </div>
 </ng-container>

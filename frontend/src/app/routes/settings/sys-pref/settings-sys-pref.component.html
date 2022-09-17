@@ -10,6 +10,7 @@
         [update]="sysPrefService.setPreference.bind(sysPrefService)"
         [name]="getName(pref.key)"
         [helpText]="getHelpText(pref.key)"
+        [validator]="getValidator(pref.key)"
       ></pref-option>
     </ng-container>
   </div>

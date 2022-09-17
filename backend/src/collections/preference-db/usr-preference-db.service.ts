@@ -3,19 +3,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   DecodedUsrPref,
   PrefValueType,
-  PrefValueTypeStrings,
+  PrefValueTypeStrings
 } from 'picsur-shared/dist/dto/preferences.dto';
 import {
   UsrPreference,
   UsrPreferenceList,
   UsrPreferenceValidators,
-  UsrPreferenceValueTypes,
+  UsrPreferenceValueTypes
 } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
   EUsrPreferenceBackend,
-  EUsrPreferenceSchema,
+  EUsrPreferenceSchema
 } from '../../database/entities/usr-preference.entity';
 import { MutexFallBack } from '../../util/mutex-fallback';
 import { PreferenceCommonService } from './preference-common.service';
@@ -193,15 +193,11 @@ export class UsrPreferenceDbService {
     );
     if (HasFailed(validated)) return validated;
 
-    if (!UsrPreferenceValidators[validated.key](validated.value))
-      throw Fail(
-        FT.UsrValidation,
-        undefined,
-        'Preference validator failed for ' +
-          validated.key +
-          ' with value ' +
-          validated.value,
-      );
+    const valueValidated =
+      UsrPreferenceValidators[key as UsrPreference].safeParse(value);
+    if (!valueValidated.success) {
+      return Fail(FT.UsrValidation, undefined, valueValidated.error);
+    }
 
     let verifySysPreference = new EUsrPreferenceBackend();
     verifySysPreference.key = validated.key;

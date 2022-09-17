@@ -9,6 +9,7 @@ export const InfoResponseSchema = z.object({
   production: z.boolean(),
   demo: z.boolean(),
   version: string().regex(SemVerRegex),
+  host_override: z.string().optional(),
   tracking: z.object({
     state: TrackingStateSchema,
     id: IsEntityID().optional(),

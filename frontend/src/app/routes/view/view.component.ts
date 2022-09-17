@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   OnDestroy,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
@@ -11,7 +11,7 @@ import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import {
   AnimFileType,
   ImageFileType,
-  SupportedFileTypeCategory,
+  SupportedFileTypeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -85,12 +85,19 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
   }
 
+  private imageLinksCache: Record<string, ImageLinks> = {};
   public get imageLinks(): ImageLinks {
+    if (this.imageLinksCache[this.selectedFormat] !== undefined)
+      return this.imageLinksCache[this.selectedFormat];
+
     const format = this.selectedFormat;
-    return this.imageService.CreateImageLinksFromID(
+    const links = this.imageService.CreateImageLinksFromID(
       this.id,
       format === 'original' ? null : format,
     );
+
+    this.imageLinksCache[format] = links;
+    return links;
   }
 
   async ngOnInit() {

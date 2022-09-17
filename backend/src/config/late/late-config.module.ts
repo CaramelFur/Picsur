@@ -3,6 +3,7 @@ import { PreferenceDbModule } from '../../collections/preference-db/preference-d
 import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
 import { EarlyConfigModule } from '../early/early-config.module';
 import { EarlyJwtConfigService } from '../early/early-jwt.config.service';
+import { InfoConfigService } from './info.config.service';
 import { JwtConfigService } from './jwt.config.service';
 
 // This module contains all configservices that depend on the syspref module
@@ -11,9 +12,9 @@ import { JwtConfigService } from './jwt.config.service';
 // Otherwise we will create a circular depedency
 
 @Module({
-  imports: [PreferenceDbModule, EarlyConfigModule],
-  providers: [JwtConfigService],
-  exports: [JwtConfigService, EarlyConfigModule],
+  imports: [EarlyConfigModule, PreferenceDbModule],
+  providers: [JwtConfigService, InfoConfigService],
+  exports: [EarlyConfigModule, JwtConfigService, InfoConfigService],
 })
 export class LateConfigModule implements OnModuleInit {
   private readonly logger = new Logger(LateConfigModule.name);
