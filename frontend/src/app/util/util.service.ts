@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   FileType2Ext,
-  SupportedFileTypes
+  SupportedFileTypes,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { HasFailed } from 'picsur-shared/dist/types';
 import { Logger } from '../services/logger/logger.service';

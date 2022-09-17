@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import {
   ParseBool,
   ParseInt,
-  ParseString
+  ParseString,
 } from 'picsur-shared/dist/util/parse-simple';
 import { EnvPrefix } from '../config.static';
 

@@ -9,7 +9,8 @@ export const SysPreferenceUI: {
 } = {
   [SysPreference.HostOverride]: {
     name: 'Host Override',
-    helpText: 'Override the hostname for the server, useful for when you are accessing the server from a different domain.',
+    helpText:
+      'Override the hostname for the server, useful for when you are accessing the server from a different domain.',
     category: 'General',
   },
 
@@ -70,7 +71,8 @@ export const SysPreferenceUI: {
   },
   [SysPreference.TrackingUrl]: {
     name: 'Ackee tracking URL',
-    helpText: 'URL of the Ackee tracking server. Requests are proxied, so ensure the X-Forwarded-For header is handled.',
+    helpText:
+      'URL of the Ackee tracking server. Requests are proxied, so ensure the X-Forwarded-For header is handled.',
     category: 'Usage',
   },
   [SysPreference.TrackingId]: {

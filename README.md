@@ -57,9 +57,9 @@ Every featured marked here should work in the latest release.
 - [x] Proper DB migrations
 - [x] Show own images in list
 - [x] Correct previews on chats
-- [X] Expiring images
-- [X] ShareX endpoint
-- [X] ARM64 and AMD64 Docker image
+- [x] Expiring images
+- [x] ShareX endpoint
+- [x] ARM64 and AMD64 Docker image
 
 - [ ] White mode
 - [ ] Public gallery

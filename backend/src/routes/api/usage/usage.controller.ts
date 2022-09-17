@@ -33,13 +33,13 @@ export class UsageController {
 
         // remove cookies
         delete headers.cookie;
-        
+
         // Add real ip, this should not work, but ackee uses a bad ip resolver
         // So we might aswell use it
         headers['X-Forwarded-For'] = req.ip;
 
         return headers;
-      }
+      },
     });
   }
 }

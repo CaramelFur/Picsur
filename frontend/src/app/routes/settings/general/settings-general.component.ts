@@ -3,7 +3,7 @@ import { DecodedPref } from 'picsur-shared/dist/dto/preferences.dto';
 import { Observable } from 'rxjs';
 import {
   UsrPreferenceFriendlyNames,
-  UsrPreferenceHelpText
+  UsrPreferenceHelpText,
 } from 'src/app/i18n/usr-pref.i18n';
 import { UsrPrefService } from 'src/app/services/api/usr-pref.service';
 

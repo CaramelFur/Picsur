@@ -6,11 +6,11 @@ import {
   ImageListResponse,
   ImageUpdateRequest,
   ImageUpdateResponse,
-  ImageUploadResponse
+  ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import {
   ImageMetaResponse,
-  ImageRequestParams
+  ImageRequestParams,
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
@@ -21,7 +21,7 @@ import {
   FT,
   HasFailed,
   HasSuccess,
-  Open
+  Open,
 } from 'picsur-shared/dist/types/failable';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
@@ -126,7 +126,11 @@ export class ImageService {
   // Non api calls
 
   // Use for native images
-  public GetImageURL(image: string, filetype: string | null, allowOverride = false): string {
+  public GetImageURL(
+    image: string,
+    filetype: string | null,
+    allowOverride = false,
+  ): string {
     const baseURL = this.infoService.getHostname(allowOverride);
     const extension = FileType2Ext(filetype ?? '');
 
