@@ -1,4 +1,5 @@
-import { Logger, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Logger, Module, OnModuleInit } from '@nestjs/common';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { ImageDBModule } from '../../collections/image-db/image-db.module';
 import { RoleDbModule } from '../../collections/role-db/role-db.module';
 import { EarlyConfigModule } from '../../config/early/early-config.module';
@@ -9,13 +10,13 @@ import { DemoManagerService } from './demo.service';
   imports: [ImageDBModule, EarlyConfigModule, RoleDbModule],
   providers: [DemoManagerService],
 })
-export class DemoManagerModule implements OnModuleInit, OnModuleDestroy {
+export class DemoManagerModule implements OnModuleInit {
   private readonly logger = new Logger(DemoManagerModule.name);
-  private interval: NodeJS.Timeout;
 
   constructor(
     private readonly demoManagerService: DemoManagerService,
     private readonly hostConfigService: HostConfigService,
+    private readonly schedulerRegistry: SchedulerRegistry,
   ) {}
 
   async onModuleInit() {
@@ -27,14 +28,12 @@ export class DemoManagerModule implements OnModuleInit, OnModuleDestroy {
 
   private async setupDemoMode() {
     this.demoManagerService.setupRoles();
-    this.interval = setInterval(
+
+    const interval = setInterval(
       // Run demoManagerService.execute() every interval
       this.demoManagerService.execute.bind(this.demoManagerService),
       this.hostConfigService.getDemoInterval(),
     );
-  }
-
-  onModuleDestroy() {
-    if (this.interval) clearInterval(this.interval);
+    this.schedulerRegistry.addInterval('demo', interval);
   }
 }
