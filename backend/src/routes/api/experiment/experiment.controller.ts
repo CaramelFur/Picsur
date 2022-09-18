@@ -1,20 +1,23 @@
-import { WebSocketGateway } from '@nestjs/websockets';
+import { InjectQueue } from '@nestjs/bull';
+import { Controller, Get } from '@nestjs/common';
+import type { Queue } from 'bull';
+import { NoPermissions } from '../../../decorators/permissions.decorator';
+import { ReturnsAnything } from '../../../decorators/returns.decorator';
 
-
-@WebSocketGateway({
-  namespace: 'experiment',
-})
+@Controller('api/experiment')
+@NoPermissions()
 export class ExperimentController {
-  constructor() {
-    console.log('ExperimentController created');
-  }
+  constructor(
 
-  // @SubscribeMessage('test')
-  // async testRoute(@MessageBody() data: any): Promise<WsResponse> {
-  //   console.log('testRoute', data);
-  //   return Promise.resolve({
-  //     event: 'test',
-  //     data: Buffer.from('Hello'),
-  //   })
-  // }
+    @InjectQueue('image-ingest') private readonly ingestQueue: Queue,
+  ) {}
+
+  @Get()
+  @ReturnsAnything()
+  async testRoute(): Promise<any> {
+    this.ingestQueue.add({ foo: Buffer.from("aaaaaheleool") });
+
+
+    return 'ok';
+  }
 }

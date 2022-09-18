@@ -1,10 +1,13 @@
+import { BullModule } from '@nestjs/bull';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import cors from 'cors';
 import { IncomingMessage, ServerResponse } from 'http';
+import { BullConfigService } from './config/early/bull.config.service';
 import { EarlyConfigModule } from './config/early/early-config.module';
 import { ServeStaticConfigService } from './config/early/serve-static.config.service';
+import { ConsumersModule } from './consumers/consumers.module';
 import { DatabaseModule } from './database/database.module';
 import { PicsurLayersModule } from './layers/PicsurLayers.module';
 import { PicsurLoggerModule } from './logger/logger.module';
@@ -45,12 +48,18 @@ const imageCorsOverride = (
       imports: [EarlyConfigModule],
     }),
     ScheduleModule.forRoot(),
+    BullModule.forRootAsync({
+      useExisting: BullConfigService,
+      imports: [EarlyConfigModule],
+    }),
+
     DatabaseModule,
     AuthManagerModule,
     UsageManagerModule,
     DemoManagerModule,
     PicsurRoutesModule,
     PicsurLayersModule,
+    ConsumersModule,
   ],
 })
 export class AppModule implements NestModule {

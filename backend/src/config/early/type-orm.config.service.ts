@@ -6,6 +6,7 @@ import { EntityList } from '../../database/entities';
 import { MigrationList } from '../../database/migrations';
 import { DefaultName, EnvPrefix } from '../config.static';
 import { HostConfigService } from './host.config.service';
+import { RedisConfigService } from './redis.config.service';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -14,6 +15,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(
     private readonly configService: ConfigService,
     private readonly hostService: HostConfigService,
+    private readonly redisConfig: RedisConfigService,
   ) {
     const varOptions = this.getTypeOrmServerOptions();
 
@@ -64,6 +66,12 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       cli: {
         migrationsDir: 'src/database/migrations',
         entitiesDir: 'src/database/entities',
+      },
+
+      cache: {
+        duration: 60000,
+        type: 'ioredis',
+        options: this.redisConfig.getRedisUrl(),
       },
 
       ...varOptions,

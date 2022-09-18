@@ -11,6 +11,14 @@ services:
     restart: unless-stopped
     volumes:
       - db-data:/var/lib/postgresql/data
+  devredis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
 
 volumes:
   db-data:
+  redis-data:
