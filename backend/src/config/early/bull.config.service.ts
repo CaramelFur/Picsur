@@ -17,7 +17,16 @@ export class BullConfigService implements SharedBullConfigurationFactory {
       },
       defaultJobOptions: {
         attempts: 3,
-        removeOnFail: true,
+        backoff: {
+          delay: 500,
+          type: 'fixed',
+        },
+        removeOnFail: {
+          age: 1000 * 60 * 60 * 24 * 7, // 7 days
+        },
+        removeOnComplete: {
+          age: 1000 * 60 * 60 * 24 * 7, // 7 days
+        },
       },
     };
     return options;

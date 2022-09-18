@@ -4,7 +4,7 @@ import fastifyReplyFrom from '@fastify/reply-from';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
-  NestFastifyApplication,
+  NestFastifyApplication
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { HostConfigService } from './config/early/host.config.service';
@@ -39,13 +39,16 @@ async function bootstrap() {
     fastifyAdapter,
     {
       bufferLogs: isProduction,
+      autoFlushLogs: true,
     },
   );
 
   // Configure logger
-  app.useLogger(app.get(PicsurLoggerService));
-
+  const logger = app.get(PicsurLoggerService)
+  app.useLogger(logger);
   app.flushLogs();
+
+  console.log(logger);
 
   app.useGlobalFilters(app.get(MainExceptionFilter));
   app.useGlobalInterceptors(app.get(SuccessInterceptor));

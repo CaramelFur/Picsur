@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class EIngressFileBackend {
+export class EIngestFileBackend {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -26,7 +26,7 @@ export class MultiPartPipe implements PipeTransform {
   ) {
     const filesLimit = typeof data === 'number' ? data : undefined;
 
-    if (!request.isMultipart()) throw Fail(FT.UsrValidation, 'Invalid file');
+    if (!request.isMultipart()) throw Fail(FT.UsrValidation, 'Invalid files');
 
     const files = request.files({
       limits: this.multipartConfigService.getLimits(filesLimit),

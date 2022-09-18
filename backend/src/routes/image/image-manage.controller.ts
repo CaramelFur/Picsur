@@ -29,15 +29,19 @@ import {
   RequiredPermissions
 } from '../../decorators/permissions.decorator';
 import { ReqUserID } from '../../decorators/request-user.decorator';
-import { Returns } from '../../decorators/returns.decorator';
+import { Returns, ReturnsAnything } from '../../decorators/returns.decorator';
 import { ImageManagerService } from '../../managers/image/image.service';
+import { IngestService } from '../../managers/ingest/ingest.service';
 import { GetNextAsync } from '../../util/iterator';
 @Controller('api/image')
 @RequiredPermissions(Permission.ImageUpload)
 export class ImageManageController {
   private readonly logger = new Logger(ImageManageController.name);
 
-  constructor(private readonly imagesService: ImageManagerService) {}
+  constructor(
+    private readonly imagesService: ImageManagerService,
+    private readonly ingestService: IngestService,
+  ) {}
 
   @Post('upload')
   @Returns(ImageUploadResponse)
@@ -54,10 +58,10 @@ export class ImageManageController {
       buffer = await file.toBuffer();
     } catch (e) {
       throw Fail(FT.Internal, e);
-    };
+    }
 
     const image = ThrowIfFailed(
-      await this.imagesService.upload(
+      await this.ingestService.uploadPromise(
         userid,
         file.filename,
         buffer,
@@ -66,6 +70,33 @@ export class ImageManageController {
     );
 
     return image;
+  }
+
+  @Post('upload/bulk')
+  @ReturnsAnything()
+  @Throttle(20)
+  async uploadImages(
+    @PostFiles() multipart: FileIterator,
+    @ReqUserID() userid: string,
+    @HasPermission(Permission.ImageDeleteKey) withDeleteKey: boolean,
+  ): Promise<any> {
+    let ids: string[] = [];
+    for await (const file of multipart) {
+      const buffer = await file.toBuffer();
+      const filename = file.filename;
+
+      // const id = ThrowIfFailed(
+      //   await this.ingressDB.uploadFile(filename, buffer),
+      // );
+      // ids.push(id);
+    }
+    if (ids.length === 0) {
+      throw Fail(FT.BadRequest, 'No files uploaded');
+    }
+
+    console.log(ids);
+
+    return;
   }
 
   @Post('list')

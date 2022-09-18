@@ -21,6 +21,12 @@ export enum FT {
   Network = 'network',
 }
 
+interface ILogger {
+  error: (message: string) => void;
+  warn: (message: string) => void;
+  debug: (message: string) => void;
+}
+
 interface FTProp {
   important: boolean;
   code: number;
@@ -142,10 +148,42 @@ export class Failure {
     return FTProps[this.type].important;
   }
 
-  print(): string {
-    return `${this.getName()}: ${this.getReason()}\n(${
-      this.debugMessage
-    })\n${this.getStack()}`;
+  print(
+    logger: ILogger,
+    options?: {
+      notImportant?: boolean;
+      prefix?: string;
+    },
+  ): void {
+    const message = this.getReason();
+    const logmessage =
+      message + (this.getDebugMessage() ? ' - ' + this.getDebugMessage() : '');
+
+    const prefix = options?.prefix ? options.prefix + ' ' : '';
+    const logline = `${prefix}${this.getName()}: ${logmessage}`;
+
+    if (this.isImportant() && options?.notImportant !== true) {
+      logger.error(logline);
+      const stack = this.getStack();
+      if (stack) {
+        logger.debug(stack);
+      }
+    } else {
+      logger.warn(logline);
+    }
+  }
+
+  toString(): string {
+    return (
+      `${this.getName()}: ${this.getReason()} - (${this.debugMessage})` +
+      (this.isImportant() ? '\n' + this.stack : '')
+    );
+  }
+
+  toError(): Error {
+    const error = new Error();
+    (error as any).message = this;
+    return error;
   }
 
   static deserialize(data: any): Failure {
@@ -251,10 +289,10 @@ export function ThrowIfFailed<V>(failable: Failable<V>): V {
 export function FallbackIfFailed<V>(
   failable: Failable<V>,
   fallback: V,
-  logger?: { warn: (...args: any) => any },
+  logger?: ILogger,
 ): V {
   if (HasFailed(failable)) {
-    if (logger) logger.warn(failable.print());
+    if (logger) failable.print(logger, { notImportant: true });
     return fallback;
   }
 
