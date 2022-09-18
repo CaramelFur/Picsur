@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { LessThan, Repository } from 'typeorm';
-import { EImageDerivativeBackend } from '../../database/entities/image-derivative.entity';
-import { EImageFileBackend } from '../../database/entities/image-file.entity';
+import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
+import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
 
 const A_DAY_IN_SECONDS = 24 * 60 * 60;
 

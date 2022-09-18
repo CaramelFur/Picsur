@@ -11,7 +11,7 @@ import {
   merge,
   Observable,
   switchMap,
-  timer,
+  timer
 } from 'rxjs';
 import { ImageService } from 'src/app/services/api/image.service';
 import { UserService } from 'src/app/services/api/user.service';

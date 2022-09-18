@@ -4,10 +4,10 @@ import {
   Entity,
   Index,
   ManyToOne,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 import { z } from 'zod';
-import { EUserBackend } from './user.entity';
+import { EUserBackend } from './users/user.entity';
 
 const OverriddenEApiKeySchema = EApiKeySchema.omit({ user: true }).merge(
   z.object({

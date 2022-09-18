@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
-import { ESystemStateBackend } from '../../database/entities/system-state.entity';
+import { ESystemStateBackend } from '../../database/entities/system/system-state.entity';
 
 @Injectable()
 export class SystemStateDbService {

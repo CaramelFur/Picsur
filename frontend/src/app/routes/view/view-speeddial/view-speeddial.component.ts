@@ -17,11 +17,11 @@ import { ErrorService } from 'src/app/util/error-manager/error.service';
 import { UtilService } from 'src/app/util/util.service';
 import {
   CustomizeDialogComponent,
-  CustomizeDialogData,
+  CustomizeDialogData
 } from '../customize-dialog/customize-dialog.component';
 import {
   EditDialogComponent,
-  EditDialogData,
+  EditDialogData
 } from '../edit-dialog/edit-dialog.component';
 
 @Component({
