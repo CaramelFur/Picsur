@@ -9,6 +9,7 @@ export enum FT {
   Database = 'database',
   SysValidation = 'sysvalidation',
   UsrValidation = 'usrvalidation',
+  BadRequest = 'badrequest',
   Permission = 'permission',
   RateLimit = 'ratelimit',
   NotFound = 'notfound',
@@ -58,6 +59,11 @@ const FTProps: {
     important: false,
     code: 400,
     message: 'Validation of user input failed',
+  },
+  [FT.BadRequest]: {
+    important: false,
+    code: 400,
+    message: 'Bad request',
   },
   [FT.Permission]: {
     important: false,

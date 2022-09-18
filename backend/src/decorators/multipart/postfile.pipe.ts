@@ -12,11 +12,11 @@ export class PostFilePipe implements PipeTransform {
     private readonly multipartConfigService: MultipartConfigService,
   ) {}
 
-  async transform({ req }: { req: FastifyRequest }) {
-    if (!req.isMultipart()) throw Fail(FT.UsrValidation, 'Invalid file');
+  async transform({ request, data }: { data: any; request: FastifyRequest },) {
+    if (!request.isMultipart()) throw Fail(FT.UsrValidation, 'Invalid file');
 
     // Only one file is allowed
-    const file = await req.file({
+    const file = await request.file({
       limits: {
         ...this.multipartConfigService.getLimits(),
         files: 1,

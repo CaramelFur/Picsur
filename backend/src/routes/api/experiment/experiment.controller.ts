@@ -1,18 +1,20 @@
-import { Controller } from '@nestjs/common';
-import { NoPermissions } from '../../../decorators/permissions.decorator';
-@Controller('api/experiment')
-@NoPermissions()
-export class ExperimentController {
-  constructor() {}
+import { WebSocketGateway } from '@nestjs/websockets';
 
-  // @Get()
-  // @Returns(UserInfoResponse)
-  // async testRoute(
-  //   @Request() req: AuthFastifyRequest,
-  //   @Response({ passthrough: true }) res: FastifyReply,
-  // ): Promise<UserInfoResponse> {
-  //   res.header('Location', '/error/delete-success');
-  //   res.code(302);
-  //   return req.user;
+
+@WebSocketGateway({
+  namespace: 'experiment',
+})
+export class ExperimentController {
+  constructor() {
+    console.log('ExperimentController created');
+  }
+
+  // @SubscribeMessage('test')
+  // async testRoute(@MessageBody() data: any): Promise<WsResponse> {
+  //   console.log('testRoute', data);
+  //   return Promise.resolve({
+  //     event: 'test',
+  //     data: Buffer.from('Hello'),
+  //   })
   // }
 }

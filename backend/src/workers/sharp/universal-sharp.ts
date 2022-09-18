@@ -2,7 +2,7 @@ import { BMPdecode, BMPencode } from 'bmp-img';
 import {
   AnimFileType,
   FileType,
-  ImageFileType,
+  ImageFileType
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { QOIdecode, QOIencode } from 'qoi-img';
 import sharp, { Sharp, SharpOptions } from 'sharp';
