@@ -8,7 +8,7 @@ import {
   RoleInfoResponse,
   RoleListResponse,
   RoleUpdateRequest,
-  RoleUpdateResponse,
+  RoleUpdateResponse
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { AsyncFailable, Open } from 'picsur-shared/dist/types';
@@ -22,7 +22,8 @@ export class RolesService {
   constructor(private readonly api: ApiService) {}
 
   public async getRoles(): AsyncFailable<ERole[]> {
-    const response = await this.api.get(RoleListResponse, '/api/roles/list');
+    const response = await this.api.get(RoleListResponse, '/api/roles/list')
+      .result;
 
     return Open(response, 'results');
   }
@@ -35,7 +36,7 @@ export class RolesService {
       {
         name,
       },
-    );
+    ).result;
   }
 
   public async createRole(role: RoleModel): AsyncFailable<ERole> {
@@ -44,7 +45,7 @@ export class RolesService {
       RoleCreateResponse,
       '/api/roles/create',
       role,
-    );
+    ).result;
   }
 
   public async updateRole(role: RoleModel): AsyncFailable<ERole> {
@@ -53,7 +54,7 @@ export class RolesService {
       RoleUpdateResponse,
       '/api/roles/update',
       role,
-    );
+    ).result;
   }
 
   public async deleteRole(name: string): AsyncFailable<ERole> {
@@ -64,6 +65,6 @@ export class RolesService {
       {
         name,
       },
-    );
+    ).result;
   }
 }

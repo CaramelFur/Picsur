@@ -6,7 +6,7 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FileType, ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
@@ -85,7 +85,7 @@ export class PicsurImgComponent implements OnChanges {
 
       this.state = PicsurImgState.Canvas;
     } else {
-      const result = await this.apiService.getBuffer(url);
+      const result = await this.apiService.getBuffer(url).result;
       if (HasFailed(result)) return result;
 
       const img = this.img.nativeElement;
@@ -99,12 +99,12 @@ export class PicsurImgComponent implements OnChanges {
   }
 
   private async getFileType(url: string): AsyncFailable<FileType> {
-    const response = await this.apiService.head(url);
+    const response = await this.apiService.head(url).result;
     if (HasFailed(response)) {
       return response;
     }
 
-    const mimeHeader = response.get('content-type') ?? '';
+    const mimeHeader = response['content-type'] ?? '';
     const mime = mimeHeader.split(';')[0];
 
     return ParseMime2FileType(mime);

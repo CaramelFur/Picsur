@@ -101,7 +101,7 @@ export class InfoService {
   }
 
   private async updateInfo(): AsyncFailable<ServerInfo> {
-    const response = await this.api.get(InfoResponse, '/api/info');
+    const response = await this.api.get(InfoResponse, '/api/info').result;
     if (HasFailed(response)) return response;
 
     this.infoSubject.next(response);

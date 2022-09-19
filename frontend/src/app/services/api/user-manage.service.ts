@@ -9,7 +9,7 @@ import {
   UserListRequest,
   UserListResponse,
   UserUpdateRequest,
-  UserUpdateResponse,
+  UserUpdateResponse
 } from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { AsyncFailable } from 'picsur-shared/dist/types';
@@ -27,7 +27,7 @@ export class UserAdminService {
       UserInfoResponse,
       'api/user/info',
       { id },
-    );
+    ).result;
   }
 
   public async getUsers(
@@ -42,7 +42,7 @@ export class UserAdminService {
         count,
         page,
       },
-    );
+    ).result;
   }
 
   public async createUser(user: UserCreateRequest): AsyncFailable<EUser> {
@@ -51,7 +51,7 @@ export class UserAdminService {
       UserCreateResponse,
       '/api/user/create',
       user,
-    );
+    ).result;
   }
 
   public async updateUser(user: UserUpdateRequest): AsyncFailable<EUser> {
@@ -60,7 +60,7 @@ export class UserAdminService {
       UserUpdateResponse,
       '/api/user/update',
       user,
-    );
+    ).result;
   }
 
   public async deleteUser(id: string): AsyncFailable<Omit<EUser, 'id'>> {
@@ -69,6 +69,6 @@ export class UserAdminService {
       UserDeleteResponse,
       '/api/user/delete',
       { id },
-    );
+    ).result;
   }
 }

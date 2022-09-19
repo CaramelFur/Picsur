@@ -1,4 +1,4 @@
 <div class="dialog-text">
   <h2>Downloading {{ data.name }}...</h2>
-  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+  <mat-progress-bar mode="determinate" [value]="progress | async" color="accent"></mat-progress-bar>
 </div>

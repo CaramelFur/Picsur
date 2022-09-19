@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { DownloadDialogComponent } from '../dialog-manager/download-dialog/download-dialog.component';
@@ -20,9 +21,12 @@ export class DownloadService {
     private readonly errorService: ErrorService,
   ) {}
 
-  public showDownloadDialog(filename: string): () => void {
+  public showDownloadDialog(
+    filename: string,
+    progress?: Observable<number>,
+  ): () => void {
     const ref = this.dialog.open(DownloadDialogComponent, {
-      data: { name: filename },
+      data: { name: filename, progress: progress },
       disableClose: true,
       closeOnNavigation: false,
     });
@@ -31,11 +35,17 @@ export class DownloadService {
   }
 
   public async downloadFile(url: string) {
-    const closeDialog = this.showDownloadDialog('image');
 
-    const file = await this.api.getBuffer(url);
-    if (HasFailed(file))
+
+    const request = this.api.getBuffer(url);
+    const closeDialog = this.showDownloadDialog('image', request.downloadProgress);
+
+    const file = await request.result;
+
+    if (HasFailed(file)){
+      closeDialog();
       return this.errorService.showFailure(file, this.logger);
+    }
 
     this.util.downloadBuffer(file.buffer, file.name, file.mimeType);
 
@@ -80,7 +90,7 @@ export class DownloadService {
         url,
       };
     } else {
-      const image = await this.api.getBuffer(url);
+      const image = await this.api.getBuffer(url).result;
       if (HasFailed(image))
         return this.errorService.showFailure(image, this.logger);
 
