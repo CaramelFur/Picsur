@@ -23,6 +23,7 @@ import {
   HasSuccess,
   Open
 } from 'picsur-shared/dist/types/failable';
+import { Observable, Subject } from 'rxjs';
 import { ImagesUploadRequest } from 'src/app/models/dto/images-upload-request.dto';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
@@ -49,19 +50,55 @@ export class ImageService {
     return Open(result, 'id');
   }
 
-  public async UploadImages(images: File[]): AsyncFailable<string[]> {
+  public UploadImages(images: File[]): {
+    progress: Observable<number>;
+    result: AsyncFailable<string>;
+    cancel: () => void;
+  } {
     console.log('Uploading images', images);
 
     // Split into chunks of 20
-    const groups = this.chunks(images, 20);
+    const totalBytes = images.reduce((acc, cur) => acc + cur.size, 0);
+    const groups = this.chunks(images, 20).map((chunk) => {
+      const groupSize = chunk.reduce((acc, cur) => acc + cur.size, 0);
+      return {
+        images: chunk,
+        groupSize,
+      };
+    });
+    const progress = new Subject<number>();
+    const aborter = new AbortController();
 
-    const result = await this.api.postForm(
-      ImageUploadResponse,
-      '/api/image/upload/bulk',
-      new ImagesUploadRequest(images),
-    );
+    const result = (async () => {
+      let processedBytes = 0;
+      for (const group of groups) {
+        const request = await this.api.postForm(
+          ImageUploadResponse,
+          '/api/image/upload/bulk',
+          new ImagesUploadRequest(group.images),
+        );
 
-    return [];
+        request.uploadProgress.subscribe((p) => {
+          progress.next((processedBytes + p * group.groupSize) / totalBytes);
+        });
+
+        aborter.signal.addEventListener('abort', () => {
+          request.cancel();
+        });
+
+        await request.result;
+
+        progress.next((processedBytes += group.groupSize) / totalBytes);
+      }
+
+      return '';
+    })();
+
+    return {
+      progress: progress.asObservable(),
+      result: result,
+      cancel: () => aborter.abort(),
+    };
   }
 
   public async GetImageMeta(image: string): AsyncFailable<ImageMetaResponse> {

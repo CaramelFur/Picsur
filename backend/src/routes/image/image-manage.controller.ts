@@ -84,6 +84,7 @@ export class ImageManageController {
     for await (const file of multipart) {
       const buffer = await file.toBuffer();
       const filename = file.filename;
+      console.log(filename);
 
       // const id = ThrowIfFailed(
       //   await this.ingressDB.uploadFile(filename, buffer),

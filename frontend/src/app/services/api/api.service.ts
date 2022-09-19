@@ -237,10 +237,12 @@ export class ApiService {
         const result = await axios.request({
           url,
           onDownloadProgress: (e) => {
-            downloadProgress.next(e.loaded / e.total * 100);
+            if (e.total === 0) return downloadProgress.next(0);
+            downloadProgress.next(e.loaded / e.total);
           },
           onUploadProgress: (e) => {
-            uploadProgress.next(e.loaded / e.total * 100);
+            if (e.total === 0) return uploadProgress.next(0);
+            uploadProgress.next(e.loaded / e.total);
           },
           signal: abortController.signal,
           ...options,
