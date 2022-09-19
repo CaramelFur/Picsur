@@ -13,7 +13,6 @@ export enum SysPreference {
   JwtExpiresIn = 'jwt_expires_in',
   BCryptStrength = 'bcrypt_strength',
 
-  SaveDerivatives = 'save_derivatives',
   RemoveDerivativesAfter = 'remove_derivatives_after',
   AllowEditing = 'allow_editing',
 
@@ -41,7 +40,6 @@ export const SysPreferenceValueTypes: {
   [SysPreference.BCryptStrength]: 'number',
 
   [SysPreference.RemoveDerivativesAfter]: 'string',
-  [SysPreference.SaveDerivatives]: 'boolean',
   [SysPreference.AllowEditing]: 'boolean',
 
   [SysPreference.ConversionTimeLimit]: 'string',
@@ -63,8 +61,7 @@ export const SysPreferenceValidators: {
   [SysPreference.JwtExpiresIn]: IsValidMS(),
 
   [SysPreference.BCryptStrength]: IsPosInt(),
-  [SysPreference.RemoveDerivativesAfter]: IsValidMS(),
-  [SysPreference.SaveDerivatives]: z.boolean(),
+  [SysPreference.RemoveDerivativesAfter]: IsValidMS(60000),
 
   [SysPreference.AllowEditing]: z.boolean(),
   [SysPreference.ConversionTimeLimit]: IsValidMS(),

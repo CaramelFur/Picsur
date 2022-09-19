@@ -17,14 +17,16 @@ import { ImageFileDBService } from '../../collections/image-db/image-file-db.ser
 import { UsrPreferenceDbService } from '../../collections/preference-db/usr-preference-db.service';
 import { EImageBackend } from '../../database/entities/images/image.entity';
 import { WebPInfo } from '../image/webpinfo/webpinfo';
-import type { ImageIngestJob, ImageIngestQueue } from './ingest.consumer';
+import * as ImageQueue from './image.queue';
+import { ImageIngestJob } from './ingest.consumer';
 
 @Injectable()
 export class IngestService {
   private readonly logger = new Logger(IngestService.name);
 
   constructor(
-    @InjectQueue('image-ingest') private readonly ingestQueue: ImageIngestQueue,
+    @InjectQueue(ImageQueue.ImageQueueID)
+    private readonly imageQueue: ImageQueue.ImageQueueType,
     private readonly imagesService: ImageDBService,
     private readonly imageFilesService: ImageFileDBService,
     private readonly userPref: UsrPreferenceDbService,
@@ -35,7 +37,7 @@ export class IngestService {
     filename: string,
     image: Buffer,
     withDeleteKey: boolean,
-  ): AsyncFailable<ImageIngestJob> {
+  ): AsyncFailable<[ImageIngestJob, EImageBackend]> {
     const fileType = await this.getFileTypeFromBuffer(image);
     if (HasFailed(fileType)) return fileType;
 
@@ -69,13 +71,20 @@ export class IngestService {
     );
     if (HasFailed(imageFileEntity)) return imageFileEntity;
 
-    const job = await this.ingestQueue.add('image', {
-      imageID: imageEntity.id,
-      storeOriginal: keepOriginal,
-    });
-    if (!job.id) return Fail(FT.Internal, undefined, 'Failed to queue job');
+    try {
+      const job = (await this.imageQueue.add(
+        ImageQueue.ImageQueueSubject.INGEST,
+        {
+          imageID: imageEntity.id,
+          storeOriginal: keepOriginal,
+        },
+      )) as ImageIngestJob;
+      if (!job.id) return Fail(FT.Internal, undefined, 'Failed to queue job');
 
-    return job;
+      return [job, imageEntity];
+    } catch (e) {
+      return Fail(FT.Internal, e);
+    }
   }
 
   public async uploadPromise(
@@ -84,11 +93,13 @@ export class IngestService {
     image: Buffer,
     withDeleteKey: boolean,
   ): AsyncFailable<EImageBackend> {
-    const job = await this.uploadJob(userid, filename, image, withDeleteKey);
-    if (HasFailed(job)) return job;
+    const result = await this.uploadJob(userid, filename, image, withDeleteKey);
+    if (HasFailed(result)) return result;
+
+    const [job, imageEntity] = result;
 
     try {
-      const imageEntity: EImageBackend = await job.finished();
+      await job.finished();
       return imageEntity;
     } catch (e) {
       return Fail(FT.Internal, 'Failed to process image', e);

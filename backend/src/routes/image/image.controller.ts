@@ -13,7 +13,8 @@ import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decora
 import { ImageIdParam } from '../../decorators/image-id/image-id.decorator';
 import { RequiredPermissions } from '../../decorators/permissions.decorator';
 import { Returns } from '../../decorators/returns.decorator';
-import { ImageManagerService } from '../../managers/image/image.service';
+import { ConvertService } from '../../managers/image/convert.service';
+import { ImageManagerService } from '../../managers/image/image-manager.service';
 import type { ImageFullId } from '../../models/constants/image-full-id.const';
 import { Permission } from '../../models/constants/permissions.const';
 import { EUserBackend2EUser } from '../../models/transformers/user.transformer';
@@ -29,6 +30,7 @@ export class ImageController {
   constructor(
     private readonly imagesService: ImageManagerService,
     private readonly userService: UserDbService,
+    private readonly convertService: ConvertService,
   ) {}
 
   @Head(':id')
@@ -67,7 +69,7 @@ export class ImageController {
       }
 
       const image = ThrowIfFailed(
-        await this.imagesService.getConverted(
+        await this.convertService.convertPromise(
           fullid.id,
           fullid.filetype,
           params,

@@ -17,13 +17,7 @@ export const SysPreferenceUI: {
   [SysPreference.RemoveDerivativesAfter]: {
     name: 'Cached Images Expiry Time',
     helpText:
-      'Time before cached images are deleted. This does not affect the original image. Set to 0 to disable.',
-    category: 'Image Processing',
-  },
-  [SysPreference.SaveDerivatives]: {
-    name: 'Cache Converted Images',
-    helpText:
-      'Cache converted images, this will reduce the time it takes to load images. It does however use more disk space.',
+      'Time before cached converted images are deleted. This does not affect the original image. A lower cache time will save on disk space but cost more cpu. Set to 0 to disable.',
     category: 'Image Processing',
   },
   [SysPreference.AllowEditing]: {

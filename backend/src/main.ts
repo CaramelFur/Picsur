@@ -44,11 +44,8 @@ async function bootstrap() {
   );
 
   // Configure logger
-  const logger = app.get(PicsurLoggerService)
-  app.useLogger(logger);
+  app.useLogger(app.get(PicsurLoggerService));
   app.flushLogs();
-
-  console.log(logger);
 
   app.useGlobalFilters(app.get(MainExceptionFilter));
   app.useGlobalInterceptors(app.get(SuccessInterceptor));

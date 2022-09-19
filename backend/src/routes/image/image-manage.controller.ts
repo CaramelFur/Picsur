@@ -30,8 +30,8 @@ import {
 } from '../../decorators/permissions.decorator';
 import { ReqUserID } from '../../decorators/request-user.decorator';
 import { Returns, ReturnsAnything } from '../../decorators/returns.decorator';
-import { ImageManagerService } from '../../managers/image/image.service';
-import { IngestService } from '../../managers/ingest/ingest.service';
+import { ImageManagerService } from '../../managers/image/image-manager.service';
+import { IngestService } from '../../managers/image/ingest.service';
 import { GetNextAsync } from '../../util/iterator';
 @Controller('api/image')
 @RequiredPermissions(Permission.ImageUpload)

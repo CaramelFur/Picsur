@@ -1,3 +1,4 @@
+import { BullModule } from '@nestjs/bull';
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import ms from 'ms';
@@ -8,18 +9,36 @@ import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
 import { PreferenceDbModule } from '../../collections/preference-db/preference-db.module';
 import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
+import { ConvertConsumer } from './convert.consumer';
+import { ConvertService } from './convert.service';
 import { ImageConverterService } from './image-converter.service';
-import { ImageProcessorService } from './image-processor.service';
-import { ImageManagerService } from './image.service';
+import { ImageManagerService } from './image-manager.service';
+import { ImageQueueID } from './image.queue';
+import { IngestConsumer } from './ingest.consumer';
+import { IngestService } from './ingest.service';
 
 @Module({
-  imports: [ImageDBModule, PreferenceDbModule],
+  imports: [
+    ImageDBModule,
+    PreferenceDbModule,
+    BullModule.registerQueue({
+      name: ImageQueueID,
+    }),
+  ],
   providers: [
     ImageManagerService,
-    ImageProcessorService,
     ImageConverterService,
+    IngestConsumer,
+    ConvertConsumer,
+    IngestService,
+    ConvertService,
   ],
-  exports: [ImageManagerService, ImageConverterService],
+  exports: [
+    ImageManagerService,
+    ImageConverterService,
+    IngestService,
+    ConvertService,
+  ],
 })
 export class ImageManagerModule implements OnModuleInit {
   private readonly logger = new Logger(ImageManagerModule.name);
@@ -49,11 +68,12 @@ export class ImageManagerModule implements OnModuleInit {
       return;
     }
 
-    const after_ms = ms(remove_derivatives_after as any);
+    let after_ms = ms(remove_derivatives_after as any);
     if (isNaN(after_ms) || after_ms === 0) {
       this.logger.log('remove_derivatives_after is 0, skipping cron');
       return;
     }
+    if (after_ms < 60000) after_ms = 60000;
 
     const result = await this.imageFileDB.cleanupDerivatives(after_ms / 1000);
     if (HasFailed(result)) {

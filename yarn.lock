@@ -39,17 +39,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/architect@npm:0.1402.2, @angular-devkit/architect@npm:>=0.1400.0 < 0.1500.0":
-  version: 0.1402.2
-  resolution: "@angular-devkit/architect@npm:0.1402.2"
-  dependencies:
-    "@angular-devkit/core": 14.2.2
-    rxjs: 6.6.7
-  checksum: a014bbd941582ad4a263b9d8870accef78c5e26528ba3f7a760c860dbb4ba6b66216361f562da591b579662f2710fb5810d748610aa17b7b4c17f4caa08794e3
-  languageName: node
-  linkType: hard
-
-"@angular-devkit/architect@npm:0.1402.3":
+"@angular-devkit/architect@npm:0.1402.3, @angular-devkit/architect@npm:>=0.1400.0 < 0.1500.0":
   version: 0.1402.3
   resolution: "@angular-devkit/architect@npm:0.1402.3"
   dependencies:
@@ -59,7 +49,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/build-angular@npm:14.2.3":
+"@angular-devkit/build-angular@npm:14.2.3, @angular-devkit/build-angular@npm:^14.0.0":
   version: 14.2.3
   resolution: "@angular-devkit/build-angular@npm:14.2.3"
   dependencies:
@@ -155,115 +145,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/build-angular@npm:^14.0.0":
-  version: 14.2.2
-  resolution: "@angular-devkit/build-angular@npm:14.2.2"
-  dependencies:
-    "@ampproject/remapping": 2.2.0
-    "@angular-devkit/architect": 0.1402.2
-    "@angular-devkit/build-webpack": 0.1402.2
-    "@angular-devkit/core": 14.2.2
-    "@babel/core": 7.18.10
-    "@babel/generator": 7.18.12
-    "@babel/helper-annotate-as-pure": 7.18.6
-    "@babel/plugin-proposal-async-generator-functions": 7.18.10
-    "@babel/plugin-transform-async-to-generator": 7.18.6
-    "@babel/plugin-transform-runtime": 7.18.10
-    "@babel/preset-env": 7.18.10
-    "@babel/runtime": 7.18.9
-    "@babel/template": 7.18.10
-    "@discoveryjs/json-ext": 0.5.7
-    "@ngtools/webpack": 14.2.2
-    ansi-colors: 4.1.3
-    babel-loader: 8.2.5
-    babel-plugin-istanbul: 6.1.1
-    browserslist: ^4.9.1
-    cacache: 16.1.2
-    copy-webpack-plugin: 11.0.0
-    critters: 0.0.16
-    css-loader: 6.7.1
-    esbuild: 0.15.5
-    esbuild-wasm: 0.15.5
-    glob: 8.0.3
-    https-proxy-agent: 5.0.1
-    inquirer: 8.2.4
-    jsonc-parser: 3.1.0
-    karma-source-map-support: 1.4.0
-    less: 4.1.3
-    less-loader: 11.0.0
-    license-webpack-plugin: 4.0.2
-    loader-utils: 3.2.0
-    mini-css-extract-plugin: 2.6.1
-    minimatch: 5.1.0
-    open: 8.4.0
-    ora: 5.4.1
-    parse5-html-rewriting-stream: 6.0.1
-    piscina: 3.2.0
-    postcss: 8.4.16
-    postcss-import: 15.0.0
-    postcss-loader: 7.0.1
-    postcss-preset-env: 7.8.0
-    regenerator-runtime: 0.13.9
-    resolve-url-loader: 5.0.0
-    rxjs: 6.6.7
-    sass: 1.54.4
-    sass-loader: 13.0.2
-    semver: 7.3.7
-    source-map-loader: 4.0.0
-    source-map-support: 0.5.21
-    stylus: 0.59.0
-    stylus-loader: 7.0.0
-    terser: 5.14.2
-    text-table: 0.2.0
-    tree-kill: 1.2.2
-    tslib: 2.4.0
-    webpack: 5.74.0
-    webpack-dev-middleware: 5.3.3
-    webpack-dev-server: 4.11.0
-    webpack-merge: 5.8.0
-    webpack-subresource-integrity: 5.1.0
-  peerDependencies:
-    "@angular/compiler-cli": ^14.0.0
-    "@angular/localize": ^14.0.0
-    "@angular/service-worker": ^14.0.0
-    karma: ^6.3.0
-    ng-packagr: ^14.0.0
-    protractor: ^7.0.0
-    tailwindcss: ^2.0.0 || ^3.0.0
-    typescript: ">=4.6.2 <4.9"
-  dependenciesMeta:
-    esbuild:
-      optional: true
-  peerDependenciesMeta:
-    "@angular/localize":
-      optional: true
-    "@angular/service-worker":
-      optional: true
-    karma:
-      optional: true
-    ng-packagr:
-      optional: true
-    protractor:
-      optional: true
-    tailwindcss:
-      optional: true
-  checksum: 3829654f52b26bc7bd5c753f867a0b24d649e0b650c24cd6ff0ecbfc0708bab8403c64ece40a349147d2104dd21472ac71e7cf7b8e58e1622f430fab99701086
-  languageName: node
-  linkType: hard
-
-"@angular-devkit/build-webpack@npm:0.1402.2":
-  version: 0.1402.2
-  resolution: "@angular-devkit/build-webpack@npm:0.1402.2"
-  dependencies:
-    "@angular-devkit/architect": 0.1402.2
-    rxjs: 6.6.7
-  peerDependencies:
-    webpack: ^5.30.0
-    webpack-dev-server: ^4.0.0
-  checksum: fb97fa5eceb043cefce63ee4a8a598496002506c05423437914b721c41e78408750d28b42b9dc1d4594c1c599ea5c28b7be1903b8a3041c46c1e9dd1f2d7575c
-  languageName: node
-  linkType: hard
-
 "@angular-devkit/build-webpack@npm:0.1402.3":
   version: 0.1402.3
   resolution: "@angular-devkit/build-webpack@npm:0.1402.3"
@@ -295,7 +176,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/core@npm:14.2.2, @angular-devkit/core@npm:^14.0.0":
+"@angular-devkit/core@npm:14.2.2":
   version: 14.2.2
   resolution: "@angular-devkit/core@npm:14.2.2"
   dependencies:
@@ -313,7 +194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/core@npm:14.2.3":
+"@angular-devkit/core@npm:14.2.3, @angular-devkit/core@npm:^14.0.0":
   version: 14.2.3
   resolution: "@angular-devkit/core@npm:14.2.3"
   dependencies:
@@ -2745,17 +2626,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ngtools/webpack@npm:14.2.2":
-  version: 14.2.2
-  resolution: "@ngtools/webpack@npm:14.2.2"
-  peerDependencies:
-    "@angular/compiler-cli": ^14.0.0
-    typescript: ">=4.6.2 <4.9"
-    webpack: ^5.54.0
-  checksum: fce1268f3686ed1f974161bed3662915a98a90c75b7bc8fb166fea346794351ef92bc5bb3cb95714f9d235beaa1b14c8856d4ca8d7eac431d30918a96d404df8
-  languageName: node
-  linkType: hard
-
 "@ngtools/webpack@npm:14.2.3":
   version: 14.2.3
   resolution: "@ngtools/webpack@npm:14.2.3"
@@ -3177,14 +3047,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
-  version: 18.7.16
-  resolution: "@types/node@npm:18.7.16"
-  checksum: 01a3d35c764a3f0e7370b56e1ad4203731131883c65784e020009014171b3f53c4649cde6c7aa4f1026b907ee87ef6ae6ece2bc518151dc7b81100fe8b1db3ad
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:>=10.0.0, @types/node@npm:^18.7.18":
+"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^18.7.18":
   version: 18.7.18
   resolution: "@types/node@npm:18.7.18"
   checksum: 8aec61f0f96e2a69ce51f1f40f949ca578bbb4fe05d7c0b8ce3aeeb848e90f755837f17f6ac132ca404d974fe9b2974150ad3b4984fc9dc7c3ceddb10bae0167

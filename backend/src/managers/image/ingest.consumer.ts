@@ -1,12 +1,6 @@
-import {
-  InjectQueue,
-  OnQueueError,
-  OnQueueFailed,
-  Process,
-  Processor
-} from '@nestjs/bull';
+import { OnQueueError, OnQueueFailed, Process, Processor } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
-import type { Job, Queue } from 'bull';
+import type { Job } from 'bull';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import {
   FileType,
@@ -27,46 +21,27 @@ import { ImageFileDBService } from '../../collections/image-db/image-file-db.ser
 import { EImageBackend } from '../../database/entities/images/image.entity';
 import { ImageConverterService } from '../image/image-converter.service';
 import { ImageResult } from '../image/imageresult';
+import { ImageQueueID, ImageQueueSubject } from './image.queue';
 
-interface ImageIngestJobData {
+export interface ImageIngestJobData {
   imageID: string;
   storeOriginal: boolean;
 }
-export type ImageIngestQueue = Queue<ImageIngestJobData>;
 export type ImageIngestJob = Job<ImageIngestJobData>;
 
-@Processor('image-ingest')
+@Processor(ImageQueueID)
 export class IngestConsumer {
   private readonly logger = new Logger(IngestConsumer.name);
-  private i = 0;
 
   constructor(
-    @InjectQueue('image-ingest') private readonly ingestQueue: Queue,
     private readonly imagesService: ImageDBService,
     private readonly imageFilesService: ImageFileDBService,
     private readonly imageConverter: ImageConverterService,
-  ) {
-    this.logger.log('Ingest consumer started');
-    this.logger.error('Ingest consumer started');
-  }
+  ) {}
 
-  // @Process('group')
-  // async processJob(job: Job<GroupIngestJob>) {
-  //   console.log('Received', job.data);
-  //   await new Promise((resolve) => setTimeout(resolve, 4000));
-  //   console.log('Done');
-  //   return 'big chungus';
-  // }
-
-  @Process('image')
-  async processImage(job: ImageIngestJob): Promise<EImageBackend> {
+  @Process(ImageQueueSubject.INGEST)
+  async ingestImage(job: ImageIngestJob): Promise<EImageBackend> {
     const { imageID, storeOriginal } = job.data;
-
-    job.failedReason = 'Not implemented';
-
-    if (this.i === 0) {
-      throw Fail(FT.Internal, undefined, 'oops');
-    }
 
     // Already start the query for the image, we only need it when returning
     const imagePromise = this.imagesService.findOne(imageID, undefined);
@@ -110,7 +85,7 @@ export class IngestConsumer {
     return image;
   }
 
-  public async process(
+  private async process(
     image: Buffer,
     filetype: FileType,
   ): AsyncFailable<ImageResult> {
