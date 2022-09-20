@@ -68,7 +68,6 @@ export class SysPreferenceDbService {
         try {
           existing = await this.sysPreferenceRepository.findOne({
             where: { key: validatedKey as SysPreference },
-            cache: 60000,
           });
           if (!existing) return null;
         } catch (e) {

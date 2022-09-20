@@ -7,7 +7,7 @@ import {
   Fail,
   FT,
   HasFailed,
-  ThrowIfFailed
+  ThrowIfFailed,
 } from 'picsur-shared/dist/types';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
 import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
@@ -17,8 +17,8 @@ import * as ImageQueue from './image.queue';
 @Injectable()
 export class ConvertService {
   constructor(
-    @InjectQueue(ImageQueue.ImageQueueID)
-    private readonly imageQueue: ImageQueue.ImageQueueType,
+    @InjectQueue(ImageQueue.ImageConvertQueueID)
+    private readonly imageQueue: ImageQueue.ImageConvertQueue,
     private readonly imageFilesService: ImageFileDBService,
   ) {}
 
@@ -38,7 +38,6 @@ export class ConvertService {
     let job: ImageConvertJob;
     try {
       job = (await this.imageQueue.add(
-        ImageQueue.ImageQueueSubject.CONVERT,
         {
           imageId,
           fileType,
@@ -64,10 +63,14 @@ export class ConvertService {
   ): AsyncFailable<EImageDerivativeBackend> {
     const uniqueKey = this.getConvertHash(imageId, { fileType, ...options });
 
+    const startime = Date.now();
     const findExisting = ThrowIfFailed(
       await this.imageFilesService.getDerivative(imageId, uniqueKey),
     );
-    if (findExisting !== null) return findExisting;
+    if (findExisting !== null) {
+      console.log('Found existing derivative in ' + (Date.now() - startime));
+      return findExisting;
+    }
 
     const job = await this.convertJob(imageId, fileType, options);
     if (HasFailed(job)) return job;
@@ -81,7 +84,10 @@ export class ConvertService {
     const findResult = ThrowIfFailed(
       await this.imageFilesService.getDerivative(imageId, uniqueKey),
     );
-    if (findResult !== null) return findResult;
+    if (findResult !== null) {
+      console.log('Found new derivative');
+      return findResult;
+    }
 
     return Fail(FT.Internal, 'Failed to convert image');
   }

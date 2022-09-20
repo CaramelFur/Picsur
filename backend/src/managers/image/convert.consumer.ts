@@ -9,7 +9,7 @@ import { ImageFileDBService } from '../../collections/image-db/image-file-db.ser
 import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
 import { ImageConverterService } from './image-converter.service';
 import { ImageManagerService } from './image-manager.service';
-import { ImageQueueID, ImageQueueSubject } from './image.queue';
+import { ImageConvertQueueID } from './image.queue';
 
 // This contains the job to convert an image to a derivative and store it
 
@@ -21,7 +21,7 @@ export interface ImageConvertJobData {
 }
 export type ImageConvertJob = Job<ImageConvertJobData>;
 
-@Processor(ImageQueueID)
+@Processor(ImageConvertQueueID)
 export class ConvertConsumer {
   private readonly logger = new Logger(ConvertConsumer.name);
 
@@ -32,7 +32,7 @@ export class ConvertConsumer {
     private readonly imageService: ImageManagerService,
   ) {}
 
-  @Process(ImageQueueSubject.CONVERT)
+  @Process()
   async convertImage(job: ImageConvertJob): Promise<void> {
     const { imageId, fileType, options, uniqueKey } = job.data;
 

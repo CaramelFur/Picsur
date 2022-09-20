@@ -11,7 +11,7 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "start": "nest start --exec \"node --es-module-specifier-resolution=node\"",
-    "start:dev": "yarn clean && nest start --watch --exec \"node --es-module-specifier-resolution=node\"",
+    "start:dev": "yarn clean && nest start --watch --exec \"node --inspect --es-module-specifier-resolution=node\"",
     "start:debug": "nest start --debug --watch --exec \"node --es-module-specifier-resolution=node\"",
     "start:prod": "node --es-module-specifier-resolution=node dist/main",
     "typeorm": "typeorm-ts-node-esm",
@@ -64,6 +64,7 @@
     "stream-parser": "^0.3.1",
     "thunks": "^4.9.6",
     "typeorm": "0.3.9",
+    "uuid": "^9.0.0",
     "zod": "^3.19.1"
   },
   "devDependencies": {
@@ -80,6 +81,7 @@
     "@types/passport-strategy": "^0.2.35",
     "@types/sharp": "^0.30.5",
     "@types/supertest": "^2.0.12",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
     "eslint": "^8.23.1",

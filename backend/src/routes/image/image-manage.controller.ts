@@ -5,7 +5,7 @@ import {
   Logger,
   Param,
   Post,
-  Res
+  Res,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { FastifyReply } from 'fastify';
@@ -16,17 +16,22 @@ import {
   ImageDeleteWithKeyResponse,
   ImageListRequest,
   ImageListResponse,
+  ImagesProgressRequest,
+  ImagesProgressResponse,
+  ImagesUploadResponse,
   ImageUpdateRequest,
   ImageUpdateResponse,
-  ImageUploadResponse
+  ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
+import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { Fail, FT, HasFailed, ThrowIfFailed } from 'picsur-shared/dist/types';
+import { EImageBackend } from '../../database/entities/images/image.entity';
 import { PostFiles } from '../../decorators/multipart/multipart.decorator';
 import type { FileIterator } from '../../decorators/multipart/postfiles.pipe';
 import {
   HasPermission,
-  RequiredPermissions
+  RequiredPermissions,
 } from '../../decorators/permissions.decorator';
 import { ReqUserID } from '../../decorators/request-user.decorator';
 import { Returns, ReturnsAnything } from '../../decorators/returns.decorator';
@@ -73,31 +78,51 @@ export class ImageManageController {
   }
 
   @Post('upload/bulk')
-  @ReturnsAnything()
+  @Returns(ImagesUploadResponse)
   @Throttle(20)
   async uploadImages(
     @PostFiles() multipart: FileIterator,
     @ReqUserID() userid: string,
     @HasPermission(Permission.ImageDeleteKey) withDeleteKey: boolean,
-  ): Promise<any> {
-    let ids: string[] = [];
+  ): Promise<ImagesUploadResponse> {
+    let jobs: {
+      job_id: string;
+      image: EImage;
+    }[] = [];
     for await (const file of multipart) {
       const buffer = await file.toBuffer();
       const filename = file.filename;
-      console.log(filename);
 
-      // const id = ThrowIfFailed(
-      //   await this.ingressDB.uploadFile(filename, buffer),
-      // );
-      // ids.push(id);
+      const [job, image] = ThrowIfFailed(
+        await this.ingestService.uploadJob(
+          userid,
+          filename,
+          buffer,
+          withDeleteKey,
+        ),
+      );
+
+      jobs.push({
+        job_id: job.id.toString(),
+        image: image,
+      });
     }
-    if (ids.length === 0) {
+    if (jobs.length === 0) {
       throw Fail(FT.BadRequest, 'No files uploaded');
     }
 
-    console.log(ids);
+    return {
+      count: jobs.length,
+      results: jobs,
+    };
+  }
 
-    return;
+  @Post('upload/status')
+  @Returns(ImagesProgressResponse)
+  async getImagesProgress(
+    @Body() body: ImagesProgressRequest,
+  ): Promise<ImagesProgressResponse> {
+    return ThrowIfFailed(await this.ingestService.getProgress(body.job_ids));
   }
 
   @Post('list')

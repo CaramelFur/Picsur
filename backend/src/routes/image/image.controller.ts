@@ -3,7 +3,7 @@ import { SkipThrottle } from '@nestjs/throttler';
 import type { FastifyReply } from 'fastify';
 import {
   ImageMetaResponse,
-  ImageRequestParams
+  ImageRequestParams,
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { FileType2Mime } from 'picsur-shared/dist/dto/mimes.dto';
@@ -75,6 +75,16 @@ export class ImageController {
           params,
         ),
       );
+        
+      const isbfufer = image.data instanceof Buffer;
+      console.log('isabuffer', isbfufer);
+      if (!isbfufer) {
+        console.log('not a buffer');
+        console.log(image.data);
+
+        console.trace();
+        process.exit();
+      }
 
       res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
       return image.data;

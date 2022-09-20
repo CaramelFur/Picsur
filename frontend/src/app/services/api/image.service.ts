@@ -4,13 +4,16 @@ import {
   ImageDeleteResponse,
   ImageListRequest,
   ImageListResponse,
+  ImagesProgressRequest,
+  ImagesProgressResponse,
+  ImagesUploadResponse,
   ImageUpdateRequest,
   ImageUpdateResponse,
-  ImageUploadResponse
+  ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import {
   ImageMetaResponse,
-  ImageRequestParams
+  ImageRequestParams,
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
@@ -21,7 +24,7 @@ import {
   FT,
   HasFailed,
   HasSuccess,
-  Open
+  Open,
 } from 'picsur-shared/dist/types/failable';
 import { Observable, Subject } from 'rxjs';
 import { ImagesUploadRequest } from 'src/app/models/dto/images-upload-request.dto';
@@ -52,7 +55,12 @@ export class ImageService {
 
   public UploadImages(images: File[]): {
     progress: Observable<number>;
-    result: AsyncFailable<string>;
+    result: AsyncFailable<
+      Array<{
+        job_id: string;
+        image: EImage;
+      }>
+    >;
     cancel: () => void;
   } {
     console.log('Uploading images', images);
@@ -71,9 +79,14 @@ export class ImageService {
 
     const result = (async () => {
       let processedBytes = 0;
+      let results: Array<{
+        job_id: string;
+        image: EImage;
+      }> = [];
+
       for (const group of groups) {
-        const request = await this.api.postForm(
-          ImageUploadResponse,
+        const request = this.api.postForm(
+          ImagesUploadResponse,
           '/api/image/upload/bulk',
           new ImagesUploadRequest(group.images),
         );
@@ -86,19 +99,35 @@ export class ImageService {
           request.cancel();
         });
 
-        await request.result;
+        const partResults = await request.result;
+        if (HasFailed(partResults)) return partResults;
+
+        results.push(...partResults.results);
 
         progress.next((processedBytes += group.groupSize) / totalBytes);
       }
 
-      return '';
+      return results;
     })();
 
     return {
       progress: progress.asObservable(),
-      result: result,
+      result,
       cancel: () => aborter.abort(),
     };
+  }
+
+  public async GetUploadProgress(jobIds: string[]): AsyncFailable<number> {
+    const result = await this.api.post(
+      ImagesProgressRequest,
+      ImagesProgressResponse,
+      '/api/image/upload/status',
+      {
+        job_ids: jobIds,
+      },
+    ).result;
+
+    return Open(result, 'progress');
   }
 
   public async GetImageMeta(image: string): AsyncFailable<ImageMetaResponse> {
@@ -126,7 +155,7 @@ export class ImageService {
     count: number,
     page: number,
   ): AsyncFailable<ImageListResponse> {
-    const userID = await this.userService.snapshot?.id;
+    const userID = this.userService.snapshot?.id;
     if (userID === undefined) {
       return Fail(FT.Authentication, 'User not logged in');
     }

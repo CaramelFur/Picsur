@@ -6,18 +6,18 @@
     </ng-container>
     <ng-container *ngIf="state === 'uploading'">
       <h1>Uploading</h1>
-      <p>{{ (progress * 100).toFixed(0) }}% complete</p>
+      <p *ngIf="progress >= 0">{{ (progress * 100).toFixed(0) }}% complete</p>
       <mat-progress-bar
-        [mode]="progress === 0 ? 'indeterminate' : 'determinate'"
+        [mode]="progress === -1 ? 'indeterminate' : 'determinate'"
         [value]="progress * 100"
         color="accent"
       ></mat-progress-bar>
     </ng-container>
     <ng-container *ngIf="state === 'processing'">
       <h1>Processing</h1>
-      <p>{{ (progress * 100).toFixed(0) }}% complete</p>
+      <p *ngIf="progress >= 0">{{ (progress * 100).toFixed(0) }}% complete</p>
       <mat-progress-bar
-        [mode]="progress === 0 ? 'indeterminate' : 'determinate'"
+        [mode]="progress === -1 ? 'indeterminate' : 'determinate'"
         [value]="progress * 100"
         color="accent"
       ></mat-progress-bar>

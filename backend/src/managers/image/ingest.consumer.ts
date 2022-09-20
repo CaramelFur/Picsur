@@ -21,7 +21,7 @@ import { ImageFileDBService } from '../../collections/image-db/image-file-db.ser
 import { EImageBackend } from '../../database/entities/images/image.entity';
 import { ImageConverterService } from '../image/image-converter.service';
 import { ImageResult } from '../image/imageresult';
-import { ImageQueueID, ImageQueueSubject } from './image.queue';
+import { ImageIngestQueueID } from './image.queue';
 
 export interface ImageIngestJobData {
   imageID: string;
@@ -29,7 +29,7 @@ export interface ImageIngestJobData {
 }
 export type ImageIngestJob = Job<ImageIngestJobData>;
 
-@Processor(ImageQueueID)
+@Processor(ImageIngestQueueID)
 export class IngestConsumer {
   private readonly logger = new Logger(IngestConsumer.name);
 
@@ -39,7 +39,9 @@ export class IngestConsumer {
     private readonly imageConverter: ImageConverterService,
   ) {}
 
-  @Process(ImageQueueSubject.INGEST)
+  @Process({
+    concurrency: 5,
+  })
   async ingestImage(job: ImageIngestJob): Promise<EImageBackend> {
     const { imageID, storeOriginal } = job.data;
 

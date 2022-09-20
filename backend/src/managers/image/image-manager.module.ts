@@ -13,7 +13,10 @@ import { ConvertConsumer } from './convert.consumer';
 import { ConvertService } from './convert.service';
 import { ImageConverterService } from './image-converter.service';
 import { ImageManagerService } from './image-manager.service';
-import { ImageQueueID } from './image.queue';
+import {
+  ImageConvertQueueID,
+  ImageIngestQueueID,
+} from './image.queue';
 import { IngestConsumer } from './ingest.consumer';
 import { IngestService } from './ingest.service';
 
@@ -22,7 +25,14 @@ import { IngestService } from './ingest.service';
     ImageDBModule,
     PreferenceDbModule,
     BullModule.registerQueue({
-      name: ImageQueueID,
+      name: ImageConvertQueueID,
+      defaultJobOptions: {
+        removeOnComplete: true,
+        removeOnFail: true,
+      },
+    }),
+    BullModule.registerQueue({
+      name: ImageIngestQueueID,
     }),
   ],
   providers: [

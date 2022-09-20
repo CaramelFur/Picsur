@@ -71,6 +71,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       cache: {
         duration: 60000,
         type: 'ioredis',
+        //alwaysEnabled: true,
         options: this.redisConfig.getRedisUrl(),
       },
 

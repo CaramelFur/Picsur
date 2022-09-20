@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
@@ -10,6 +10,8 @@ const A_DAY_IN_SECONDS = 24 * 60 * 60;
 
 @Injectable()
 export class ImageFileDBService {
+  private readonly logger = new Logger(ImageFileDBService.name);
+
   constructor(
     @InjectRepository(EImageFileBackend)
     private readonly imageFileRepo: Repository<EImageFileBackend>,
@@ -51,6 +53,11 @@ export class ImageFileDBService {
       });
 
       if (!found) return Fail(FT.NotFound, 'Image not found');
+
+      if (!(found.data instanceof Buffer)) {
+        found.data = Buffer.from(found.data);
+      }
+
       return found;
     } catch (e) {
       return Fail(FT.Database, e);
@@ -146,10 +153,16 @@ export class ImageFileDBService {
       if (!derivative) return null;
 
       // Ensure read time updated to within 1 day precision
-      const yesterday = new Date(Date.now() - A_DAY_IN_SECONDS * 1000);
-      if (derivative.last_read > yesterday) {
+      const aMinuteAgo = new Date(Date.now() - 60 * 1000);
+      if (derivative.last_read > aMinuteAgo) {
         derivative.last_read = new Date();
-        return await this.imageDerivativeRepo.save(derivative);
+        this.imageDerivativeRepo.save(derivative).then(r => {
+          if (HasFailed(r)) r.print(this.logger);
+        })
+      }
+
+      if (!(derivative.data instanceof Buffer)) {
+        derivative.data = Buffer.from(derivative.data);
       }
 
       return derivative;

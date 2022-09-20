@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Fail, FT } from 'picsur-shared/dist/types';
+import { Fail, Failable, FT, HasFailed } from 'picsur-shared/dist/types';
 import { ProcessingViewMeta } from 'src/app/models/dto/processing-view-meta.dto';
 import { ApiService } from 'src/app/services/api/api.service';
 import { ImageService } from 'src/app/services/api/image.service';
@@ -21,7 +21,8 @@ export class ProcessingComponent implements OnInit, OnDestroy {
   private readonly logger = new Logger(ProcessingComponent.name);
 
   public state = ProcessingState.Idle;
-  public progress = 0;
+  public progress = -1;
+  public poller?: number;
 
   constructor(
     private readonly router: Router,
@@ -47,9 +48,31 @@ export class ProcessingComponent implements OnInit, OnDestroy {
     });
     this.state = ProcessingState.Uploading;
 
-    await request.result;
-
+    const result = await request.result;
+    if (HasFailed(result)) {
+      return this.errorService.quitFailure(result, this.logger);
+    }
     this.logger.debug('Upload finished');
+
+    this.state = ProcessingState.Processing;
+    this.progress = -1;
+
+    const jobIds = result.map((v) => v.job_id);
+
+    this.poller = window.setInterval(async () => {
+      const progress = await this.imageService.GetUploadProgress(jobIds);
+      if (HasFailed(progress)) {
+        return this.errorService.showFailure(progress, this.logger);
+      }
+
+      this.progress = progress;
+      if (progress === 1) {
+        if (this.poller) {
+          clearInterval(this.poller);
+        }
+        this.router.navigate(['/']);
+      }
+    }, 1000);
 
     // if (HasFailed(id)) return this.errorService.quitFailure(id, this.logger);
 
@@ -57,6 +80,9 @@ export class ProcessingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.poller) {
+      clearInterval(this.poller);
+    }
     if (this.state === ProcessingState.Idle) return;
 
     this.errorService.info('Upload continued in background');

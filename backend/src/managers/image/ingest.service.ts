@@ -6,7 +6,7 @@ import {
   AnimFileType,
   FileType,
   ImageFileType,
-  Mime2FileType
+  Mime2FileType,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
@@ -19,14 +19,15 @@ import { EImageBackend } from '../../database/entities/images/image.entity';
 import { WebPInfo } from '../image/webpinfo/webpinfo';
 import * as ImageQueue from './image.queue';
 import { ImageIngestJob } from './ingest.consumer';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class IngestService {
   private readonly logger = new Logger(IngestService.name);
 
   constructor(
-    @InjectQueue(ImageQueue.ImageQueueID)
-    private readonly imageQueue: ImageQueue.ImageQueueType,
+    @InjectQueue(ImageQueue.ImageIngestQueueID)
+    private readonly imageQueue: ImageQueue.ImageIngestQueue,
     private readonly imagesService: ImageDBService,
     private readonly imageFilesService: ImageFileDBService,
     private readonly userPref: UsrPreferenceDbService,
@@ -63,20 +64,25 @@ export class IngestService {
     );
     if (HasFailed(imageEntity)) return imageEntity;
 
-    const imageFileEntity = await this.imageFilesService.setFile(
-      imageEntity.id,
-      ImageEntryVariant.INGEST,
-      image,
-      fileType.identifier,
-    );
-    if (HasFailed(imageFileEntity)) return imageFileEntity;
+    {
+      const imageFileEntity = await this.imageFilesService.setFile(
+        imageEntity.id,
+        ImageEntryVariant.INGEST,
+        image,
+        fileType.identifier,
+      );
+      if (HasFailed(imageFileEntity)) return imageFileEntity;
+    }
 
     try {
       const job = (await this.imageQueue.add(
-        ImageQueue.ImageQueueSubject.INGEST,
         {
           imageID: imageEntity.id,
           storeOriginal: keepOriginal,
+        },
+        {
+          jobId: uuidv4(),
+          delay: 30000,
         },
       )) as ImageIngestJob;
       if (!job.id) return Fail(FT.Internal, undefined, 'Failed to queue job');
@@ -103,6 +109,41 @@ export class IngestService {
       return imageEntity;
     } catch (e) {
       return Fail(FT.Internal, 'Failed to process image', e);
+    }
+  }
+
+  public async getProgress(jobsIds: string[]): AsyncFailable<{
+    progress: number;
+    failed: string[];
+  }> {
+    try {
+      const jobs = await Promise.all(
+        jobsIds.map((id) => this.imageQueue.getJob(id)),
+      );
+
+      const cleanJobs: ImageIngestJob[] = jobs.filter(
+        (job) => job !== null,
+      ) as ImageIngestJob[];
+
+      if (cleanJobs.length === 0) return { progress: 1, failed: [] };
+
+      const statefulJobs = await Promise.all(
+        cleanJobs.map(async (job) => ({ job, state: await job.getState() })),
+      );
+
+      const progress =
+        statefulJobs.filter(
+          (job) => job.state === 'completed' || job.state === 'failed',
+        ).length / cleanJobs.length;
+
+      return {
+        progress,
+        failed: statefulJobs
+          .filter((job) => job.state === 'failed')
+          .map((job) => job.job.id.toString()),
+      };
+    } catch (e) {
+      return Fail(FT.Internal, e);
     }
   }
 

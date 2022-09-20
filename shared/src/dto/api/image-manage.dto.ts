@@ -13,6 +13,36 @@ export class ImageUploadResponse extends createZodDto(
   ImageUploadResponseSchema,
 ) {}
 
+// Images upload
+export const ImagesUploadResponseSchema = z.object({
+  count: IsPosInt(),
+  results: z.array(
+    z.object({
+      job_id: z.string(),
+      image: EImageSchema,
+    }),
+  ),
+});
+export class ImagesUploadResponse extends createZodDto(
+  ImagesUploadResponseSchema,
+) {}
+
+// Images progress
+export const ImagesProgressRequestSchema = z.object({
+  job_ids: z.array(z.string()),
+});
+export class ImagesProgressRequest extends createZodDto(
+  ImagesProgressRequestSchema,
+) {}
+
+export const ImagesProgressResponseSchema = z.object({
+  progress: z.number(),
+  failed: z.array(z.string()),
+});
+export class ImagesProgressResponse extends createZodDto(
+  ImagesProgressResponseSchema,
+) {}
+
 // Image list
 
 export const ImageListRequestSchema = z.object({

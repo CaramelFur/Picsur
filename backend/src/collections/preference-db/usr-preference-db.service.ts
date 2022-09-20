@@ -77,7 +77,6 @@ export class UsrPreferenceDbService {
         try {
           existing = await this.usrPreferenceRepository.findOne({
             where: { key: validatedKey as UsrPreference, user_id: userid },
-            cache: 60000,
           });
           if (!existing) return null;
         } catch (e) {
