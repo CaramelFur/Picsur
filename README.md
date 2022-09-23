@@ -28,7 +28,7 @@ The images are deleted every five minutes, and the maximum filesize is 16MB. But
 Here is a list of done features, and what is planned.
 For a more detailed list, you can always visit [the project](https://github.com/rubikscraft/Picsur/projects/1).
 
-Every featured marked here should work in the latest release.
+Every feature marked here should work in the latest release.
 
 - [x] Uploading and viewing images
 - [x] Anonymous uploads
@@ -74,7 +74,7 @@ If you like this project, don't forget to give it a star. It tells me that I'm n
 
 ## Faq
 
-### Why do my images dissapear of the public instance?
+### Why do my images disappear off the public instance?
 
 The public instance is only a demo, and therefore only keeps images for 5 minutes. This is to prevent the server from running out of disk space, and to prevent people from using it to host questionable images.
 
@@ -94,9 +94,9 @@ If you want to enable this however, you can do so by going to `settings -> gener
 
 Do keep in mind here, that the exif data will NOT be removed from the original image. So make sure you do not accidentally share sensitive data.
 
-### This service says its supports the QOI format, what is this?
+### This service says it supports the QOI format, what is it?
 
-QOI is a new lossless image format that is designed to be very fast to encode and decode. All while still offering good compression ratios. This is the primary format the server will store images in when uploaded.
+QOI is a new lossless image format that is designed to be very fast to encode and decode. All the while still offering good compression ratios. This is the primary format the server will store images in when uploaded.
 
 You can [read more about QOI here](https://qoiformat.org/).
 
