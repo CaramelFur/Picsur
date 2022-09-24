@@ -11,6 +11,8 @@ import {
 import { UniversalSharpIn, UniversalSharpOut } from './universal-sharp';
 
 export class SharpWorker {
+  private maxMemoryUsed = 0;
+
   private startTime: number = 0;
   private sharpi: Sharp | null = null;
 
@@ -35,6 +37,17 @@ export class SharpWorker {
     });
 
     process.on('message', this.messageHandler.bind(this));
+
+    process.nextTick(() => {
+      let memUsage = process.memoryUsage();
+      if (memUsage.rss > this.maxMemoryUsed) {
+        this.maxMemoryUsed = memUsage.rss;
+      }
+    });
+
+    setInterval(() => {
+      console.log(`Used ${JSON.stringify(process.memoryUsage())} bytes`);
+    }, 100);
 
     this.sendMessage({
       type: 'ready',
@@ -91,6 +104,10 @@ export class SharpWorker {
     try {
       const result = await UniversalSharpOut(sharpi, filetype, options);
       const processingTime = Date.now() - this.startTime;
+
+      console.log(
+        `\nUsed ${this.maxMemoryUsed} bytes`,
+      );
 
       this.sendMessage({
         type: 'result',

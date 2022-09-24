@@ -75,16 +75,6 @@ export class ImageController {
           params,
         ),
       );
-        
-      const isbfufer = image.data instanceof Buffer;
-      console.log('isabuffer', isbfufer);
-      if (!isbfufer) {
-        console.log('not a buffer');
-        console.log(image.data);
-
-        console.trace();
-        process.exit();
-      }
 
       res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
       return image.data;

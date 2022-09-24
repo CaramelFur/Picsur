@@ -82,7 +82,6 @@ export class IngestService {
         },
         {
           jobId: uuidv4(),
-          delay: 30000,
         },
       )) as ImageIngestJob;
       if (!job.id) return Fail(FT.Internal, undefined, 'Failed to queue job');
