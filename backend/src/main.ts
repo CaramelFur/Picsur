@@ -4,7 +4,7 @@ import fastifyReplyFrom from '@fastify/reply-from';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
-  NestFastifyApplication
+  NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { HostConfigService } from './config/early/host.config.service';

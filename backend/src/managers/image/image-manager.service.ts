@@ -6,6 +6,7 @@ import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
+import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
 import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
 import { EImageBackend } from '../../database/entities/images/image.entity';
 
@@ -85,6 +86,10 @@ export class ImageManagerService {
       return Fail(FT.NotFound, 'No original file');
 
     return ParseFileType(filetypes['original']);
+  }
+
+  public async getData(image: EImageFileBackend | EImageDerivativeBackend) {
+    return await this.imageFilesService.getData(image);
   }
 
   public async getFileMimes(imageId: string): AsyncFailable<{

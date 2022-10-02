@@ -6,11 +6,7 @@ import { ImageManageController } from './image-manage.controller';
 import { ImageController } from './image.controller';
 
 @Module({
-  imports: [
-    ImageManagerModule,
-    UserDbModule,
-    DecoratorsModule,
-  ],
+  imports: [ImageManagerModule, UserDbModule, DecoratorsModule],
   controllers: [ImageController, ImageManageController],
 })
 export class ImageModule {}

@@ -63,9 +63,10 @@ export class ImageController {
         const image = ThrowIfFailed(
           await this.imagesService.getOriginal(fullid.id),
         );
+        const data = ThrowIfFailed(await this.imagesService.getData(image));
 
         res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
-        return image.data;
+        return data;
       }
 
       const image = ThrowIfFailed(
@@ -75,9 +76,10 @@ export class ImageController {
           params,
         ),
       );
+      const data = ThrowIfFailed(await this.imagesService.getData(image));
 
       res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
-      return image.data;
+      return data;
     } catch (e) {
       if (!IsFailure(e) || e.getType() !== FT.NotFound) throw e;
 

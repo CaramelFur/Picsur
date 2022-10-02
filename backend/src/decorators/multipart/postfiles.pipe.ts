@@ -4,7 +4,7 @@ import {
   Injectable,
   Logger,
   PipeTransform,
-  Scope
+  Scope,
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { Fail, FT } from 'picsur-shared/dist/types';

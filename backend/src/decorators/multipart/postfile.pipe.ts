@@ -12,7 +12,7 @@ export class PostFilePipe implements PipeTransform {
     private readonly multipartConfigService: MultipartConfigService,
   ) {}
 
-  async transform({ request, data }: { data: any; request: FastifyRequest },) {
+  async transform({ request, data }: { data: any; request: FastifyRequest }) {
     if (!request.isMultipart()) throw Fail(FT.UsrValidation, 'Invalid file');
 
     // Only one file is allowed

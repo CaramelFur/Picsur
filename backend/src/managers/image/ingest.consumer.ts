@@ -5,7 +5,7 @@ import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.en
 import {
   FileType,
   ImageFileType,
-  SupportedFileTypeCategory
+  SupportedFileTypeCategory,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import {
   AsyncFailable,
@@ -13,7 +13,7 @@ import {
   FT,
   HasFailed,
   IsFailure,
-  ThrowIfFailed
+  ThrowIfFailed,
 } from 'picsur-shared/dist/types';
 import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
@@ -55,11 +55,13 @@ export class IngestConsumer {
     const ingestFile = ThrowIfFailed(
       await this.imageFilesService.getFile(imageID, ImageEntryVariant.INGEST),
     );
-
+    const ingestFileData = ThrowIfFailed(
+      await this.imageFilesService.getData(ingestFile),
+    );
     const ingestFiletype = ThrowIfFailed(ParseFileType(ingestFile.filetype));
 
     const processed = ThrowIfFailed(
-      await this.process(ingestFile.data, ingestFiletype),
+      await this.process(ingestFileData, ingestFiletype),
     );
 
     const masterPromise = this.imageFilesService.setFile(
@@ -75,7 +77,7 @@ export class IngestConsumer {
           ImageEntryVariant.INGEST,
           ImageEntryVariant.ORIGINAL,
         )
-      : this.imageFilesService.deleteFile(imageID, ImageEntryVariant.INGEST);
+      : this.imageFilesService.orphanFile(imageID, ImageEntryVariant.INGEST);
 
     const results = await Promise.all([masterPromise, originalPromise]);
     results.map((r) => ThrowIfFailed(r));

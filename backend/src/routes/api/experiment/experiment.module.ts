@@ -8,6 +8,6 @@ import { ExperimentController } from './experiment.controller';
 
 @Module({
   imports: [ImageManagerModule, PicsurLoggerModule],
-  controllers: [ExperimentController]
+  controllers: [ExperimentController],
 })
 export class ExperimentModule {}

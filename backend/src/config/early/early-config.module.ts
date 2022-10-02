@@ -6,6 +6,7 @@ import { EarlyJwtConfigService } from './early-jwt.config.service';
 import { HostConfigService } from './host.config.service';
 import { MultipartConfigService } from './multipart.config.service';
 import { RedisConfigService } from './redis.config.service';
+import { S3ConfigService } from './s3.config.service';
 import { ServeStaticConfigService } from './serve-static.config.service';
 import { TypeOrmConfigService } from './type-orm.config.service';
 
@@ -25,6 +26,7 @@ import { TypeOrmConfigService } from './type-orm.config.service';
     MultipartConfigService,
     RedisConfigService,
     BullConfigService,
+    S3ConfigService,
   ],
   exports: [
     ConfigModule,
@@ -36,6 +38,7 @@ import { TypeOrmConfigService } from './type-orm.config.service';
     MultipartConfigService,
     RedisConfigService,
     BullConfigService,
+    S3ConfigService,
   ],
 })
 export class EarlyConfigModule {}

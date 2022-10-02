@@ -2,9 +2,11 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
-import { LessThan, Repository } from 'typeorm';
+import { In, IsNull, LessThan, Repository } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
 import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
+import { FileS3Service } from '../file-s3/file-s3.service';
 
 const A_DAY_IN_SECONDS = 24 * 60 * 60;
 
@@ -18,7 +20,18 @@ export class ImageFileDBService {
 
     @InjectRepository(EImageDerivativeBackend)
     private readonly imageDerivativeRepo: Repository<EImageDerivativeBackend>,
+
+    private readonly s3Service: FileS3Service,
   ) {}
+
+  public async getData(
+    file: EImageFileBackend | EImageDerivativeBackend,
+  ): AsyncFailable<Buffer> {
+    const result = await this.s3Service.getFile(file.s3key);
+    if (HasFailed(result)) return result;
+
+    return result;
+  }
 
   public async setFile(
     imageId: string,
@@ -26,16 +39,21 @@ export class ImageFileDBService {
     file: Buffer,
     filetype: string,
   ): AsyncFailable<true> {
+    const s3key = uuidv4();
+
     const imageFile = new EImageFileBackend();
     imageFile.image_id = imageId;
     imageFile.variant = variant;
     imageFile.filetype = filetype;
-    imageFile.data = file;
+    imageFile.s3key = s3key;
 
     try {
       await this.imageFileRepo.upsert(imageFile, {
         conflictPaths: ['image_id', 'variant'],
       });
+
+      const s3result = await this.s3Service.putFile(s3key, file);
+      if (HasFailed(s3result)) return s3result;
     } catch (e) {
       return Fail(FT.Database, e);
     }
@@ -53,11 +71,6 @@ export class ImageFileDBService {
       });
 
       if (!found) return Fail(FT.NotFound, 'Image not found');
-
-      if (!(found.data instanceof Buffer)) {
-        found.data = Buffer.from(found.data);
-      }
-
       return found;
     } catch (e) {
       return Fail(FT.Database, e);
@@ -80,7 +93,7 @@ export class ImageFileDBService {
     }
   }
 
-  public async deleteFile(
+  public async orphanFile(
     imageId: string,
     variant: ImageEntryVariant,
   ): AsyncFailable<EImageFileBackend> {
@@ -91,8 +104,9 @@ export class ImageFileDBService {
 
       if (!found) return Fail(FT.NotFound, 'Image not found');
 
-      await this.imageFileRepo.delete({ image_id: imageId, variant: variant });
-      return found;
+      found.image_id = null;
+
+      return await this.imageFileRepo.save(found);
     } catch (e) {
       return Fail(FT.Database, e);
     }
@@ -127,15 +141,22 @@ export class ImageFileDBService {
     filetype: string,
     file: Buffer,
   ): AsyncFailable<EImageDerivativeBackend> {
+    const s3key = uuidv4();
+
     const imageDerivative = new EImageDerivativeBackend();
     imageDerivative.image_id = imageId;
     imageDerivative.key = key;
     imageDerivative.filetype = filetype;
-    imageDerivative.data = file;
+    imageDerivative.s3key = s3key;
     imageDerivative.last_read = new Date();
 
     try {
-      return await this.imageDerivativeRepo.save(imageDerivative);
+      const result = await this.imageDerivativeRepo.save(imageDerivative);
+
+      const s3result = await this.s3Service.putFile(s3key, file);
+      if (HasFailed(s3result)) return s3result;
+
+      return result;
     } catch (e) {
       return Fail(FT.Database, e);
     }
@@ -156,13 +177,9 @@ export class ImageFileDBService {
       const aMinuteAgo = new Date(Date.now() - 60 * 1000);
       if (derivative.last_read > aMinuteAgo) {
         derivative.last_read = new Date();
-        this.imageDerivativeRepo.save(derivative).then(r => {
+        this.imageDerivativeRepo.save(derivative).then((r) => {
           if (HasFailed(r)) r.print(this.logger);
-        })
-      }
-
-      if (!(derivative.data instanceof Buffer)) {
-        derivative.data = Buffer.from(derivative.data);
+        });
       }
 
       return derivative;
@@ -180,6 +197,49 @@ export class ImageFileDBService {
       });
 
       return result.affected ?? 0;
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
+  public async cleanupOrphanedDerivatives(): AsyncFailable<number> {
+    return this.cleanupRepoWithS3(this.imageDerivativeRepo);
+  }
+
+  public async cleanupOrphanedFiles(): AsyncFailable<number> {
+    return this.cleanupRepoWithS3(this.imageFileRepo);
+  }
+
+  private async cleanupRepoWithS3(
+    repo: Repository<{ image_id: string | null; s3key: string }>,
+  ): AsyncFailable<number> {
+    try {
+      let remaining = Infinity;
+      let processed = 0;
+      while (remaining > 0) {
+        const orphaned = await repo.findAndCount({
+          where: {
+            image_id: IsNull(),
+          },
+          select: ['s3key'],
+          take: 100,
+        });
+        if (orphaned[1] === 0) break;
+        remaining = orphaned[1] - orphaned[0].length;
+
+        const keys = orphaned[0].map((d) => d.s3key);
+
+        const s3result = await this.s3Service.deleteFiles(keys);
+        if (HasFailed(s3result)) return s3result;
+
+        const result = await repo.delete({
+          s3key: In(keys),
+        });
+
+        processed += result.affected ?? 0;
+      }
+
+      return processed;
     } catch (e) {
       return Fail(FT.Database, e);
     }

@@ -48,13 +48,16 @@ export class ConvertConsumer {
     const masterImage = ThrowIfFailed(
       await this.imageService.getMaster(imageId),
     );
+    const masterImageData = ThrowIfFailed(
+      await this.imageService.getData(masterImage),
+    );
     const sourceFileType = ThrowIfFailed(ParseFileType(masterImage.filetype));
 
     // Conver timage
     const startTime = Date.now();
     const convertResult = ThrowIfFailed(
       await this.imageConverter.convert(
-        masterImage.data,
+        masterImageData,
         sourceFileType,
         targetFileType,
         allow_editing ? options : {},

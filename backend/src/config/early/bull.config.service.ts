@@ -1,6 +1,6 @@
 import {
   BullRootModuleOptions,
-  SharedBullConfigurationFactory
+  SharedBullConfigurationFactory,
 } from '@nestjs/bull';
 import { Injectable } from '@nestjs/common';
 import { RedisConfigService } from './redis.config.service';

@@ -4,7 +4,7 @@ import {
   MiddlewareConsumer,
   Module,
   NestModule,
-  OnModuleInit
+  OnModuleInit,
 } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';

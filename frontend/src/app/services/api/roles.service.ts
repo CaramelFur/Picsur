@@ -8,7 +8,7 @@ import {
   RoleInfoResponse,
   RoleListResponse,
   RoleUpdateRequest,
-  RoleUpdateResponse
+  RoleUpdateResponse,
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { AsyncFailable, Open } from 'picsur-shared/dist/types';

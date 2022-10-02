@@ -35,14 +35,15 @@ export class DownloadService {
   }
 
   public async downloadFile(url: string) {
-
-
     const request = this.api.getBuffer(url);
-    const closeDialog = this.showDownloadDialog('image', request.downloadProgress);
+    const closeDialog = this.showDownloadDialog(
+      'image',
+      request.downloadProgress,
+    );
 
     const file = await request.result;
 
-    if (HasFailed(file)){
+    if (HasFailed(file)) {
       closeDialog();
       return this.errorService.showFailure(file, this.logger);
     }

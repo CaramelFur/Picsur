@@ -3,7 +3,7 @@ import ms from 'ms';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import {
   FileType,
-  SupportedFileTypeCategory
+  SupportedFileTypeCategory,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
