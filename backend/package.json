@@ -22,7 +22,7 @@
     "purge": "rm -rf dist && rm -rf node_modules"
   },
   "dependencies": {
-    "@fastify/helmet": "^10.0.0",
+    "@fastify/helmet": "^10.0.1",
     "@fastify/multipart": "^7.2.0",
     "@fastify/reply-from": "^8.3.0",
     "@fastify/static": "^6.5.0",
@@ -41,7 +41,7 @@
     "@nestjs/websockets": "^9.1.2",
     "bcrypt": "^5.0.1",
     "bmp-img": "^1.2.1",
-    "bull": "^4.9.0",
+    "bull": "^4.10.0",
     "cors": "^2.8.5",
     "file-type": "^18.0.0",
     "is-docker": "^3.0.0",
@@ -60,7 +60,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.7",
-    "sharp": "^0.31.0",
+    "semver": "^7.3.7",
+    "sharp": "^0.31.1",
     "stream-parser": "^0.3.1",
     "thunks": "^4.9.6",
     "typeorm": "0.3.10",
@@ -68,22 +69,23 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
-    "@nestjs/cli": "^9.1.3",
+    "@nestjs/cli": "^9.1.4",
     "@nestjs/schematics": "^9.0.3",
     "@nestjs/testing": "^9.1.2",
     "@types/bcrypt": "^5.0.0",
     "@types/bull": "^3.15.9",
     "@types/cors": "^2.8.12",
     "@types/multer": "^1.4.7",
-    "@types/node": "^18.7.22",
-    "@types/passport-jwt": "^3.0.6",
+    "@types/node": "^18.7.23",
+    "@types/passport-jwt": "^3.0.7",
     "@types/passport-local": "^1.0.34",
     "@types/passport-strategy": "^0.2.35",
+    "@types/semver": "^7.3.12",
     "@types/sharp": "^0.31.0",
     "@types/supertest": "^2.0.12",
     "@types/uuid": "^8.3.4",
-    "@typescript-eslint/eslint-plugin": "^5.38.0",
-    "@typescript-eslint/parser": "^5.38.0",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -92,6 +94,6 @@
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
-    "typescript": "4.8.3"
+    "typescript": "4.8.4"
   }
 }

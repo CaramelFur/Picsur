@@ -7,10 +7,10 @@
     "frontend"
   ],
   "scripts": {
-    "devdb:start": "docker-compose -f ./support/dev.docker-compose.yml up -d",
+    "devdb:up": "docker-compose -f ./support/dev.docker-compose.yml up -d",
     "devdb:stop": "docker-compose -f ./support/dev.docker-compose.yml down",
     "devdb:restart": "docker-compose -f ./support/dev.docker-compose.yml restart",
-    "devdb:remove": "docker-compose -f ./support/dev.docker-compose.yml down --volumes",
+    "devdb:down": "docker-compose -f ./support/dev.docker-compose.yml down --volumes",
     "build": "./support/build.sh",
     "setversion": "./support/setversion.sh",
     "purge": "rm -rf ./node_modules",

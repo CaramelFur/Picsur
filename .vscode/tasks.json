@@ -55,7 +55,7 @@
     {
       "type": "shell",
       "label": "Start postgres",
-      "command": "yarn devdb:start",
+      "command": "yarn devdb:up",
       "options": {
         "cwd": "${cwd}",
         "shell": {
