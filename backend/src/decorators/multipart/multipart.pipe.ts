@@ -39,11 +39,12 @@ export class MultiPartPipe implements PipeTransform {
     // Fetch all fields from the request
     let fields: MultipartFields | null = null;
     try {
-      fields = (
-        await req.file({
-          limits: this.multipartConfigService.getLimits(),
-        })
-      ).fields;
+      fields =
+        (
+          await req.file({
+            limits: this.multipartConfigService.getLimits(),
+          })
+        )?.fields ?? null;
     } catch (e) {
       this.logger.warn(e);
     }
