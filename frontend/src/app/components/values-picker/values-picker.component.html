@@ -1,6 +1,6 @@
 <mat-form-field class="value-picker" appearance="outline" color="accent">
   <mat-label>{{ nameCapMul }}</mat-label>
-  <mat-chip-list #chipList>
+  <mat-chip-grid #chipList>
     <mat-chip
       *ngFor="let item of this.myControl.value"
       [removable]="!isDisabled(item)"
@@ -23,7 +23,7 @@
       autocorrect="off"
       autocapitalize="none"
     />
-  </mat-chip-list>
+  </mat-chip-grid>
   <mat-autocomplete
     #auto="matAutocomplete"
     (optionSelected)="addItemSelect($event)"

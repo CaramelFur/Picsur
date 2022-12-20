@@ -56,9 +56,9 @@
 
   <mat-menu #menu="matMenu" xPosition="before">
     <ng-template matMenuContent>
-      <span mat-menu-item disabled>
-        <div class="centered">
-          <h2>{{ user?.username }}</h2>
+      <span>
+        <div class="menu-username center-horizontally">
+          <h2 class="mat-typography">{{ user?.username }}</h2>
         </div>
       </span>
       <button *ngIf="canUpload" mat-menu-item (click)="doImages()">

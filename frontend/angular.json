@@ -21,7 +21,7 @@
       "sourceRoot": "src",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
@@ -44,10 +44,7 @@
               "moment"
             ],
             "optimization": true,
-            "webWorkerTsConfig": "tsconfig.worker.json",
-            "customWebpackConfig": {
-              "path": "./custom-webpack.config.js"
-            }
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -102,6 +99,5 @@
         }
       }
     }
-  },
-  "defaultProject": "picsur-frontend"
+  }
 }

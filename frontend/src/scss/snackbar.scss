@@ -1,49 +1,57 @@
 .snackbar {
-  background: #272727;
-  color: white;
+  & .mdc-snackbar__surface {
+    background: #272727;
+    & .mdc-snackbar__label {
+      color: white;
+    }
+  }
 
-  &.snack-success {
+  &.snack-success .mdc-snackbar__surface {
     background: #274e29;
   }
 
-  &.snack-error {
+  &.snack-error .mdc-snackbar__surface {
     background: #761919;
   }
 
-  &.snack-warning {
+  &.snack-warning .mdc-snackbar__surface {
     background: #934d06;
   }
 
-  &.snack-info {
+  &.snack-info .mdc-snackbar__surface {
     background: #125e87;
   }
 
-  &.snack-default {
+  &.snack-default .mdc-snackbar__surface {
     background: #272727;
   }
 }
 
 .theme-alternate .snackbar {
-  background: #f8f9fa;
-  color: black;
+  & .mdc-snackbar__surface {
+    background: #f8f9fa;
+    & .mdc-snackbar__label {
+      color: black;
+    }
+  }
 
-  &.snack-success {
+  &.snack-success .mdc-snackbar__surface {
     background: #28a745;
   }
 
-  &.snack-error {
+  &.snack-error .mdc-snackbar__surface {
     background: #dc3545;
   }
 
-  &.snack-warning {
+  &.snack-warning .mdc-snackbar__surface {
     background: #ffc107;
   }
 
-  &.snack-info {
+  &.snack-info .mdc-snackbar__surface {
     background: #007bff;
   }
 
-  &.snack-default {
+  &.snack-default .mdc-snackbar__surface {
     background: #f8f9fa;
   }
 }

@@ -7,3 +7,17 @@ mat-form-field {
   display: flex;
   flex-direction: column;
 }
+
+mat-form-field::before {
+  content: '';
+  display: inline-block;
+  height: 16px;
+}
+
+h3 {
+  margin: 0;
+}
+
+mat-slide-toggle {
+  margin-block: 1rem;
+}

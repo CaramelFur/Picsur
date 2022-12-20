@@ -60,14 +60,14 @@
       <h3>Effective Permissions</h3>
     </div>
     <div class="col-12">
-      <mat-chip-list aria-label="User Permissions">
+      <mat-chip-listbox aria-label="User Permissions">
         <mat-chip
           *ngFor="let permission of getEffectivePermissions()"
           [disableRipple]="true"
         >
           {{ permission }}
         </mat-chip>
-      </mat-chip-list>
+      </mat-chip-listbox>
     </div>
   </div>
 

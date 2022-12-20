@@ -2,6 +2,8 @@
 @use '@angular/material' as mat;
 @use './material-theme-custom.scss' as custom-mat;
 
+mat.$theme-ignore-duplication-warnings: true;
+
 @include mat.core();
 
 $dark-primary-text: rgba(black, 0.87);
@@ -151,28 +153,33 @@ $mat-dark-theme-background-palette: (
 );
 
 $mat-theme: (
-  primary: $picsur-primary,
-  accent: $picsur-accent,
-  warn: $picsur-warn,
-  is-dark: true,
-  background: $mat-dark-theme-background-palette,
-  foreground: $mat-dark-theme-foreground-palette,
+  color: (
+    primary: $picsur-primary,
+    accent: $picsur-accent,
+    warn: $picsur-warn,
+    background: $mat-dark-theme-background-palette,
+    foreground: $mat-dark-theme-foreground-palette,
+  ),
 );
 
-$mat-theme-light: (
-  primary: $picsur-primary,
-  accent: $picsur-accent,
-  warn: $picsur-warn,
-  is-dark: false,
-  background: $mat-light-theme-background-palette,
-  foreground: $mat-light-theme-foreground-palette,
+$mat-theme-light: mat.define-light-theme(
+  (
+    color: (
+      primary: $picsur-primary,
+      accent: $picsur-accent,
+      warn: $picsur-warn,
+      background: $mat-light-theme-background-palette,
+      foreground: $mat-light-theme-foreground-palette,
+    ),
+  )
 );
 
 @include mat.all-component-themes($mat-theme);
+@include mat.all-component-typographies($mat-theme);
 @include custom-mat.custom-material($mat-theme);
 
 .theme-alternate {
-  @include mat.all-component-themes($mat-theme-light);
+  @include mat.all-component-colors($mat-theme-light);
   @include custom-mat.custom-material($mat-theme-light);
 }
 
