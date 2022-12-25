@@ -1,9 +1,8 @@
-import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { LOCATION, NAVIGATOR, WINDOW } from '@ng-web-apis/common';
-import { Logger } from '../logger/logger.service';
+import { NAVIGATOR } from '@ng-web-apis/common';
 import * as ackee from 'ackee-tracker';
 import { InfoService } from '../api/info.service';
+import { Logger } from '../logger/logger.service';
 
 @Injectable({
   providedIn: 'root',
