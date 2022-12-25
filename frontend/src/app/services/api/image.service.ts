@@ -125,8 +125,9 @@ export class ImageService {
 
   // Non api calls
 
-  public GetImageURL(image: string, filetype: string | null): string {
-    const baseURL = this.infoService.getHostname();
+  // Use for native images
+  public GetImageURL(image: string, filetype: string | null, allowOverride = false): string {
+    const baseURL = this.infoService.getHostname(allowOverride);
     const extension = FileType2Ext(filetype ?? '');
 
     return `${baseURL}/i/${image}${
@@ -134,12 +135,23 @@ export class ImageService {
     }`;
   }
 
+  // Use for user facing urls
+  public CreateImageLinks(imageURL: string): ImageLinks {
+    return {
+      source: imageURL,
+      markdown: `![image](${imageURL})`,
+      html: `<img src="${imageURL}" alt="image">`,
+      rst: `.. image:: ${imageURL}`,
+      bbcode: `[img]${imageURL}[/img]`,
+    };
+  }
+
   public GetImageURLCustomized(
     image: string,
     filetype: string | null,
     options: ImageRequestParams,
   ): string {
-    const baseURL = this.GetImageURL(image, filetype);
+    const baseURL = this.GetImageURL(image, filetype, true);
     const betterOptions = ImageRequestParams.zodSchema.safeParse(options);
 
     if (!betterOptions.success) return baseURL;
@@ -169,20 +181,10 @@ export class ImageService {
     return baseURL + '?' + queryParams.join('&');
   }
 
-  public CreateImageLinks(imageURL: string): ImageLinks {
-    return {
-      source: imageURL,
-      markdown: `![image](${imageURL})`,
-      html: `<img src="${imageURL}" alt="image">`,
-      rst: `.. image:: ${imageURL}`,
-      bbcode: `[img]${imageURL}[/img]`,
-    };
-  }
-
   public CreateImageLinksFromID(
     imageID: string,
     mime: string | null,
   ): ImageLinks {
-    return this.CreateImageLinks(this.GetImageURL(imageID, mime));
+    return this.CreateImageLinks(this.GetImageURL(imageID, mime, true));
   }
 }

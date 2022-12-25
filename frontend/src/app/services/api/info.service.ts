@@ -7,6 +7,7 @@ import { BehaviorSubject, filter, Observable, take } from 'rxjs';
 import pkg from '../../../../package.json';
 import { ServerInfo } from '../../models/dto/server-info.dto';
 import { Logger } from '../logger/logger.service';
+import { InfoStorageService } from '../storage/info-storage.service';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -23,21 +24,16 @@ export class InfoService {
     return this.infoSubject.value;
   }
 
-  private infoSubject = new BehaviorSubject<ServerInfo>(new ServerInfo());
+  private infoSubject = new BehaviorSubject<ServerInfo>(
+    this.infoStorage.get() ?? new ServerInfo(),
+  );
 
   constructor(
-    private readonly api: ApiService,
     @Inject(LOCATION) private readonly location: Location,
+    private readonly api: ApiService,
+    private readonly infoStorage: InfoStorageService,
   ) {
-    this.pollInfo().catch((e) => this.logger.warn(e));
-  }
-
-  public async pollInfo(): AsyncFailable<ServerInfo> {
-    const response = await this.api.get(InfoResponse, '/api/info');
-    if (HasFailed(response)) return response;
-
-    this.infoSubject.next(response);
-    return response;
+    this.updateInfo().catch((e) => this.logger.warn(e));
   }
 
   public async getLoadedSnapshot(): Promise<ServerInfo> {
@@ -58,12 +54,14 @@ export class InfoService {
     return pkg.version;
   }
 
-  public getHostname(): string {
-    // const info = await this.getLoadedSnapshot();
+  public getHostname(allowOverride = false): string {
+    if (allowOverride) {
+      const info = this.snapshot;
 
-    // if (info.host_override !== undefined) {
-    //   return info.host_override;
-    // }
+      if (info.host_override !== undefined) {
+        return info.host_override;
+      }
+    }
 
     return this.location.protocol + '//' + this.location.host;
   }
@@ -71,7 +69,7 @@ export class InfoService {
   // If either version starts with 0. it has to be exactly the same
   // If both versions start with something else, they have to match the first part
   public async isCompatibleWithServer(): AsyncFailable<boolean> {
-    const info = await this.pollInfo();
+    const info = await this.getLoadedSnapshot();
     if (HasFailed(info)) return info;
 
     const serverVersion = info.version;
@@ -100,5 +98,14 @@ export class InfoService {
 
   public isLoaded(): boolean {
     return this.snapshot.version !== '0.0.0';
+  }
+
+  private async updateInfo(): AsyncFailable<ServerInfo> {
+    const response = await this.api.get(InfoResponse, '/api/info');
+    if (HasFailed(response)) return response;
+
+    this.infoSubject.next(response);
+    this.infoStorage.set(response);
+    return response;
   }
 }

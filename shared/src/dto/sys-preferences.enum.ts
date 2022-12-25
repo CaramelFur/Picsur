@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { HostNameRegex, URLRegex } from '../util/common-regex';
+import { URLRegex } from '../util/common-regex';
 import { IsEntityID } from '../validators/entity-id.validator';
 import { IsValidMS } from '../validators/ms.validator';
 import { IsPosInt } from '../validators/positive-int.validator';
@@ -57,10 +57,7 @@ export const SysPreferenceValueTypes: {
 export const SysPreferenceValidators: {
   [key in SysPreference]: z.ZodTypeAny;
 } = {
-  [SysPreference.HostOverride]: z
-    .string()
-    .regex(HostNameRegex)
-    .or(z.literal('')),
+  [SysPreference.HostOverride]: z.string().regex(URLRegex).or(z.literal('')),
 
   [SysPreference.JwtSecret]: z.boolean(),
   [SysPreference.JwtExpiresIn]: IsValidMS(),
