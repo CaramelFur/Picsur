@@ -59,7 +59,7 @@ Every featured marked here should work in the latest release.
 - [x] Correct previews on chats
 - [x] Expiring images
 - [x] ShareX endpoint
-- [x] Arm64 image
+- [x] ARM64 and AMD64 Docker image
 
 - [ ] White mode
 - [ ] Public gallery
