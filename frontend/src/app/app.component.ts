@@ -10,6 +10,7 @@ import {
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { RouteTransitionAnimations } from './app.animation';
 import { PRouteData } from './models/dto/picsur-routes.dto';
+import { UsageService } from './services/usage/usage.service';
 import { BootstrapService } from './util/bootstrap.service';
 
 @Component({
@@ -33,7 +34,10 @@ export class AppComponent implements OnInit {
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly bootstrapService: BootstrapService,
-  ) {}
+    usageService: UsageService,
+  ) {
+    usageService;
+  }
 
   public getRouteAnimData() {
     // Everyone is doing shit with the activated route

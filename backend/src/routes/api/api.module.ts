@@ -4,6 +4,7 @@ import { ExperimentModule } from './experiment/experiment.module';
 import { InfoModule } from './info/info.module';
 import { PrefModule } from './pref/pref.module';
 import { RolesApiModule } from './roles/roles.module';
+import { UsageApiModule } from './usage/usage.module';
 import { UserApiModule } from './user/user.module';
 
 @Module({
@@ -14,6 +15,7 @@ import { UserApiModule } from './user/user.module';
     InfoModule,
     RolesApiModule,
     ApiKeysModule,
+    UsageApiModule,
   ],
 })
 export class PicsurApiModule {}

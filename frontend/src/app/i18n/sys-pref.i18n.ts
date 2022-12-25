@@ -13,4 +13,7 @@ export const SysPreferenceFriendlyNames: {
 
   [SysPreference.ConversionTimeLimit]: 'Transcode/Edit Time Limit',
   [SysPreference.ConversionMemoryLimit]: 'Transcode/Edit Memory Limit MB',
+
+  [SysPreference.TrackingUrl]: 'Ackee tracking URL',
+  [SysPreference.TrackingId]: 'Ackee trackign website ID',
 };

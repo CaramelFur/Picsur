@@ -50,6 +50,11 @@ export class SuccessInterceptor<T> implements NestInterceptor {
   }
 
   private validate(context: ExecutionContext, data: unknown): unknown {
+    const canReturnAnything =
+      (this.reflector.get('noreturns', context.getHandler()) ?? false) === true;
+
+    if (canReturnAnything) return data;
+
     const schemaStatic = this.reflector.get<ZodDtoStatic>(
       'returns',
       context.getHandler(),
