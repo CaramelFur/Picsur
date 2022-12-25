@@ -6,6 +6,10 @@ import { SettingsSysprefRoutingModule } from './settings-sys-pref.routing.module
 
 @NgModule({
   declarations: [SettingsSysprefComponent],
-  imports: [CommonModule, SettingsSysprefRoutingModule, PrefOptionModule],
+  imports: [
+    CommonModule,
+    SettingsSysprefRoutingModule,
+    PrefOptionModule,
+  ],
 })
 export default class SettingsSysprefRouteModule {}

@@ -1,14 +1,26 @@
 import { Component } from '@angular/core';
 import { DecodedPref } from 'picsur-shared/dist/dto/preferences.dto';
 import { Observable } from 'rxjs';
-import { UsrPreferenceFriendlyNames } from 'src/app/i18n/usr-pref.i18n';
+import {
+  UsrPreferenceFriendlyNames,
+  UsrPreferenceHelpText
+} from 'src/app/i18n/usr-pref.i18n';
 import { UsrPrefService } from 'src/app/services/api/usr-pref.service';
 
 @Component({
   templateUrl: './settings-general.component.html',
 })
 export class SettingsGeneralComponent {
-  public translator = UsrPreferenceFriendlyNames;
+  private readonly translator = UsrPreferenceFriendlyNames;
+  private readonly helpTranslator = UsrPreferenceHelpText;
+
+  public getName(key: string) {
+    return (this.translator as any)[key] ?? key;
+  }
+
+  public getHelpText(key: string) {
+    return (this.helpTranslator as any)[key] ?? '';
+  }
 
   preferences: Observable<DecodedPref[]>;
 
