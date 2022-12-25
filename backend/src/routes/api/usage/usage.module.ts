@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UsageManagerModule } from '../../../managers/usage/usage.module';
+import { LateConfigModule } from '../../../config/late/late-config.module';
 import { UsageController } from './usage.controller';
 
 @Module({
-  imports: [UsageManagerModule],
+  imports: [LateConfigModule],
   controllers: [UsageController],
 })
 export class UsageApiModule {}

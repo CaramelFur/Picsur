@@ -14,9 +14,9 @@ import { TrackingState } from 'picsur-shared/dist/dto/tracking-state.enum';
 import { FallbackIfFailed } from 'picsur-shared/dist/types';
 import { HostConfigService } from '../../../config/early/host.config.service';
 import { InfoConfigService } from '../../../config/late/info.config.service';
+import { UsageConfigService } from '../../../config/late/usage.config.service';
 import { NoPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
-import { UsageService } from '../../../managers/usage/usage.service';
 import { PermissionsList } from '../../../models/constants/permissions.const';
 
 @Controller('api/info')
@@ -25,7 +25,7 @@ export class InfoController {
   constructor(
     private readonly hostConfig: HostConfigService,
     private readonly infoConfig: InfoConfigService,
-    private readonly usageService: UsageService,
+    private readonly usageService: UsageConfigService,
   ) {}
 
   @Get()

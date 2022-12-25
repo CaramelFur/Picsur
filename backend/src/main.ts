@@ -1,13 +1,12 @@
 import fastifyHelmet from '@fastify/helmet';
 import multipart from '@fastify/multipart';
 import fastifyReplyFrom from '@fastify/reply-from';
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
-  NestFastifyApplication,
+  NestFastifyApplication
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
-import { UserDbService } from './collections/user-db/user-db.service';
 import { HostConfigService } from './config/early/host.config.service';
 import { MainExceptionFilter } from './layers/exception/exception.filter';
 import { SuccessInterceptor } from './layers/success/success.interceptor';

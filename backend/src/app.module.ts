@@ -9,6 +9,7 @@ import { PicsurLayersModule } from './layers/PicsurLayers.module';
 import { PicsurLoggerModule } from './logger/logger.module';
 import { AuthManagerModule } from './managers/auth/auth.module';
 import { DemoManagerModule } from './managers/demo/demo.module';
+import { UsageManagerModule } from './managers/usage/usage.module';
 import { PicsurRoutesModule } from './routes/routes.module';
 
 const mainCorsConfig = cors({
@@ -44,6 +45,7 @@ const imageCorsOverride = (
     }),
     DatabaseModule,
     AuthManagerModule,
+    UsageManagerModule,
     DemoManagerModule,
     PicsurRoutesModule,
     PicsurLayersModule,

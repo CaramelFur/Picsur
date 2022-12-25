@@ -5,6 +5,7 @@ import { EarlyConfigModule } from '../early/early-config.module';
 import { EarlyJwtConfigService } from '../early/early-jwt.config.service';
 import { InfoConfigService } from './info.config.service';
 import { JwtConfigService } from './jwt.config.service';
+import { UsageConfigService } from './usage.config.service';
 
 // This module contains all configservices that depend on the syspref module
 // The syspref module can only be used when connected to the database
@@ -13,8 +14,8 @@ import { JwtConfigService } from './jwt.config.service';
 
 @Module({
   imports: [EarlyConfigModule, PreferenceDbModule],
-  providers: [JwtConfigService, InfoConfigService],
-  exports: [EarlyConfigModule, JwtConfigService, InfoConfigService],
+  providers: [JwtConfigService, InfoConfigService, UsageConfigService],
+  exports: [EarlyConfigModule, JwtConfigService, InfoConfigService, UsageConfigService],
 })
 export class LateConfigModule implements OnModuleInit {
   private readonly logger = new Logger(LateConfigModule.name);
