@@ -53,8 +53,8 @@ export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
       return;
     }
 
-    const after_ms = ms(remove_derivatives_after);
-    if (after_ms === 0) {
+    const after_ms = ms(remove_derivatives_after as any);
+    if (isNaN(after_ms) || after_ms === 0) {
       this.logger.log('remove_derivatives_after is 0, skipping cron');
       return;
     }
