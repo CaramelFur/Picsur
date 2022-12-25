@@ -176,6 +176,8 @@ $mat-theme-light: mat.define-light-theme(
 
 @include mat.all-component-themes($mat-theme);
 @include mat.all-component-typographies($mat-theme);
+@include mat.legacy-slide-toggle-theme($mat-theme);
+@include mat.slide-toggle-theme($mat-theme);
 @include custom-mat.custom-material($mat-theme);
 
 .theme-alternate {

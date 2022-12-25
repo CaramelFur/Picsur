@@ -1,5 +1,5 @@
 import { Directive, Host, Optional } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { MatMiniFabButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 
 @Directive({
@@ -8,7 +8,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 export class SpeedDialOptionDirective {
   constructor(
     @Host() @Optional() tooltip?: MatTooltip,
-    @Host() @Optional() button?: MatButton,
+    @Host() @Optional() button?: MatMiniFabButton,
   ) {
     if (tooltip) tooltip.position = 'left';
     if (button) button.color = 'primary';
