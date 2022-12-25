@@ -1,17 +1,12 @@
 mat-form-field {
   min-width: 50%;
+  margin-block: .5rem;
 }
 
 .y-center {
   justify-content: center;
   display: flex;
   flex-direction: column;
-}
-
-mat-form-field::before {
-  content: '';
-  display: inline-block;
-  height: 16px;
 }
 
 h3 {

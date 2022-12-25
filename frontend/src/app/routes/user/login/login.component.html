@@ -13,7 +13,7 @@
       </div>
 
       <div class="col-12 py-2">
-        <mat-form-field appearance="outline" color="accent">
+        <mat-form-field appearance="outline">
           <mat-label>Username</mat-label>
           <input
             matInput
@@ -31,7 +31,7 @@
       </div>
 
       <div class="col-12 py-2">
-        <mat-form-field appearance="outline" color="accent">
+        <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
           <input
             matInput
@@ -49,7 +49,7 @@
       <div class="col-12 py-2">
         <button
           mat-raised-button
-          color="accent"
+          color="primary"
           class="mx-2"
           type="submit"
           [disabled]="loading"
@@ -59,7 +59,7 @@
         <button
           *ngIf="showRegister"
           mat-flat-button
-          color="primary"
+          color="accent"
           class="mx-2"
           (click)="onRegister()"
           type="button"

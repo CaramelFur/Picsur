@@ -1,5 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatFormFieldAppearance, SubscriptSizing } from '@angular/material/form-field';
 import { Fail, FT } from 'picsur-shared/dist/types';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { ErrorService } from 'src/app/util/error-manager/error.service';
@@ -18,6 +19,10 @@ export class CopyFieldComponent {
 
   @Input() showHideButton: boolean = false;
   @Input() hidden: boolean = false;
+
+  @Input() color: 'primary' | 'accent' | 'warn' = 'primary';
+  @Input() appearance: MatFormFieldAppearance = 'outline';
+  @Input() subscriptSizing: SubscriptSizing = 'fixed';
 
   @Output('copy') onCopy = new EventEmitter<string>();
   @Output('hide') onHide = new EventEmitter<boolean>();

@@ -7,11 +7,7 @@
   </p>
 
   <div class="row">
-    <mat-form-field
-      class="col-12 col-md-6 col-xl-4"
-      appearance="outline"
-      color="accent"
-    >
+    <mat-form-field class="col-12 col-md-6 col-xl-4" appearance="outline">
       <mat-label>Api Key</mat-label>
       <mat-select
         msInfiniteScroll
@@ -25,11 +21,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field
-      class="col-12 col-md-3 col-xl-2"
-      appearance="outline"
-      color="accent"
-    >
+    <mat-form-field class="col-12 col-md-3 col-xl-2" appearance="outline">
       <mat-label>Image Format</mat-label>
       <mat-select [(value)]="selectedFormat">
         <mat-option *ngFor="let format of formatOptions" [value]="format.key">
@@ -42,8 +34,8 @@
   <div class="row">
     <div class="col">
       <button
+        color="primary"
         mat-raised-button
-        color="accent"
         [disabled]="key === null"
         (click)="onExport()"
       >
@@ -57,12 +49,12 @@
   <h1>No API keys available</h1>
   <p>You need to have at least one API key to create a ShareX target config.</p>
 
-  <button mat-raised-button color="accent" routerLink="/settings/apikeys">
+  <button color="primary" mat-raised-button routerLink="/settings/apikeys">
     Create an API key here
   </button>
 </div>
 
 <div *ngIf="available < 0">
   <h1>Loading</h1>
-  <mat-spinner color="accent"></mat-spinner>
+  <mat-spinner></mat-spinner>
 </div>

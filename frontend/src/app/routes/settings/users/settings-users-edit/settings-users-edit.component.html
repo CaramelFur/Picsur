@@ -1,5 +1,5 @@
 <ng-container *ngIf="editing">
-  <h1>Editing {{ model.usernameValue }}</h1>
+  <h1>Editing user "{{ model.usernameValue }}"</h1>
 </ng-container>
 <ng-container *ngIf="adding">
   <h1>Add new user</h1>
@@ -8,7 +8,7 @@
 <form (ngSubmit)="updateUser()">
   <div class="row" *ngIf="adding">
     <div class="col-lg-6 col-12">
-      <mat-form-field appearance="outline" color="accent">
+      <mat-form-field appearance="outline">
         <mat-label>Username</mat-label>
         <input
           matInput
@@ -28,7 +28,7 @@
 
   <div class="row">
     <div class="col-lg-6 col-12">
-      <mat-form-field appearance="outline" color="accent">
+      <mat-form-field appearance="outline">
         <mat-label>{{ editing ? 'New Password' : 'Password' }}</mat-label>
         <input
           matInput
@@ -73,14 +73,14 @@
 
   <div class="row">
     <div class="col-12 py-4">
-      <button mat-raised-button color="accent" type="submit">
+      <button mat-raised-button type="submit" color="primary">
         {{ editing ? 'UPDATE' : 'ADD' }}
       </button>
 
       <button
         mat-raised-button
         class="ms-2"
-        color="primary"
+        color="accent"
         type="button"
         (click)="cancel()"
       >

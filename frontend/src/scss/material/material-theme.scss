@@ -6,9 +6,6 @@ mat.$theme-ignore-duplication-warnings: true;
 
 @include mat.core();
 
-$dark-primary-text: rgba(black, 0.87);
-$light-primary-text: white;
-
 $picsur-primary: mat.define-palette(mat.$green-palette, 600, 100, 900);
 $picsur-accent: mat.define-palette(mat.$blue-grey-palette, 600, 200, 800);
 $picsur-warn: mat.define-palette(mat.$red-palette);
@@ -132,10 +129,11 @@ $mat-theme: (
     warn: $picsur-warn,
     background: $mat-dark-theme-background-palette,
     foreground: $mat-dark-theme-foreground-palette,
+    is-dark: true,
   ),
 );
 
-$mat-theme-light: mat.define-light-theme(
+$mat-theme-light: (
   (
     color: (
       primary: $picsur-primary,
@@ -151,10 +149,10 @@ $mat-theme-light: mat.define-light-theme(
 @include mat.all-component-typographies($mat-theme);
 @include custom-mat.custom-material($mat-theme);
 
-.theme-alternate {
-  @include mat.all-component-colors($mat-theme-light);
-  @include custom-mat.custom-material($mat-theme-light);
-}
+// .theme-alternate {
+//   @include mat.all-component-colors($mat-theme-light);
+//   @include custom-mat.custom-material($mat-theme-light);
+// }
 
 .mat-standard-chip {
   padding: 0.5em 0.85em;

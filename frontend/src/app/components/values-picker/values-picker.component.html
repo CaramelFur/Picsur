@@ -1,7 +1,7 @@
-<mat-form-field class="value-picker" appearance="outline" color="accent">
+<mat-form-field class="value-picker" appearance="outline">
   <mat-label>{{ nameCapMul }}</mat-label>
   <mat-chip-grid #chipList>
-    <mat-chip
+    <mat-chip-row
       *ngFor="let item of this.myControl.value"
       [removable]="!isDisabled(item)"
       [disabled]="isDisabled(item)"
@@ -11,7 +11,7 @@
       <button *ngIf="!isDisabled(item)" matChipRemove>
         <mat-icon fontSet="material-icons-outlined">cancel</mat-icon>
       </button>
-    </mat-chip>
+    </mat-chip-row>
     <input
       placeholder="Add {{ name }}..."
       [formControl]="inputControl"

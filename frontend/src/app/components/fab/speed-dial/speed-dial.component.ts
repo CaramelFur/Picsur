@@ -13,7 +13,7 @@ export class SpeedDialComponent {
 
   @Input('icon') icon: string = 'add';
   @Input('icon-hover') iconHover: string = 'close';
-  @Input('color') color: string = 'accent';
+  @Input('color') color: string = 'primary';
   @Input('open-on-hover') openOnHover: boolean = false;
   @Input('tooltip') tooltip: string;
 

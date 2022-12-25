@@ -5,7 +5,7 @@
         <h1>Edit Image</h1>
       </div>
       <div class="col-12">
-        <mat-form-field appearance="outline" color="accent">
+        <mat-form-field appearance="outline">
           <mat-label>Title</mat-label>
           <input
             matInput
@@ -33,8 +33,10 @@
       </div>
     </div>
     <div class="dialog-buttons">
-      <button type="button" mat-flat-button (click)="close()">CANCEL</button>
-      <button type="submit" mat-raised-button color="accent">SAVE</button>
+      <button type="button" mat-flat-button (click)="close()" color="accent">
+        CANCEL
+      </button>
+      <button type="submit" mat-raised-button color="primary">SAVE</button>
     </div>
   </form>
 </div>

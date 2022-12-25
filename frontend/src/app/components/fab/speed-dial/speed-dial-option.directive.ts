@@ -11,6 +11,6 @@ export class SpeedDialOptionDirective {
     @Host() @Optional() button?: MatMiniFabButton,
   ) {
     if (tooltip) tooltip.position = 'left';
-    if (button) button.color = 'primary';
+    if (button) button.color = 'accent';
   }
 }
