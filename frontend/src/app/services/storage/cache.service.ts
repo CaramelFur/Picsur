@@ -41,7 +41,9 @@ export class CacheService {
     const safeKey = this.transformKey(key);
 
     try {
-      const data: dataWrapper<T> = JSON.parse(this.storage.getItem(safeKey) ?? '');
+      const data: dataWrapper<T> = JSON.parse(
+        this.storage.getItem(safeKey) ?? '',
+      );
       if (data && data.data && data.expires > Date.now()) {
         return data.data;
       }

@@ -1,6 +1,9 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatFormFieldAppearance, SubscriptSizing } from '@angular/material/form-field';
+import {
+  MatFormFieldAppearance,
+  SubscriptSizing,
+} from '@angular/material/form-field';
 import { Fail, FT } from 'picsur-shared/dist/types';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { ErrorService } from 'src/app/util/error-manager/error.service';
