@@ -8,4 +8,4 @@ import { ErrorsRoutingModule } from './errors.routing.module';
   declarations: [E404Component, E401Component],
   imports: [CommonModule, ErrorsRoutingModule],
 })
-export default  class ErrorsRouteModule {}
+export default class ErrorsRouteModule {}

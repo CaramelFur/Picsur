@@ -3,7 +3,7 @@ import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import {
   DecodedPref,
-  PrefValueType
+  PrefValueType,
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
 import { filter } from 'rxjs';

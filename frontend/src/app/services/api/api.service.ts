@@ -7,7 +7,7 @@ import {
   Fail,
   FT,
   HasFailed,
-  HasSuccess
+  HasSuccess,
 } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { ParseMime2FileType } from 'picsur-shared/dist/util/parse-mime';

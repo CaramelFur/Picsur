@@ -15,7 +15,12 @@ import { UsageConfigService } from './usage.config.service';
 @Module({
   imports: [EarlyConfigModule, PreferenceDbModule],
   providers: [JwtConfigService, InfoConfigService, UsageConfigService],
-  exports: [EarlyConfigModule, JwtConfigService, InfoConfigService, UsageConfigService],
+  exports: [
+    EarlyConfigModule,
+    JwtConfigService,
+    InfoConfigService,
+    UsageConfigService,
+  ],
 })
 export class LateConfigModule implements OnModuleInit {
   private readonly logger = new Logger(LateConfigModule.name);

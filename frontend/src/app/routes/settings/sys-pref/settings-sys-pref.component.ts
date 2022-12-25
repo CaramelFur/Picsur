@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { DecodedPref } from 'picsur-shared/dist/dto/preferences.dto';
 import {
   SysPreference,
-  SysPreferenceValidators
+  SysPreferenceValidators,
 } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { map, Observable } from 'rxjs';
 import { SysPreferenceUI } from 'src/app/i18n/sys-pref.i18n';
