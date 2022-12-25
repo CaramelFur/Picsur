@@ -5,6 +5,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { EarlyConfigModule } from './config/early/early-config.module';
 import { ServeStaticConfigService } from './config/early/serve-static.config.service';
 import { DatabaseModule } from './database/database.module';
+import { PicsurLayersModule } from './layers/PicsurLayers.module';
 import { PicsurLoggerModule } from './logger/logger.module';
 import { AuthManagerModule } from './managers/auth/auth.module';
 import { DemoManagerModule } from './managers/demo/demo.module';
@@ -45,6 +46,7 @@ const imageCorsOverride = (
     AuthManagerModule,
     DemoManagerModule,
     PicsurRoutesModule,
+    PicsurLayersModule,
   ],
 })
 export class AppModule implements NestModule {
