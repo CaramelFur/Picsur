@@ -17,8 +17,8 @@ type EnumValue<E> = E[keyof E];
 type PrefValueTypeType<E extends Enum> = {
   [key in EnumValue<E>]: PrefValueTypeStrings;
 };
-type EncodedPref = {
-  key: string;
+type EncodedPref<E extends Enum> = {
+  key: EnumValue<E>;
   value: string;
 };
 
@@ -32,7 +32,7 @@ export class PreferenceCommonService {
   // E is either the SysPreference or the UsrPreference enum
   // the pref value types is the object containing the type of each key in E
   public DecodePref<E extends Enum>(
-    preference: EncodedPref,
+    preference: EncodedPref<E>,
     prefType: E,
     prefValueTypes: PrefValueTypeType<E>,
   ): Failable<DecodedPref> {
@@ -69,7 +69,7 @@ export class PreferenceCommonService {
     value: PrefValueType,
     prefType: E,
     prefValueTypes: PrefValueTypeType<E>,
-  ): AsyncFailable<EncodedPref> {
+  ): AsyncFailable<EncodedPref<E>> {
     const validatedKey = this.validatePrefKey(key, prefType);
     if (HasFailed(validatedKey)) return validatedKey;
 

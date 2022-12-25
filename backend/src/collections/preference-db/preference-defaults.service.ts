@@ -15,14 +15,14 @@ export class PreferenceDefaultsService {
 
   constructor(private readonly jwtConfigService: EarlyJwtConfigService) {}
 
-  public readonly usrDefaults: {
-    [key in UsrPreference]: () => PrefValueType;
+  private readonly usrDefaults: {
+    [key in UsrPreference]: (() => PrefValueType) | PrefValueType;
   } = {
-    [UsrPreference.KeepOriginal]: () => false,
+    [UsrPreference.KeepOriginal]: false,
   };
 
-  public readonly sysDefaults: {
-    [key in SysPreference]: () => PrefValueType;
+  private readonly sysDefaults: {
+    [key in SysPreference]: (() => PrefValueType) | PrefValueType;
   } = {
     [SysPreference.JwtSecret]: () => {
       const envSecret = this.jwtConfigService.getJwtSecret();
@@ -37,16 +37,37 @@ export class PreferenceDefaultsService {
     },
     [SysPreference.JwtExpiresIn]: () =>
       this.jwtConfigService.getJwtExpiresIn() ?? '7d',
-    [SysPreference.BCryptStrength]: () => 12,
+    [SysPreference.BCryptStrength]: 10,
 
-    [SysPreference.RemoveDerivativesAfter]: () => '7d',
-    [SysPreference.SaveDerivatives]: () => true,
-    [SysPreference.AllowEditing]: () => true,
+    [SysPreference.RemoveDerivativesAfter]: '7d',
+    [SysPreference.SaveDerivatives]: true,
+    [SysPreference.AllowEditing]: true,
 
-    [SysPreference.ConversionTimeLimit]: () => '10s',
-    [SysPreference.ConversionMemoryLimit]: () => 512,
+    [SysPreference.ConversionTimeLimit]: '15s',
+    [SysPreference.ConversionMemoryLimit]: 512,
 
-    [SysPreference.TrackingUrl]: () => '',
-    [SysPreference.TrackingId]: () => '',
+    [SysPreference.EnableTracking]: false,
+    [SysPreference.TrackingUrl]: '',
+    [SysPreference.TrackingId]: '',
+
+    [SysPreference.EnableTelemetry]: true,
   };
+
+  public getSysDefault(pref: SysPreference): PrefValueType {
+    const value = this.sysDefaults[pref];
+    if (typeof value === 'function') {
+      return value();
+    } else {
+      return value;
+    }
+  }
+
+  public getUsrDefault(pref: UsrPreference): PrefValueType {
+    const value = this.usrDefaults[pref];
+    if (typeof value === 'function') {
+      return value();
+    } else {
+      return value;
+    }
+  }
 }
