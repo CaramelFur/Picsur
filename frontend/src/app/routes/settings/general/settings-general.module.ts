@@ -8,4 +8,4 @@ import { SettingsGeneralRoutingModule } from './settings-general.routing.module'
   declarations: [SettingsGeneralComponent],
   imports: [CommonModule, SettingsGeneralRoutingModule, PrefOptionModule],
 })
-export class SettingsGeneralRouteModule {}
+export default class SettingsGeneralRouteModule {}

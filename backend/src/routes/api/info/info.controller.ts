@@ -11,7 +11,7 @@ import {
   SupportedImageFileTypes,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { TrackingState } from 'picsur-shared/dist/dto/tracking-state.enum';
-import { ThrowIfFailed } from 'picsur-shared/dist/types';
+import { FallbackIfFailed } from 'picsur-shared/dist/types';
 import { HostConfigService } from '../../../config/early/host.config.service';
 import { NoPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
@@ -29,14 +29,17 @@ export class InfoController {
   @Get()
   @Returns(InfoResponse)
   async getInfo(): Promise<InfoResponse> {
-    const trackingID = ThrowIfFailed(await this.usageService.getTrackingID());
+    const trackingID = FallbackIfFailed(
+      await this.usageService.getTrackingID(),
+      null,
+    ) ?? undefined;
 
     return {
       demo: this.hostConfig.isDemo(),
       production: this.hostConfig.isProduction(),
       version: this.hostConfig.getVersion(),
       tracking: {
-        id: trackingID ?? undefined,
+        id: trackingID,
         state: TrackingState.Detailed,
       },
     };

@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
-import { NAVIGATOR } from '@ng-web-apis/common';
-import * as ackee from 'ackee-tracker';
-import { InfoService } from '../api/info.service';
+import { LOCATION, NAVIGATOR, WINDOW } from '@ng-web-apis/common';
 import { Logger } from '../logger/logger.service';
+import { InfoService } from '../api/info.service';
+import type { AckeeInstance } from 'ackee-tracker';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class UsageService {
   private doNotTrack = false;
   private SITE_ID = 'c0fa67c0-fb82-42a7-af7e-ef3df28adeb4';
 
-  private instance?: ackee.AckeeInstance;
+  private instance?: AckeeInstance;
 
   constructor(
     @Inject(NAVIGATOR) private readonly navigator: Navigator,
@@ -31,6 +31,8 @@ export class UsageService {
   //dev: boolean, detailed: boolean, id: string
   private async setup() {
     if (this.doNotTrack) return;
+
+    const ackee = await import('ackee-tracker');
 
     this.instance = ackee.create('/api/usage/report', {
       ignoreLocalhost: false,
