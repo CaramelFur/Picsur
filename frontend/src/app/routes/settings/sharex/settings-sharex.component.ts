@@ -7,6 +7,7 @@ import { HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { scan } from 'rxjs/operators';
 import { ApiKeysService } from 'src/app/services/api/apikeys.service';
+import { InfoService } from 'src/app/services/api/info.service';
 import { PermissionService } from 'src/app/services/api/permission.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { ErrorService } from 'src/app/util/error-manager/error.service';
@@ -41,6 +42,7 @@ export class SettingsShareXComponent implements OnInit {
   constructor(
     private readonly apikeysService: ApiKeysService,
     private readonly permissionService: PermissionService,
+    private readonly infoService: InfoService,
     private readonly utilService: UtilService,
     private readonly errorService: ErrorService,
   ) {}
@@ -66,7 +68,7 @@ export class SettingsShareXComponent implements OnInit {
     }
 
     const sharexConfig = BuildShareX(
-      this.utilService.getHost(),
+      this.infoService.getHostname(),
       this.key,
       '.' + ext,
       canUseDelete,

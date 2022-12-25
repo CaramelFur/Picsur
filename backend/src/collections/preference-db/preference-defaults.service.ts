@@ -24,6 +24,8 @@ export class PreferenceDefaultsService {
   private readonly sysDefaults: {
     [key in SysPreference]: (() => PrefValueType) | PrefValueType;
   } = {
+    [SysPreference.HostOverride]: '',
+
     [SysPreference.JwtSecret]: () => {
       const envSecret = this.jwtConfigService.getJwtSecret();
       if (envSecret) {

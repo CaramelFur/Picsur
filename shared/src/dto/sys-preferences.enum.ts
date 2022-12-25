@@ -1,13 +1,14 @@
-import { PrefValueTypeStrings } from './preferences.dto';
-import ms from 'ms';
-import { IsValidMS } from '../validators/ms.validator';
-import { URLRegex, UUIDRegex } from '../util/common-regex';
 import { z } from 'zod';
-import { IsPosInt } from '../validators/positive-int.validator';
+import { HostNameRegex, URLRegex } from '../util/common-regex';
 import { IsEntityID } from '../validators/entity-id.validator';
+import { IsValidMS } from '../validators/ms.validator';
+import { IsPosInt } from '../validators/positive-int.validator';
+import { PrefValueTypeStrings } from './preferences.dto';
 
 // This enum is only here to make accessing the values easier, and type checking in the backend
 export enum SysPreference {
+  HostOverride = 'host_override',
+
   JwtSecret = 'jwt_secret',
   JwtExpiresIn = 'jwt_expires_in',
   BCryptStrength = 'bcrypt_strength',
@@ -33,6 +34,8 @@ export const SysPreferenceList: string[] = Object.values(SysPreference);
 export const SysPreferenceValueTypes: {
   [key in SysPreference]: PrefValueTypeStrings;
 } = {
+  [SysPreference.HostOverride]: 'string',
+
   [SysPreference.JwtSecret]: 'string',
   [SysPreference.JwtExpiresIn]: 'string',
   [SysPreference.BCryptStrength]: 'number',
@@ -54,6 +57,11 @@ export const SysPreferenceValueTypes: {
 export const SysPreferenceValidators: {
   [key in SysPreference]: z.ZodTypeAny;
 } = {
+  [SysPreference.HostOverride]: z
+    .string()
+    .regex(HostNameRegex)
+    .or(z.literal('')),
+
   [SysPreference.JwtSecret]: z.boolean(),
   [SysPreference.JwtExpiresIn]: IsValidMS(),
 
@@ -66,8 +74,8 @@ export const SysPreferenceValidators: {
   [SysPreference.ConversionMemoryLimit]: IsPosInt(),
 
   [SysPreference.EnableTracking]: z.boolean(),
-  [SysPreference.TrackingUrl]: z.string().regex(URLRegex),
-  [SysPreference.TrackingId]: IsEntityID(),
+  [SysPreference.TrackingUrl]: z.string().regex(URLRegex).or(z.literal('')),
+  [SysPreference.TrackingId]: IsEntityID().or(z.literal('')),
 
   [SysPreference.EnableTelemetry]: z.boolean(),
 };

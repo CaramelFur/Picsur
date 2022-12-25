@@ -3,19 +3,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   DecodedSysPref,
   PrefValueType,
-  PrefValueTypeStrings,
+  PrefValueTypeStrings
 } from 'picsur-shared/dist/dto/preferences.dto';
 import {
   SysPreference,
   SysPreferenceList,
   SysPreferenceValidators,
-  SysPreferenceValueTypes,
+  SysPreferenceValueTypes
 } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
   ESysPreferenceBackend,
-  ESysPreferenceSchema,
+  ESysPreferenceSchema
 } from '../../database/entities/sys-preference.entity';
 import { MutexFallBack } from '../../util/mutex-fallback';
 import { PreferenceCommonService } from './preference-common.service';
@@ -155,6 +155,9 @@ export class SysPreferenceDbService {
     const valueValidated = SysPreferenceValidators[key as SysPreference].safeParse(
       value,
     );
+    if (!valueValidated.success) {
+      return Fail(FT.UsrValidation, undefined, valueValidated.error);
+    }
 
     let verifySysPreference = new ESysPreferenceBackend();
     verifySysPreference.key = validated.key;

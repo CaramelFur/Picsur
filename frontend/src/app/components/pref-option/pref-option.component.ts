@@ -1,15 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import {
   DecodedPref,
   PrefValueType
 } from 'picsur-shared/dist/dto/preferences.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
-import { Subject } from 'rxjs';
+import { filter } from 'rxjs';
 import { Required } from 'src/app/models/decorators/required.decorator';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { ErrorService } from 'src/app/util/error-manager/error.service';
 import { Throttle } from 'src/app/util/throttle';
+import { ZodTypeAny } from 'zod';
 
 @Component({
   selector: 'pref-option',
@@ -19,16 +21,28 @@ import { Throttle } from 'src/app/util/throttle';
 export class PrefOptionComponent implements OnInit {
   private readonly logger = new Logger(PrefOptionComponent.name);
 
-  @Input() @Required pref: DecodedPref;
+  public formControl = new FormControl<any>(undefined, {
+    updateOn: 'blur',
+    validators: this.syncValidator.bind(this),
+  });
+
+  private pref: DecodedPref;
+  @Input('pref') set prefSet(pref: DecodedPref) {
+    this.pref = pref;
+    this.formControl.setValue(pref.value);
+  }
+  get type() {
+    return this.pref.type;
+  }
+
   @Input('update') @Required updateFunction: (
     key: string,
     pref: PrefValueType,
   ) => AsyncFailable<any>;
+
   @Input() @Required name: string = '';
-
   @Input() helpText: string = '';
-
-  private updateSubject = new Subject<PrefValueType>();
+  @Input() validator?: ZodTypeAny = undefined;
 
   constructor(private readonly errorService: ErrorService) {}
 
@@ -36,44 +50,27 @@ export class PrefOptionComponent implements OnInit {
     this.subscribeUpdate();
   }
 
-  get valString(): string {
-    if (this.pref.type !== 'string') {
-      throw new Error('Not a string preference');
+  getErrorMessage() {
+    if (this.formControl.errors) {
+      const errors = this.formControl.errors;
+      if (errors['error']) {
+        return errors['error'];
+      }
+      return 'Invalid value';
     }
-    return this.pref.value as string;
+    return '';
   }
 
-  get valNumber(): number {
-    if (this.pref.type !== 'number') {
-      throw new Error('Not an int preference');
+  private syncValidator(control: AbstractControl): ValidationErrors | null {
+    if (!this.validator) return null;
+
+    const result = this.validator.safeParse(control.value);
+
+    if (!result.success) {
+      return { error: result.error.issues[0]?.message ?? 'Invalid value' };
     }
-    return this.pref.value as number;
-  }
 
-  get valBool(): boolean {
-    if (this.pref.type !== 'boolean') {
-      throw new Error('Not a boolean preference');
-    }
-    return this.pref.value as boolean;
-  }
-
-  update(value: any) {
-    this.updateSubject.next(value);
-  }
-
-  stringUpdateWrapper(e: Event) {
-    this.update((e.target as HTMLInputElement).value);
-  }
-
-  numberUpdateWrapper(e: Event) {
-    const value = (e.target as HTMLInputElement).valueAsNumber;
-    if (isNaN(value)) return;
-
-    this.update(value);
-  }
-
-  booleanUpdateWrapper(e: boolean) {
-    this.update(e);
+    return null;
   }
 
   private async updatePreference(value: PrefValueType) {
@@ -97,8 +94,11 @@ export class PrefOptionComponent implements OnInit {
 
   @AutoUnsubscribe()
   subscribeUpdate() {
-    return this.updateSubject
-      .pipe(Throttle(300))
+    return this.formControl.valueChanges
+      .pipe(
+        filter((value) => this.formControl.errors === null),
+        Throttle(300),
+      )
       .subscribe(this.updatePreference.bind(this));
   }
 }

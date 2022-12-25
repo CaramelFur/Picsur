@@ -7,21 +7,10 @@ export const SysPreferenceUI: {
     category: string;
   };
 } = {
-  [SysPreference.JwtSecret]: {
-    name: 'JWT Secret',
-    helpText: 'Secret used to sign JWT authentication tokens.',
-    category: 'Authentication',
-  },
-  [SysPreference.JwtExpiresIn]: {
-    name: 'JWT Expiry Time',
-    helpText: 'Time before JWT authentication tokens expire.',
-    category: 'Authentication',
-  },
-  [SysPreference.BCryptStrength]: {
-    name: 'BCrypt Strength',
-    helpText:
-      'Strength of BCrypt hashing algorithm, 10 is recommended. Reduce this if running on a low powered device.',
-    category: 'Authentication',
+  [SysPreference.HostOverride]: {
+    name: 'Host Override',
+    helpText: 'Override the hostname for the server, useful for when you are accessing the server from a different domain.',
+    category: 'General',
   },
 
   [SysPreference.RemoveDerivativesAfter]: {
@@ -43,7 +32,6 @@ export const SysPreferenceUI: {
 
     category: 'Image Processing',
   },
-
   [SysPreference.ConversionTimeLimit]: {
     name: 'Convert/Edit Time Limit',
     helpText:
@@ -57,6 +45,23 @@ export const SysPreferenceUI: {
     category: 'Image Processing',
   },
 
+  [SysPreference.JwtSecret]: {
+    name: 'JWT Secret',
+    helpText: 'Secret used to sign JWT authentication tokens.',
+    category: 'Authentication',
+  },
+  [SysPreference.JwtExpiresIn]: {
+    name: 'JWT Expiry Time',
+    helpText: 'Time before JWT authentication tokens expire.',
+    category: 'Authentication',
+  },
+  [SysPreference.BCryptStrength]: {
+    name: 'BCrypt Strength',
+    helpText:
+      'Strength of BCrypt hashing algorithm, 10 is recommended. Reduce this if running on a low powered device.',
+    category: 'Authentication',
+  },
+
   [SysPreference.EnableTracking]: {
     name: 'Enable Ackee Web Tracking',
     helpText:
@@ -65,7 +70,7 @@ export const SysPreferenceUI: {
   },
   [SysPreference.TrackingUrl]: {
     name: 'Ackee tracking URL',
-    helpText: 'URL of the Ackee tracking server.',
+    helpText: 'URL of the Ackee tracking server. Requests are proxied, so ensure the X-Forwarded-For header is handled.',
     category: 'Usage',
   },
   [SysPreference.TrackingId]: {

@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { PrefValueTypeStrings } from './preferences.dto';
 
 // This enum is only here to make accessing the values easier, and type checking in the backend
@@ -16,7 +17,7 @@ export const UsrPreferenceValueTypes: {
 };
 
 export const UsrPreferenceValidators: {
-  [key in UsrPreference]: (value: any) => boolean;
+  [key in UsrPreference]: z.ZodTypeAny;
 } = {
-  [UsrPreference.KeepOriginal]: (value: any) => typeof value === 'boolean',
+  [UsrPreference.KeepOriginal]: z.boolean(),
 };
