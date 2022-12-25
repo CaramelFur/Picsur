@@ -64,7 +64,7 @@ export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
       this.logger.warn(result.print());
     }
 
-    this.logger.log(`Cleaned up ${result} derivatives`);
+    if (result > 0) this.logger.log(`Cleaned up ${result} derivatives`);
   }
 
   private async cleanupExpired() {
@@ -74,7 +74,8 @@ export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
       this.logger.warn(cleanedUp.print());
     }
 
-    this.logger.log(`Cleaned up ${cleanedUp} expired images`);
+    if (cleanedUp > 0)
+      this.logger.log(`Cleaned up ${cleanedUp} expired images`);
   }
 
   onModuleDestroy() {

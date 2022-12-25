@@ -30,7 +30,7 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
     this.changeDetector.markForCheck();
   }
   public _column_count = 1;
-  @Input('update-speed') update_speed: number = 500;
+  @Input('update-speed') update_speed: number = 200;
 
   @ContentChildren(MasonryItemDirective)
   private content: QueryList<MasonryItemDirective>;
