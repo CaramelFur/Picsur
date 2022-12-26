@@ -1,4 +1,4 @@
-import { Multipart, MultipartFields, MultipartFile } from '@fastify/multipart';
+import { Multipart, MultipartFile } from '@fastify/multipart';
 import { Injectable, Logger, PipeTransform, Scope } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { Fail, FT } from 'picsur-shared/dist/types';
@@ -38,7 +38,7 @@ export class PostFilePipe implements PipeTransform {
 
     // Return a buffer of the file
     try {
-      return await files[0]?.toBuffer();
+      return await files[0].toBuffer();
     } catch (e) {
       this.logger.warn(e);
       throw Fail(FT.Internal, 'Invalid file');

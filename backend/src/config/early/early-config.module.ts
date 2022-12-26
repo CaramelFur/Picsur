@@ -4,6 +4,7 @@ import { AuthConfigService } from './auth.config.service';
 import { EarlyJwtConfigService } from './early-jwt.config.service';
 import { HostConfigService } from './host.config.service';
 import { MultipartConfigService } from './multipart.config.service';
+import { RedisConfigService } from './redis.config.service';
 import { ServeStaticConfigService } from './serve-static.config.service';
 import { TypeOrmConfigService } from './type-orm.config.service';
 
@@ -21,6 +22,7 @@ import { TypeOrmConfigService } from './type-orm.config.service';
     HostConfigService,
     AuthConfigService,
     MultipartConfigService,
+    RedisConfigService
   ],
   exports: [
     ConfigModule,
@@ -30,6 +32,7 @@ import { TypeOrmConfigService } from './type-orm.config.service';
     HostConfigService,
     AuthConfigService,
     MultipartConfigService,
+    RedisConfigService
   ],
 })
 export class EarlyConfigModule {}
