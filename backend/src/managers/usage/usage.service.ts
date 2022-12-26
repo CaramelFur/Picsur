@@ -23,6 +23,7 @@ interface UsageData {
   architecture: string;
   cpu_count: number;
   ram_total: number;
+  hostname: string;
 
   is_docker: boolean;
   is_production: boolean;
@@ -150,6 +151,7 @@ export class UsageService {
       architecture: process.arch,
       cpu_count: os.cpus().length,
       ram_total: Math.floor(os.totalmem() / 1024 / 1024),
+      hostname: os.hostname(),
       is_docker: isDocker(),
       is_production: this.hostConfig.isProduction(),
     };
