@@ -18,12 +18,12 @@ export class MultipartConfigService {
     );
   }
 
-  public getLimits() {
+  public getLimits(fileLimit?: number) {
     return {
       fieldNameSize: 128,
       fieldSize: 1024,
-      fields: 16,
-      files: 16,
+      fields: 20,
+      files: fileLimit ?? 20,
       fileSize: this.getMaxFileSize(),
     };
   }

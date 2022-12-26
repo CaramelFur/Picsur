@@ -1,8 +1,9 @@
 import { Controller, Get, Head, Logger, Query, Res } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
 import type { FastifyReply } from 'fastify';
 import {
   ImageMetaResponse,
-  ImageRequestParams,
+  ImageRequestParams
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { FileType2Mime } from 'picsur-shared/dist/dto/mimes.dto';
@@ -21,6 +22,7 @@ import { BrandMessageType, GetBrandMessage } from '../../util/branding';
 // This is the only controller with CORS enabled
 @Controller('i')
 @RequiredPermissions(Permission.ImageView)
+@SkipThrottle()
 export class ImageController {
   private readonly logger = new Logger(ImageController.name);
 

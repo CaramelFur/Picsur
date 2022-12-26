@@ -1,7 +1,7 @@
 import { InjectRequest } from './inject-request.decorator';
-import { MultiPartPipe } from './multipart.pipe';
 import { PostFilePipe } from './postfile.pipe';
+import { MultiPartPipe } from './postfiles.pipe';
 
 export const PostFile = () => InjectRequest(PostFilePipe);
 
-export const MultiPart = () => InjectRequest(MultiPartPipe);
+export const PostFiles = (maxFiles?: number) => InjectRequest(maxFiles, MultiPartPipe);
