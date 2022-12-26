@@ -8,7 +8,7 @@ import {
   ApiKeyListRequest,
   ApiKeyListResponse,
   ApiKeyUpdateRequest,
-  ApiKeyUpdateResponse,
+  ApiKeyUpdateResponse
 } from 'picsur-shared/dist/dto/api/apikeys.dto';
 import { EApiKey } from 'picsur-shared/dist/entities/apikey.entity';
 import { AsyncFailable } from 'picsur-shared/dist/types';
@@ -26,7 +26,7 @@ export class ApiKeysService {
     page: number,
     userID?: string,
   ): AsyncFailable<FindResult<EApiKey>> {
-    const response = await this.api.post(
+    return await this.api.post(
       ApiKeyListRequest,
       ApiKeyListResponse,
       '/api/apikeys/list',
@@ -35,9 +35,7 @@ export class ApiKeysService {
         page,
         user_id: userID,
       },
-    );
-
-    return response;
+    ).result;
   }
 
   public async getApiKey(id: string): AsyncFailable<EApiKey> {
@@ -48,14 +46,12 @@ export class ApiKeysService {
       {
         id,
       },
-    );
+    ).result;
   }
 
   public async createApiKey(): AsyncFailable<EApiKey> {
-    return await this.api.postEmpty(
-      ApiKeyCreateResponse,
-      '/api/apikeys/create',
-    );
+    return await this.api.postEmpty(ApiKeyCreateResponse, '/api/apikeys/create')
+      .result;
   }
 
   public async updateApiKey(id: string, name: string): AsyncFailable<EApiKey> {
@@ -67,7 +63,7 @@ export class ApiKeysService {
         id,
         name,
       },
-    );
+    ).result;
   }
 
   public async deleteApiKey(id: string): AsyncFailable<Omit<EApiKey, 'id'>> {
@@ -78,6 +74,6 @@ export class ApiKeysService {
       {
         id,
       },
-    );
+    ).result;
   }
 }

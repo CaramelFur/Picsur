@@ -1,17 +1,23 @@
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW } from '@ng-web-apis/common';
+import axios, {
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosResponseHeaders
+} from 'axios';
 import { ApiResponseSchema } from 'picsur-shared/dist/dto/api/api.dto';
 import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import {
   AsyncFailable,
   Fail,
+  Failure,
   FT,
   HasFailed,
-  HasSuccess,
+  HasSuccess
 } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { ParseMime2FileType } from 'picsur-shared/dist/util/parse-mime';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ApiBuffer } from 'src/app/models/dto/api-buffer.dto';
 import { ApiError } from 'src/app/models/dto/api-error.dto';
 import { z } from 'zod';
@@ -22,6 +28,37 @@ import { KeyStorageService } from '../storage/key-storage.service';
 /*
   Proud of this, it works so smoooth
 */
+
+interface RunningRequest<R> {
+  uploadProgress: Observable<number>;
+  downloadProgress: Observable<number>;
+  result: AsyncFailable<R>;
+  cancel: () => void;
+}
+
+function MapRunningRequest<R, T>(
+  runningRequest: RunningRequest<R>,
+  map: (r: R) => AsyncFailable<T>,
+): RunningRequest<T> {
+  return {
+    ...runningRequest,
+    result: runningRequest.result.then(async (result) => {
+      if (HasFailed(result)) return result;
+      return map(result);
+    }),
+  };
+}
+
+function CreateFailedRunningRequest<R>(failure: Failure) {
+  const subject = new Subject<number>();
+  subject.complete();
+  return {
+    uploadProgress: subject.asObservable(),
+    downloadProgress: subject.asObservable(),
+    result: Promise.resolve(failure),
+    cancel: () => {},
+  } as RunningRequest<R>;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -40,177 +77,196 @@ export class ApiService {
     @Inject(WINDOW) private readonly windowRef: Window,
   ) {}
 
-  public async get<T extends z.AnyZodObject>(
+  public get<T extends z.AnyZodObject>(
     type: ZodDtoStatic<T>,
     url: string,
-  ): AsyncFailable<z.infer<T>> {
+  ): RunningRequest<z.infer<T>> {
     return this.fetchSafeJson(type, url, { method: 'GET' });
   }
 
-  public async head(url: string): AsyncFailable<Headers> {
+  public head(url: string): RunningRequest<AxiosResponseHeaders> {
     return this.fetchHead(url, { method: 'HEAD' });
   }
 
-  public async getBuffer(url: string): AsyncFailable<ApiBuffer> {
+  public getBuffer(url: string): RunningRequest<ApiBuffer> {
     return this.fetchBuffer(url, { method: 'GET' });
   }
 
-  public async post<T extends z.AnyZodObject, W extends z.AnyZodObject>(
+  public post<T extends z.AnyZodObject, W extends z.AnyZodObject>(
     sendType: ZodDtoStatic<T>,
     receiveType: ZodDtoStatic<W>,
     url: string,
     data: z.infer<T>,
-  ): AsyncFailable<z.infer<W>> {
+  ): RunningRequest<z.infer<W>> {
     const sendSchema = sendType.zodSchema;
 
     const validateResult = sendSchema.safeParse(data);
     if (!validateResult.success) {
-      return Fail(
-        FT.SysValidation,
-        'Something went wrong',
-        validateResult.error,
+      return CreateFailedRunningRequest(
+        Fail(FT.SysValidation, 'Something went wrong', validateResult.error),
       );
     }
 
     return this.fetchSafeJson(receiveType, url, {
       method: 'POST',
-      body: JSON.stringify(validateResult.data),
+      data: validateResult.data,
     });
   }
 
-  public async postEmpty<T extends z.AnyZodObject>(
+  public postEmpty<T extends z.AnyZodObject>(
     type: ZodDtoStatic<T>,
     url: string,
-  ): AsyncFailable<z.infer<T>> {
+  ): RunningRequest<z.infer<T>> {
     return this.fetchSafeJson(type, url, { method: 'POST' });
   }
 
-  public async postForm<T extends z.AnyZodObject>(
+  public postForm<T extends z.AnyZodObject>(
     receiveType: ZodDtoStatic<T>,
     url: string,
     data: MultiPartRequest,
-  ): AsyncFailable<z.infer<T>> {
+  ): RunningRequest<z.infer<T>> {
     return this.fetchSafeJson(receiveType, url, {
       method: 'POST',
-      body: data.createFormData(),
+      data: data.createFormData(),
     });
   }
 
-  private async fetchSafeJson<T extends z.AnyZodObject>(
+  private fetchSafeJson<T extends z.AnyZodObject>(
     type: ZodDtoStatic<T>,
-    url: RequestInfo,
-    options: RequestInit,
-  ): AsyncFailable<z.infer<T>> {
+    url: string,
+    options: AxiosRequestConfig,
+  ): RunningRequest<z.infer<T>> {
     const resultSchema = ApiResponseSchema(type.zodSchema as z.AnyZodObject);
     type resultType = z.infer<typeof resultSchema>;
 
-    let result = await this.fetchJsonAs<resultType>(url, options);
-    if (HasFailed(result)) return result;
+    let result = this.fetchJsonAs<resultType>(url, options);
 
-    const validateResult = resultSchema.safeParse(result);
-    if (!validateResult.success) {
-      return Fail(
-        FT.SysValidation,
-        'Something went wrong',
-        validateResult.error,
-      );
-    }
-
-    if (validateResult.data.success === false)
-      return Fail(FT.Unknown, result.data.message);
-
-    return validateResult.data.data;
-  }
-
-  private async fetchJsonAs<T>(
-    url: RequestInfo,
-    options: RequestInit,
-  ): AsyncFailable<T> {
-    const response = await this.fetch(url, options);
-    if (HasFailed(response)) {
-      return response;
-    }
-    try {
-      return await response.json();
-    } catch (e) {
-      return Fail(FT.Internal, e);
-    }
-  }
-
-  private async fetchBuffer(
-    url: RequestInfo,
-    options: RequestInit,
-  ): AsyncFailable<ApiBuffer> {
-    const response = await this.fetch(url, options);
-    if (HasFailed(response)) return response;
-
-    if (!response.ok) return Fail(FT.Network, 'Recieved a non-ok response');
-
-    const mimeType = response.headers.get('Content-Type') ?? 'other/unknown';
-    let name = response.headers.get('Content-Disposition');
-    if (!name) {
-      if (typeof url === 'string') {
-        name = url.split('/').pop() ?? 'unnamed';
-      } else {
-        name = url.url.split('/').pop() ?? 'unnamed';
+    return MapRunningRequest(result, async (r) => {
+      const validateResult = resultSchema.safeParse(r);
+      if (!validateResult.success) {
+        return Fail(
+          FT.SysValidation,
+          'Something went wrong',
+          validateResult.error,
+        );
       }
-    }
 
-    const filetype = ParseMime2FileType(mimeType);
-    if (HasSuccess(filetype)) {
-      const ext = FileType2Ext(filetype.identifier);
-      if (HasSuccess(ext)) {
-        if (!name.endsWith(ext)) {
-          name += '.' + ext;
+      if (validateResult.data.success === false)
+        return Fail(FT.Unknown, r.data.message);
+
+      return validateResult.data.data;
+    });
+  }
+
+  private fetchJsonAs<T>(
+    url: string,
+    options: AxiosRequestConfig,
+  ): RunningRequest<T> {
+    const response = this.fetch(url, {
+      ...options,
+      responseType: 'json',
+    });
+
+    return MapRunningRequest(response, async (r) => r.data);
+  }
+
+  private fetchBuffer(
+    url: string,
+    options: AxiosRequestConfig,
+  ): RunningRequest<ApiBuffer> {
+    const response = this.fetch(url, {
+      ...options,
+      responseType: 'arraybuffer',
+    });
+
+    return MapRunningRequest(response, async (r) => {
+      const mimeType = r.headers['Content-Type'] ?? 'other/unknown';
+      let name = r.headers['Content-Disposition'];
+      if (!name) {
+        name = url.split('/').pop() ?? 'unnamed';
+      }
+
+      const filetype = ParseMime2FileType(mimeType);
+      if (HasSuccess(filetype)) {
+        const ext = FileType2Ext(filetype.identifier);
+        if (HasSuccess(ext)) {
+          if (!name.endsWith(ext)) {
+            name += '.' + ext;
+          }
         }
       }
-    }
 
-    try {
-      const arrayBuffer = await response.arrayBuffer();
       return {
-        buffer: arrayBuffer,
+        buffer: r.data,
         mimeType,
         name,
       };
-    } catch (e) {
-      return Fail(FT.Internal, e);
-    }
+    });
   }
 
-  private async fetchHead(
-    url: RequestInfo,
-    options: RequestInit,
-  ): AsyncFailable<Headers> {
-    const response = await this.fetch(url, options);
-    if (HasFailed(response)) return response;
+  private fetchHead(
+    url: string,
+    options: AxiosRequestConfig,
+  ): RunningRequest<AxiosResponseHeaders> {
+    const response = this.fetch(url, options);
 
-    if (!response.ok) return Fail(FT.Network, 'Recieved a non-ok response');
-
-    return response.headers;
+    return MapRunningRequest(response, async (r) => {
+      return r.headers as AxiosResponseHeaders;
+    });
   }
 
-  private async fetch(
-    url: RequestInfo,
-    options: RequestInit,
-  ): AsyncFailable<Response> {
-    try {
-      const key = this.keyService.get();
-      const isJSON = typeof options.body === 'string';
+  private fetch(
+    url: string,
+    options: AxiosRequestConfig,
+  ): RunningRequest<AxiosResponse> {
+    const key = this.keyService.get();
+    const isJSON = typeof options.data === 'string';
 
-      const headers: any = options.headers || {};
-      if (key !== null)
-        headers['Authorization'] = `Bearer ${this.keyService.get()}`;
-      if (isJSON) headers['Content-Type'] = 'application/json';
-      options.headers = headers;
+    const headers: any = options.headers || {};
+    if (key !== null)
+      headers['Authorization'] = `Bearer ${this.keyService.get()}`;
+    if (isJSON) headers['Content-Type'] = 'application/json';
+    options.headers = headers;
 
-      return await this.windowRef.fetch(url, options);
-    } catch (e) {
-      this.errorSubject.next({
-        error: e,
-        url,
-      });
-      return Fail(FT.Network, e);
-    }
+    const uploadProgress = new BehaviorSubject<number>(0);
+    const downloadProgress = new BehaviorSubject<number>(0);
+    const abortController = new AbortController();
+
+    const resultPromise: AsyncFailable<AxiosResponse> = (async () => {
+      try {
+        const result = await axios.request({
+          url,
+          onDownloadProgress: (e) => {
+            downloadProgress.next(e.loaded / (e.total ?? 1000000) * 100);
+          },
+          onUploadProgress: (e) => {
+            uploadProgress.next(e.loaded / (e.total ?? 1000000) * 100);
+          },
+          signal: abortController.signal,
+          ...options,
+        });
+
+        uploadProgress.complete();
+        downloadProgress.complete();
+
+        if (result.status < 200 || result.status >= 300) {
+          return Fail(FT.Network, 'Recieved a non-ok response');
+        }
+        return result;
+      } catch (e) {
+        return Fail(FT.Network, e);
+      }
+    })();
+
+    return {
+      result: resultPromise,
+      uploadProgress,
+      downloadProgress,
+      cancel: () => {
+        abortController.abort();
+        uploadProgress.complete();
+        downloadProgress.complete();
+      },
+    };
   }
 }

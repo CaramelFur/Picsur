@@ -23,6 +23,7 @@ import {
   HasSuccess,
   Open
 } from 'picsur-shared/dist/types/failable';
+import { ImagesUploadRequest } from 'src/app/models/dto/images-upload-request.dto';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
 import { InfoService } from './info.service';
@@ -43,13 +44,28 @@ export class ImageService {
       ImageUploadResponse,
       '/api/image/upload',
       new ImageUploadRequest(image),
-    );
+    ).result;
 
     return Open(result, 'id');
   }
 
+  public async UploadImages(images: File[]): AsyncFailable<string[]> {
+    console.log('Uploading images', images);
+
+    // Split into chunks of 20
+    const groups = this.chunks(images, 20);
+
+    const result = await this.api.postForm(
+      ImageUploadResponse,
+      '/api/image/upload/bulk',
+      new ImagesUploadRequest(images),
+    );
+
+    return [];
+  }
+
   public async GetImageMeta(image: string): AsyncFailable<ImageMetaResponse> {
-    return await this.api.get(ImageMetaResponse, `/i/meta/${image}`);
+    return await this.api.get(ImageMetaResponse, `/i/meta/${image}`).result;
   }
 
   public async ListAllImages(
@@ -66,7 +82,7 @@ export class ImageService {
         page,
         user_id: userID,
       },
-    );
+    ).result;
   }
 
   public async ListMyImages(
@@ -93,7 +109,7 @@ export class ImageService {
         id,
         ...settings,
       },
-    );
+    ).result;
   }
 
   public async DeleteImages(
@@ -106,7 +122,7 @@ export class ImageService {
       {
         ids: images,
       },
-    );
+    ).result;
   }
 
   public async DeleteImage(image: string): AsyncFailable<EImage> {
@@ -191,5 +207,14 @@ export class ImageService {
     name?: string,
   ): ImageLinks {
     return this.CreateImageLinks(this.GetImageURL(imageID, mime, true), name);
+  }
+
+  private chunks<T>(arr: T[], size: number): T[][] {
+    let result = [];
+    for (let i = 0; i < arr.length; i += size) {
+      result.push(arr.slice(i, size + i));
+    }
+
+    return result;
   }
 }

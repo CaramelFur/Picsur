@@ -38,6 +38,7 @@
     "@types/resize-observer-browser": "^0.1.7",
     "@types/validator": "^13.7.10",
     "ackee-tracker": "^5.1.0",
+    "axios": "^1.2.1",
     "bootstrap": "^5.2.3",
     "caniuse-lite": "^1.0.30001441",
     "fuse.js": "^6.6.2",

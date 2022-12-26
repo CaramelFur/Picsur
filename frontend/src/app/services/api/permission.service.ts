@@ -69,7 +69,7 @@ export class PermissionService {
     const got = await this.api.get(
       UserMePermissionsResponse,
       '/api/user/me/permissions',
-    );
+    ).result;
     if (HasFailed(got)) return got;
 
     this.permissionsSubject.next(got.permissions);
