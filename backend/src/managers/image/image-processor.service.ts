@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   FileType,
   ImageFileType,
-  SupportedFileTypeCategory,
+  SupportedFileTypeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';

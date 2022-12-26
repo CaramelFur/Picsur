@@ -19,7 +19,7 @@ import { ImageManagerService } from './image.service';
     ImageProcessorService,
     ImageConverterService,
   ],
-  exports: [ImageManagerService],
+  exports: [ImageManagerService, ImageConverterService],
 })
 export class ImageManagerModule implements OnModuleInit {
   private readonly logger = new Logger(ImageManagerModule.name);
@@ -31,7 +31,7 @@ export class ImageManagerModule implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    await this.imageManagerCron()
+    await this.imageManagerCron();
   }
 
   @Interval(1000 * 60)
@@ -57,7 +57,7 @@ export class ImageManagerModule implements OnModuleInit {
 
     const result = await this.imageFileDB.cleanupDerivatives(after_ms / 1000);
     if (HasFailed(result)) {
-      this.logger.warn(result.print());
+      result.print(this.logger);
     }
 
     if (result > 0) this.logger.log(`Cleaned up ${result} derivatives`);
@@ -67,7 +67,8 @@ export class ImageManagerModule implements OnModuleInit {
     const cleanedUp = await this.imageDB.cleanupExpired();
 
     if (HasFailed(cleanedUp)) {
-      this.logger.warn(cleanedUp.print());
+      cleanedUp.print(this.logger);
+      return;
     }
 
     if (cleanedUp > 0)

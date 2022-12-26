@@ -3,7 +3,7 @@ import ms from 'ms';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import {
   FileType,
-  SupportedFileTypeCategory,
+  SupportedFileTypeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
@@ -119,18 +119,6 @@ export class ImageConverterService {
 
     return {
       image: result.data,
-      filetype: targetFiletype.identifier,
-    };
-  }
-
-  private async convertAnimation(
-    image: Buffer,
-    targetFiletype: FileType,
-    options: ImageRequestParams,
-  ): AsyncFailable<ImageResult> {
-    // Apng and gif are stored as is for now
-    return {
-      image: image,
       filetype: targetFiletype.identifier,
     };
   }

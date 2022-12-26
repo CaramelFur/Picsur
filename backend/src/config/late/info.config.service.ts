@@ -14,7 +14,7 @@ export class InfoConfigService {
       SysPreference.HostOverride,
     );
     if (HasFailed(hostname)) {
-      this.logger.warn(hostname.print());
+      hostname.print(this.logger);
       return undefined;
     }
 

@@ -64,7 +64,7 @@ export class SettingsShareXComponent implements OnInit {
 
     const ext = FileType2Ext(this.selectedFormat);
     if (HasFailed(ext)) {
-      this.logger.error(ext.print());
+      ext.print(this.logger);
     }
 
     const sharexConfig = BuildShareX(
