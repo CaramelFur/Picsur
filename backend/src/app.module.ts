@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import cors from 'cors';
 import { IncomingMessage, ServerResponse } from 'http';
@@ -43,6 +44,7 @@ const imageCorsOverride = (
       useExisting: ServeStaticConfigService,
       imports: [EarlyConfigModule],
     }),
+    ScheduleModule.forRoot(),
     DatabaseModule,
     AuthManagerModule,
     UsageManagerModule,

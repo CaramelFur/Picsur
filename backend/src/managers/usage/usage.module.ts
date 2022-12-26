@@ -1,4 +1,5 @@
-import { Logger, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Logger, Module, OnModuleInit } from '@nestjs/common';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { ImageDBModule } from '../../collections/image-db/image-db.module';
 import { SystemStateDbModule } from '../../collections/system-state-db/system-state-db.module';
 import { UserDbModule } from '../../collections/user-db/user-db.module';
@@ -11,13 +12,13 @@ import { UsageService } from './usage.service';
   providers: [UsageService],
   exports: [UsageService],
 })
-export class UsageManagerModule implements OnModuleInit, OnModuleDestroy {
+export class UsageManagerModule implements OnModuleInit {
   private readonly logger = new Logger(UsageManagerModule.name);
-  private interval: NodeJS.Timeout;
 
   constructor(
     private readonly usageService: UsageService,
     private readonly usageConfigService: UsageConfigService,
+    private readonly schedulerRegistry: SchedulerRegistry,
   ) {}
 
   async onModuleInit() {
@@ -25,18 +26,18 @@ export class UsageManagerModule implements OnModuleInit, OnModuleDestroy {
       this.logger.log('Telemetry is disabled');
     }
 
-    this.interval = setInterval(() => {
-      this.usageService.execute().catch((err) => {
-        this.logger.warn(err);
-      });
-    }, await this.usageConfigService.getMetricsInterval());
+    const interval = setInterval(
+      this.cronJob.bind(this),
+      await this.usageConfigService.getMetricsInterval(),
+    );
+    this.schedulerRegistry.addInterval('usage', interval);
 
+    this.cronJob();
+  }
+
+  private cronJob() {
     this.usageService.execute().catch((err) => {
       this.logger.warn(err);
     });
-  }
-
-  onModuleDestroy() {
-    if (this.interval) clearInterval(this.interval);
   }
 }

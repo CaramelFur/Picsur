@@ -1,4 +1,5 @@
-import { Logger, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Logger, Module, OnModuleInit } from '@nestjs/common';
+import { Interval } from '@nestjs/schedule';
 import ms from 'ms';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { HasFailed } from 'picsur-shared/dist/types';
@@ -20,9 +21,8 @@ import { ImageManagerService } from './image.service';
   ],
   exports: [ImageManagerService],
 })
-export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
+export class ImageManagerModule implements OnModuleInit {
   private readonly logger = new Logger(ImageManagerModule.name);
-  private interval: NodeJS.Timeout;
 
   constructor(
     private readonly prefManager: SysPreferenceDbService,
@@ -31,14 +31,10 @@ export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
   ) {}
 
   async onModuleInit() {
-    this.interval = setInterval(
-      // Run demoManagerService.execute() every interval
-      this.imageManagerCron.bind(this),
-      1000 * 60,
-    );
-    await this.imageManagerCron();
+    await this.imageManagerCron()
   }
 
+  @Interval(1000 * 60)
   private async imageManagerCron() {
     await this.cleanupDerivatives();
     await this.cleanupExpired();
@@ -76,9 +72,5 @@ export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
 
     if (cleanedUp > 0)
       this.logger.log(`Cleaned up ${cleanedUp} expired images`);
-  }
-
-  onModuleDestroy() {
-    if (this.interval) clearInterval(this.interval);
   }
 }
