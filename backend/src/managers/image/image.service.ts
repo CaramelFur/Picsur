@@ -5,10 +5,8 @@ import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import {
   AnimFileType,
-  FileType,
-  FileType2Mime,
-  ImageFileType,
-  Mime2FileType,
+  FileType, ImageFileType,
+  Mime2FileType
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
@@ -20,9 +18,9 @@ import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
 import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
 import { UsrPreferenceDbService } from '../../collections/preference-db/usr-preference-db.service';
-import { EImageDerivativeBackend } from '../../database/entities/image-derivative.entity';
-import { EImageFileBackend } from '../../database/entities/image-file.entity';
-import { EImageBackend } from '../../database/entities/image.entity';
+import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
+import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
+import { EImageBackend } from '../../database/entities/images/image.entity';
 import { MutexFallBack } from '../../util/mutex-fallback';
 import { ImageConverterService } from './image-converter.service';
 import { ImageProcessorService } from './image-processor.service';

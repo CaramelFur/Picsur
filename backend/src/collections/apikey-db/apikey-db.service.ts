@@ -5,7 +5,7 @@ import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { Repository } from 'typeorm';
 import { EApiKeyBackend } from '../../database/entities/apikey.entity';
-import { EUserBackend } from '../../database/entities/user.entity';
+import { EUserBackend } from '../../database/entities/users/user.entity';
 
 @Injectable()
 export class ApiKeyDbService {

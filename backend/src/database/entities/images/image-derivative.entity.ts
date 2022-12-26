@@ -5,7 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Unique,
+  Unique
 } from 'typeorm';
 import { EImageBackend } from './image.entity';
 

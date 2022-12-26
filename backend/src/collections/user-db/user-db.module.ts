@@ -4,7 +4,7 @@ import { HasFailed } from 'picsur-shared/dist/types';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { AuthConfigService } from '../../config/early/auth.config.service';
 import { EarlyConfigModule } from '../../config/early/early-config.module';
-import { EUserBackend } from '../../database/entities/user.entity';
+import { EUserBackend } from '../../database/entities/users/user.entity';
 import { PreferenceDbModule } from '../preference-db/preference-db.module';
 import { RoleDbModule } from '../role-db/role-db.module';
 import { UserDbService } from './user-db.service';
