@@ -5,7 +5,8 @@ import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import {
   AnimFileType,
-  FileType, ImageFileType,
+  FileType,
+  ImageFileType,
   Mime2FileType
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
@@ -144,19 +145,15 @@ export class ImageManagerService {
 
     const converted_key = this.getConvertHash({ mime: fileType, ...options });
 
-    const [save_derivatives, allow_editing] = await Promise.all([
-      this.sysPref.getBooleanPreference(SysPreference.SaveDerivatives),
-      this.sysPref.getBooleanPreference(SysPreference.AllowEditing),
-    ]);
-    if (HasFailed(save_derivatives)) return save_derivatives;
+    const allow_editing = await this.sysPref.getBooleanPreference(
+      SysPreference.AllowEditing,
+    );
     if (HasFailed(allow_editing)) return allow_editing;
 
     return MutexFallBack(
       converted_key,
       () => {
-        if (save_derivatives)
-          return this.imageFilesService.getDerivative(imageId, converted_key);
-        else return Promise.resolve(null);
+        return this.imageFilesService.getDerivative(imageId, converted_key);
       },
       async () => {
         const masterImage = await this.getMaster(imageId);
@@ -180,21 +177,12 @@ export class ImageManagerService {
           } in ${Date.now() - startTime}ms`,
         );
 
-        if (save_derivatives) {
-          return await this.imageFilesService.addDerivative(
-            imageId,
-            converted_key,
-            convertResult.filetype,
-            convertResult.image,
-          );
-        } else {
-          const derivative = new EImageDerivativeBackend();
-          derivative.filetype = convertResult.filetype;
-          derivative.data = convertResult.image;
-          derivative.image_id = imageId;
-          derivative.key = converted_key;
-          return derivative;
-        }
+        return await this.imageFilesService.addDerivative(
+          imageId,
+          converted_key,
+          convertResult.filetype,
+          convertResult.image,
+        );
       },
     );
   }

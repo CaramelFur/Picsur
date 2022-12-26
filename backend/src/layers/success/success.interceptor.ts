@@ -4,7 +4,7 @@ import {
   Injectable,
   Logger,
   NestInterceptor,
-  Optional,
+  Optional
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { FastifyReply } from 'fastify';
@@ -45,6 +45,20 @@ export class SuccessInterceptor<T> implements NestInterceptor {
         } else {
           return data;
         }
+      }),
+      map((data) => {
+        const request = context.switchToHttp().getRequest();
+        const response = context.switchToHttp().getResponse<FastifyReply>();
+        const traceString = `(${request.ip} -> ${request.method} ${request.url})`;
+
+        this.logger.verbose(
+          `Handled ${traceString} with ${response.statusCode} in ${Math.ceil(
+            response.getResponseTime(),
+          )}ms`,
+          SuccessInterceptor.name,
+        );
+
+        return data;
       }),
     );
   }

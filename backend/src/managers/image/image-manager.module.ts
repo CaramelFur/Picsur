@@ -49,11 +49,12 @@ export class ImageManagerModule implements OnModuleInit {
       return;
     }
 
-    const after_ms = ms(remove_derivatives_after as any);
+    let after_ms = ms(remove_derivatives_after as any);
     if (isNaN(after_ms) || after_ms === 0) {
       this.logger.log('remove_derivatives_after is 0, skipping cron');
       return;
     }
+    if (after_ms < 60000) after_ms = 60000;
 
     const result = await this.imageFileDB.cleanupDerivatives(after_ms / 1000);
     if (HasFailed(result)) {

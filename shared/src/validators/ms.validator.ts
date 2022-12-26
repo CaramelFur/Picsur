@@ -1,7 +1,7 @@
 import ms from 'ms';
 import { z } from 'zod';
 
-export const IsValidMS = () =>
+export const IsValidMS = (min = 0) =>
   z.preprocess(
     (v: any) => {
       try {
@@ -17,5 +17,5 @@ export const IsValidMS = () =>
         }),
       })
       .int()
-      .min(0),
+      .min(min),
   );

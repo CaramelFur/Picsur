@@ -42,7 +42,6 @@ export class PreferenceDefaultsService {
     [SysPreference.BCryptStrength]: 10,
 
     [SysPreference.RemoveDerivativesAfter]: '7d',
-    [SysPreference.SaveDerivatives]: true,
     [SysPreference.AllowEditing]: true,
 
     [SysPreference.ConversionTimeLimit]: '15s',
