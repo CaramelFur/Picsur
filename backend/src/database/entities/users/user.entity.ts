@@ -4,7 +4,7 @@ import {
   Entity,
   Index,
   OneToMany,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { z } from 'zod';
 import { EApiKeyBackend } from '../apikey.entity';

@@ -7,7 +7,7 @@ import {
   UserLoginResponse,
   UserMeResponse,
   UserRegisterRequest,
-  UserRegisterResponse
+  UserRegisterResponse,
 } from 'picsur-shared/dist/dto/api/user.dto';
 import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
@@ -16,7 +16,7 @@ import {
   Fail,
   FT,
   HasFailed,
-  Open
+  Open,
 } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '../logger/logger.service';

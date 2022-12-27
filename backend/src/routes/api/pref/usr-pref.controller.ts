@@ -4,7 +4,7 @@ import {
   GetPreferenceResponse,
   MultiplePreferencesResponse,
   UpdatePreferenceRequest,
-  UpdatePreferenceResponse
+  UpdatePreferenceResponse,
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { UsrPreferenceDbService } from '../../../collections/preference-db/usr-preference-db.service';

@@ -3,7 +3,7 @@ import { WINDOW } from '@ng-web-apis/common';
 import axios, {
   AxiosRequestConfig,
   AxiosResponse,
-  AxiosResponseHeaders
+  AxiosResponseHeaders,
 } from 'axios';
 import { ApiResponseSchema } from 'picsur-shared/dist/dto/api/api.dto';
 import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
@@ -13,7 +13,7 @@ import {
   Failure,
   FT,
   HasFailed,
-  HasSuccess
+  HasSuccess,
 } from 'picsur-shared/dist/types';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { ParseMime2FileType } from 'picsur-shared/dist/util/parse-mime';
@@ -237,10 +237,10 @@ export class ApiService {
         const result = await axios.request({
           url,
           onDownloadProgress: (e) => {
-            downloadProgress.next(e.loaded / (e.total ?? 1000000) * 100);
+            downloadProgress.next((e.loaded / (e.total ?? 1000000)) * 100);
           },
           onUploadProgress: (e) => {
-            uploadProgress.next(e.loaded / (e.total ?? 1000000) * 100);
+            uploadProgress.next((e.loaded / (e.total ?? 1000000)) * 100);
           },
           signal: abortController.signal,
           ...options,

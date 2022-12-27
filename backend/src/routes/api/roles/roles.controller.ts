@@ -10,7 +10,7 @@ import {
   RoleListResponse,
   RoleUpdateRequest,
   RoleUpdateResponse,
-  SpecialRolesResponse
+  SpecialRolesResponse,
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { Fail, FT, ThrowIfFailed } from 'picsur-shared/dist/types';
 import { RoleDbService } from '../../../collections/role-db/role-db.service';
@@ -22,7 +22,7 @@ import {
   DefaultRolesList,
   ImmutableRolesList,
   SoulBoundRolesList,
-  UndeletableRolesList
+  UndeletableRolesList,
 } from '../../../models/constants/roles.const';
 import { isPermissionsArray } from '../../../models/validators/permissions.validator';
 

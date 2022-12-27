@@ -22,7 +22,7 @@ import { TypeOrmConfigService } from './type-orm.config.service';
     HostConfigService,
     AuthConfigService,
     MultipartConfigService,
-    RedisConfigService
+    RedisConfigService,
   ],
   exports: [
     ConfigModule,
@@ -32,7 +32,7 @@ import { TypeOrmConfigService } from './type-orm.config.service';
     HostConfigService,
     AuthConfigService,
     MultipartConfigService,
-    RedisConfigService
+    RedisConfigService,
   ],
 })
 export class EarlyConfigModule {}

@@ -9,14 +9,14 @@ import {
   ApiKeyListRequest,
   ApiKeyListResponse,
   ApiKeyUpdateRequest,
-  ApiKeyUpdateResponse
+  ApiKeyUpdateResponse,
 } from 'picsur-shared/dist/dto/api/apikeys.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { ThrowIfFailed } from 'picsur-shared/dist/types';
 import { ApiKeyDbService } from '../../../collections/apikey-db/apikey-db.service';
 import {
   HasPermission,
-  RequiredPermissions
+  RequiredPermissions,
 } from '../../../decorators/permissions.decorator';
 import { ReqUserID } from '../../../decorators/request-user.decorator';
 import { Returns } from '../../../decorators/returns.decorator';

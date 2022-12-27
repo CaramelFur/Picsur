@@ -4,19 +4,19 @@ import {
   GetPreferenceResponse,
   MultiplePreferencesResponse,
   UpdatePreferenceRequest,
-  UpdatePreferenceResponse
+  UpdatePreferenceResponse,
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import {
   DecodedPref,
-  PrefValueType
+  PrefValueType,
 } from 'picsur-shared/dist/dto/preferences.dto';
 import {
   AsyncFailable,
   Fail,
   FT,
   HasFailed,
-  Map
+  Map,
 } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { ErrorService } from 'src/app/util/error-manager/error.service';

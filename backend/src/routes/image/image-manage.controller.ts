@@ -5,7 +5,7 @@ import {
   Logger,
   Param,
   Post,
-  Res
+  Res,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { FastifyReply } from 'fastify';
@@ -18,7 +18,7 @@ import {
   ImageListResponse,
   ImageUpdateRequest,
   ImageUpdateResponse,
-  ImageUploadResponse
+  ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { Fail, FT, HasFailed, ThrowIfFailed } from 'picsur-shared/dist/types';
@@ -26,7 +26,7 @@ import { PostFiles } from '../../decorators/multipart/multipart.decorator';
 import type { FileIterator } from '../../decorators/multipart/postfiles.pipe';
 import {
   HasPermission,
-  RequiredPermissions
+  RequiredPermissions,
 } from '../../decorators/permissions.decorator';
 import { ReqUserID } from '../../decorators/request-user.decorator';
 import { Returns } from '../../decorators/returns.decorator';
@@ -54,7 +54,7 @@ export class ImageManageController {
       buffer = await file.toBuffer();
     } catch (e) {
       throw Fail(FT.Internal, e);
-    };
+    }
 
     const image = ThrowIfFailed(
       await this.imagesService.upload(

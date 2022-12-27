@@ -4,7 +4,7 @@ import {
   Entity,
   Index,
   ManyToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { z } from 'zod';
 import { EUserBackend } from './users/user.entity';

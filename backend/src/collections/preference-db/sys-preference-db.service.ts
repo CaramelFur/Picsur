@@ -3,17 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   DecodedSysPref,
   PrefValueType,
-  PrefValueTypeStrings
+  PrefValueTypeStrings,
 } from 'picsur-shared/dist/dto/preferences.dto';
 import {
   SysPreference,
   SysPreferenceList,
   SysPreferenceValidators,
-  SysPreferenceValueTypes
+  SysPreferenceValueTypes,
 } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
-import { ESysPreferenceBackend, ESysPreferenceSchema } from '../../database/entities/system/sys-preference.entity';
+import {
+  ESysPreferenceBackend,
+  ESysPreferenceSchema,
+} from '../../database/entities/system/sys-preference.entity';
 import { MutexFallBack } from '../../util/mutex-fallback';
 import { PreferenceCommonService } from './preference-common.service';
 import { PreferenceDefaultsService } from './preference-defaults.service';

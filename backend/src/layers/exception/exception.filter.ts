@@ -6,7 +6,7 @@ import {
   Logger,
   MethodNotAllowedException,
   NotFoundException,
-  UnauthorizedException
+  UnauthorizedException,
 } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ApiErrorResponse } from 'picsur-shared/dist/dto/api/api.dto';
@@ -14,7 +14,7 @@ import {
   Fail,
   Failure,
   FT,
-  IsFailure
+  IsFailure,
 } from 'picsur-shared/dist/types/failable';
 
 // This will catch any exception that is made in any request
