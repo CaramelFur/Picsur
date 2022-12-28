@@ -26,6 +26,10 @@ export type SharpWorkerOperation =
 
 export interface SharpWorkerFinishOptions {
   quality?: number;
+
+  // Only for internal use
+  lossless?: boolean;
+  effort?: number;
 }
 
 // Messages

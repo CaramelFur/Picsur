@@ -2,20 +2,27 @@ import { Injectable } from '@nestjs/common';
 import ms from 'ms';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import {
-    FileType,
-    SupportedFileTypeCategory,
+  FileType,
+  SupportedFileTypeCategory,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import {
-    AsyncFailable,
-    Fail,
-    FT,
-    HasFailed,
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
 } from 'picsur-shared/dist/types/failable';
 import { SharpOptions } from 'sharp';
 import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service.js';
 import { SharpWrapper } from '../../workers/sharp.wrapper.js';
 import { ImageResult } from './imageresult.js';
+
+interface InternalConvertOptions {
+  lossless?: boolean;
+  effort?: number;
+}
+
+export type ConvertOptions = ImageRequestParams & InternalConvertOptions;
 
 @Injectable()
 export class ImageConverterService {
@@ -25,7 +32,7 @@ export class ImageConverterService {
     image: Buffer,
     sourceFiletype: FileType,
     targetFiletype: FileType,
-    options: ImageRequestParams,
+    options: ConvertOptions,
   ): AsyncFailable<ImageResult> {
     if (
       sourceFiletype.identifier === targetFiletype.identifier &&
@@ -37,23 +44,22 @@ export class ImageConverterService {
       };
     }
 
-    if (targetFiletype.category === SupportedFileTypeCategory.Image) {
-      return this.convertStill(image, sourceFiletype, targetFiletype, options);
-    } else if (
+    if (
+      targetFiletype.category === SupportedFileTypeCategory.Image ||
       targetFiletype.category === SupportedFileTypeCategory.Animation
     ) {
-      return this.convertStill(image, sourceFiletype, targetFiletype, options);
+      return this.convertImage(image, sourceFiletype, targetFiletype, options);
       //return this.convertAnimation(image, targetmime, options);
     } else {
       return Fail(FT.SysValidation, 'Unsupported mime type');
     }
   }
 
-  private async convertStill(
+  private async convertImage(
     image: Buffer,
     sourceFiletype: FileType,
     targetFiletype: FileType,
-    options: ImageRequestParams,
+    options: ConvertOptions,
   ): AsyncFailable<ImageResult> {
     const [memLimit, timeLimit] = await Promise.all([
       this.sysPref.getNumberPreference(SysPreference.ConversionMemoryLimit),
