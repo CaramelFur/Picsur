@@ -2,10 +2,11 @@ import { BMPdecode, BMPencode } from 'bmp-img';
 import {
   AnimFileType,
   FileType,
-  ImageFileType,
+  ImageFileType
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { QOIdecode, QOIencode } from 'qoi-img';
 import sharp, { Sharp, SharpOptions } from 'sharp';
+import { SharpWorkerFinishOptions } from './sharp.message';
 
 export interface SharpResult {
   data: Buffer;
@@ -72,9 +73,7 @@ function qoiSharpIn(image: Buffer, options?: SharpOptions) {
 export async function UniversalSharpOut(
   image: Sharp,
   filetype: FileType,
-  options?: {
-    quality?: number;
-  },
+  options?: SharpWorkerFinishOptions,
 ): Promise<SharpResult> {
   let result: SharpResult | undefined;
 
@@ -103,7 +102,11 @@ export async function UniversalSharpOut(
     case ImageFileType.WEBP:
     case AnimFileType.WEBP:
       result = await image
-        .webp({ quality: options?.quality })
+        .webp({
+          quality: options?.quality,
+          lossless: options?.lossless,
+          effort: options?.effort,
+        })
         .toBuffer({ resolveWithObject: true });
       break;
     case AnimFileType.GIF:

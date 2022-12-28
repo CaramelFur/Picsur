@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import {
+  AnimFileType,
   FileType,
   ImageFileType,
-  SupportedFileTypeCategory,
+  SupportedFileTypeCategory
 } from 'picsur-shared/dist/dto/mimes.dto';
 
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
@@ -41,10 +42,12 @@ export class ImageProcessorService {
     image: Buffer,
     filetype: FileType,
   ): AsyncFailable<ImageResult> {
-    // Webps and gifs are stored as is for now
-    return {
-      image: image,
-      filetype: filetype.identifier,
-    };
+    const outputFileType = ParseFileType(AnimFileType.WEBP);
+    if (HasFailed(outputFileType)) return outputFileType;
+
+    return this.imageConverter.convert(image, filetype, outputFileType, {
+      lossless: true,
+      effort: 0,
+    });
   }
 }
