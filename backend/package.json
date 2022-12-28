@@ -22,6 +22,7 @@
     "purge": "rm -rf dist && rm -rf node_modules"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.238.0",
     "@fastify/helmet": "^10.1.0",
     "@fastify/multipart": "^7.5.0",
     "@fastify/reply-from": "^9.0.1",

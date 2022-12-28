@@ -38,6 +38,7 @@ export class ImageManagerModule implements OnModuleInit {
   private async imageManagerCron() {
     await this.cleanupDerivatives();
     await this.cleanupExpired();
+    await this.cleanupOrphanedFiles();
   }
 
   private async cleanupDerivatives() {
@@ -74,5 +75,26 @@ export class ImageManagerModule implements OnModuleInit {
 
     if (cleanedUp > 0)
       this.logger.log(`Cleaned up ${cleanedUp} expired images`);
+  }
+
+  private async cleanupOrphanedFiles() {
+    // const cleanedUpDerivatives =
+    //   await this.imageFileDB.cleanupOrphanedDerivatives();
+
+    // if (HasFailed(cleanedUpDerivatives)) {
+    //   cleanedUpDerivatives.print(this.logger);
+    //   return;
+    // }
+
+    // const cleanedUpFiles = await this.imageFileDB.cleanupOrphanedFiles();
+    // if (HasFailed(cleanedUpFiles)) {
+    //   cleanedUpFiles.print(this.logger);
+    //   return;
+    // }
+
+    // if (cleanedUpDerivatives > 0 || cleanedUpFiles > 0)
+    //   this.logger.log(
+    //     `Cleaned up ${cleanedUpDerivatives} orphaned derivatives and ${cleanedUpFiles} orphaned files`,
+    //   );
   }
 }
