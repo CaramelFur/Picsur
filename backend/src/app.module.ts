@@ -1,8 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module, NestModule, OnModuleInit } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import cors from 'cors';
 import { IncomingMessage, ServerResponse } from 'http';
+import semver from 'semver';
 import { EarlyConfigModule } from './config/early/early-config.module';
 import { ServeStaticConfigService } from './config/early/serve-static.config.service';
 import { DatabaseModule } from './database/database.module';
@@ -12,6 +13,8 @@ import { AuthManagerModule } from './managers/auth/auth.module';
 import { DemoManagerModule } from './managers/demo/demo.module';
 import { UsageManagerModule } from './managers/usage/usage.module';
 import { PicsurRoutesModule } from './routes/routes.module';
+
+const supportedNodeVersions = ['^16.17.0', '^18.6.0'];
 
 const mainCorsConfig = cors({
   origin: '<origin>',
@@ -53,9 +56,24 @@ const imageCorsOverride = (
     PicsurLayersModule,
   ],
 })
-export class AppModule implements NestModule {
+export class AppModule implements NestModule, OnModuleInit {
+  private readonly logger = new Logger(AppModule.name);
+
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(mainCorsConfig).exclude('/i').forRoutes('/');
     consumer.apply(imageCorsConfig, imageCorsOverride).forRoutes('/i');
+  }
+
+  onModuleInit() {
+    const nodeVersion = process.version;
+    if (!supportedNodeVersions.some((v) => semver.satisfies(nodeVersion, v))) {
+      this.logger.error(
+        `Unsupported Node version: ${nodeVersion}. Transcoding performance will be severely degraded.`,
+      );
+
+      this.logger.log(
+        `Supported Node versions: ${supportedNodeVersions.join(', ')}`,
+      );
+    }
   }
 }
