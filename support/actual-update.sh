@@ -12,11 +12,10 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 # Strip the version from the package names
 # Concat all package names into a single line with spaces
 # Run "yarn up -R {all-packages}" to update all packages
-yarn info --name-only -R -A --json | \
-  jq | \
-  sed 's/\"//g' | \
-  sed 's/@.*//g' | \
-  sort | \
-  uniq | \
-  xargs yarn up -R
-
+yarn info --name-only -R -A --json \
+  | jq \
+  | sed 's/\"//g' \
+  | sed 's/@.*//g' \
+  | sort \
+  | uniq \
+  | xargs yarn up -R
