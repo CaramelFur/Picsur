@@ -41,6 +41,8 @@ export class HeaderComponent implements OnInit {
   public _enableHamburger: boolean = true;
   @Output('onHamburgerClick') onHamburgerClick = new EventEmitter<void>();
 
+  @Input('loading') public loading: boolean = false;
+
   private currentUser: EUser | null = null;
 
   public canLogIn: boolean = false;

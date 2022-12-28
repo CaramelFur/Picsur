@@ -11,7 +11,8 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="stylesheet" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" href="/assets/css/loading.css" />
+    <link rel="stylesheet" href="/assets/css/normalize.min.css" />
 
     <meta name="author" content="Rubikscraft" />
     <meta
@@ -37,6 +38,16 @@
   </head>
   <body class="mat-typography mat-app-background">
     <noscript>Sorry, but you need javascript</noscript>
-    <app-root></app-root>
+
+    <app-root>
+      <div class="app-loader">
+        <img
+          width="100px"
+          height="100px"
+          src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBzdHlsZT0iYW5pbWF0aW9uOnJvdGF0b3IxIDUzMzJtcyBsaW5lYXIgaW5maW5pdGUgYm90aDt0cmFuc2Zvcm0tb3JpZ2luOmNlbnRlciIgb3ZlcmZsb3c9ImhpZGRlbiI+PHN0eWxlPkBrZXlmcmFtZXMgcm90YXRvcjF7MCV7dHJhbnNmb3JtOnJvdGF0ZSgwZGVnKX10b3t0cmFuc2Zvcm06cm90YXRlKDcyMGRlZyl9fUBrZXlmcmFtZXMgcm90YXRvcjJ7MCV7dHJhbnNmb3JtOnJvdGF0ZSgwZGVnKX01MC4wMDAwMSUsdG97dHJhbnNmb3JtOnJvdGF0ZSg2MGRlZyl9fUBrZXlmcmFtZXMgZGFzaHswJXtzdHJva2UtZGFzaG9mZnNldDozNTB9NTAle3N0cm9rZS1kYXNob2Zmc2V0OjE4MDt0cmFuc2Zvcm06cm90YXRlKDBkZWcpfTUwLjAwMDAxJXtzdHJva2UtZGFzaG9mZnNldDotNzE7dHJhbnNmb3JtOnJvdGF0ZSgtMTAyZGVnKX10b3tzdHJva2UtZGFzaG9mZnNldDotMjQwO3RyYW5zZm9ybTpyb3RhdGUoLTQ1ZGVnKX19PC9zdHlsZT48YSBzdHlsZT0iYW5pbWF0aW9uOnJvdGF0b3IyIDEzMzNtcyBsaW5lYXIgaW5maW5pdGUgYm90aDt0cmFuc2Zvcm0tb3JpZ2luOmNlbnRlciI+PGNpcmNsZSBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjEwIiBjeD0iNTAiIGN5PSI1MCIgcj0iNDAiIHN0eWxlPSJ0cmFuc2Zvcm0tb3JpZ2luOmNlbnRlcjthbmltYXRpb246ZGFzaCAxMzMzbXMgY3ViaWMtYmV6aWVyKC40LDAsLjIsMSkgaW5maW5pdGUgYm90aCIgc3Ryb2tlLWRhc2hhcnJheT0iMzYwIiBzdHJva2U9IiM0M2EwNDciLz48L2E+PC9zdmc+Cg=="
+        />
+        <h1>Loading</h1>
+      </div>
+    </app-root>
   </body>
 </html>

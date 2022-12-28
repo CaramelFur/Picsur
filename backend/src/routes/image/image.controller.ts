@@ -1,4 +1,5 @@
 import { Controller, Get, Head, Logger, Query, Res } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
 import type { FastifyReply } from 'fastify';
 import {
   ImageMetaResponse,
@@ -21,6 +22,7 @@ import { BrandMessageType, GetBrandMessage } from '../../util/branding';
 // This is the only controller with CORS enabled
 @Controller('i')
 @RequiredPermissions(Permission.ImageView)
+@SkipThrottle()
 export class ImageController {
   private readonly logger = new Logger(ImageController.name);
 

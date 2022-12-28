@@ -23,9 +23,10 @@ import {
   HasSuccess,
   Open,
 } from 'picsur-shared/dist/types/failable';
-import { UtilService } from 'src/app/util/util.service';
+import { ImagesUploadRequest } from 'src/app/models/dto/images-upload-request.dto';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
+import { InfoService } from './info.service';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -34,7 +35,7 @@ import { UserService } from './user.service';
 export class ImageService {
   constructor(
     private readonly api: ApiService,
-    private readonly util: UtilService,
+    private readonly infoService: InfoService,
     private readonly userService: UserService,
   ) {}
 
@@ -43,13 +44,28 @@ export class ImageService {
       ImageUploadResponse,
       '/api/image/upload',
       new ImageUploadRequest(image),
-    );
+    ).result;
 
     return Open(result, 'id');
   }
 
+  public async UploadImages(images: File[]): AsyncFailable<string[]> {
+    console.log('Uploading images', images);
+
+    // Split into chunks of 20
+    const groups = this.chunks(images, 20);
+
+    const result = await this.api.postForm(
+      ImageUploadResponse,
+      '/api/image/upload/bulk',
+      new ImagesUploadRequest(images),
+    );
+
+    return [];
+  }
+
   public async GetImageMeta(image: string): AsyncFailable<ImageMetaResponse> {
-    return await this.api.get(ImageMetaResponse, `/i/meta/${image}`);
+    return await this.api.get(ImageMetaResponse, `/i/meta/${image}`).result;
   }
 
   public async ListAllImages(
@@ -66,7 +82,7 @@ export class ImageService {
         page,
         user_id: userID,
       },
-    );
+    ).result;
   }
 
   public async ListMyImages(
@@ -93,7 +109,7 @@ export class ImageService {
         id,
         ...settings,
       },
-    );
+    ).result;
   }
 
   public async DeleteImages(
@@ -106,7 +122,7 @@ export class ImageService {
       {
         ids: images,
       },
-    );
+    ).result;
   }
 
   public async DeleteImage(image: string): AsyncFailable<EImage> {
@@ -125,8 +141,13 @@ export class ImageService {
 
   // Non api calls
 
-  public GetImageURL(image: string, filetype: string | null): string {
-    const baseURL = this.util.getHost();
+  // Use for native images
+  public GetImageURL(
+    image: string,
+    filetype: string | null,
+    allowOverride = false,
+  ): string {
+    const baseURL = this.infoService.getHostname(allowOverride);
     const extension = FileType2Ext(filetype ?? '');
 
     return `${baseURL}/i/${image}${
@@ -134,12 +155,23 @@ export class ImageService {
     }`;
   }
 
+  // Use for user facing urls
+  public CreateImageLinks(imageURL: string, name?: string): ImageLinks {
+    return {
+      source: imageURL,
+      markdown: `![image](${imageURL})`,
+      html: `<img src="${imageURL}" alt="${name ?? 'image'}">`,
+      rst: `.. image:: ${imageURL}`,
+      bbcode: `[img]${imageURL}[/img]`,
+    };
+  }
+
   public GetImageURLCustomized(
     image: string,
     filetype: string | null,
     options: ImageRequestParams,
   ): string {
-    const baseURL = this.GetImageURL(image, filetype);
+    const baseURL = this.GetImageURL(image, filetype, true);
     const betterOptions = ImageRequestParams.zodSchema.safeParse(options);
 
     if (!betterOptions.success) return baseURL;
@@ -169,20 +201,20 @@ export class ImageService {
     return baseURL + '?' + queryParams.join('&');
   }
 
-  public CreateImageLinks(imageURL: string): ImageLinks {
-    return {
-      source: imageURL,
-      markdown: `![image](${imageURL})`,
-      html: `<img src="${imageURL}" alt="image">`,
-      rst: `.. image:: ${imageURL}`,
-      bbcode: `[img]${imageURL}[/img]`,
-    };
-  }
-
   public CreateImageLinksFromID(
     imageID: string,
     mime: string | null,
+    name?: string,
   ): ImageLinks {
-    return this.CreateImageLinks(this.GetImageURL(imageID, mime));
+    return this.CreateImageLinks(this.GetImageURL(imageID, mime, true), name);
+  }
+
+  private chunks<T>(arr: T[], size: number): T[][] {
+    let result = [];
+    for (let i = 0; i < arr.length; i += size) {
+      result.push(arr.slice(i, size + i));
+    }
+
+    return result;
   }
 }

@@ -23,4 +23,4 @@ import { UserRoutingModule } from './user.routing.module';
     ReactiveFormsModule,
   ],
 })
-export class UserRouteModule {}
+export default class UserRouteModule {}

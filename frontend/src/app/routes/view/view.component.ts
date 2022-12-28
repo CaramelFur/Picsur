@@ -85,12 +85,20 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
   }
 
+  private imageLinksCache: Record<string, ImageLinks> = {};
   public get imageLinks(): ImageLinks {
+    if (this.imageLinksCache[this.selectedFormat] !== undefined)
+      return this.imageLinksCache[this.selectedFormat];
+
     const format = this.selectedFormat;
-    return this.imageService.CreateImageLinksFromID(
+    const links = this.imageService.CreateImageLinksFromID(
       this.id,
       format === 'original' ? null : format,
+      this.image?.file_name,
     );
+
+    this.imageLinksCache[format] = links;
+    return links;
   }
 
   async ngOnInit() {

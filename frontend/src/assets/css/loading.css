@@ -1,0 +1,10 @@
+.app-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.app-loader h1 {
+  margin-inline: auto;
+}

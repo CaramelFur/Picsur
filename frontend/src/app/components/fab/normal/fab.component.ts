@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
 export class FabComponent {
   @Input('aria-label') ariaLabel: string = 'Floating Action Button';
   @Input() icon: string = 'add';
-  @Input() color: string = 'accent';
+  @Input() color: string = 'primary';
   @Input('tooltip') tooltip: string;
   @Input() onClick: () => void = () => {};
 

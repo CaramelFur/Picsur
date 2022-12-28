@@ -19,7 +19,7 @@ But it does function, so feel free to give it a try.
 
 ## Demo
 
-You can view a live demo here: <https://picsur.rubikscraft.nl/>
+You can view a live demo here: <https://picsur.org/>
 
 The images are deleted every five minutes, and the maximum filesize is 16MB. But it should give you an indication of how it works.
 
@@ -57,9 +57,9 @@ Every featured marked here should work in the latest release.
 - [x] Proper DB migrations
 - [x] Show own images in list
 - [x] Correct previews on chats
-- [X] Expiring images
-- [X] ShareX endpoint
-- [X] Arm64 image
+- [x] Expiring images
+- [x] ShareX endpoint
+- [x] ARM64 and AMD64 Docker image
 
 - [ ] White mode
 - [ ] Public gallery
@@ -73,6 +73,12 @@ If you encounter any bugs or oddities, please open an issue [here](https://githu
 If you like this project, don't forget to give it a star. It tells me that I'm not wasting my time on something that people don't like.
 
 ## Faq
+
+### Is this project maintained?
+
+Yes it still is. If I were to stop maintaining it, I would archive the repository.
+
+However I do not have a lot of time on my hands, so updates are not always as frequent as I would like them to be.
 
 ### Why do my images dissapear of the public instance?
 
@@ -149,6 +155,10 @@ services:
 volumes:
   picsur-data:
 ```
+
+## Thanks
+
+- @awg13 for donating 5$
 
 ## Api
 

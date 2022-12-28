@@ -11,7 +11,7 @@
       Permissions
     </mat-header-cell>
     <mat-cell class="d-none d-md-flex" *matCellDef="let role">
-      <mat-chip-list aria-label="Role Permissions">
+      <mat-chip-listbox aria-label="Role Permissions">
         <mat-chip
           [disableRipple]="true"
           [disabled]="true"
@@ -33,7 +33,7 @@
         >
           +{{ role.permissions.length - permissionsTruncate }}
         </mat-chip>
-      </mat-chip-list>
+      </mat-chip-listbox>
     </mat-cell>
   </ng-container>
 
@@ -70,7 +70,6 @@
 </mat-table>
 
 <mat-paginator
-  color="accent"
   class="mat-elevation-z2"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="startingPageSize"

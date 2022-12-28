@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AsyncFailable, Failure, HasFailed } from 'picsur-shared/dist/types';
-import { KeyService } from '../services/storage/key.service';
+import { KeyStorageService } from '../services/storage/key-storage.service';
 import { QOIImage, QOIJob, QOIWorkerOut } from './qoi-worker.dto';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class QoiWorkerService {
   private worker: Worker | null = null;
   private job: Promise<QOIJob> | null = null;
 
-  constructor(private readonly keyService: KeyService) {
+  constructor(private readonly keyService: KeyStorageService) {
     if (typeof Worker !== 'undefined') {
       this.worker = new Worker(new URL('./qoi.worker', import.meta.url));
     } else {

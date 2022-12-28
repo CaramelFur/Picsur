@@ -9,7 +9,7 @@ import {
   Unique,
 } from 'typeorm';
 import z from 'zod';
-import { EUserBackend } from './user.entity';
+import { EUserBackend } from '../users/user.entity';
 
 export const EUsrPreferenceSchema = z.object({
   id: IsEntityID().optional(),

@@ -1,13 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PRoutes } from './models/dto/picsur-routes.dto';
-import { ErrorsRouteModule } from './routes/errors/errors.module';
-import { ImagesRouteModule } from './routes/images/images.module';
-import { ProcessingRouteModule } from './routes/processing/processing.module';
-import { SettingsRouteModule } from './routes/settings/settings.module';
-import { UploadRouteModule } from './routes/upload/upload.module';
-import { UserRouteModule } from './routes/user/user.module';
-import { ViewRouteModule } from './routes/view/view.module';
 
 const routes: PRoutes = [
   {
@@ -17,31 +10,38 @@ const routes: PRoutes = [
   },
   {
     path: 'upload',
-    loadChildren: () => UploadRouteModule,
+    loadChildren: () =>
+      import('./routes/upload/upload.module').then((m) => m.default),
   },
   {
     path: 'processing',
-    loadChildren: () => ProcessingRouteModule,
+    loadChildren: () =>
+      import('./routes/processing/processing.module').then((m) => m.default),
   },
   {
     path: 'view',
-    loadChildren: () => ViewRouteModule,
+    loadChildren: () =>
+      import('./routes/view/view.module').then((m) => m.default),
   },
   {
     path: 'user',
-    loadChildren: () => UserRouteModule,
+    loadChildren: () =>
+      import('./routes/user/user.module').then((m) => m.default),
   },
   {
     path: 'images',
-    loadChildren: () => ImagesRouteModule,
+    loadChildren: () =>
+      import('./routes/images/images.module').then((m) => m.default),
   },
   {
     path: 'settings',
-    loadChildren: () => SettingsRouteModule,
+    loadChildren: () =>
+      import('./routes/settings/settings.module').then((m) => m.default),
   },
   {
     path: 'error',
-    loadChildren: () => ErrorsRouteModule,
+    loadChildren: () =>
+      import('./routes/errors/errors.module').then((m) => m.default),
   },
 ];
 

@@ -15,11 +15,7 @@ export class ErrorService {
   ) {}
 
   public showFailure(error: Failure, logger: Logger): void {
-    if (error.isImportant()) {
-      logger.error(error.print());
-    } else {
-      logger.warn(error.print());
-    }
+    error.print(logger);
 
     this.snackbar.showSnackBar(
       error.getReason(),

@@ -23,4 +23,4 @@ import { SettingsShareXRoutingModule } from './settings-sharex.routing.module';
     MatProgressSpinnerModule,
   ],
 })
-export class SettingsShareXRouteModule {}
+export default class SettingsShareXRouteModule {}

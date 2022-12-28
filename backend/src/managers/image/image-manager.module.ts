@@ -1,4 +1,5 @@
-import { Logger, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Logger, Module, OnModuleInit } from '@nestjs/common';
+import { Interval } from '@nestjs/schedule';
 import ms from 'ms';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { HasFailed } from 'picsur-shared/dist/types';
@@ -18,11 +19,10 @@ import { ImageManagerService } from './image.service';
     ImageProcessorService,
     ImageConverterService,
   ],
-  exports: [ImageManagerService],
+  exports: [ImageManagerService, ImageConverterService],
 })
-export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
+export class ImageManagerModule implements OnModuleInit {
   private readonly logger = new Logger(ImageManagerModule.name);
-  private interval: NodeJS.Timeout;
 
   constructor(
     private readonly prefManager: SysPreferenceDbService,
@@ -31,14 +31,10 @@ export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
   ) {}
 
   async onModuleInit() {
-    this.interval = setInterval(
-      // Run demoManagerService.execute() every interval
-      this.imageManagerCron.bind(this),
-      1000 * 60,
-    );
     await this.imageManagerCron();
   }
 
+  @Interval(1000 * 60)
   private async imageManagerCron() {
     await this.cleanupDerivatives();
     await this.cleanupExpired();
@@ -53,31 +49,30 @@ export class ImageManagerModule implements OnModuleInit, OnModuleDestroy {
       return;
     }
 
-    const after_ms = ms(remove_derivatives_after);
-    if (after_ms === 0) {
+    let after_ms = ms(remove_derivatives_after as any);
+    if (isNaN(after_ms) || after_ms === 0) {
       this.logger.log('remove_derivatives_after is 0, skipping cron');
       return;
     }
+    if (after_ms < 60000) after_ms = 60000;
 
     const result = await this.imageFileDB.cleanupDerivatives(after_ms / 1000);
     if (HasFailed(result)) {
-      this.logger.warn(result.print());
+      result.print(this.logger);
     }
 
-    this.logger.log(`Cleaned up ${result} derivatives`);
+    if (result > 0) this.logger.log(`Cleaned up ${result} derivatives`);
   }
 
   private async cleanupExpired() {
     const cleanedUp = await this.imageDB.cleanupExpired();
 
     if (HasFailed(cleanedUp)) {
-      this.logger.warn(cleanedUp.print());
+      cleanedUp.print(this.logger);
+      return;
     }
 
-    this.logger.log(`Cleaned up ${cleanedUp} expired images`);
-  }
-
-  onModuleDestroy() {
-    if (this.interval) clearInterval(this.interval);
+    if (cleanedUp > 0)
+      this.logger.log(`Cleaned up ${cleanedUp} expired images`);
   }
 }

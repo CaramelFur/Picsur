@@ -8,4 +8,4 @@ import { SettingsSysprefRoutingModule } from './settings-sys-pref.routing.module
   declarations: [SettingsSysprefComponent],
   imports: [CommonModule, SettingsSysprefRoutingModule, PrefOptionModule],
 })
-export class SettingsSysprefRouteModule {}
+export default class SettingsSysprefRouteModule {}

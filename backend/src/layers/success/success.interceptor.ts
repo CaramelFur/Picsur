@@ -46,10 +46,29 @@ export class SuccessInterceptor<T> implements NestInterceptor {
           return data;
         }
       }),
+      map((data) => {
+        const request = context.switchToHttp().getRequest();
+        const response = context.switchToHttp().getResponse<FastifyReply>();
+        const traceString = `(${request.ip} -> ${request.method} ${request.url})`;
+
+        this.logger.verbose(
+          `Handled ${traceString} with ${response.statusCode} in ${Math.ceil(
+            response.getResponseTime(),
+          )}ms`,
+          SuccessInterceptor.name,
+        );
+
+        return data;
+      }),
     );
   }
 
   private validate(context: ExecutionContext, data: unknown): unknown {
+    const canReturnAnything =
+      (this.reflector.get('noreturns', context.getHandler()) ?? false) === true;
+
+    if (canReturnAnything) return data;
+
     const schemaStatic = this.reflector.get<ZodDtoStatic>(
       'returns',
       context.getHandler(),

@@ -9,7 +9,9 @@ export enum FT {
   Database = 'database',
   SysValidation = 'sysvalidation',
   UsrValidation = 'usrvalidation',
+  BadRequest = 'badrequest',
   Permission = 'permission',
+  RateLimit = 'ratelimit',
   NotFound = 'notfound',
   RouteNotFound = 'routenotfound',
   Conflict = 'conflict',
@@ -17,6 +19,12 @@ export enum FT {
   Authentication = 'authentication',
   Impossible = 'impossible',
   Network = 'network',
+}
+
+interface ILogger {
+  error: (message: string) => void;
+  warn: (message: string) => void;
+  debug: (message: string) => void;
 }
 
 interface FTProp {
@@ -58,10 +66,20 @@ const FTProps: {
     code: 400,
     message: 'Validation of user input failed',
   },
+  [FT.BadRequest]: {
+    important: false,
+    code: 400,
+    message: 'Bad request',
+  },
   [FT.Permission]: {
     important: false,
     code: 403,
     message: 'Permission denied',
+  },
+  [FT.RateLimit]: {
+    important: false,
+    code: 429,
+    message: 'Rate limit exceeded',
   },
   [FT.NotFound]: {
     important: false,
@@ -130,10 +148,42 @@ export class Failure {
     return FTProps[this.type].important;
   }
 
-  print(): string {
-    return `${this.getName()}: ${this.getReason()}\n(${
-      this.debugMessage
-    })\n${this.getStack()}`;
+  print(
+    logger: ILogger,
+    options?: {
+      notImportant?: boolean;
+      prefix?: string;
+    },
+  ): void {
+    const message = this.getReason();
+    const logmessage =
+      message + (this.getDebugMessage() ? ' - ' + this.getDebugMessage() : '');
+
+    const prefix = options?.prefix ? options.prefix + ' ' : '';
+    const logline = `${prefix}${this.getName()}: ${logmessage}`;
+
+    if (this.isImportant() && options?.notImportant !== true) {
+      logger.error(logline);
+      const stack = this.getStack();
+      if (stack) {
+        logger.debug(stack);
+      }
+    } else {
+      logger.warn(logline);
+    }
+  }
+
+  toString(): string {
+    return (
+      `${this.getName()}: ${this.getReason()} - (${this.debugMessage})` +
+      (this.isImportant() ? '\n' + this.stack : '')
+    );
+  }
+
+  toError(): Error {
+    const error = new Error();
+    (error as any).message = this;
+    return error;
   }
 
   static deserialize(data: any): Failure {
@@ -219,6 +269,7 @@ export type AsyncFailable<T> = Promise<Failable<T>>;
 
 export function HasFailed<T>(failable: Failable<T>): failable is Failure {
   if (failable instanceof Promise) throw new Error('Invalid use of HasFailed');
+  if (!(failable instanceof Object)) return false;
   return (failable as any).__68351953531423479708__id_failure === 1148363914;
 }
 
@@ -230,6 +281,19 @@ export function HasSuccess<T>(failable: Failable<T>): failable is T {
 export function ThrowIfFailed<V>(failable: Failable<V>): V {
   if (HasFailed(failable)) {
     throw failable;
+  }
+
+  return failable;
+}
+
+export function FallbackIfFailed<V>(
+  failable: Failable<V>,
+  fallback: V,
+  logger?: ILogger,
+): V {
+  if (HasFailed(failable)) {
+    if (logger) failable.print(logger, { notImportant: true });
+    return fallback;
   }
 
   return failable;

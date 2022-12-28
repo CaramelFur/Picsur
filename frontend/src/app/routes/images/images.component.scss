@@ -1,0 +1,10 @@
+picsur-img {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+// add 1em margin left to each non-first button in
+
+mat-card-actions > :not(:first-of-type) {
+  margin-left: 1em;
+}

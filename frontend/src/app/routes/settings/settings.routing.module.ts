@@ -4,13 +4,7 @@ import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { PermissionGuard } from 'src/app/guards/permission.guard';
 import { PRoutes } from 'src/app/models/dto/picsur-routes.dto';
 import { SidebarResolverService } from 'src/app/services/sidebar-resolver/sidebar-resolver.service';
-import { SettingsApiKeysRouteModule } from './apikeys/settings-apikeys.module';
-import { SettingsGeneralRouteModule } from './general/settings-general.module';
-import { SettingsRolesRouteModule } from './roles/settings-roles.module';
-import { SettingsShareXRouteModule } from './sharex/settings-sharex.module';
 import { SettingsSidebarComponent } from './sidebar/settings-sidebar.component';
-import { SettingsSysprefRouteModule } from './sys-pref/settings-sys-pref.module';
-import { SettingsUsersRouteModule } from './users/settings-users.module';
 
 const SettingsRoutes: PRoutes = [
   {
@@ -23,7 +17,8 @@ const SettingsRoutes: PRoutes = [
       },
       {
         path: 'general',
-        loadChildren: () => SettingsGeneralRouteModule,
+        loadChildren: () =>
+          import('./general/settings-general.module').then((m) => m.default),
         data: {
           permissions: [Permission.Settings],
           page: {
@@ -35,7 +30,8 @@ const SettingsRoutes: PRoutes = [
       },
       {
         path: 'apikeys',
-        loadChildren: () => SettingsApiKeysRouteModule,
+        loadChildren: () =>
+          import('./apikeys/settings-apikeys.module').then((m) => m.default),
         data: {
           permissions: [Permission.ApiKey],
           page: {
@@ -47,7 +43,8 @@ const SettingsRoutes: PRoutes = [
       },
       {
         path: 'sharex',
-        loadChildren: () => SettingsShareXRouteModule,
+        loadChildren: () =>
+          import('./sharex/settings-sharex.module').then((m) => m.default),
         data: {
           permissions: [Permission.ApiKey],
           page: {
@@ -59,7 +56,8 @@ const SettingsRoutes: PRoutes = [
       },
       {
         path: 'users',
-        loadChildren: () => SettingsUsersRouteModule,
+        loadChildren: () =>
+          import('./users/settings-users.module').then((m) => m.default),
         data: {
           permissions: [Permission.UserAdmin],
           page: {
@@ -71,7 +69,8 @@ const SettingsRoutes: PRoutes = [
       },
       {
         path: 'roles',
-        loadChildren: () => SettingsRolesRouteModule,
+        loadChildren: () =>
+          import('./roles/settings-roles.module').then((m) => m.default),
         data: {
           permissions: [Permission.RoleAdmin],
           page: {
@@ -83,7 +82,8 @@ const SettingsRoutes: PRoutes = [
       },
       {
         path: 'system',
-        loadChildren: () => SettingsSysprefRouteModule,
+        loadChildren: () =>
+          import('./sys-pref/settings-sys-pref.module').then((m) => m.default),
         data: {
           permissions: [Permission.SysPrefAdmin],
           page: {

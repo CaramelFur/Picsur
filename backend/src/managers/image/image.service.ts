@@ -19,9 +19,9 @@ import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
 import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
 import { UsrPreferenceDbService } from '../../collections/preference-db/usr-preference-db.service';
-import { EImageDerivativeBackend } from '../../database/entities/image-derivative.entity';
-import { EImageFileBackend } from '../../database/entities/image-file.entity';
-import { EImageBackend } from '../../database/entities/image.entity';
+import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
+import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
+import { EImageBackend } from '../../database/entities/images/image.entity';
 import { MutexFallBack } from '../../util/mutex-fallback';
 import { ImageConverterService } from './image-converter.service';
 import { ImageProcessorService } from './image-processor.service';
@@ -145,19 +145,15 @@ export class ImageManagerService {
 
     const converted_key = this.getConvertHash({ mime: fileType, ...options });
 
-    const [save_derivatives, allow_editing] = await Promise.all([
-      this.sysPref.getBooleanPreference(SysPreference.SaveDerivatives),
-      this.sysPref.getBooleanPreference(SysPreference.AllowEditing),
-    ]);
-    if (HasFailed(save_derivatives)) return save_derivatives;
+    const allow_editing = await this.sysPref.getBooleanPreference(
+      SysPreference.AllowEditing,
+    );
     if (HasFailed(allow_editing)) return allow_editing;
 
     return MutexFallBack(
       converted_key,
       () => {
-        if (save_derivatives)
-          return this.imageFilesService.getDerivative(imageId, converted_key);
-        else return Promise.resolve(null);
+        return this.imageFilesService.getDerivative(imageId, converted_key);
       },
       async () => {
         const masterImage = await this.getMaster(imageId);
@@ -181,21 +177,12 @@ export class ImageManagerService {
           } in ${Date.now() - startTime}ms`,
         );
 
-        if (save_derivatives) {
-          return await this.imageFilesService.addDerivative(
-            imageId,
-            converted_key,
-            convertResult.filetype,
-            convertResult.image,
-          );
-        } else {
-          const derivative = new EImageDerivativeBackend();
-          derivative.filetype = convertResult.filetype;
-          derivative.data = convertResult.image;
-          derivative.image_id = imageId;
-          derivative.key = converted_key;
-          return derivative;
-        }
+        return await this.imageFilesService.addDerivative(
+          imageId,
+          converted_key,
+          convertResult.filetype,
+          convertResult.image,
+        );
       },
     );
   }
@@ -256,7 +243,7 @@ export class ImageManagerService {
 
     let mime: string | undefined;
     if (filetypeResult === undefined) {
-      if (IsQOI(image)) mime = 'image/qoi';
+      if (IsQOI(image)) mime = 'image/x-qoi';
     } else {
       mime = filetypeResult.mime;
     }

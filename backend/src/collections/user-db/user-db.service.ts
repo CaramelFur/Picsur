@@ -12,7 +12,7 @@ import {
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { Repository } from 'typeorm';
-import { EUserBackend } from '../../database/entities/user.entity';
+import { EUserBackend } from '../../database/entities/users/user.entity';
 import { Permissions } from '../../models/constants/permissions.const';
 import {
   DefaultRolesList,
@@ -258,6 +258,14 @@ export class UserDbService {
         page,
         pages: Math.ceil(amount / count),
       };
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
+  public async count(): AsyncFailable<number> {
+    try {
+      return await this.usersRepository.count();
     } catch (e) {
       return Fail(FT.Database, e);
     }

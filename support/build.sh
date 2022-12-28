@@ -23,19 +23,34 @@ VERSION=$(cat ../package.json | grep version | head -1 | awk -F: '{ print $2 }' 
 
 echo "Building version $VERSION"
 
-docker buildx create --append --use --name picsur
+# Allow host networking for buildx
+docker buildx create --append --use --name picsur --driver-opt network=host
 
 docker buildx build \
   --push \
+  --network host \
   -t "$PACKAGE_URL-stage1:$VERSION" \
   -t "$PACKAGE_URL-stage1:latest" \
   -f ./picsur-stage1.Dockerfile ..
 
+# Exit if stage1 build failed
+if [ $? -ne 0 ]; then
+  echo "Stage1 build failed"
+  exit 1
+fi
+
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
   --push \
+  --network host \
   -t "$PACKAGE_URL:$VERSION" \
   -t "$PACKAGE_URL:latest" \
   -f ./picsur-stage2.Dockerfile ..
+
+# Exit if stage2 build failed
+if [ $? -ne 0 ]; then
+  echo "Stage2 build failed"
+  exit 1
+fi
 
 echo "Done pushing $PACKAGE_URL:$VERSION"

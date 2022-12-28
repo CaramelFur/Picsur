@@ -4,7 +4,7 @@ import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { In, LessThan, Repository } from 'typeorm';
-import { EImageBackend } from '../../database/entities/image.entity';
+import { EImageBackend } from '../../database/entities/images/image.entity';
 
 @Injectable()
 export class ImageDBService {
@@ -78,6 +78,14 @@ export class ImageDBService {
         page,
         pages: Math.ceil(amount / count),
       };
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
+  public async count(): AsyncFailable<number> {
+    try {
+      return await this.imageRepo.count();
     } catch (e) {
       return Fail(FT.Database, e);
     }

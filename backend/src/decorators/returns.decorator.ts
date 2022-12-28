@@ -16,3 +16,7 @@ export function Returns<N extends Object>(
 ): ReturnsMethodDecorator<N> {
   return SetMetadata('returns', newable);
 }
+
+export function ReturnsAnything(): ReturnsMethodDecorator<any> {
+  return SetMetadata('noreturns', true);
+}

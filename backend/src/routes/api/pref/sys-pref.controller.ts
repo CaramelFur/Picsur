@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import {
   GetPreferenceResponse,
   MultiplePreferencesResponse,
@@ -20,6 +21,7 @@ export class SysPrefController {
 
   @Get()
   @Returns(MultiplePreferencesResponse)
+  @Throttle(20)
   async getAllSysPrefs(): Promise<MultiplePreferencesResponse> {
     const prefs = ThrowIfFailed(await this.prefService.getAllPreferences());
 
@@ -39,6 +41,7 @@ export class SysPrefController {
 
   @Post(':key')
   @Returns(UpdatePreferenceResponse)
+  @Throttle(30)
   async setSysPref(
     @Param('key') key: string,
     @Body() body: UpdatePreferenceRequest,

@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import {
   GetSpecialUsersResponse,
   UserCreateRequest,
@@ -46,6 +47,7 @@ export class UserAdminController {
 
   @Post('create')
   @Returns(UserCreateResponse)
+  @Throttle(10)
   async register(
     @Body() create: UserCreateRequest,
   ): Promise<UserCreateResponse> {
@@ -78,6 +80,7 @@ export class UserAdminController {
 
   @Post('update')
   @Returns(UserUpdateResponse)
+  @Throttle(20)
   async setPermissions(
     @Body() body: UserUpdateRequest,
   ): Promise<UserUpdateResponse> {

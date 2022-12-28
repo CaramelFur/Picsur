@@ -57,7 +57,8 @@ export class ImageConverterService {
     if (HasFailed(memLimit) || HasFailed(timeLimit)) {
       return Fail(FT.Internal, 'Failed to get conversion limits');
     }
-    const timeLimitMS = ms(timeLimit);
+    let timeLimitMS = ms(timeLimit as any);
+    if (isNaN(timeLimitMS) || timeLimitMS === 0) timeLimitMS = 15 * 1000; // 15 seconds
 
     const sharpWrapper = new SharpWrapper(timeLimitMS, memLimit);
     const sharpOptions: SharpOptions = {
@@ -118,18 +119,6 @@ export class ImageConverterService {
 
     return {
       image: result.data,
-      filetype: targetFiletype.identifier,
-    };
-  }
-
-  private async convertAnimation(
-    image: Buffer,
-    targetFiletype: FileType,
-    options: ImageRequestParams,
-  ): AsyncFailable<ImageResult> {
-    // Apng and gif are stored as is for now
-    return {
-      image: image,
       filetype: targetFiletype.identifier,
     };
   }

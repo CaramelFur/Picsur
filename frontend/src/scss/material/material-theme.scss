@@ -2,41 +2,13 @@
 @use '@angular/material' as mat;
 @use './material-theme-custom.scss' as custom-mat;
 
+mat.$theme-ignore-duplication-warnings: true;
+
 @include mat.core();
 
-$dark-primary-text: rgba(black, 0.87);
-$light-primary-text: white;
-
-$mat-primary: (
-  main: #272727,
-  lighter: #bebebe,
-  darker: #171717,
-  200: #272727,
-  // For slide toggle,
-  contrast:
-    (
-      main: $light-primary-text,
-      lighter: $dark-primary-text,
-      darker: $light-primary-text,
-    ),
-);
-$mat-accent: (
-  main: #43a047,
-  lighter: #c7e3c8,
-  darker: #1b5e20,
-  200: #43a047,
-  // For slide toggle,
-  contrast:
-    (
-      main: $light-primary-text,
-      lighter: $dark-primary-text,
-      darker: $light-primary-text,
-    ),
-);
-
-$picsur-primary: mat.define-palette($mat-primary, main, lighter, darker);
-$picsur-accent: mat.define-palette($mat-accent, main, lighter, darker);
-$picsur-warn: mat.define_palette(mat.$red-palette);
+$picsur-primary: mat.define-palette(mat.$green-palette, 600, 100, 900);
+$picsur-accent: mat.define-palette(mat.$blue-grey-palette, 600, 200, 800);
+$picsur-warn: mat.define-palette(mat.$red-palette);
 
 // Light Theme Text
 $dark-text: #000000;
@@ -135,7 +107,7 @@ $light-bg-alpha-12: rgba(#fafafa, 0.12);
 $mat-dark-theme-background-palette: (
   background: $dark-background,
   status-bar: $dark-bg-lighter-20,
-  app-bar: $dark-bg-lighter-5,
+  app-bar: $dark-bg-lighter-10,
   hover: $light-bg-alpha-4,
   card: $dark-bg-lighter-5,
   dialog: $dark-bg-lighter-5,
@@ -151,30 +123,36 @@ $mat-dark-theme-background-palette: (
 );
 
 $mat-theme: (
-  primary: $picsur-primary,
-  accent: $picsur-accent,
-  warn: $picsur-warn,
-  is-dark: true,
-  background: $mat-dark-theme-background-palette,
-  foreground: $mat-dark-theme-foreground-palette,
+  color: (
+    primary: $picsur-primary,
+    accent: $picsur-accent,
+    warn: $picsur-warn,
+    background: $mat-dark-theme-background-palette,
+    foreground: $mat-dark-theme-foreground-palette,
+    is-dark: true,
+  ),
 );
 
 $mat-theme-light: (
-  primary: $picsur-primary,
-  accent: $picsur-accent,
-  warn: $picsur-warn,
-  is-dark: false,
-  background: $mat-light-theme-background-palette,
-  foreground: $mat-light-theme-foreground-palette,
+  (
+    color: (
+      primary: $picsur-primary,
+      accent: $picsur-accent,
+      warn: $picsur-warn,
+      background: $mat-light-theme-background-palette,
+      foreground: $mat-light-theme-foreground-palette,
+    ),
+  )
 );
 
 @include mat.all-component-themes($mat-theme);
+@include mat.all-component-typographies($mat-theme);
 @include custom-mat.custom-material($mat-theme);
 
-.theme-alternate {
-  @include mat.all-component-themes($mat-theme-light);
-  @include custom-mat.custom-material($mat-theme-light);
-}
+// .theme-alternate {
+//   @include mat.all-component-colors($mat-theme-light);
+//   @include custom-mat.custom-material($mat-theme-light);
+// }
 
 .mat-standard-chip {
   padding: 0.5em 0.85em;

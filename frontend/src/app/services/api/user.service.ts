@@ -20,7 +20,7 @@ import {
 } from 'picsur-shared/dist/types';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '../logger/logger.service';
-import { KeyService } from '../storage/key.service';
+import { KeyStorageService } from '../storage/key-storage.service';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -44,7 +44,7 @@ export class UserService {
 
   constructor(
     private readonly api: ApiService,
-    private readonly key: KeyService,
+    private readonly key: KeyStorageService,
   ) {
     this.init().catch(this.logger.error);
   }
@@ -72,7 +72,7 @@ export class UserService {
         username,
         password,
       },
-    );
+    ).result;
     if (HasFailed(response)) return response;
 
     // Set the key so the apiservice can use it
@@ -94,7 +94,7 @@ export class UserService {
         {
           username,
         },
-      ),
+      ).result,
       'available',
     );
   }
@@ -111,7 +111,7 @@ export class UserService {
         username,
         password,
       },
-    );
+    ).result;
   }
 
   public async logout(): AsyncFailable<EUser> {
@@ -147,7 +147,7 @@ export class UserService {
 
   // This actually fetches up to date information from the server
   private async fetchUser(): AsyncFailable<EUser> {
-    const got = await this.api.get(UserMeResponse, '/api/user/me');
+    const got = await this.api.get(UserMeResponse, '/api/user/me').result;
     if (HasFailed(got)) return got;
 
     this.key.set(got.token);

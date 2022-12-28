@@ -39,14 +39,9 @@ export class UploadComponent implements OnInit {
   }
 
   onSelect(event: NgxDropzoneChangeEvent) {
-    if (event.addedFiles.length > 1)
-      this.errorService.log(
-        'You uploaded multiple images, only one has been uploaded',
-      );
-
-    const metadata: ProcessingViewMeta = {
-      imageFile: event.addedFiles[0],
-    };
+    const metadata: ProcessingViewMeta = new ProcessingViewMeta(
+      event.addedFiles,
+    );
     this.router.navigate(['/processing'], { state: metadata });
   }
 
@@ -64,21 +59,16 @@ export class UploadComponent implements OnInit {
         'Your clipboard does not contain any images',
       );
 
-    const blob = filteredItems[0].getAsFile();
-    if (!blob)
+    const blobs = filteredItems.map((item) => item.getAsFile());
+    if (blobs.some((blob) => blob === null))
       return this.errorService.showFailure(
         Fail(FT.Internal, 'Error getting image from clipboard'),
         this.logger,
       );
 
-    if (filteredItems.length > 1)
-      this.errorService.log(
-        'You pasted multiple images, only one has been uploaded',
-      );
+    const safeBlob = blobs as File[];
 
-    const metadata: ProcessingViewMeta = {
-      imageFile: blob,
-    };
+    const metadata: ProcessingViewMeta = new ProcessingViewMeta(safeBlob);
 
     this.router.navigate(['/processing'], { state: metadata });
   }

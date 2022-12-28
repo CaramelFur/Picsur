@@ -39,23 +39,7 @@ export class MainExceptionFilter implements ExceptionFilter {
     const status = exception.getCode();
     const type = exception.getType();
 
-    const message = exception.getReason();
-    const logmessage =
-      message +
-      (exception.getDebugMessage() ? ' - ' + exception.getDebugMessage() : '');
-
-    if (exception.isImportant()) {
-      MainExceptionFilter.logger.error(
-        `${traceString} ${exception.getName()}: ${logmessage}`,
-      );
-      if (exception.getStack()) {
-        MainExceptionFilter.logger.debug(exception.getStack());
-      }
-    } else {
-      MainExceptionFilter.logger.warn(
-        `${traceString} ${exception.getName()}: ${logmessage}`,
-      );
-    }
+    exception.print(MainExceptionFilter.logger, { prefix: traceString });
 
     const toSend: ApiErrorResponse = {
       success: false,
@@ -65,7 +49,7 @@ export class MainExceptionFilter implements ExceptionFilter {
 
       data: {
         type,
-        message,
+        message: exception.getReason(),
       },
     };
 

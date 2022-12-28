@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { z } from 'zod';
-import { EApiKeyBackend } from './apikey.entity';
-import { EUsrPreferenceBackend } from './usr-preference.entity';
+import { EApiKeyBackend } from '../apikey.entity';
+import { EUsrPreferenceBackend } from '../system/usr-preference.entity';
 
 // Different data for public and private
 const OverriddenEUserSchema = EUserSchema.omit({ hashedPassword: true }).merge(

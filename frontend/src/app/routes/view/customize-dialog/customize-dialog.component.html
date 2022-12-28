@@ -4,7 +4,7 @@
       <h1>Customize Image</h1>
     </div>
     <div class="col-xl-4 col-12">
-      <mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
         <mat-label>Format</mat-label>
         <mat-select [(value)]="selectedFormat">
           <mat-option *ngFor="let format of formatOptions" [value]="format.key">
@@ -15,7 +15,7 @@
     </div>
 
     <div class="col-xl-2 col-md-3 col-sm-6 col-12">
-      <mat-form-field [matTooltip]="sizeTooltip">
+      <mat-form-field [matTooltip]="sizeTooltip" subscriptSizing="dynamic">
         <mat-label>Height</mat-label>
         <input
           matInput
@@ -29,8 +29,8 @@
 
     <div class="col-xl-2 col-md-3 col-sm-6 col-12">
       <mat-form-field
+        subscriptSizing="dynamic"
         appearance="outline"
-        color="accent"
         [matTooltip]="sizeTooltip"
       >
         <mat-label>Width</mat-label>
@@ -39,7 +39,7 @@
     </div>
 
     <div class="col-xl-2 col-md-3 col-sm-6 col-12">
-      <mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
         <mat-label>Rotation</mat-label>
         <mat-select [(value)]="rotate">
           <mat-option *ngFor="let option of rotationOptions" [value]="option">
@@ -50,7 +50,7 @@
     </div>
 
     <div class="col-xl-2 col-md-3 col-sm-6 col-12">
-      <mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
         <mat-label>Quality %</mat-label>
         <input matInput type="number" min="0" max="100" [(ngModel)]="quality" />
       </mat-form-field>
@@ -87,7 +87,11 @@
     </div>
 
     <div class="col-12">
-      <copy-field label="Custom Image URL" [value]="getURL()"></copy-field>
+      <copy-field
+        subscriptSizing="dynamic"
+        label="Custom Image URL"
+        [value]="getURL()"
+      ></copy-field>
     </div>
   </div>
   <div class="dialog-buttons">

@@ -14,4 +14,4 @@ import { UploadRoutingModule } from './upload.routing.module';
     NgxDropzoneModule,
   ],
 })
-export class UploadRouteModule {}
+export default class UploadRouteModule {}

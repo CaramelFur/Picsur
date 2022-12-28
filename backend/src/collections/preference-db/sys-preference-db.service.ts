@@ -5,17 +5,18 @@ import {
   PrefValueType,
   PrefValueTypeStrings,
 } from 'picsur-shared/dist/dto/preferences.dto';
-import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
+import {
+  SysPreference,
+  SysPreferenceList,
+  SysPreferenceValidators,
+  SysPreferenceValueTypes,
+} from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { Repository } from 'typeorm';
 import {
   ESysPreferenceBackend,
   ESysPreferenceSchema,
-} from '../../database/entities/sys-preference.entity';
-import {
-  SysPreferenceList,
-  SysPreferenceValueTypes,
-} from '../../models/constants/syspreferences.const';
+} from '../../database/entities/system/sys-preference.entity';
 import { MutexFallBack } from '../../util/mutex-fallback';
 import { PreferenceCommonService } from './preference-common.service';
 import { PreferenceDefaultsService } from './preference-defaults.service';
@@ -85,7 +86,7 @@ export class SysPreferenceDbService {
 
         // Return
         return this.prefCommon.DecodePref(
-          result.data,
+          result.data as any,
           SysPreference,
           SysPreferenceValueTypes,
         );
@@ -136,7 +137,7 @@ export class SysPreferenceDbService {
   private async saveDefault(
     key: SysPreference, // Force enum here because we dont validate
   ): AsyncFailable<DecodedSysPref> {
-    return this.setPreference(key, this.defaultsService.sysDefaults[key]());
+    return this.setPreference(key, this.defaultsService.getSysDefault(key));
   }
 
   private async encodeSysPref(
@@ -150,6 +151,12 @@ export class SysPreferenceDbService {
       SysPreferenceValueTypes,
     );
     if (HasFailed(validated)) return validated;
+
+    const valueValidated =
+      SysPreferenceValidators[key as SysPreference].safeParse(value);
+    if (!valueValidated.success) {
+      return Fail(FT.UsrValidation, undefined, valueValidated.error);
+    }
 
     let verifySysPreference = new ESysPreferenceBackend();
     verifySysPreference.key = validated.key;

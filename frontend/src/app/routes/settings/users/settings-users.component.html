@@ -11,7 +11,7 @@
       >Roles</mat-header-cell
     >
     <mat-cell class="d-none d-md-flex" *matCellDef="let user">
-      <mat-chip-list aria-label="User Roles">
+      <mat-chip-listbox aria-label="User Roles">
         <mat-chip
           [disableRipple]="true"
           [disabled]="true"
@@ -31,7 +31,7 @@
         >
           +{{ user.roles.length - rolesTruncate }}
         </mat-chip>
-      </mat-chip-list>
+      </mat-chip-listbox>
     </mat-cell>
   </ng-container>
 
@@ -64,7 +64,6 @@
 </mat-table>
 
 <mat-paginator
-  color="accent"
   class="mat-elevation-z2"
   [pageSizeOptions]="pageSizeOptions"
   [pageSize]="startingPageSize"

@@ -69,7 +69,7 @@ export class SysPrefService {
     const response = await this.api.get(
       MultiplePreferencesResponse,
       '/api/pref/sys',
-    );
+    ).result;
 
     return Map(response, (pref) => {
       this.sysprefObservable.next(pref.results);
@@ -89,7 +89,7 @@ export class SysPrefService {
     const response = await this.api.get(
       GetPreferenceResponse,
       `/api/pref/sys/${key}`,
-    );
+    ).result;
 
     if (!HasFailed(response)) this.updatePrefArray(response);
     return response;
@@ -110,7 +110,7 @@ export class SysPrefService {
       UpdatePreferenceResponse,
       `/api/pref/sys/${key}`,
       { value },
-    );
+    ).result;
 
     if (!HasFailed(response)) this.updatePrefArray(response);
     return response;

@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { SESSION_STORAGE } from '@ng-web-apis/common';
 import { AsyncFailable, Failable, HasFailed } from 'picsur-shared/dist/types';
+import { Logger } from '../logger/logger.service';
 
 interface dataWrapper<T> {
   data: T;
@@ -11,6 +12,8 @@ interface dataWrapper<T> {
   providedIn: 'root',
 })
 export class CacheService {
+  private readonly logger = new Logger(CacheService.name);
+
   private readonly cacheExpiresMS = 1000 * 60 * 60;
   private cacheVersion = '0.0.0';
 
@@ -41,7 +44,9 @@ export class CacheService {
     const safeKey = this.transformKey(key);
 
     try {
-      const data: dataWrapper<T> = JSON.parse(this.storage.getItem(safeKey) ?? '');
+      const data: dataWrapper<T> = JSON.parse(
+        this.storage.getItem(safeKey) ?? '',
+      );
       if (data && data.data && data.expires > Date.now()) {
         return data.data;
       }
@@ -70,6 +75,35 @@ export class CacheService {
       this.set(key, result);
       return result;
     }
+
+    return finalFallback;
+  }
+
+  public getFallbackSync<T>(
+    key: string,
+    finalFallback: T,
+    ...fallbacks: Array<(key: string) => AsyncFailable<T> | Failable<T>>
+  ): T {
+    const cached = this.get<T>(key);
+    if (cached !== null) {
+      return cached;
+    }
+
+    const background = async () => {
+      for (const fallback of fallbacks) {
+        const result = await fallback(key);
+        if (HasFailed(result)) {
+          continue;
+        }
+
+        this.set(key, result);
+        return result;
+      }
+
+      return finalFallback;
+    };
+
+    background().catch((e) => this.logger.error(e));
 
     return finalFallback;
   }

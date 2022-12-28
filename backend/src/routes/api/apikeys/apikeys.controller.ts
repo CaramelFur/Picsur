@@ -1,4 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import {
   ApiKeyCreateResponse,
   ApiKeyDeleteRequest,
@@ -53,6 +54,7 @@ export class ApiKeysController {
 
   @Post('create')
   @Returns(ApiKeyCreateResponse)
+  @Throttle(10)
   async createApiKey(
     @ReqUserID() userID: string,
   ): Promise<ApiKeyCreateResponse> {

@@ -1,9 +1,18 @@
 mat-form-field {
   min-width: 50%;
+  margin-block: 0.5rem;
 }
 
 .y-center {
   justify-content: center;
   display: flex;
   flex-direction: column;
+}
+
+h3 {
+  margin: 0;
+}
+
+mat-slide-toggle {
+  margin-block: 1rem;
 }

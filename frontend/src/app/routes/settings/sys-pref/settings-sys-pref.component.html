@@ -1,9 +1,17 @@
 <h1>System Settings</h1>
 
-<ng-container *ngFor="let pref of preferences | async">
-  <pref-option
-    [pref]="pref"
-    [update]="sysPrefService.setPreference.bind(sysPrefService)"
-    [translator]="translator"
-  ></pref-option>
+<ng-container *ngFor="let category of preferences | async">
+  <h2 *ngIf="category.category !== null">{{ category.category }}</h2>
+  <div class="row">
+    <ng-container *ngFor="let pref of category.prefs">
+      <pref-option
+        class="col-md-6 col-12"
+        [pref]="pref"
+        [update]="sysPrefService.setPreference.bind(sysPrefService)"
+        [name]="getName(pref.key)"
+        [helpText]="getHelpText(pref.key)"
+        [validator]="getValidator(pref.key)"
+      ></pref-option>
+    </ng-container>
+  </div>
 </ng-container>

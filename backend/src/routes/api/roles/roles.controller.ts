@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import {
   RoleCreateRequest,
   RoleCreateResponse,
@@ -56,6 +57,7 @@ export class RolesController {
 
   @Post('update')
   @Returns(RoleUpdateResponse)
+  @Throttle(20)
   async updateRole(
     @Body() body: RoleUpdateRequest,
   ): Promise<RoleUpdateResponse> {
@@ -73,6 +75,7 @@ export class RolesController {
 
   @Post('create')
   @Returns(RoleCreateResponse)
+  @Throttle(10)
   async createRole(
     @Body() role: RoleCreateRequest,
   ): Promise<RoleCreateResponse> {

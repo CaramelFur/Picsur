@@ -1,11 +1,12 @@
 import { EApiKeyBackend } from './apikey.entity';
-import { EImageDerivativeBackend } from './image-derivative.entity';
-import { EImageFileBackend } from './image-file.entity';
-import { EImageBackend } from './image.entity';
-import { ERoleBackend } from './role.entity';
-import { ESysPreferenceBackend } from './sys-preference.entity';
-import { EUserBackend } from './user.entity';
-import { EUsrPreferenceBackend } from './usr-preference.entity';
+import { EImageDerivativeBackend } from './images/image-derivative.entity';
+import { EImageFileBackend } from './images/image-file.entity';
+import { EImageBackend } from './images/image.entity';
+import { ESysPreferenceBackend } from './system/sys-preference.entity';
+import { ESystemStateBackend } from './system/system-state.entity';
+import { EUsrPreferenceBackend } from './system/usr-preference.entity';
+import { ERoleBackend } from './users/role.entity';
+import { EUserBackend } from './users/user.entity';
 
 export const EntityList = [
   EImageBackend,
@@ -16,4 +17,5 @@ export const EntityList = [
   ESysPreferenceBackend,
   EUsrPreferenceBackend,
   EApiKeyBackend,
+  ESystemStateBackend,
 ];

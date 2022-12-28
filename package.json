@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "0.4.1",
+  "version": "0.5.0",
   "workspaces": [
     "shared",
     "backend",
@@ -10,7 +10,7 @@
     "devdb:start": "docker-compose -f ./support/dev.docker-compose.yml up -d",
     "devdb:stop": "docker-compose -f ./support/dev.docker-compose.yml down",
     "devdb:restart": "docker-compose -f ./support/dev.docker-compose.yml restart",
-    "devdb:remove": "docker-compose -f ./support/dev.docker-compose.yml down --rm all --volumes",
+    "devdb:remove": "docker-compose -f ./support/dev.docker-compose.yml down --volumes",
     "build": "./support/build.sh",
     "setversion": "./support/setversion.sh",
     "purge": "rm -rf ./node_modules",
@@ -21,13 +21,14 @@
     "fastify": ">=4.8.1",
     "terser": ">=5.14.2",
     "typeorm": ">=0.3.9",
-    "typescript": "4.7.4",
+    "typescript": "~4.8.2",
+    "ms": "3.0.0-canary.1",
     "fastify-static": "npm:@fastify/static@*",
     "fastify-formbody": "npm:@fastify/formbody@*",
     "minimist": "npm:minimist-lite@*"
   },
   "devDependencies": {
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.1",
     "prettier-plugin-sh": "^0.12.8"
   },
   "packageManager": "yarn@3.2.2"

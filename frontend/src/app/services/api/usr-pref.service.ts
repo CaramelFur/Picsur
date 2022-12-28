@@ -69,7 +69,7 @@ export class UsrPrefService {
     const response = await this.api.get(
       MultiplePreferencesResponse,
       '/api/pref/usr',
-    );
+    ).result;
 
     return Map(response, (pref) => {
       this.usrprefObservable.next(pref.results);
@@ -89,7 +89,7 @@ export class UsrPrefService {
     const response = await this.api.get(
       GetPreferenceResponse,
       `/api/pref/usr/${key}`,
-    );
+    ).result;
 
     if (!HasFailed(response)) this.updatePrefArray(response);
     return response;
@@ -110,7 +110,7 @@ export class UsrPrefService {
       UpdatePreferenceResponse,
       `/api/pref/usr/${key}`,
       { value },
-    );
+    ).result;
 
     if (!HasFailed(response)) this.updatePrefArray(response);
     return response;

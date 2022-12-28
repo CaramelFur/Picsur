@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
-import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { LessThan, Repository } from 'typeorm';
-import { EImageDerivativeBackend } from '../../database/entities/image-derivative.entity';
-import { EImageFileBackend } from '../../database/entities/image-file.entity';
+import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
+import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
 
 const A_DAY_IN_SECONDS = 24 * 60 * 60;
 
@@ -51,6 +51,40 @@ export class ImageFileDBService {
       });
 
       if (!found) return Fail(FT.NotFound, 'Image not found');
+      return found;
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
+  public async migrateFile(
+    imageId: string,
+    sourceVariant: ImageEntryVariant,
+    targetVariant: ImageEntryVariant,
+  ): AsyncFailable<EImageFileBackend> {
+    try {
+      const sourceFile = await this.getFile(imageId, sourceVariant);
+      if (HasFailed(sourceFile)) return sourceFile;
+
+      sourceFile.variant = targetVariant;
+      return await this.imageFileRepo.save(sourceFile);
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
+  public async deleteFile(
+    imageId: string,
+    variant: ImageEntryVariant,
+  ): AsyncFailable<EImageFileBackend> {
+    try {
+      const found = await this.imageFileRepo.findOne({
+        where: { image_id: imageId, variant: variant },
+      });
+
+      if (!found) return Fail(FT.NotFound, 'Image not found');
+
+      await this.imageFileRepo.delete({ image_id: imageId, variant: variant });
       return found;
     } catch (e) {
       return Fail(FT.Database, e);
@@ -129,7 +163,7 @@ export class ImageFileDBService {
   ): AsyncFailable<number> {
     try {
       const result = await this.imageDerivativeRepo.delete({
-        last_read: LessThan(new Date()),
+        last_read: LessThan(new Date(Date.now() - olderThanSeconds * 1000)),
       });
 
       return result.affected ?? 0;

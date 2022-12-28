@@ -15,4 +15,4 @@ import { SettingsSidebarComponent } from './sidebar/settings-sidebar.component';
   ],
   exports: [SettingsRoutingModule],
 })
-export class SettingsRouteModule {}
+export default class SettingsRouteModule {}

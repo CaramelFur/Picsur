@@ -37,4 +37,4 @@ import { SettingsRolesRoutingModule } from './settings-roles.routing.module';
     ValuesPickerModule,
   ],
 })
-export class SettingsRolesRouteModule {}
+export default class SettingsRolesRouteModule {}

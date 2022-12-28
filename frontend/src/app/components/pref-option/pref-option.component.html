@@ -1,51 +1,100 @@
-<ng-container *ngIf="pref.type === 'string'">
-  <div class="row">
-    <div class="y-center col-md-6 col-12">
-      <h3 mat-line>{{ name }}</h3>
-    </div>
-    <div class="y-center col-md-6 col-12">
-      <mat-form-field appearance="outline" color="accent">
-        <input
-          matInput
-          [value]="pref.value"
-          (change)="stringUpdateWrapper($event)"
-          autocorrect="off"
-          autocapitalize="none"
-        />
-      </mat-form-field>
-    </div>
+<ng-container *ngIf="type === 'string'">
+  <div class="y-center">
+    <mat-form-field appearance="outline" color="accent">
+      <mat-label>{{ name }}</mat-label>
+      <input
+        matInput
+        autocorrect="off"
+        autocapitalize="none"
+        placeholder="Empty"
+        [formControl]="formControl"
+      />
+      <!-- show tooltip on press -->
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="tooltip.show()"
+        *ngIf="helpText !== ''"
+      >
+        <mat-icon
+          matSuffix
+          fontSet="material-icons-outlined"
+          #tooltip="matTooltip"
+          [matTooltip]="helpText"
+          matTooltipPosition="left"
+          matTooltipHideDelay="0"
+        >
+          help_outline
+        </mat-icon>
+      </button>
+      <mat-error *ngIf="formControl.invalid">
+        {{ getErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
   </div>
 </ng-container>
 
-<ng-container *ngIf="pref.type === 'number'">
-  <div class="row">
-    <div class="y-center col-md-6 col-12">
-      <h3 mat-line>{{ name }}</h3>
-    </div>
-    <div class="y-center col-md-6 col-12">
-      <mat-form-field appearance="outline" color="accent">
-        <input
-          matInput
-          type="number"
-          [value]="pref.value"
-          (change)="numberUpdateWrapper($event)"
-        />
-      </mat-form-field>
-    </div>
+<ng-container *ngIf="type === 'number'">
+  <div class="y-center">
+    <mat-form-field appearance="outline" color="accent">
+      <mat-label>{{ name }}</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="Empty"
+        [formControl]="formControl"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="tooltip.show()"
+        *ngIf="helpText !== ''"
+      >
+        <mat-icon
+          matSuffix
+          fontSet="material-icons-outlined"
+          #tooltip="matTooltip"
+          [matTooltip]="helpText"
+          matTooltipPosition="left"
+          matTooltipHideDelay="0"
+        >
+          help_outline
+        </mat-icon>
+      </button>
+      <mat-error *ngIf="formControl.invalid">
+        {{ getErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
   </div>
 </ng-container>
 
-<ng-container *ngIf="pref.type === 'boolean'">
-  <div class="row">
-    <div class="y-center col-md-6 col-12">
-      <h3 mat-line>{{ name }}</h3>
-    </div>
-    <div class="y-center col-md-6 col-12">
-      <mat-slide-toggle
-        class="col-md-6 col-12"
-        [checked]="valBool"
-        (change)="update($event.checked)"
-      ></mat-slide-toggle>
-    </div>
+<ng-container *ngIf="type === 'boolean'">
+  <div class="y-center">
+    <mat-form-field appearance="outline" color="accent">
+      <mat-label>{{ name }}</mat-label>
+      <mat-select [formControl]="formControl" placeholder="Empty">
+        <mat-option [value]="false">No</mat-option>
+        <mat-option [value]="true">Yes</mat-option>
+      </mat-select>
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="tooltip.show()"
+        *ngIf="helpText !== ''"
+      >
+        <mat-icon
+          fontSet="material-icons-outlined"
+          #tooltip="matTooltip"
+          [matTooltip]="helpText"
+          matTooltipPosition="left"
+          matTooltipHideDelay="0"
+        >
+          help_outline
+        </mat-icon>
+      </button>
+      <mat-error *ngIf="formControl.invalid">
+        {{ getErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
   </div>
 </ng-container>

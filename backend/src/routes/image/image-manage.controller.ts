@@ -7,6 +7,7 @@ import {
   Post,
   Res,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import type { FastifyReply } from 'fastify';
 import {
   ImageDeleteRequest,
@@ -20,8 +21,9 @@ import {
   ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
-import { HasFailed, ThrowIfFailed } from 'picsur-shared/dist/types';
-import { MultiPart } from '../../decorators/multipart/multipart.decorator';
+import { Fail, FT, HasFailed, ThrowIfFailed } from 'picsur-shared/dist/types';
+import { PostFiles } from '../../decorators/multipart/multipart.decorator';
+import type { FileIterator } from '../../decorators/multipart/postfiles.pipe';
 import {
   HasPermission,
   RequiredPermissions,
@@ -29,7 +31,7 @@ import {
 import { ReqUserID } from '../../decorators/request-user.decorator';
 import { Returns } from '../../decorators/returns.decorator';
 import { ImageManagerService } from '../../managers/image/image.service';
-import { ImageUploadDto } from '../../models/dto/image-upload.dto';
+import { GetNextAsync } from '../../util/iterator';
 @Controller('api/image')
 @RequiredPermissions(Permission.ImageUpload)
 export class ImageManageController {
@@ -39,16 +41,26 @@ export class ImageManageController {
 
   @Post('upload')
   @Returns(ImageUploadResponse)
+  @Throttle(20)
   async uploadImage(
-    @MultiPart() multipart: ImageUploadDto,
+    @PostFiles(1) multipart: FileIterator,
     @ReqUserID() userid: string,
     @HasPermission(Permission.ImageDeleteKey) withDeleteKey: boolean,
   ): Promise<ImageUploadResponse> {
+    const file = ThrowIfFailed(await GetNextAsync(multipart));
+
+    let buffer: Buffer;
+    try {
+      buffer = await file.toBuffer();
+    } catch (e) {
+      throw Fail(FT.Internal, e);
+    }
+
     const image = ThrowIfFailed(
       await this.imagesService.upload(
         userid,
-        multipart.image.filename,
-        multipart.image.buffer,
+        file.filename,
+        buffer,
         withDeleteKey,
       ),
     );

@@ -16,8 +16,15 @@ export class HostConfigService {
     this.logger.log('Verbose: ' + this.isVerbose());
     this.logger.log('Host: ' + this.getHost());
     this.logger.log('Port: ' + this.getPort());
-    this.logger.log('Demo: ' + this.isDemo());
-    this.logger.log('Demo Interval: ' + this.getDemoInterval() / 1000 + 's');
+
+    if (this.isDemo()) {
+      this.logger.log('Running in demo mode');
+      this.logger.log('Demo Interval: ' + this.getDemoInterval() / 1000 + 's');
+    }
+
+    if (!this.isTelemetry()) {
+      this.logger.log('Telemetry disabled');
+    }
   }
 
   public getHost(): string {
@@ -45,6 +52,10 @@ export class HostConfigService {
 
   public isVerbose() {
     return ParseBool(this.configService.get(`${EnvPrefix}VERBOSE`), false);
+  }
+
+  public isTelemetry() {
+    return ParseBool(this.configService.get(`${EnvPrefix}TELEMETRY`), true);
   }
 
   public getVersion() {

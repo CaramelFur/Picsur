@@ -1,4 +1,4 @@
-<mat-form-field class="editfield" appearance="outline">
+<mat-form-field class="editfield" appearance="outline" color="primary">
   <mat-label>Name</mat-label>
   <input matInput [formControl]="field" (change)="update($event)" />
   <mat-error *ngIf="field.invalid">{{ getErrorMessage() }}</mat-error>

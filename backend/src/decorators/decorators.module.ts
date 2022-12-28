@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { EarlyConfigModule } from '../config/early/early-config.module';
 import { ImageIdPipe } from './image-id/image-id.pipe';
-import { MultiPartPipe } from './multipart/multipart.pipe';
 import { PostFilePipe } from './multipart/postfile.pipe';
+import { MultiPartPipe } from './multipart/postfiles.pipe';
 
 @Module({
   imports: [EarlyConfigModule],

@@ -31,4 +31,4 @@ import { ImagesRoutingModule } from './images.routing.module';
     PipesModule,
   ],
 })
-export class ImagesRouteModule {}
+export default class ImagesRouteModule {}

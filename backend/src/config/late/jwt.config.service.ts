@@ -32,8 +32,8 @@ export class JwtConfigService implements JwtOptionsFactory {
       await this.prefService.getStringPreference('jwt_expires_in'),
     );
 
-    let milliseconds = ms(expiresIn);
-    if (milliseconds === undefined) {
+    let milliseconds = ms(expiresIn as any);
+    if (isNaN(milliseconds)) {
       milliseconds = 1000 * 60 * 60 * 24; // 1 day
     }
 
