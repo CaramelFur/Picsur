@@ -74,6 +74,12 @@ If you like this project, don't forget to give it a star. It tells me that I'm n
 
 ## Faq
 
+### Is this project maintained?
+
+Yes it still is. If I were to stop maintaining it, I would archive the repository.
+
+However I do not have a lot of time on my hands, so updates are not always as frequent as I would like them to be.
+
 ### Why do my images dissapear of the public instance?
 
 The public instance is only a demo, and therefore only keeps images for 5 minutes. This is to prevent the server from running out of disk space, and to prevent people from using it to host questionable images.
