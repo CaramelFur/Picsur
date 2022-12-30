@@ -7,7 +7,7 @@ import {
   PutObjectCommand,
   S3Client
 } from '@aws-sdk/client-s3';
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { buffer as streamToBuffer } from 'get-stream';
 import {
   AsyncFailable,
@@ -15,17 +15,13 @@ import {
   HasFailed
 } from 'picsur-shared/dist/types';
 import { Readable } from 'stream';
-import { S3ConfigService } from '../../config/early/s3.config.service';
+import { FileStorageService } from './filestorage-service';
 
-@Injectable()
-export class FileS3Service implements OnModuleInit {
-  private readonly logger = new Logger(FileS3Service.name);
-
+export class FileStorageS3Service extends FileStorageService {
+  private readonly logger = new Logger(FileStorageS3Service.name);
   private S3: S3Client | null = null;
 
-  constructor(private readonly s3config: S3ConfigService) {}
-
-  onModuleInit() {
+  onStorageInit() {
     this.loadS3();
   }
 
@@ -34,7 +30,7 @@ export class FileS3Service implements OnModuleInit {
     if (HasFailed(S3)) return S3;
 
     const request = new PutObjectCommand({
-      Bucket: this.s3config.getS3Bucket(),
+      Bucket: this.config.getS3Bucket(),
       Key: key,
       Body: data,
     });
@@ -43,7 +39,7 @@ export class FileS3Service implements OnModuleInit {
       await S3.send(request);
       return key;
     } catch (e) {
-      return Fail(FT.S3, e);
+      return Fail(FT.FileStorage, e);
     }
   }
 
@@ -52,7 +48,7 @@ export class FileS3Service implements OnModuleInit {
     if (HasFailed(S3)) return S3;
 
     const request = new GetObjectCommand({
-      Bucket: this.s3config.getS3Bucket(),
+      Bucket: this.config.getS3Bucket(),
       Key: key,
     });
 
@@ -65,7 +61,7 @@ export class FileS3Service implements OnModuleInit {
       }
       return streamToBuffer(result.Body as Readable);
     } catch (e) {
-      return Fail(FT.S3, e);
+      return Fail(FT.FileStorage, e);
     }
   }
 
@@ -74,7 +70,7 @@ export class FileS3Service implements OnModuleInit {
     if (HasFailed(S3)) return S3;
 
     const request = new DeleteObjectCommand({
-      Bucket: this.s3config.getS3Bucket(),
+      Bucket: this.config.getS3Bucket(),
       Key: key,
     });
 
@@ -82,7 +78,7 @@ export class FileS3Service implements OnModuleInit {
       await S3.send(request);
       return true;
     } catch (e) {
-      return Fail(FT.S3, e);
+      return Fail(FT.FileStorage, e);
     }
   }
 
@@ -91,7 +87,7 @@ export class FileS3Service implements OnModuleInit {
     if (HasFailed(S3)) return S3;
 
     const request = new DeleteObjectsCommand({
-      Bucket: this.s3config.getS3Bucket(),
+      Bucket: this.config.getS3Bucket(),
       Delete: {
         Objects: keys.map((key) => ({ Key: key })),
       },
@@ -101,7 +97,7 @@ export class FileS3Service implements OnModuleInit {
       await S3.send(request);
       return true;
     } catch (e) {
-      return Fail(FT.S3, e);
+      return Fail(FT.FileStorage, e);
     }
   }
 
@@ -109,15 +105,15 @@ export class FileS3Service implements OnModuleInit {
     if (this.S3) return this.S3;
     await this.loadS3();
     if (this.S3) return this.S3;
-    return Fail(FT.S3, 'S3 not loaded');
+    return Fail(FT.FileStorage, 'S3 not loaded');
   }
 
   private async loadS3(): Promise<void> {
-    const S3 = new S3Client(this.s3config.getS3Config());
+    const S3 = new S3Client(this.config.getS3Config());
 
     try {
       // Create bucket if it doesn't exist
-      const bucket = this.s3config.getS3Bucket();
+      const bucket = this.config.getS3Bucket();
 
       // List buckets
       const listBuckets = await S3.send(new ListBucketsCommand({}));
@@ -133,10 +129,6 @@ export class FileS3Service implements OnModuleInit {
       this.S3 = S3;
     } catch (e) {
       this.logger.error(e);
-      this.logger.warn(
-        'There was an error setting up S3, are you sure you have set up an S3 instance and configured it correctly?\n' +
-          'Please check https://github.com/rubikscraft/picsur for up to date documentation.',
-      );
     }
   }
 }

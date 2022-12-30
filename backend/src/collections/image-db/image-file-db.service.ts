@@ -6,7 +6,7 @@ import { In, IsNull, LessThan, Not, Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
 import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
-import { FileS3Service } from '../file-s3/file-s3.service';
+import { FileStorageGeneric } from '../filestorage-db/filestorage-generic.service';
 
 const A_DAY_IN_SECONDS = 24 * 60 * 60;
 
@@ -19,7 +19,7 @@ export class ImageFileDBService {
     @InjectRepository(EImageDerivativeBackend)
     private readonly imageDerivativeRepo: Repository<EImageDerivativeBackend>,
 
-    private readonly s3Service: FileS3Service,
+    private readonly fsService: FileStorageGeneric,
   ) {}
 
   public async getFileData(
@@ -29,7 +29,7 @@ export class ImageFileDBService {
       // Migrate files from old format to s3
       const data = file.data;
 
-      const s3result = await this.s3Service.putFile(file.fileKey, data);
+      const s3result = await this.fsService.putFile(file.fileKey, data);
       if (HasFailed(s3result)) return s3result;
 
       file.data = null;
@@ -46,7 +46,7 @@ export class ImageFileDBService {
       return data;
     }
 
-    const result = await this.s3Service.getFile(file.fileKey);
+    const result = await this.fsService.getFile(file.fileKey);
     if (HasFailed(result)) return result;
 
     return result;
@@ -71,7 +71,7 @@ export class ImageFileDBService {
         conflictPaths: ['image_id', 'variant'],
       });
 
-      const s3result = await this.s3Service.putFile(s3key, file);
+      const s3result = await this.fsService.putFile(s3key, file);
       if (HasFailed(s3result)) return s3result;
     } catch (e) {
       return Fail(FT.Database, e);
@@ -123,7 +123,7 @@ export class ImageFileDBService {
 
       if (!found) return Fail(FT.NotFound, 'Image not found');
 
-      const s3result = await this.s3Service.deleteFile(found.fileKey);
+      const s3result = await this.fsService.deleteFile(found.fileKey);
       if (HasFailed(s3result)) return s3result;
 
       await this.imageFileRepo.delete({ image_id: imageId, variant: variant });
@@ -174,7 +174,7 @@ export class ImageFileDBService {
     try {
       const result = await this.imageDerivativeRepo.save(imageDerivative);
 
-      const s3result = await this.s3Service.putFile(s3key, file);
+      const s3result = await this.fsService.putFile(s3key, file);
       if (HasFailed(s3result)) return s3result;
 
       return result;
@@ -250,7 +250,7 @@ export class ImageFileDBService {
 
         const keys = orphaned[0].map((d) => d.fileKey);
 
-        const s3result = await this.s3Service.deleteFiles(keys);
+        const s3result = await this.fsService.deleteFiles(keys);
         if (HasFailed(s3result)) return s3result;
 
         const result = await repo.delete({

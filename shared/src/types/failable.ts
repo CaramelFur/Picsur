@@ -7,7 +7,7 @@
 export enum FT {
   Unknown = 'unknown',
   Database = 'database',
-  S3 = 's3',
+  FileStorage = 'filestorage',
   SysValidation = 'sysvalidation',
   UsrValidation = 'usrvalidation',
   BadRequest = 'badrequest',
@@ -52,10 +52,10 @@ const FTProps: {
     code: 500,
     message: 'A database error occurred',
   },
-  [FT.S3]: {
+  [FT.FileStorage]: {
     important: true,
     code: 500,
-    message: 'An S3 error occurred',
+    message: 'A filestorage error occurred',
   },
   [FT.Network]: {
     important: true,

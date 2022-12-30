@@ -4,7 +4,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import cors from 'cors';
 import { IncomingMessage, ServerResponse } from 'http';
 import semver from 'semver';
-import { FileS3Module } from './collections/file-s3/file-s3.module';
+import { FileStorageDBModule } from './collections/filestorage-db/filestorage-db.module';
 import { EarlyConfigModule } from './config/early/early-config.module';
 import { ServeStaticConfigService } from './config/early/serve-static.config.service';
 import { DatabaseModule } from './database/database.module';
@@ -50,7 +50,7 @@ const imageCorsOverride = (
     }),
     ScheduleModule.forRoot(),
     DatabaseModule,
-    FileS3Module,
+    FileStorageDBModule,
     AuthManagerModule,
     UsageManagerModule,
     DemoManagerModule,
