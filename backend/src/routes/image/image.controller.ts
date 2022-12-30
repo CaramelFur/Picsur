@@ -3,12 +3,14 @@ import { SkipThrottle } from '@nestjs/throttler';
 import type { FastifyReply } from 'fastify';
 import {
   ImageMetaResponse,
-  ImageRequestParams,
+  ImageRequestParams
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { FileType2Mime } from 'picsur-shared/dist/dto/mimes.dto';
 import { FT, IsFailure, ThrowIfFailed } from 'picsur-shared/dist/types';
 import { UserDbService } from '../../collections/user-db/user-db.service';
+import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
+import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
 import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decorator';
 import { ImageIdParam } from '../../decorators/image-id/image-id.decorator';
 import { RequiredPermissions } from '../../decorators/permissions.decorator';
@@ -57,25 +59,23 @@ export class ImageController {
     @Query() params: ImageRequestParams,
   ): Promise<Buffer> {
     try {
+      let image: EImageFileBackend | EImageDerivativeBackend;
       if (fullid.variant === ImageEntryVariant.ORIGINAL) {
-        const image = ThrowIfFailed(
-          await this.imagesService.getOriginal(fullid.id),
+        image = ThrowIfFailed(await this.imagesService.getOriginal(fullid.id));
+      } else {
+        image = ThrowIfFailed(
+          await this.imagesService.getConverted(
+            fullid.id,
+            fullid.filetype,
+            params,
+          ),
         );
-
-        res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
-        return image.data;
       }
 
-      const image = ThrowIfFailed(
-        await this.imagesService.getConverted(
-          fullid.id,
-          fullid.filetype,
-          params,
-        ),
-      );
+      const data = ThrowIfFailed(await this.imagesService.getFileData(image));
 
       res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
-      return image.data;
+      return data;
     } catch (e) {
       if (!IsFailure(e) || e.getType() !== FT.NotFound) throw e;
 

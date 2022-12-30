@@ -39,6 +39,7 @@ export class ImageManagerModule implements OnModuleInit {
     await this.cleanupDerivatives();
     await this.cleanupExpired();
     await this.cleanupOrphanedFiles();
+    // TODO: Auto migrate all images to S3
   }
 
   private async cleanupDerivatives() {
@@ -78,23 +79,23 @@ export class ImageManagerModule implements OnModuleInit {
   }
 
   private async cleanupOrphanedFiles() {
-    // const cleanedUpDerivatives =
-    //   await this.imageFileDB.cleanupOrphanedDerivatives();
+    const cleanedUpDerivatives =
+      await this.imageFileDB.cleanupOrphanedDerivatives();
 
-    // if (HasFailed(cleanedUpDerivatives)) {
-    //   cleanedUpDerivatives.print(this.logger);
-    //   return;
-    // }
+    if (HasFailed(cleanedUpDerivatives)) {
+      cleanedUpDerivatives.print(this.logger);
+      return;
+    }
 
-    // const cleanedUpFiles = await this.imageFileDB.cleanupOrphanedFiles();
-    // if (HasFailed(cleanedUpFiles)) {
-    //   cleanedUpFiles.print(this.logger);
-    //   return;
-    // }
+    const cleanedUpFiles = await this.imageFileDB.cleanupOrphanedFiles();
+    if (HasFailed(cleanedUpFiles)) {
+      cleanedUpFiles.print(this.logger);
+      return;
+    }
 
-    // if (cleanedUpDerivatives > 0 || cleanedUpFiles > 0)
-    //   this.logger.log(
-    //     `Cleaned up ${cleanedUpDerivatives} orphaned derivatives and ${cleanedUpFiles} orphaned files`,
-    //   );
+    if (cleanedUpDerivatives > 0 || cleanedUpFiles > 0)
+      this.logger.log(
+        `Cleaned up ${cleanedUpDerivatives} orphaned derivatives and ${cleanedUpFiles} orphaned files`,
+      );
   }
 }

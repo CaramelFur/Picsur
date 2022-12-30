@@ -5,39 +5,42 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn,
-  Unique,
+  PrimaryColumn, Unique
 } from 'typeorm';
 import { EImageBackend } from './image.entity';
 
 @Entity()
 @Unique(['image_id', 'variant'])
 export class EImageFileBackend {
-  @PrimaryGeneratedColumn('uuid')
-  private _id?: string;
+  @PrimaryColumn({ type: 'uuid', nullable: false, name: '_id' })
+  @Index()
+  fileKey: string;
 
-  // We do a little trickery
+  // == Reference to parent image
   @Index()
   @ManyToOne(() => EImageBackend, (image) => image.files, {
-    nullable: false,
-    onDelete: 'CASCADE',
+    nullable: true,
+    onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'image_id' })
   private _image?: any;
 
   @Column({
     name: 'image_id',
+    nullable: true,
   })
-  image_id: string;
+  image_id: string | null;
 
+  // == File variant
   @Index()
   @Column({ nullable: false, enum: ImageEntryVariant })
   variant: ImageEntryVariant;
 
+  // == Filetype of the derivative
   @Column({ nullable: false })
   filetype: string;
 
-  // Binary data
-  @Column({ type: 'bytea', nullable: false })
-  data: Buffer;
+  // == Binary data
+  @Column({ type: 'bytea', nullable: true })
+  data: Buffer | null;
 }

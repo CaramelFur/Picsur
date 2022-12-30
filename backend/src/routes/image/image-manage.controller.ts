@@ -5,7 +5,7 @@ import {
   Logger,
   Param,
   Post,
-  Res,
+  Res
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { FastifyReply } from 'fastify';
@@ -18,7 +18,7 @@ import {
   ImageListResponse,
   ImageUpdateRequest,
   ImageUpdateResponse,
-  ImageUploadResponse,
+  ImageUploadResponse
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { Fail, FT, HasFailed, ThrowIfFailed } from 'picsur-shared/dist/types';
@@ -26,7 +26,7 @@ import { PostFiles } from '../../decorators/multipart/multipart.decorator';
 import type { FileIterator } from '../../decorators/multipart/postfiles.pipe';
 import {
   HasPermission,
-  RequiredPermissions,
+  RequiredPermissions
 } from '../../decorators/permissions.decorator';
 import { ReqUserID } from '../../decorators/request-user.decorator';
 import { Returns } from '../../decorators/returns.decorator';
@@ -91,14 +91,14 @@ export class ImageManageController {
   @RequiredPermissions(Permission.ImageManage)
   @Returns(ImageUpdateResponse)
   async updateImage(
-    @Body() body: ImageUpdateRequest,
+    @Body() options: ImageUpdateRequest,
     @ReqUserID() userid: string,
     @HasPermission(Permission.ImageAdmin) isImageAdmin: boolean,
   ): Promise<ImageUpdateResponse> {
     const user_id = isImageAdmin ? undefined : userid;
 
     const image = ThrowIfFailed(
-      await this.imagesService.update(body.id, user_id, body),
+      await this.imagesService.update(options.id, user_id, options),
     );
 
     return image;

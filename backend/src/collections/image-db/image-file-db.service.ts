@@ -2,9 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
-import { LessThan, Repository } from 'typeorm';
+import { In, IsNull, LessThan, Repository } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
 import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
+import { FileS3Service } from '../file-s3/file-s3.service';
 
 const A_DAY_IN_SECONDS = 24 * 60 * 60;
 
@@ -16,7 +18,39 @@ export class ImageFileDBService {
 
     @InjectRepository(EImageDerivativeBackend)
     private readonly imageDerivativeRepo: Repository<EImageDerivativeBackend>,
+
+    private readonly s3Service: FileS3Service,
   ) {}
+
+  public async getFileData(
+    file: EImageFileBackend | EImageDerivativeBackend,
+  ): AsyncFailable<Buffer> {
+    if (file.data !== null) {
+      // Migrate files from old format to s3
+      const data = file.data;
+
+      const s3result = await this.s3Service.putFile(file.fileKey, data);
+      if (HasFailed(s3result)) return s3result;
+
+      file.data = null;
+      let repoResult: EImageFileBackend | EImageDerivativeBackend;
+      if (file instanceof EImageFileBackend) {
+        repoResult = await this.imageFileRepo.save(file);
+      } else if (file instanceof EImageDerivativeBackend) {
+        repoResult = await this.imageDerivativeRepo.save(file);
+      } else {
+        return Fail(FT.SysValidation, 'Invalid file type');
+      }
+      if (HasFailed(repoResult)) return repoResult;
+
+      return data;
+    }
+
+    const result = await this.s3Service.getFile(file.fileKey);
+    if (HasFailed(result)) return result;
+
+    return result;
+  }
 
   public async setFile(
     imageId: string,
@@ -24,16 +58,21 @@ export class ImageFileDBService {
     file: Buffer,
     filetype: string,
   ): AsyncFailable<true> {
+    const s3key = uuidv4();
+
     const imageFile = new EImageFileBackend();
     imageFile.image_id = imageId;
     imageFile.variant = variant;
     imageFile.filetype = filetype;
-    imageFile.data = file;
+    imageFile.fileKey = s3key;
 
     try {
       await this.imageFileRepo.upsert(imageFile, {
         conflictPaths: ['image_id', 'variant'],
       });
+
+      const s3result = await this.s3Service.putFile(s3key, file);
+      if (HasFailed(s3result)) return s3result;
     } catch (e) {
       return Fail(FT.Database, e);
     }
@@ -84,6 +123,9 @@ export class ImageFileDBService {
 
       if (!found) return Fail(FT.NotFound, 'Image not found');
 
+      const s3result = await this.s3Service.deleteFile(found.fileKey);
+      if (HasFailed(s3result)) return s3result;
+
       await this.imageFileRepo.delete({ image_id: imageId, variant: variant });
       return found;
     } catch (e) {
@@ -120,15 +162,22 @@ export class ImageFileDBService {
     filetype: string,
     file: Buffer,
   ): AsyncFailable<EImageDerivativeBackend> {
+    const s3key = uuidv4();
+
     const imageDerivative = new EImageDerivativeBackend();
     imageDerivative.image_id = imageId;
     imageDerivative.key = key;
     imageDerivative.filetype = filetype;
-    imageDerivative.data = file;
+    imageDerivative.fileKey = s3key;
     imageDerivative.last_read = new Date();
 
     try {
-      return await this.imageDerivativeRepo.save(imageDerivative);
+      const result = await this.imageDerivativeRepo.save(imageDerivative);
+
+      const s3result = await this.s3Service.putFile(s3key, file);
+      if (HasFailed(s3result)) return s3result;
+
+      return result;
     } catch (e) {
       return Fail(FT.Database, e);
     }
@@ -167,6 +216,51 @@ export class ImageFileDBService {
       });
 
       return result.affected ?? 0;
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
+  public async cleanupOrphanedDerivatives(): AsyncFailable<number> {
+    return this.cleanupRepoWithFilekey(this.imageDerivativeRepo);
+  }
+
+  public async cleanupOrphanedFiles(): AsyncFailable<number> {
+    return this.cleanupRepoWithFilekey(this.imageFileRepo);
+  }
+
+  // Go over all image files in the db, and any that are not linked to an image are deleted from s3 and the db
+  private async cleanupRepoWithFilekey(
+    repo: Repository<{ image_id: string | null; fileKey: string }>,
+  ): AsyncFailable<number> {
+    try {
+      let remaining = Infinity;
+      let processed = 0;
+      
+      while (remaining > 0) {
+        const orphaned = await repo.findAndCount({
+          where: {
+            image_id: IsNull(),
+          },
+          select: ['fileKey'],
+          take: 100,
+        });
+        if (orphaned[1] === 0) break;
+        remaining = orphaned[1] - orphaned[0].length;
+
+        const keys = orphaned[0].map((d) => d.fileKey);
+
+        const s3result = await this.s3Service.deleteFiles(keys);
+        if (HasFailed(s3result)) return s3result;
+
+        const result = await repo.delete({
+          fileKey: In(keys),
+        });
+
+        processed += result.affected ?? 0;
+      }
+
+      return processed;
     } catch (e) {
       return Fail(FT.Database, e);
     }
