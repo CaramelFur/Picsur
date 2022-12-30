@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
-import { In, IsNull, LessThan, Repository } from 'typeorm';
+import { In, IsNull, LessThan, Not, Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
 import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
@@ -236,7 +236,7 @@ export class ImageFileDBService {
     try {
       let remaining = Infinity;
       let processed = 0;
-      
+
       while (remaining > 0) {
         const orphaned = await repo.findAndCount({
           where: {
@@ -264,5 +264,39 @@ export class ImageFileDBService {
     } catch (e) {
       return Fail(FT.Database, e);
     }
+  }
+
+  public async migrateFilesToFilekey(): AsyncFailable<number> {
+    return this.migrateRepoToFilekey(this.imageFileRepo);
+  }
+
+  public async migrateDerivativesToFilekey(): AsyncFailable<number> {
+    return this.migrateRepoToFilekey(this.imageDerivativeRepo);
+  }
+
+  private async migrateRepoToFilekey(
+    repo: Repository<EImageFileBackend | EImageDerivativeBackend>,
+  ): AsyncFailable<number> {
+    let processed = 0;
+
+    try {
+      while (true) {
+        const current = await repo.findOne({
+          where: {
+            data: Not(IsNull()),
+          },
+        });
+        if (!current) break;
+
+        const result = await this.getFileData(current);
+        if (HasFailed(result)) return result;
+
+        processed++;
+      }
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+
+    return processed;
   }
 }

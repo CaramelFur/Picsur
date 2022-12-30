@@ -39,7 +39,7 @@ export class ImageManagerModule implements OnModuleInit {
     await this.cleanupDerivatives();
     await this.cleanupExpired();
     await this.cleanupOrphanedFiles();
-    // TODO: Auto migrate all images to S3
+    await this.migrateFilesToFilekey();
   }
 
   private async cleanupDerivatives() {
@@ -96,6 +96,26 @@ export class ImageManagerModule implements OnModuleInit {
     if (cleanedUpDerivatives > 0 || cleanedUpFiles > 0)
       this.logger.log(
         `Cleaned up ${cleanedUpDerivatives} orphaned derivatives and ${cleanedUpFiles} orphaned files`,
+      );
+  }
+
+  private async migrateFilesToFilekey() {
+    const filesMigrated = await this.imageFileDB.migrateFilesToFilekey();
+    if (HasFailed(filesMigrated)) {
+      filesMigrated.print(this.logger);
+      return;
+    }
+
+    const derivativesMigrated =
+      await this.imageFileDB.migrateDerivativesToFilekey();
+    if (HasFailed(derivativesMigrated)) {
+      derivativesMigrated.print(this.logger);
+      return;
+    }
+
+    if (filesMigrated > 0 || derivativesMigrated > 0)
+      this.logger.log(
+        `Migrated ${filesMigrated} files and ${derivativesMigrated} derivatives to filekey`,
       );
   }
 }
