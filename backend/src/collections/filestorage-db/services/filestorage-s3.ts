@@ -9,11 +9,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { Logger } from '@nestjs/common';
 import { buffer as streamToBuffer } from 'get-stream';
-import {
-  AsyncFailable,
-  Fail, FT,
-  HasFailed
-} from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
 import { Readable } from 'stream';
 import { FileStorageService } from './filestorage-service';
 
@@ -30,7 +26,7 @@ export class FileStorageS3Service extends FileStorageService {
     if (HasFailed(S3)) return S3;
 
     const request = new PutObjectCommand({
-      Bucket: this.config.getS3Bucket(),
+      Bucket: await this.config.getS3Bucket(),
       Key: key,
       Body: data,
     });
@@ -48,7 +44,7 @@ export class FileStorageS3Service extends FileStorageService {
     if (HasFailed(S3)) return S3;
 
     const request = new GetObjectCommand({
-      Bucket: this.config.getS3Bucket(),
+      Bucket: await this.config.getS3Bucket(),
       Key: key,
     });
 
@@ -70,7 +66,7 @@ export class FileStorageS3Service extends FileStorageService {
     if (HasFailed(S3)) return S3;
 
     const request = new DeleteObjectCommand({
-      Bucket: this.config.getS3Bucket(),
+      Bucket: await this.config.getS3Bucket(),
       Key: key,
     });
 
@@ -87,7 +83,7 @@ export class FileStorageS3Service extends FileStorageService {
     if (HasFailed(S3)) return S3;
 
     const request = new DeleteObjectsCommand({
-      Bucket: this.config.getS3Bucket(),
+      Bucket: await this.config.getS3Bucket(),
       Delete: {
         Objects: keys.map((key) => ({ Key: key })),
       },
@@ -109,11 +105,11 @@ export class FileStorageS3Service extends FileStorageService {
   }
 
   private async loadS3(): Promise<void> {
-    const S3 = new S3Client(this.config.getS3Config());
+    const S3 = new S3Client(await this.config.getS3Config());
 
     try {
       // Create bucket if it doesn't exist
-      const bucket = this.config.getS3Bucket();
+      const bucket = await this.config.getS3Bucket();
 
       // List buckets
       const listBuckets = await S3.send(new ListBucketsCommand({}));

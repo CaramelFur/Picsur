@@ -1,8 +1,8 @@
 import { AsyncFailable } from 'picsur-shared/dist/types';
-import { FileStorageConfigService } from '../../../config/early/filestorage.config.service';
+import { FSConfigService } from '../../../config/late/fs.config.service';
 
 export abstract class FileStorageService {
-  constructor(protected readonly config: FileStorageConfigService) {}
+  constructor(protected readonly config: FSConfigService) {}
 
   public abstract onStorageInit(): Promise<void> | void;
   public abstract putFile(key: string, data: Buffer): AsyncFailable<string>;

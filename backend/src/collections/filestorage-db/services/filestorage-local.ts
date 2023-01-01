@@ -3,20 +3,20 @@ import * as fs from 'fs';
 import afs from 'fs/promises';
 import pathlib from 'path';
 import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
-import { FileStorageConfigService } from '../../../config/early/filestorage.config.service';
+import { FSConfigService } from '../../../config/late/fs.config.service';
 import { FileStorageService } from './filestorage-service';
 
 export class FileStorageLocalService extends FileStorageService {
   private readonly logger = new Logger(FileStorageLocalService.name);
 
-  private readonly path;
+  private path = './temp';
 
-  constructor(config: FileStorageConfigService) {
+  constructor(config: FSConfigService) {
     super(config);
-    this.path = config.getLocalPath();
   }
 
   async onStorageInit() {
+    this.path = await this.config.getLocalPath();
     await this.ensureFileDir(this.path);
   }
 

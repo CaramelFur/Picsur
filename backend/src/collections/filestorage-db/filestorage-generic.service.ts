@@ -1,9 +1,9 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { AsyncFailable } from 'picsur-shared/dist/types';
 import {
-  FileStorageConfigService,
   FileStorageMode
-} from '../../config/early/filestorage.config.service';
+} from '../../config/early/early-fs.config.service';
+import { FSConfigService } from '../../config/late/fs.config.service';
 import { FileStorageEmpty } from './services/filestorage-empty';
 import { FileStorageLocalService } from './services/filestorage-local';
 
@@ -12,10 +12,10 @@ import { FileStorageService } from './services/filestorage-service';
 
 @Injectable()
 export class FileStorageGeneric implements OnModuleInit {
-  private readonly logger = new Logger(FileStorageConfigService.name);
+  private readonly logger = new Logger(FileStorageGeneric.name);
   private backingService: FileStorageService = new FileStorageEmpty();
 
-  constructor(private readonly fsConfig: FileStorageConfigService) {}
+  constructor(private readonly fsConfig: FSConfigService) {}
 
   async onModuleInit() {
     const mode = this.fsConfig.getFileStorageMode();

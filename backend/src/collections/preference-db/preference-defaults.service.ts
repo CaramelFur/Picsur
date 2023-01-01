@@ -3,8 +3,8 @@ import { PrefValueType } from 'picsur-shared/dist/dto/preferences.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
+import { EarlyFSConfigService } from '../../config/early/early-fs.config.service';
 import { EarlyJwtConfigService } from '../../config/early/early-jwt.config.service';
-import { FileStorageConfigService } from '../../config/early/filestorage.config.service';
 
 // This specific service holds the default values for system and user preferences
 // It needs to be in a service because the values depend on the environment
@@ -14,7 +14,7 @@ import { FileStorageConfigService } from '../../config/early/filestorage.config.
 export class PreferenceDefaultsService {
   private readonly logger = new Logger(PreferenceDefaultsService.name);
 
-  constructor(private readonly jwtConfigService: EarlyJwtConfigService,private readonly fsConfigService: FileStorageConfigService) {}
+  constructor(private readonly jwtConfigService: EarlyJwtConfigService,private readonly fsConfigService: EarlyFSConfigService) {}
 
   private readonly usrDefaults: {
     [key in UsrPreference]: (() => PrefValueType) | PrefValueType;

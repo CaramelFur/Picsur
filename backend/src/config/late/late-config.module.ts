@@ -3,6 +3,7 @@ import { PreferenceDbModule } from '../../collections/preference-db/preference-d
 import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
 import { EarlyConfigModule } from '../early/early-config.module';
 import { EarlyJwtConfigService } from '../early/early-jwt.config.service';
+import { FSConfigService } from './fs.config.service';
 import { InfoConfigService } from './info.config.service';
 import { JwtConfigService } from './jwt.config.service';
 import { UsageConfigService } from './usage.config.service';
@@ -14,10 +15,16 @@ import { UsageConfigService } from './usage.config.service';
 
 @Module({
   imports: [EarlyConfigModule, PreferenceDbModule],
-  providers: [JwtConfigService, InfoConfigService, UsageConfigService],
+  providers: [
+    JwtConfigService,
+    FSConfigService,
+    InfoConfigService,
+    UsageConfigService,
+  ],
   exports: [
     EarlyConfigModule,
     JwtConfigService,
+    FSConfigService,
     InfoConfigService,
     UsageConfigService,
   ],

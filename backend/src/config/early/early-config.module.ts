@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthConfigService } from './auth.config.service';
+import { EarlyFSConfigService } from './early-fs.config.service';
 import { EarlyJwtConfigService } from './early-jwt.config.service';
-import { FileStorageConfigService } from './filestorage.config.service';
 import { HostConfigService } from './host.config.service';
 import { MultipartConfigService } from './multipart.config.service';
 import { RedisConfigService } from './redis.config.service';
@@ -24,7 +24,7 @@ import { TypeOrmConfigService } from './type-orm.config.service';
     AuthConfigService,
     MultipartConfigService,
     RedisConfigService,
-    FileStorageConfigService,
+    EarlyFSConfigService,
   ],
   exports: [
     ConfigModule,
@@ -35,7 +35,7 @@ import { TypeOrmConfigService } from './type-orm.config.service';
     AuthConfigService,
     MultipartConfigService,
     RedisConfigService,
-    FileStorageConfigService,
+    EarlyFSConfigService,
   ],
 })
 export class EarlyConfigModule {}
