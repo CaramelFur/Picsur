@@ -25,6 +25,8 @@ export class PartialSysPrefComponent {
     this.categories = this.makeCategories(value);
   }
 
+  @Input("show-titles") public showTitles = true;
+
   private categories = this.makeCategories();
 
   public getName(key: string) {

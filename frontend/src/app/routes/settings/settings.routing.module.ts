@@ -81,13 +81,26 @@ const SettingsRoutes: PRoutes = [
         },
       },
       {
+        path: 'filestorage',
+        loadChildren: () =>
+          import('./filestorage/settings-filestorage.module').then((m) => m.default),
+        data: {
+          permissions: [Permission.SysPrefAdmin],
+          page: {
+            title: 'Storage',
+            icon: 'storage',
+            category: 'system',
+          },
+        },
+      },
+      {
         path: 'system',
         loadChildren: () =>
           import('./sys-pref/settings-sys-pref.module').then((m) => m.default),
         data: {
           permissions: [Permission.SysPrefAdmin],
           page: {
-            title: 'System Settings',
+            title: 'Settings',
             icon: 'tune',
             category: 'system',
           },
