@@ -19,6 +19,13 @@ export enum SysPreference {
   ConversionTimeLimit = 'conversion_time_limit',
   ConversionMemoryLimit = 'conversion_memory_limit',
 
+  FSLocalPath = 'fs_local_path',
+  FSS3Endpoint = 'fs_s3_endpoint',
+  FSS3Bucket = 'fs_s3_bucket',
+  FSS3Region = 'fs_s3_region',
+  FSS3AccessKey = 'fs_s3_access_key',
+  FSS3SecretKey = 'fs_s3_secret_key',
+
   EnableTracking = 'enable_tracking',
   TrackingUrl = 'tracking_url',
   TrackingId = 'tracking_id',
@@ -45,6 +52,13 @@ export const SysPreferenceValueTypes: {
   [SysPreference.ConversionTimeLimit]: 'string',
   [SysPreference.ConversionMemoryLimit]: 'number',
 
+  [SysPreference.FSLocalPath]: 'string',
+  [SysPreference.FSS3Endpoint]: 'string',
+  [SysPreference.FSS3Bucket]: 'string',
+  [SysPreference.FSS3Region]: 'string',
+  [SysPreference.FSS3AccessKey]: 'string',
+  [SysPreference.FSS3SecretKey]: 'string',
+
   [SysPreference.EnableTracking]: 'boolean',
   [SysPreference.TrackingUrl]: 'string',
   [SysPreference.TrackingId]: 'string',
@@ -66,6 +80,13 @@ export const SysPreferenceValidators: {
   [SysPreference.AllowEditing]: z.boolean(),
   [SysPreference.ConversionTimeLimit]: IsValidMS(),
   [SysPreference.ConversionMemoryLimit]: IsPosInt(),
+
+  [SysPreference.FSLocalPath]: z.string(),
+  [SysPreference.FSS3Endpoint]: z.string().regex(URLRegex).or(z.literal('')),
+  [SysPreference.FSS3Bucket]: z.string(),
+  [SysPreference.FSS3Region]: z.string(),
+  [SysPreference.FSS3AccessKey]: z.string(),
+  [SysPreference.FSS3SecretKey]: z.string(),
 
   [SysPreference.EnableTracking]: z.boolean(),
   [SysPreference.TrackingUrl]: z.string().regex(URLRegex).or(z.literal('')),

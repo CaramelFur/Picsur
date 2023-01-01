@@ -4,6 +4,7 @@ import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { EarlyJwtConfigService } from '../../config/early/early-jwt.config.service';
+import { FileStorageConfigService } from '../../config/early/filestorage.config.service';
 
 // This specific service holds the default values for system and user preferences
 // It needs to be in a service because the values depend on the environment
@@ -13,7 +14,7 @@ import { EarlyJwtConfigService } from '../../config/early/early-jwt.config.servi
 export class PreferenceDefaultsService {
   private readonly logger = new Logger(PreferenceDefaultsService.name);
 
-  constructor(private readonly jwtConfigService: EarlyJwtConfigService) {}
+  constructor(private readonly jwtConfigService: EarlyJwtConfigService,private readonly fsConfigService: FileStorageConfigService) {}
 
   private readonly usrDefaults: {
     [key in UsrPreference]: (() => PrefValueType) | PrefValueType;
@@ -46,6 +47,14 @@ export class PreferenceDefaultsService {
 
     [SysPreference.ConversionTimeLimit]: '15s',
     [SysPreference.ConversionMemoryLimit]: 512,
+
+    [SysPreference.FSLocalPath]: () =>  this.fsConfigService.getLocalPath(),
+    [SysPreference.FSS3Endpoint]: () => this.fsConfigService.getS3Endpoint() ?? '',
+    [SysPreference.FSS3Bucket]: () => this.fsConfigService.getS3Bucket(),
+    [SysPreference.FSS3Region]: () => this.fsConfigService.getS3Region(),
+    [SysPreference.FSS3AccessKey]: () => this.fsConfigService.getS3AccessKey(),
+    [SysPreference.FSS3SecretKey]: () => this.fsConfigService.getS3SecretKey(),
+
 
     [SysPreference.EnableTracking]: false,
     [SysPreference.TrackingUrl]: '',

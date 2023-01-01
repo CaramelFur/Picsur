@@ -57,6 +57,37 @@ export const SysPreferenceUI: {
     category: 'Authentication',
   },
 
+  [SysPreference.FSLocalPath]: {
+    name: 'FS Local - Path',
+    helpText: 'Storage location of the local storage provider.',
+    category: 'File Storage',
+  },
+  [SysPreference.FSS3Endpoint]: {
+    name: 'FS S3 - Endpoint',
+    helpText: 'Custom endpoint of the S3 storage provider.',
+    category: 'File Storage',
+  },
+  [SysPreference.FSS3Bucket]: {
+    name: 'FS S3 - Bucket',
+    helpText: 'Bucket of the S3 storage provider.',
+    category: 'File Storage',
+  },
+  [SysPreference.FSS3Region]: {
+    name: 'FS S3 - Region',
+    helpText: 'Region of the S3 storage provider.',
+    category: 'File Storage',
+  },
+  [SysPreference.FSS3AccessKey]: {
+    name: 'FS S3 - Access Key',
+    helpText: 'Access key of the S3 storage provider.',
+    category: 'File Storage',
+  },
+  [SysPreference.FSS3SecretKey]: {
+    name: 'FS S3 - Secret Key',
+    helpText: 'Secret key of the S3 storage provider.',
+    category: 'File Storage',
+  },
+
   [SysPreference.EnableTracking]: {
     name: 'Enable Ackee Web Tracking',
     helpText:
