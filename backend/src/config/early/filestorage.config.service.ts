@@ -1,7 +1,6 @@
 import { S3ClientConfig } from '@aws-sdk/client-s3';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { resolve } from 'path';
 import { ParseString } from 'picsur-shared/dist/util/parse-simple';
 import { EnvPrefix, GithubUrl } from '../config.static';
 
@@ -54,12 +53,10 @@ export class FileStorageConfigService {
   }
 
   public getLocalPath(): string {
-    const path = ParseString(
+    return ParseString(
       this.configService.get(`${FSEnvPrefix}LOCAL_PATH`),
       '/data',
     );
-    // Convert to absolute path
-    return resolve(path);
   }
 
   public getS3Config(): S3ClientConfig {

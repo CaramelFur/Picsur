@@ -1,0 +1,15 @@
+<ng-container *ngFor="let category of preferences | async">
+  <h2 *ngIf="category.category !== null">{{ category.title }}</h2>
+  <div class="row">
+    <ng-container *ngFor="let pref of category.prefs">
+      <pref-option
+        class="col-md-6 col-12"
+        [pref]="pref"
+        [update]="sysPrefService.setPreference.bind(sysPrefService)"
+        [name]="getName(pref.key)"
+        [helpText]="getHelpText(pref.key)"
+        [validator]="getValidator(pref.key)"
+      ></pref-option>
+    </ng-container>
+  </div>
+</ng-container>
