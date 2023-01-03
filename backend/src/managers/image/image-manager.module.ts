@@ -8,12 +8,15 @@ import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
 import { PreferenceDbModule } from '../../collections/preference-db/preference-db.module';
 import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
+import { FileStorageMode } from '../../config/early/early-fs.config.service';
+import { FSConfigService } from '../../config/late/fs.config.service';
+import { LateConfigModule } from '../../config/late/late-config.module';
 import { ImageConverterService } from './image-converter.service';
 import { ImageProcessorService } from './image-processor.service';
 import { ImageManagerService } from './image.service';
 
 @Module({
-  imports: [ImageDBModule, PreferenceDbModule],
+  imports: [ImageDBModule, PreferenceDbModule, LateConfigModule],
   providers: [
     ImageManagerService,
     ImageProcessorService,
@@ -26,6 +29,7 @@ export class ImageManagerModule implements OnModuleInit {
 
   constructor(
     private readonly prefManager: SysPreferenceDbService,
+    private readonly fsConfig: FSConfigService,
     private readonly imageFileDB: ImageFileDBService,
     private readonly imageDB: ImageDBService,
   ) {}
@@ -100,6 +104,9 @@ export class ImageManagerModule implements OnModuleInit {
   }
 
   private async migrateFilesToFilekey() {
+    if ((await this.fsConfig.getFileStorageMode()) === FileStorageMode.None)
+      return;
+
     const filesMigrated = await this.imageFileDB.migrateFilesToFilekey();
     if (HasFailed(filesMigrated)) {
       filesMigrated.print(this.logger);
