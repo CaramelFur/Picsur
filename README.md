@@ -63,6 +63,7 @@ Every featured marked here should work in the latest release.
 
 - [ ] White mode
 - [ ] Public gallery
+- [ ] Albums
 
 ## Bugs
 
