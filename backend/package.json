@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@fastify/helmet": "^10.1.0",
-    "@fastify/multipart": "^7.3.0",
+    "@fastify/multipart": "^7.4.1",
     "@fastify/reply-from": "^8.3.1",
     "@fastify/static": "^6.6.0",
     "@nestjs/common": "^9.2.1",
