@@ -26,7 +26,7 @@ The images are deleted every five minutes, and the maximum filesize is 16MB. But
 ## Features
 
 Here is a list of done features, and what is planned.
-For a more detailed list, you can always visit [the project](https://github.com/rubikscraft/Picsur/projects/1).
+For a more detailed list, you can always visit [the project](https://github.com/CaramelFur/Picsur/projects/1).
 
 Every featured marked here should work in the latest release.
 
@@ -67,7 +67,7 @@ Every featured marked here should work in the latest release.
 
 ## Bugs
 
-If you encounter any bugs or oddities, please open an issue [here](https://github.com/rubikscraft/Picsur/issues). Cause without feedback I'll never know they exists.
+If you encounter any bugs or oddities, please open an issue [here](https://github.com/CaramelFur/Picsur/issues). Cause without feedback I'll never know they exists.
 
 ## Star
 
@@ -115,7 +115,7 @@ You easily run this service yourself via Docker. Here is an example docker-compo
 version: '3'
 services:
   picsur:
-    image: ghcr.io/rubikscraft/picsur:latest
+    image: ghcr.io/caramelfur/picsur:latest
     container_name: picsur
     ports:
       - '8080:8080'
