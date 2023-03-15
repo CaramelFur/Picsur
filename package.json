@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "0.5.0",
+  "version": "0.5.1",
   "workspaces": [
     "shared",
     "backend",
@@ -29,7 +29,7 @@
     "minimist": "npm:minimist-lite@*"
   },
   "devDependencies": {
-    "prettier": "^2.8.1",
+    "prettier": "^2.8.4",
     "prettier-plugin-sh": "^0.12.8"
   },
   "packageManager": "yarn@3.2.2"
