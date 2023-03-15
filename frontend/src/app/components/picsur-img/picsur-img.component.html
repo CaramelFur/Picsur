@@ -16,5 +16,5 @@
 <mat-spinner
   (nguiInview)="onInview($event)"
   (nguiOutview)="onOutview($event)"
-  *ngIf="state === 'loading'"
+  *ngIf="state === 'init' || state === 'loading'"
 ></mat-spinner>

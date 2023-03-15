@@ -17,6 +17,7 @@ import { Logger } from 'src/app/services/logger/logger.service';
 import { QoiWorkerService } from 'src/app/workers/qoi-worker.service';
 
 enum PicsurImgState {
+  Init = 'init',
   Loading = 'loading',
   Canvas = 'canvas',
   Image = 'image',
@@ -39,7 +40,7 @@ export class PicsurImgComponent implements OnChanges {
 
   @Input('src') imageURL: string | undefined;
 
-  public state: PicsurImgState = PicsurImgState.Loading;
+  public state: PicsurImgState = PicsurImgState.Init;
 
   constructor(
     private readonly qoiWorker: QoiWorkerService,
@@ -113,7 +114,8 @@ export class PicsurImgComponent implements OnChanges {
   onInview(e: any) {
     this.isInView = true;
 
-    if (this.state === PicsurImgState.Loading) {
+    if (this.state === PicsurImgState.Init) {
+      this.state = PicsurImgState.Loading;
       this.reload();
     }
   }
