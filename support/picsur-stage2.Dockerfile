@@ -1,7 +1,7 @@
 # This dockerfile than builds the production dependencies and the final image
 
 # Always fetch amd64 image
-FROM ghcr.io/rubikscraft/picsur-alpha-stage1:latest AS BUILDER_STAGE1
+FROM ghcr.io/caramelfur/picsur-alpha-stage1:latest AS BUILDER_STAGE1
 
 FROM node:18-alpine AS BUILDER_STAGE2
 

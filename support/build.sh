@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PACKAGE_URL="ghcr.io/rubikscraft/picsur"
+PACKAGE_URL="ghcr.io/caramelfur/picsur"
 
 if [ "$1" == "alpha" ]; then
   PACKAGE_URL="$PACKAGE_URL-alpha"

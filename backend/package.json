@@ -3,8 +3,8 @@
   "version": "0.5.1",
   "description": "Backend for Picsur",
   "license": "GPL-3.0",
-  "repository": "https://github.com/rubikscraft/Picsur",
-  "author": "Rubikscraft <contact@rubikscraft.nl>",
+  "repository": "https://github.com/caramelfur/Picsur",
+  "author": "Caramel <picsur@caramelfur.dev>",
   "type": "module",
   "main": "dist/main.js",
   "scripts": {

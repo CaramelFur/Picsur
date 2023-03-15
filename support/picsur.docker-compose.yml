@@ -1,7 +1,7 @@
 version: '3'
 services:
   picsur:
-    image: ghcr.io/rubikscraft/picsur:latest
+    image: ghcr.io/caramelfur/picsur:latest
     container_name: picsur
     ports:
       - '8080:8080'
