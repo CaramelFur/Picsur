@@ -107,6 +107,10 @@ QOI is a new lossless image format that is designed to be very fast to encode an
 
 You can [read more about QOI here](https://qoiformat.org/).
 
+### What is the default admin login?
+
+The default username is `admin`, and the default password is set from the `PICSUR_ADMIN_PASSWORD` environment variable.
+
 ## Running your own instance
 
 You easily run this service yourself via Docker. Here is an example docker-compose file:
@@ -129,6 +133,7 @@ services:
       # PICSUR_DB_PASSWORD: picsur
       # PICSUR_DB_DATABASE: picsur
 
+      ## The default username is admin, this is not modifyable
       # PICSUR_ADMIN_PASSWORD: picsur
 
       ## Optional, random secret will be generated if not set
