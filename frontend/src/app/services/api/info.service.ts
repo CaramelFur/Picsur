@@ -24,10 +24,6 @@ export class InfoService {
     return this.infoSubject.value;
   }
 
-  private infoSubject = new BehaviorSubject<ServerInfo>(
-    this.infoStorage.get() ?? new ServerInfo(),
-  );
-
   constructor(
     @Inject(LOCATION) private readonly location: Location,
     private readonly api: ApiService,
@@ -35,6 +31,10 @@ export class InfoService {
   ) {
     this.updateInfo().catch((e) => this.logger.warn(e));
   }
+
+  private infoSubject = new BehaviorSubject<ServerInfo>(
+    this.infoStorage?.get() ?? new ServerInfo(),
+  );
 
   public async getLoadedSnapshot(): Promise<ServerInfo> {
     if (this.isLoaded()) {

@@ -4,10 +4,7 @@
   "compilerOptions": {
     "outDir": "./out-tsc/",
 
-    "target": "es2017",
-    "module": "es2020",
-
-    "lib": ["es2020", "dom"]
+    "lib": ["ES2022", "dom"]
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
   "include": ["src/**/*.d.ts", "src/app/**/*.ts", "src/app/**/*.html"],

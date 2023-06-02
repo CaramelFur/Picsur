@@ -3,7 +3,7 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./out-tsc/worker",
-    "lib": ["es2020", "webworker"],
+    "lib": ["ES2022", "webworker"],
 
     "isolatedModules": false
   },

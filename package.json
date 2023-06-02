@@ -10,7 +10,7 @@
     "devdb:start": "docker-compose -f ./support/dev.docker-compose.yml up -d",
     "devdb:stop": "docker-compose -f ./support/dev.docker-compose.yml down",
     "devdb:restart": "docker-compose -f ./support/dev.docker-compose.yml restart",
-    "devdb:remove": "docker-compose -f ./support/dev.docker-compose.yml down --volumes",
+    "devdb:remove": "docker-compose -f ./support/dev.docker-compose.yml down --volumes --remove-orphans",
     "build": "./support/build.sh",
     "setversion": "./support/setversion.sh",
     "purge": "rm -rf ./node_modules",
@@ -30,7 +30,7 @@
     "minimist": "npm:minimist-lite@*"
   },
   "devDependencies": {
-    "prettier": "^2.8.4",
+    "prettier": "^2.8.8",
     "prettier-plugin-sh": "^0.12.8"
   },
   "packageManager": "yarn@3.2.2"
