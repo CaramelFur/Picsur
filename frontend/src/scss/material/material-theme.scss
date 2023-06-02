@@ -2,7 +2,7 @@
 @use '@angular/material' as mat;
 @use './material-theme-custom.scss' as custom-mat;
 
-mat.$theme-ignore-duplication-warnings: true;
+$theme-ignore-duplication-warnings: true;
 
 @include mat.core();
 
