@@ -1,14 +1,14 @@
-import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { EApiKey } from 'picsur-shared/dist/entities/apikey.entity';
-import { Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import { FT, Fail, HasFailed } from 'picsur-shared/dist/types';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ApiKeysService } from 'src/app/services/api/apikeys.service';
 import { UserService } from 'src/app/services/api/user.service';
 import { Logger } from 'src/app/services/logger/logger.service';
 import { BootstrapService } from 'src/app/util/bootstrap.service';
+import { ClipboardService } from 'src/app/util/clipboard.service';
 import { DialogService } from 'src/app/util/dialog-manager/dialog.service';
 import { ErrorService } from 'src/app/util/error-manager/error.service';
 import { Throttle } from 'src/app/util/throttle';
@@ -38,7 +38,7 @@ export class SettingsApiKeysComponent implements OnInit {
   constructor(
     private readonly apikeysService: ApiKeysService,
     private readonly userService: UserService,
-    private readonly clipboard: Clipboard,
+    private readonly clipboard: ClipboardService,
     private readonly errorService: ErrorService,
     private readonly dialogService: DialogService,
     // Public because used in template
@@ -64,7 +64,7 @@ export class SettingsApiKeysComponent implements OnInit {
       this.paginator.firstPage();
     }
 
-    const clipboardResult = this.clipboard.copy(result.key);
+    const clipboardResult = await this.clipboard.copy(result.key);
     if (!clipboardResult) {
       return this.errorService.showFailure(
         Fail(FT.Internal, 'Failed to copy api key to clipboard'),
@@ -75,8 +75,8 @@ export class SettingsApiKeysComponent implements OnInit {
     this.errorService.success('Api key created and copied to clipboard');
   }
 
-  public copyKey(apikey: string) {
-    const result = this.clipboard.copy(apikey);
+  public async copyKey(apikey: string) {
+    const result = await this.clipboard.copy(apikey);
     if (!result) {
       return this.errorService.showFailure(
         Fail(FT.Internal, 'Failed to copy api key to clipboard'),

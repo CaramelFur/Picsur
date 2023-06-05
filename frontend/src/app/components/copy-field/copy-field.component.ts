@@ -1,11 +1,11 @@
-import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   MatFormFieldAppearance,
   SubscriptSizing,
 } from '@angular/material/form-field';
-import { Fail, FT } from 'picsur-shared/dist/types';
+import { FT, Fail } from 'picsur-shared/dist/types';
 import { Logger } from 'src/app/services/logger/logger.service';
+import { ClipboardService } from 'src/app/util/clipboard.service';
 import { ErrorService } from 'src/app/util/error-manager/error.service';
 
 @Component({
@@ -31,12 +31,12 @@ export class CopyFieldComponent {
   @Output('hide') onHide = new EventEmitter<boolean>();
 
   constructor(
-    private readonly clipboard: Clipboard,
+    private readonly clipboard: ClipboardService,
     private readonly errorService: ErrorService,
   ) {}
 
-  public copy() {
-    if (this.clipboard.copy(this.value)) {
+  public async copy() {
+    if (await this.clipboard.copy(this.value)) {
       this.errorService.info(`Copied ${this.label}!`);
       this.onCopy.emit(this.value);
       return;
