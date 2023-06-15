@@ -1,7 +1,7 @@
 import { Controller, Logger, Post, Req, Res } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { Fail, FT, ThrowIfFailed } from 'picsur-shared/dist/types';
+import { Fail, FT, ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { UsageConfigService } from '../../../config/late/usage.config.service';
 import { NoPermissions } from '../../../decorators/permissions.decorator';
 import { ReturnsAnything } from '../../../decorators/returns.decorator';

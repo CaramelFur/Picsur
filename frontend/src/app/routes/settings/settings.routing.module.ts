@@ -1,10 +1,10 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
-import { PermissionGuard } from 'src/app/guards/permission.guard';
-import { PRoutes } from 'src/app/models/dto/picsur-routes.dto';
-import { SidebarResolverService } from 'src/app/services/sidebar-resolver/sidebar-resolver.service';
 import { SettingsSidebarComponent } from './sidebar/settings-sidebar.component';
+import { PermissionGuard } from '../../guards/permission.guard';
+import { PRoutes } from '../../models/dto/picsur-routes.dto';
+import { SidebarResolverService } from '../../services/sidebar-resolver/sidebar-resolver.service';
 
 const SettingsRoutes: PRoutes = [
   {

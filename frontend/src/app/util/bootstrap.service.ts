@@ -2,7 +2,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { Logger } from 'src/app/services/logger/logger.service';
+import { Logger } from '../services/logger/logger.service';
 
 export enum BSScreenSize {
   xs = 0,

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Logger } from 'src/app/services/logger/logger.service';
+import { Logger } from '../../../../services/logger/logger.service';
 
 @Component({
   selector: 'app-settings-apikey-editor',
@@ -22,7 +22,7 @@ export class SettingsApiKeyEditorComponent {
     Validators.maxLength(255),
   ]);
 
-  async update(event: Event) {
+  async update() {
     if (this.field.invalid) {
       return;
     }

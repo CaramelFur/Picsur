@@ -12,7 +12,7 @@ import {
   ApiKeyUpdateResponse,
 } from 'picsur-shared/dist/dto/api/apikeys.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
-import { ThrowIfFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { ApiKeyDbService } from '../../../collections/apikey-db/apikey-db.service';
 import {
   HasPermission,

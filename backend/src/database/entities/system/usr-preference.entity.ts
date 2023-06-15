@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
-import z from 'zod';
+import * as z from 'zod';
 import { EUserBackend } from '../users/user.entity';
 
 export const EUsrPreferenceSchema = z.object({

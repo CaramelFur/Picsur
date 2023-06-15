@@ -1,5 +1,5 @@
 import { FileType } from 'picsur-shared/dist/dto/mimes.dto';
-import posix from 'posix.js';
+import { setrlimit } from 'posix.js';
 import { Sharp } from 'sharp';
 import {
   SharpWorkerFinishOptions,
@@ -11,7 +11,7 @@ import {
 import { UniversalSharpIn, UniversalSharpOut } from './universal-sharp';
 
 export class SharpWorker {
-  private startTime: number = 0;
+  private startTime = 0;
   private sharpi: Sharp | null = null;
 
   constructor() {
@@ -29,7 +29,7 @@ export class SharpWorker {
       return this.purge('MEMORY_LIMIT_MB environment variable is not set');
     }
 
-    posix.setrlimit('data', {
+    setrlimit('data', {
       soft: 1000 * 1000 * memoryLimit,
       hard: 1000 * 1000 * memoryLimit,
     });

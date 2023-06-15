@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
-import { HasFailed } from 'picsur-shared/dist/types';
-import { UserPassModel } from 'src/app/models/forms-dto/userpass.dto';
-import { PermissionService } from 'src/app/services/api/permission.service';
-import { UserService } from 'src/app/services/api/user.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { LoginControl } from '../../../models/forms/login.control';
+import { PermissionService } from '../../../services/api/permission.service';
+import { UserPassModel } from '../../../models/forms-dto/userpass.dto';
+import { UserService } from '../../../services/api/user.service';
+import { Logger } from '../../../services/logger/logger.service';
+import { ErrorService } from '../../../util/error-manager/error.service';
 
 @Component({
   templateUrl: './login.component.html',

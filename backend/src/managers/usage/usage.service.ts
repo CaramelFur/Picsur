@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import isDocker from 'is-docker';
 import fetch from 'node-fetch';
-import os from 'os';
-import { FallbackIfFailed, HasFailed } from 'picsur-shared/dist/types';
+import * as os from 'os';
+import { FallbackIfFailed, HasFailed } from 'picsur-shared/dist/types/failable';
 import { UUIDRegex } from 'picsur-shared/dist/util/common-regex';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { SystemStateDbService } from '../../collections/system-state-db/system-state-db.service';

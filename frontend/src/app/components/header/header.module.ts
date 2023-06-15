@@ -7,8 +7,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { ErrorManagerModule } from 'src/app/util/error-manager/error-manager.module';
 import { HeaderComponent } from './header.component';
+import { ErrorManagerModule } from '../../util/error-manager/error-manager.module';
 
 @NgModule({
   imports: [

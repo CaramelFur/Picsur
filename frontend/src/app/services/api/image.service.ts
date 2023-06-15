@@ -15,15 +15,14 @@ import {
 import { ImageLinks } from 'picsur-shared/dist/dto/image-links.class';
 import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
-import { AsyncFailable } from 'picsur-shared/dist/types';
+import { AsyncFailable } from 'picsur-shared/dist/types/failable';
 import {
-  Fail,
   FT,
+  Fail,
   HasFailed,
   HasSuccess,
   Open,
 } from 'picsur-shared/dist/types/failable';
-import { ImagesUploadRequest } from 'src/app/models/dto/images-upload-request.dto';
 import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
 import { InfoService } from './info.service';
@@ -49,20 +48,20 @@ export class ImageService {
     return Open(result, 'id');
   }
 
-  public async UploadImages(images: File[]): AsyncFailable<string[]> {
-    console.log('Uploading images', images);
+  // public async UploadImages(images: File[]): AsyncFailable<string[]> {
+  //   console.log('Uploading images', images);
 
-    // Split into chunks of 20
-    const groups = this.chunks(images, 20);
+  //   // Split into chunks of 20
+  //   const groups = this.chunks(images, 20);
 
-    const result = await this.api.postForm(
-      ImageUploadResponse,
-      '/api/image/upload/bulk',
-      new ImagesUploadRequest(images),
-    );
+  //   const result = await this.api.postForm(
+  //     ImageUploadResponse,
+  //     '/api/image/upload/bulk',
+  //     new ImagesUploadRequest(images),
+  //   );
 
-    return [];
-  }
+  //   return [];
+  // }
 
   public async GetImageMeta(image: string): AsyncFailable<ImageMetaResponse> {
     return await this.api.get(ImageMetaResponse, `/i/meta/${image}`).result;
@@ -176,7 +175,7 @@ export class ImageService {
 
     if (!betterOptions.success) return baseURL;
 
-    let queryParams: string[] = [];
+    const queryParams: string[] = [];
 
     if (options.height !== undefined)
       queryParams.push(`height=${options.height}`);
@@ -210,7 +209,7 @@ export class ImageService {
   }
 
   private chunks<T>(arr: T[], size: number): T[][] {
-    let result = [];
+    const result = [];
     for (let i = 0; i < arr.length; i += size) {
       result.push(arr.slice(i, size + i));
     }

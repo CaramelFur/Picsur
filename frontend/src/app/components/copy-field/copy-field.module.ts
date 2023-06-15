@@ -3,8 +3,9 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { ErrorManagerModule } from 'src/app/util/error-manager/error-manager.module';
 import { CopyFieldComponent } from './copy-field.component';
+import { ErrorManagerModule } from '../../util/error-manager/error-manager.module';
+
 @NgModule({
   declarations: [CopyFieldComponent],
   imports: [

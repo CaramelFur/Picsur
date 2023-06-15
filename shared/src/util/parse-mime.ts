@@ -6,7 +6,7 @@ import {
   SupportedFileTypeCategory,
   SupportedImageFileTypes,
 } from '../dto/mimes.dto';
-import { Fail, Failable, FT, HasFailed } from '../types';
+import { Fail, Failable, FT, HasFailed } from '../types/failable';
 
 export function ParseFileType(filetype: string): Failable<FileType> {
   if (SupportedImageFileTypes.includes(filetype))

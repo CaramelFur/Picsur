@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
-import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
+} from 'picsur-shared/dist/types/failable';
 import { URLRegex, UUIDRegex } from 'picsur-shared/dist/util/common-regex';
 import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
 import { ReportInterval, ReportUrl } from '../config.static';

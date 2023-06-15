@@ -5,13 +5,13 @@ import {
   DecodedPref,
   PrefValueType,
 } from 'picsur-shared/dist/dto/preferences.dto';
-import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types/failable';
 import { filter } from 'rxjs';
-import { Required } from 'src/app/models/decorators/required.decorator';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
-import { Throttle } from 'src/app/util/throttle';
 import { ZodTypeAny } from 'zod';
+import { Required } from '../../models/decorators/required.decorator';
+import { Logger } from '../../services/logger/logger.service';
+import { ErrorService } from '../../util/error-manager/error.service';
+import { Throttle } from '../../util/throttle';
 
 @Component({
   selector: 'pref-option',
@@ -40,8 +40,8 @@ export class PrefOptionComponent implements OnInit {
     pref: PrefValueType,
   ) => AsyncFailable<any>;
 
-  @Input() @Required name: string = '';
-  @Input() helpText: string = '';
+  @Input() @Required name = '';
+  @Input() helpText = '';
   @Input() validator?: ZodTypeAny = undefined;
 
   constructor(private readonly errorService: ErrorService) {}
@@ -96,7 +96,7 @@ export class PrefOptionComponent implements OnInit {
   subscribeUpdate() {
     return this.formControl.valueChanges
       .pipe(
-        filter((value) => this.formControl.errors === null),
+        filter(() => this.formControl.errors === null),
         Throttle(300),
       )
       .subscribe(this.updatePreference.bind(this));

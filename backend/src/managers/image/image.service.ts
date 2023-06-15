@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import Crypto from 'crypto';
+import { createHash } from 'crypto';
 import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
@@ -11,7 +11,12 @@ import {
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
-import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
+} from 'picsur-shared/dist/types/failable';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
 import { IsQOI } from 'qoi-img';
@@ -229,7 +234,7 @@ export class ImageManagerService {
     }
 
     return {
-      [ImageEntryVariant.MASTER]: result[ImageEntryVariant.MASTER]!,
+      [ImageEntryVariant.MASTER]: result[ImageEntryVariant.MASTER],
       [ImageEntryVariant.ORIGINAL]: result[ImageEntryVariant.ORIGINAL],
     };
   }
@@ -268,7 +273,7 @@ export class ImageManagerService {
   private getConvertHash(options: object) {
     // Return a sha256 hash of the stringified options
     const stringified = JSON.stringify(options);
-    const hash = Crypto.createHash('sha256');
+    const hash = createHash('sha256');
     hash.update(stringified);
     const digest = hash.digest('hex');
     return digest;

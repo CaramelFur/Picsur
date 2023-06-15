@@ -11,7 +11,12 @@ import {
   UsrPreferenceValidators,
   UsrPreferenceValueTypes,
 } from 'picsur-shared/dist/dto/usr-preferences.enum';
-import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
+} from 'picsur-shared/dist/types/failable';
 import { Repository } from 'typeorm';
 import {
   EUsrPreferenceBackend,
@@ -38,7 +43,7 @@ export class UsrPreferenceDbService {
     value: PrefValueType,
   ): AsyncFailable<DecodedUsrPref> {
     // Validate
-    let usrPreference = await this.encodeUsrPref(userid, key, value);
+    const usrPreference = await this.encodeUsrPref(userid, key, value);
     if (HasFailed(usrPreference)) return usrPreference;
 
     // Set
@@ -66,7 +71,7 @@ export class UsrPreferenceDbService {
     key: string,
   ): AsyncFailable<DecodedUsrPref> {
     // Validate
-    let validatedKey = this.prefCommon.validatePrefKey(key, UsrPreference);
+    const validatedKey = this.prefCommon.validatePrefKey(key, UsrPreference);
     if (HasFailed(validatedKey)) return validatedKey;
 
     // See the comment in 'mutex-fallback.ts' for why we are using a mutex here
@@ -145,7 +150,7 @@ export class UsrPreferenceDbService {
     key: string,
     type: PrefValueTypeStrings,
   ): AsyncFailable<PrefValueType> {
-    let pref = await this.getPreference(userid, key);
+    const pref = await this.getPreference(userid, key);
     if (HasFailed(pref)) return pref;
     if (pref.type !== type)
       return Fail(FT.UsrValidation, 'Invalid preference type');
@@ -157,7 +162,7 @@ export class UsrPreferenceDbService {
     userid: string,
   ): AsyncFailable<DecodedUsrPref[]> {
     // TODO: We are fetching each value invidually, we should fetch all at once
-    let internalSysPrefs = await Promise.all(
+    const internalSysPrefs = await Promise.all(
       UsrPreferenceList.map((key) => this.getPreference(userid, key)),
     );
     if (internalSysPrefs.some((pref) => HasFailed(pref))) {
@@ -199,7 +204,7 @@ export class UsrPreferenceDbService {
       return Fail(FT.UsrValidation, undefined, valueValidated.error);
     }
 
-    let verifySysPreference = new EUsrPreferenceBackend();
+    const verifySysPreference = new EUsrPreferenceBackend();
     verifySysPreference.key = validated.key;
     verifySysPreference.value = validated.value;
     verifySysPreference.user_id = userid;

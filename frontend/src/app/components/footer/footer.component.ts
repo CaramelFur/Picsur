@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { InfoService } from 'src/app/services/api/info.service';
+import { InfoService } from '../../services/api/info.service';
 
 @Component({
   selector: 'app-footer',
@@ -19,8 +19,8 @@ export class FooterComponent implements OnInit {
     private readonly changeDetector: ChangeDetectorRef,
   ) {}
 
-  isDemo: boolean = false;
-  version: string = 'Unkown Version';
+  isDemo = false;
+  version = 'Unkown Version';
 
   ngOnInit(): void {
     this.subscribeInfo();

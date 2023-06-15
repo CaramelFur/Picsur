@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { PRoutes } from 'src/app/models/dto/picsur-routes.dto';
 import { E401Component } from './401.component';
 import { E404Component } from './404.component';
 import { ImageDeleteFailureComponent } from './delete-failure.component';
 import { ImageDeleteSuccessComponent } from './delete-success.component';
+import { PRoutes } from '../../models/dto/picsur-routes.dto';
 
 const routes: PRoutes = [
   {

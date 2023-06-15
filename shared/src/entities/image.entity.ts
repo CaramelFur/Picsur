@@ -1,9 +1,5 @@
 import { z } from 'zod';
 import { IsEntityID } from '../validators/entity-id.validator';
-import { IsPosInt } from '../validators/positive-int.validator';
-
-const MONTH_IN_SECONDS = 60 * 60 * 24 * 30;
-const FIVE_MIN_IN_SECONDS = 60 * 5;
 
 export const EImageSchema = z.object({
   id: IsEntityID(),

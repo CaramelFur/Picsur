@@ -8,7 +8,7 @@ import {
   FT,
   HasFailed,
   HasSuccess,
-} from 'picsur-shared/dist/types';
+} from 'picsur-shared/dist/types/failable';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { Repository } from 'typeorm';
@@ -53,7 +53,7 @@ export class UserDbService {
     const strength = await this.getBCryptStrength();
     const hashedPassword = await bcrypt.hash(password, strength);
 
-    let user = new EUserBackend();
+    const user = new EUserBackend();
     user.username = username;
     user.hashed_password = hashedPassword;
     if (byPassRoleCheck) {
@@ -208,7 +208,7 @@ export class UserDbService {
     username: string,
     // Also fetch fields that aren't normally sent to the client
     // (e.g. hashed password)
-    getPrivate: boolean = false,
+    getPrivate = false,
   ): AsyncFailable<EUserBackend> {
     try {
       const found = await this.usersRepository.findOne({

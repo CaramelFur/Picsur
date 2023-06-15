@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Required } from 'src/app/models/decorators/required.decorator';
+import { Required } from '../../models/decorators/required.decorator';
 
 @Component({
   selector: 'paginator',
@@ -13,18 +13,18 @@ export class PaginatorComponent implements OnInit {
     this.calculateRanges();
   }
 
-  page: number = 1;
+  page = 1;
   @Input('page') set pageInput(value: number) {
     this.page = value;
     this.calculateRanges();
   }
   @Output('page') pageChange = new EventEmitter<number>();
 
-  @Input('show-first-last') showFirstLast: boolean = true;
+  @Input('show-first-last') showFirstLast = true;
 
-  @Input('shown-pages') shownPages: number = 7;
-  @Input('shown-first-pages') shownFirstPages: number = 1;
-  @Input('shown-last-pages') shownLastPages: number = 1;
+  @Input('shown-pages') shownPages = 7;
+  @Input('shown-first-pages') shownFirstPages = 1;
+  @Input('shown-last-pages') shownLastPages = 1;
 
   firstPagesRange: [number, number] | null = null;
   lastPagesRange: [number, number] | null = null;

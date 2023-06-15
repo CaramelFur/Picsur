@@ -4,6 +4,5 @@ module.exports = {
     tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
-  extends: ['../.eslintrc.cjs'],
   root: false,
 };

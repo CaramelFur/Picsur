@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import { Fail, FT, HasFailed } from 'picsur-shared/dist/types/failable';
 import { Observable } from 'rxjs';
-import { ApiService } from 'src/app/services/api/api.service';
-import { Logger } from 'src/app/services/logger/logger.service';
+import { ApiService } from '../../services/api/api.service';
+import { Logger } from '../../services/logger/logger.service';
 import { DownloadDialogComponent } from '../dialog-manager/download-dialog/download-dialog.component';
 import { ErrorService } from '../error-manager/error.service';
 import { UtilService } from '../util.service';

@@ -6,12 +6,12 @@ import { Newable } from 'picsur-shared/dist/types/newable';
 type ReturnsMethodDecorator<ReturnType> = <
   T extends (...args: any) => ReturnType | Promise<ReturnType>,
 >(
-  target: Object,
+  target: object,
   propertyKey: string | symbol,
   descriptor: TypedPropertyDescriptor<T>,
 ) => TypedPropertyDescriptor<T> | void;
 
-export function Returns<N extends Object>(
+export function Returns<N extends object>(
   newable: Newable<N>,
 ): ReturnsMethodDecorator<N> {
   return SetMetadata('returns', newable);

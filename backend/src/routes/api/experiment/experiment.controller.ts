@@ -3,8 +3,6 @@ import { NoPermissions } from '../../../decorators/permissions.decorator';
 @Controller('api/experiment')
 @NoPermissions()
 export class ExperimentController {
-  constructor() {}
-
   // @Get()
   // @Returns(UserInfoResponse)
   // async testRoute(

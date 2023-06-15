@@ -1,9 +1,9 @@
 module.exports = {
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.base.json',
     tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
-  extends: ['../.eslintrc.cjs'],
+  ignorePatterns: ['src/environments', 'custom-webpack.config.js'],
   root: false,
 };

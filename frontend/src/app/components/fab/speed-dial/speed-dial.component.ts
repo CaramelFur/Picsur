@@ -9,19 +9,19 @@ import { SpeedDialAnimation } from './speed-dial.animation';
   animations: [SpeedDialAnimation],
 })
 export class SpeedDialComponent {
-  @Input('aria-label') ariaLabel: string = 'Floating Action Button';
+  @Input('aria-label') ariaLabel = 'Floating Action Button';
 
-  @Input('icon') icon: string = 'add';
-  @Input('icon-hover') iconHover: string = 'close';
-  @Input('color') color: string = 'primary';
-  @Input('open-on-hover') openOnHover: boolean = false;
+  @Input('icon') icon = 'add';
+  @Input('icon-hover') iconHover = 'close';
+  @Input('color') color = 'primary';
+  @Input('open-on-hover') openOnHover = false;
   @Input('tooltip') tooltip: string;
 
   @Output('main-click') clickEmitter = new Subject<void>();
 
   public openManager = new OpenManager();
 
-  private touchUntil: number = 0;
+  private touchUntil = 0;
 
   @HostListener('document:touchstart', ['$event'])
   @HostListener('document:touchend', ['$event'])
@@ -35,13 +35,13 @@ export class SpeedDialComponent {
 
   @HostListener('document:click', ['$event'])
   @HostListener('document:keydown.escape', ['$event'])
-  anyClick(e: Event) {
+  anyClick() {
     if (!this.openManager.isOpen || this.openManager.isAnimating) return;
 
     this.openManager.close();
   }
 
-  click(e: MouseEvent) {
+  click() {
     if (!this.openManager.isOpen) {
       this.openManager.open();
     } else {

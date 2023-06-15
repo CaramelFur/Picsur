@@ -11,7 +11,7 @@ import {
 } from '../validators/user.validator';
 
 export class UpdateUserControl {
-  private id: string = '';
+  private id = '';
   public username = new FormControl('', UsernameValidators);
   public password = new FormControl('', PasswordValidators);
   public roles = new FormControl<string[]>([]);

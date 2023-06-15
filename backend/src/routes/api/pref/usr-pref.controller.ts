@@ -6,7 +6,7 @@ import {
   UpdatePreferenceRequest,
   UpdatePreferenceResponse,
 } from 'picsur-shared/dist/dto/api/pref.dto';
-import { ThrowIfFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { UsrPreferenceDbService } from '../../../collections/preference-db/usr-preference-db.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { ReqUserID } from '../../../decorators/request-user.decorator';

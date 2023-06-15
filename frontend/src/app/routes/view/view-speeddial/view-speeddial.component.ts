@@ -6,15 +6,15 @@ import { ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { HasFailed } from 'picsur-shared/dist/types';
-import { ImageService } from 'src/app/services/api/image.service';
-import { PermissionService } from 'src/app/services/api/permission.service';
-import { UserService } from 'src/app/services/api/user.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { DialogService } from 'src/app/util/dialog-manager/dialog.service';
-import { DownloadService } from 'src/app/util/download-manager/download.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
-import { UtilService } from 'src/app/util/util.service';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
+import { ImageService } from '../../../services/api/image.service';
+import { PermissionService } from '../../../services/api/permission.service';
+import { UserService } from '../../../services/api/user.service';
+import { Logger } from '../../../services/logger/logger.service';
+import { DialogService } from '../../../util/dialog-manager/dialog.service';
+import { DownloadService } from '../../../util/download-manager/download.service';
+import { ErrorService } from '../../../util/error-manager/error.service';
+import { UtilService } from '../../../util/util.service';
 import {
   CustomizeDialogComponent,
   CustomizeDialogData,
@@ -32,7 +32,7 @@ import {
 export class ViewSpeeddialComponent implements OnInit {
   private readonly logger = new Logger(ViewSpeeddialComponent.name);
 
-  public canManage: boolean = false;
+  public canManage = false;
 
   @Input() public metadata: ImageMetaResponse | null = null;
   @Output() public metadataChange = new EventEmitter<ImageMetaResponse>();

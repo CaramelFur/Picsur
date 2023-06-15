@@ -10,17 +10,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MomentModule } from 'ngx-moment';
-import { CopyFieldModule } from 'src/app/components/copy-field/copy-field.module';
-import { FabModule } from 'src/app/components/fab/fab.module';
-import { PicsurImgModule } from 'src/app/components/picsur-img/picsur-img.module';
-import { PipesModule } from 'src/app/pipes/pipes.module';
-import { DownloadManagerModule } from 'src/app/util/download-manager/dialog-manager.module';
-import { ErrorManagerModule } from 'src/app/util/error-manager/error-manager.module';
 import { CustomizeDialogComponent } from './customize-dialog/customize-dialog.component';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 import { ViewSpeeddialComponent } from './view-speeddial/view-speeddial.component';
 import { ViewComponent } from './view.component';
 import { ViewRoutingModule } from './view.routing.module';
+import { CopyFieldModule } from '../../components/copy-field/copy-field.module';
+import { FabModule } from '../../components/fab/fab.module';
+import { PicsurImgModule } from '../../components/picsur-img/picsur-img.module';
+import { PipesModule } from '../../pipes/pipes.module';
+import { DownloadManagerModule } from '../../util/download-manager/dialog-manager.module';
+import { ErrorManagerModule } from '../../util/error-manager/error-manager.module';
 
 @NgModule({
   declarations: [

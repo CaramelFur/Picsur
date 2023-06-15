@@ -1,7 +1,7 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Logger } from 'src/app/services/logger/logger.service';
+import { Logger } from '../../services/logger/logger.service';
 import {
   ConfirmDialogComponent,
   ConfirmDialogData,
@@ -22,7 +22,7 @@ export class DialogService {
       dismissable?: boolean;
     },
   ): Promise<any | undefined> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const ref = this.dialog.open(component, {
         data,
         panelClass: 'small-dialog-padding',

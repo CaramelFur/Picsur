@@ -1,4 +1,4 @@
-import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types/failable';
 
 export async function GetNextAsync<T>(
   iterator: AsyncIterableIterator<T>,

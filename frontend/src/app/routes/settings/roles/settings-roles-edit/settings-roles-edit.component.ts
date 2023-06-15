@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
-import { HasFailed } from 'picsur-shared/dist/types';
-import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
-import { UpdateRoleControl } from 'src/app/models/forms/update-role.control';
-import { RolesService } from 'src/app/services/api/roles.service';
-import { StaticInfoService } from 'src/app/services/api/static-info.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
+import { UIFriendlyPermissions } from '../../../../i18n/permissions.i18n';
+import { UpdateRoleControl } from '../../../../models/forms/update-role.control';
+import { RolesService } from '../../../../services/api/roles.service';
+import { StaticInfoService } from '../../../../services/api/static-info.service';
+import { Logger } from '../../../../services/logger/logger.service';
+import { ErrorService } from '../../../../util/error-manager/error.service';
 
 enum EditMode {
   edit = 'edit',

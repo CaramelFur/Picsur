@@ -24,7 +24,7 @@ export const UndeletableRolesList: string[] = UndeletableRolesTuple;
 export const SystemRolesList = UndeletableRolesList;
 
 // Defaults
-type SystemRole = typeof UndeletableRolesTuple[number];
+type SystemRole = (typeof UndeletableRolesTuple)[number];
 const SystemRoleDefaultsTyped: {
   [key in SystemRole]: Permissions;
 } = {

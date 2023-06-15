@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Failure } from 'picsur-shared/dist/types';
-import { SnackBarType } from 'src/app/models/dto/snack-bar-type.dto';
-import { Logger } from 'src/app/services/logger/logger.service';
+import { Failure } from 'picsur-shared/dist/types/failable';
+import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
+import { Logger } from '../../services/logger/logger.service';
 import { SnackBarService } from '../snackbar-manager/snackbar.service';
 
 @Injectable({

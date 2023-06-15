@@ -1,4 +1,4 @@
-import { AsyncFailable, Failable } from 'picsur-shared/dist/types';
+import { AsyncFailable, Failable } from 'picsur-shared/dist/types/failable';
 
 export interface QOIImage {
   data: ImageData;

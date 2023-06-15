@@ -1,7 +1,7 @@
 import { Multipart, MultipartFile } from '@fastify/multipart';
 import { Injectable, Logger, PipeTransform, Scope } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
-import { Fail, FT } from 'picsur-shared/dist/types';
+import { Fail, FT } from 'picsur-shared/dist/types/failable';
 import { MultipartConfigService } from '../../config/early/multipart.config.service';
 
 @Injectable({ scope: Scope.REQUEST })
@@ -12,7 +12,7 @@ export class PostFilePipe implements PipeTransform {
     private readonly multipartConfigService: MultipartConfigService,
   ) {}
 
-  async transform({ request, data }: { data: any; request: FastifyRequest }) {
+  async transform({ request }: { request: FastifyRequest }) {
     if (!request.isMultipart()) throw Fail(FT.UsrValidation, 'Invalid file');
 
     // Only one file is allowed

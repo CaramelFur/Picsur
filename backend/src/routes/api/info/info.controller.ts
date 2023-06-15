@@ -11,7 +11,7 @@ import {
   SupportedImageFileTypes,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { TrackingState } from 'picsur-shared/dist/dto/tracking-state.enum';
-import { FallbackIfFailed } from 'picsur-shared/dist/types';
+import { FallbackIfFailed } from 'picsur-shared/dist/types/failable';
 import { HostConfigService } from '../../../config/early/host.config.service';
 import { InfoConfigService } from '../../../config/late/info.config.service';
 import { UsageConfigService } from '../../../config/late/usage.config.service';

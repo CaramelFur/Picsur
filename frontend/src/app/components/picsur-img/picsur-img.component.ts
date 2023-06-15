@@ -5,16 +5,15 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { FileType, ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
-import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types';
+import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types/failable';
 import { URLRegex } from 'picsur-shared/dist/util/common-regex';
 import { ParseMime2FileType } from 'picsur-shared/dist/util/parse-mime';
-import { ApiService } from 'src/app/services/api/api.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { QoiWorkerService } from 'src/app/workers/qoi-worker.service';
+import { ApiService } from '../../services/api/api.service';
+import { Logger } from '../../services/logger/logger.service';
+import { QoiWorkerService } from '../../workers/qoi-worker.service';
 
 enum PicsurImgState {
   Init = 'init',
@@ -48,12 +47,12 @@ export class PicsurImgComponent implements OnChanges {
     private readonly changeDetector: ChangeDetectorRef,
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     if (this.isInView) this.reload();
   }
 
   private reload() {
-    let url = this.imageURL ?? '';
+    const url = this.imageURL ?? '';
     if (!URLRegex.test(url)) {
       this.state = PicsurImgState.Loading;
       this.changeDetector.markForCheck();
@@ -68,7 +67,7 @@ export class PicsurImgComponent implements OnChanges {
           this.changeDetector.markForCheck();
         }
       })
-      .catch((e) => this.logger.error);
+      .catch(this.logger.error);
   }
 
   private async update(url: string): AsyncFailable<void> {
@@ -111,7 +110,7 @@ export class PicsurImgComponent implements OnChanges {
     return ParseMime2FileType(mime);
   }
 
-  onInview(e: any) {
+  onInview() {
     this.isInView = true;
 
     if (this.state === PicsurImgState.Init) {
@@ -120,7 +119,7 @@ export class PicsurImgComponent implements OnChanges {
     }
   }
 
-  onOutview(e: any) {
+  onOutview() {
     this.isInView = false;
   }
 }

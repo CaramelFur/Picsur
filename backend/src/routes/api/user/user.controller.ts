@@ -10,7 +10,7 @@ import {
   UserRegisterResponse,
 } from 'picsur-shared/dist/dto/api/user.dto';
 import type { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { ThrowIfFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { UserDbService } from '../../../collections/user-db/user-db.service';
 import {
   NoPermissions,

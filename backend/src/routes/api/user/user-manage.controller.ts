@@ -13,7 +13,7 @@ import {
   UserUpdateRequest,
   UserUpdateResponse,
 } from 'picsur-shared/dist/dto/api/user-manage.dto';
-import { ThrowIfFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { UserDbService } from '../../../collections/user-db/user-db.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';

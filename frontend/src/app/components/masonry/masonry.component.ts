@@ -12,9 +12,9 @@ import {
 } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { combineLatest, Subscription } from 'rxjs';
-import { RemoveChildren } from 'src/app/util/remove-children';
-import { Throttle } from 'src/app/util/throttle';
 import { MasonryItemDirective } from './masonry-item.directive';
+import { RemoveChildren } from '../../util/remove-children';
+import { Throttle } from '../../util/throttle';
 
 @Component({
   selector: 'masonry',
@@ -30,7 +30,7 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
     this.changeDetector.markForCheck();
   }
   public _column_count = 1;
-  @Input('update-speed') update_speed: number = 200;
+  @Input('update-speed') update_speed = 200;
 
   @ContentChildren(MasonryItemDirective)
   private content: QueryList<MasonryItemDirective>;
@@ -59,7 +59,7 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
 
     this.sizesSubscription = combineLatest(sizes)
       .pipe(Throttle(this.update_speed))
-      .subscribe((output) => {
+      .subscribe(() => {
         this.resortItems(items);
       });
 
@@ -76,7 +76,7 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
       RemoveChildren(columnsArray[i]);
     }
 
-    const columnSizes = columnsArray.map((c) => 0);
+    const columnSizes = columnsArray.map(() => 0);
 
     for (let i = 0; i < itemsArray.length; i++) {
       const item = itemsArray[i];
@@ -84,7 +84,7 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
       let smallestColumn = 0;
       let smallestColumnSize = columnSizes[0];
       for (let j = columnSizes.length - 1; j >= 0; j--) {
-        let better_j = (j + i) % columnSizes.length;
+        const better_j = (j + i) % columnSizes.length;
 
         if (columnSizes[better_j] <= smallestColumnSize) {
           smallestColumn = better_j;

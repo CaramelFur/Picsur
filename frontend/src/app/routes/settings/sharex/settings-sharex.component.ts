@@ -3,15 +3,15 @@ import { MatSelectChange } from '@angular/material/select';
 import { FileType2Ext, ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { EApiKey } from 'picsur-shared/dist/entities/apikey.entity';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { BehaviorSubject } from 'rxjs';
 import { scan } from 'rxjs/operators';
-import { ApiKeysService } from 'src/app/services/api/apikeys.service';
-import { InfoService } from 'src/app/services/api/info.service';
-import { PermissionService } from 'src/app/services/api/permission.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
-import { UtilService } from 'src/app/util/util.service';
+import { ApiKeysService } from '../../../services/api/apikeys.service';
+import { InfoService } from '../../../services/api/info.service';
+import { PermissionService } from '../../../services/api/permission.service';
+import { Logger } from '../../../services/logger/logger.service';
+import { ErrorService } from '../../../util/error-manager/error.service';
+import { UtilService } from '../../../util/util.service';
 import { BuildShareX } from './sharex-builder';
 
 @Component({

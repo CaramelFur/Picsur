@@ -11,8 +11,8 @@ import {
   RoleUpdateResponse,
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
-import { AsyncFailable, Open } from 'picsur-shared/dist/types';
-import { RoleModel } from 'src/app/models/forms-dto/role.dto';
+import { AsyncFailable, Open } from 'picsur-shared/dist/types/failable';
+import { RoleModel } from '../../models/forms-dto/role.dto';
 import { ApiService } from './api.service';
 
 @Injectable({

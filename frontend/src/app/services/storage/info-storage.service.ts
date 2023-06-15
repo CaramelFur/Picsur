@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ServerInfo } from 'src/app/models/dto/server-info.dto';
+import { ServerInfo } from '../../models/dto/server-info.dto';
 import { Logger } from '../logger/logger.service';
 
 @Injectable({

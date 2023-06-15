@@ -14,7 +14,7 @@
 <mat-icon *ngIf="state === 'error'">broken_image</mat-icon>
 
 <mat-spinner
-  (nguiInview)="onInview($event)"
-  (nguiOutview)="onOutview($event)"
+  (nguiInview)="onInview()"
+  (nguiOutview)="onOutview()"
   *ngIf="state === 'init' || state === 'loading'"
 ></mat-spinner>

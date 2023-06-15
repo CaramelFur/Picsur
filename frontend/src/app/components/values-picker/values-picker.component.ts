@@ -6,7 +6,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import Fuse from 'fuse.js';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { BehaviorSubject } from 'rxjs';
-import { Required } from 'src/app/models/decorators/required.decorator';
+import { Required } from '../../models/decorators/required.decorator';
 
 @Component({
   selector: 'values-picker',
@@ -18,7 +18,7 @@ export class ValuesPickerComponent implements OnInit, OnChanges {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   // Ui niceties
-  @Input('name') @Required name: string = '';
+  @Input('name') @Required name = '';
   public get nameCap(): string {
     return this.name.charAt(0).toUpperCase() + this.name.slice(1);
   }
@@ -107,14 +107,14 @@ export class ValuesPickerComponent implements OnInit, OnChanges {
 
   @AutoUnsubscribe()
   private subscribeInputValue() {
-    return this.inputControl.valueChanges.subscribe((value) => {
+    return this.inputControl.valueChanges.subscribe(() => {
       this.updateSelectable();
     });
   }
 
   @AutoUnsubscribe()
   private subscribeMyValue() {
-    return this.myControl.valueChanges.subscribe((value) => {
+    return this.myControl.valueChanges.subscribe(() => {
       this.updateSelectable();
     });
   }

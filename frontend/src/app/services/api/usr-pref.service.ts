@@ -13,14 +13,14 @@ import {
 } from 'picsur-shared/dist/dto/preferences.dto';
 import {
   AsyncFailable,
-  Fail,
   FT,
+  Fail,
   HasFailed,
   Map,
-} from 'picsur-shared/dist/types';
+} from 'picsur-shared/dist/types/failable';
 import { BehaviorSubject } from 'rxjs';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
-import { Throttle } from 'src/app/util/throttle';
+import { ErrorService } from '../../util/error-manager/error.service';
+import { Throttle } from '../../util/throttle';
 import { Logger } from '../logger/logger.service';
 import { ApiService } from './api.service';
 import { PermissionService } from './permission.service';

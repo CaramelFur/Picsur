@@ -1,4 +1,4 @@
-import z from 'zod';
+import * as z from 'zod';
 
 const ApiResponseBase = z.object({
   statusCode: z.number().min(0).max(600).int(),

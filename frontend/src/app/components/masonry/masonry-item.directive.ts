@@ -1,12 +1,11 @@
 import { Directive, ElementRef, Inject } from '@angular/core';
 import {
-  boxExtractor,
-  ResizeObserverDirective,
-  ResizeObserverService,
   RESIZE_OPTION_BOX,
+  ResizeObserverService,
+  boxExtractor,
 } from '@ng-web-apis/resize-observer';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Directive({
   selector: '[masonry-item]',

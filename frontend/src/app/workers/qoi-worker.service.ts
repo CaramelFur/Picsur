@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AsyncFailable, Failure, HasFailed } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable,
+  Failure,
+  HasFailed,
+} from 'picsur-shared/dist/types/failable';
 import { KeyStorageService } from '../services/storage/key-storage.service';
 import { QOIImage, QOIJob, QOIWorkerOut } from './qoi-worker.dto';
 
@@ -22,19 +26,19 @@ export class QoiWorkerService {
     const authorization = 'Bearer ' + (this.keyService.get() ?? '');
 
     if (this.worker && !this.job) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         const id = Date.now();
         const listener = ({ data }: { data: QOIWorkerOut }) => {
           if (data.id !== id) return;
-          this.worker!.removeEventListener('message', listener);
+          this.worker?.removeEventListener('message', listener);
 
           let result = data.result;
 
           if (HasFailed(result)) result = Failure.deserialize(data.result);
           resolve(result);
         };
-        this.worker!.addEventListener('message', listener);
-        this.worker!.postMessage({ id, url, authorization });
+        this.worker?.addEventListener('message', listener);
+        this.worker?.postMessage({ id, url, authorization });
       });
     } else if (!this.worker && this.job) {
       const job = await this.job;

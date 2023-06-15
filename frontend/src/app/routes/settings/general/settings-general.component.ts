@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import {
   UsrPreferenceFriendlyNames,
   UsrPreferenceHelpText,
-} from 'src/app/i18n/usr-pref.i18n';
-import { UsrPrefService } from 'src/app/services/api/usr-pref.service';
+} from '../../../i18n/usr-pref.i18n';
+import { UsrPrefService } from '../../../services/api/usr-pref.service';
 
 @Component({
   templateUrl: './settings-general.component.html',

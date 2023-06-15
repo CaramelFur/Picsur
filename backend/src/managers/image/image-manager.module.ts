@@ -2,7 +2,7 @@ import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import ms from 'ms';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { ImageDBModule } from '../../collections/image-db/image-db.module';
 import { ImageDBService } from '../../collections/image-db/image-db.service';
 import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';

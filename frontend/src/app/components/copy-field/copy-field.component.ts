@@ -3,10 +3,10 @@ import {
   MatFormFieldAppearance,
   SubscriptSizing,
 } from '@angular/material/form-field';
-import { FT, Fail } from 'picsur-shared/dist/types';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { ClipboardService } from 'src/app/util/clipboard.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
+import { FT, Fail } from 'picsur-shared/dist/types/failable';
+import { Logger } from '../../services/logger/logger.service';
+import { ClipboardService } from '../../util/clipboard.service';
+import { ErrorService } from '../../util/error-manager/error.service';
 
 @Component({
   selector: 'copy-field',
@@ -17,11 +17,11 @@ export class CopyFieldComponent {
   private readonly logger = new Logger(CopyFieldComponent.name);
 
   // Two parameters: name, value
-  @Input() label: string = 'Loading...';
-  @Input() value: string = 'Loading...';
+  @Input() label = 'Loading...';
+  @Input() value = 'Loading...';
 
-  @Input() showHideButton: boolean = false;
-  @Input() hidden: boolean = false;
+  @Input() showHideButton = false;
+  @Input() hidden = false;
 
   @Input() color: 'primary' | 'accent' | 'warn' = 'primary';
   @Input() appearance: MatFormFieldAppearance = 'outline';

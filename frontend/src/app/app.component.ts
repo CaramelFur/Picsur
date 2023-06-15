@@ -25,14 +25,14 @@ export class AppComponent implements OnInit {
 
   @ViewChild(MatSidenav) sidebar: MatSidenav;
 
-  loading: boolean = false;
+  loading = false;
   private loadingTimeout: number | null = null;
 
-  wrapContentWithContainer: boolean = true;
+  wrapContentWithContainer = true;
   sidebarPortal: Portal<any> | undefined = undefined;
 
-  isDesktop: boolean = false;
-  hasSidebar: boolean = false;
+  isDesktop = false;
+  hasSidebar = false;
 
   public constructor(
     private readonly router: Router,
@@ -64,7 +64,7 @@ export class AppComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         this.loadingEnd();
       }
-      if (event instanceof NavigationEnd) this.onNavigationEnd(event);
+      if (event instanceof NavigationEnd) this.onNavigationEnd();
       if (event instanceof NavigationError) this.onNavigationError(event);
     });
   }
@@ -84,7 +84,7 @@ export class AppComponent implements OnInit {
       this.router.navigate(['/error/404'], { replaceUrl: true });
   }
 
-  private async onNavigationEnd(event: NavigationEnd) {
+  private async onNavigationEnd() {
     const data = this.routeData;
     this.wrapContentWithContainer = !data.noContainer;
 

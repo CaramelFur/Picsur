@@ -16,14 +16,14 @@ import {
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 
-import { HasFailed } from 'picsur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { UUIDRegex } from 'picsur-shared/dist/util/common-regex';
 import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
 import { Subscription, timer } from 'rxjs';
-import { ImageService } from 'src/app/services/api/image.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
-import { UtilService } from 'src/app/util/util.service';
+import { ImageService } from '../../services/api/image.service';
+import { Logger } from '../../services/logger/logger.service';
+import { ErrorService } from '../../util/error-manager/error.service';
+import { UtilService } from '../../util/util.service';
 
 @Component({
   templateUrl: './view.component.html',
@@ -44,7 +44,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     private readonly changeDetector: ChangeDetectorRef,
   ) {}
 
-  private id: string = '';
+  private id = '';
   public metadata: ImageMetaResponse | null = null;
   public set OnMetadata(metadata: ImageMetaResponse) {
     this.metadata = metadata;

@@ -4,7 +4,7 @@ import {
   SetMetadata,
   UseGuards,
 } from '@nestjs/common';
-import { Fail, FT } from 'picsur-shared/dist/types';
+import { Fail, FT } from 'picsur-shared/dist/types/failable';
 import { CombineFCDecorators } from 'picsur-shared/dist/util/decorator';
 import { LocalAuthGuard } from '../managers/auth/guards/local-auth.guard';
 import { Permission, Permissions } from '../models/constants/permissions.const';

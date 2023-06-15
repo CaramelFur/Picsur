@@ -9,18 +9,18 @@ import { ApiResponseSchema } from 'picsur-shared/dist/dto/api/api.dto';
 import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
 import {
   AsyncFailable,
+  FT,
   Fail,
   Failure,
-  FT,
   HasFailed,
   HasSuccess,
-} from 'picsur-shared/dist/types';
+} from 'picsur-shared/dist/types/failable';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { ParseMime2FileType } from 'picsur-shared/dist/util/parse-mime';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { ApiBuffer } from 'src/app/models/dto/api-buffer.dto';
-import { ApiError } from 'src/app/models/dto/api-error.dto';
 import { z } from 'zod';
+import { ApiBuffer } from '../../models/dto/api-buffer.dto';
+import { ApiError } from '../../models/dto/api-error.dto';
 import { MultiPartRequest } from '../../models/dto/multi-part-request.dto';
 import { Logger } from '../logger/logger.service';
 import { KeyStorageService } from '../storage/key-storage.service';
@@ -56,6 +56,7 @@ function CreateFailedRunningRequest<R>(failure: Failure) {
     uploadProgress: subject.asObservable(),
     downloadProgress: subject.asObservable(),
     result: Promise.resolve(failure),
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     cancel: () => {},
   } as RunningRequest<R>;
 }
@@ -139,7 +140,7 @@ export class ApiService {
     const resultSchema = ApiResponseSchema(type.zodSchema as z.AnyZodObject);
     type resultType = z.infer<typeof resultSchema>;
 
-    let result = this.fetchJsonAs<resultType>(url, options);
+    const result = this.fetchJsonAs<resultType>(url, options);
 
     return MapRunningRequest(result, async (r) => {
       const validateResult = resultSchema.safeParse(r);

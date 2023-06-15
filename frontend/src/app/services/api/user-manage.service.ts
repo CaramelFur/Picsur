@@ -12,7 +12,7 @@ import {
   UserUpdateResponse,
 } from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { AsyncFailable } from 'picsur-shared/dist/types';
+import { AsyncFailable } from 'picsur-shared/dist/types/failable';
 import { ApiService } from './api.service';
 
 @Injectable({

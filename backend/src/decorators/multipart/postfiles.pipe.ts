@@ -1,13 +1,7 @@
 import { MultipartFile } from '@fastify/multipart';
-import {
-  ArgumentMetadata,
-  Injectable,
-  Logger,
-  PipeTransform,
-  Scope,
-} from '@nestjs/common';
+import { Injectable, Logger, PipeTransform, Scope } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
-import { Fail, FT } from 'picsur-shared/dist/types';
+import { FT, Fail } from 'picsur-shared/dist/types/failable';
 import { MultipartConfigService } from '../../config/early/multipart.config.service';
 
 export type FileIterator = AsyncIterableIterator<MultipartFile>;
@@ -20,10 +14,7 @@ export class MultiPartPipe implements PipeTransform {
     private readonly multipartConfigService: MultipartConfigService,
   ) {}
 
-  async transform<T extends Object>(
-    { request, data }: { data: any; request: FastifyRequest },
-    metadata: ArgumentMetadata,
-  ) {
+  async transform({ request, data }: { data: any; request: FastifyRequest }) {
     const filesLimit = typeof data === 'number' ? data : undefined;
 
     if (!request.isMultipart()) throw Fail(FT.UsrValidation, 'Invalid files');

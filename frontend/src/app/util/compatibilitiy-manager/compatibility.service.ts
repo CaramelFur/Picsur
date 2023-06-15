@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { HISTORY } from '@ng-web-apis/common';
-import { HasFailed } from 'picsur-shared/dist/types';
-import { InfoService } from 'src/app/services/api/info.service';
-import { Logger } from 'src/app/services/logger/logger.service';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
+import { InfoService } from '../../services/api/info.service';
+import { Logger } from '../../services/logger/logger.service';
 import { DialogService } from '../dialog-manager/dialog.service';
 import { ErrorService } from '../error-manager/error.service';
 
@@ -21,6 +21,7 @@ export class CompatibilityService {
     this.checkCompatibility().catch(this.logger.error);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   nothing() {}
 
   private async checkCompatibility() {

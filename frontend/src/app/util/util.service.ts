@@ -3,7 +3,7 @@ import {
   FileType2Ext,
   SupportedFileTypes,
 } from 'picsur-shared/dist/dto/mimes.dto';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { Logger } from '../services/logger/logger.service';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class UtilService {
   public downloadBuffer(
     buffer: ArrayBuffer | string,
     filename: string,
-    filetype: string = 'application/octet-stream',
+    filetype = 'application/octet-stream',
   ) {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([buffer], { type: filetype }));
@@ -25,7 +25,7 @@ export class UtilService {
   }
 
   public getBaseFormatOptions() {
-    let newOptions: {
+    const newOptions: {
       value: string;
       key: string;
     }[] = [];

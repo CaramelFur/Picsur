@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { JwtData, JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types/failable';
 
 @Injectable()
 export class AuthManagerService {

@@ -7,8 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ErrorManagerModule } from 'src/app/util/error-manager/error-manager.module';
 import { PrefOptionComponent } from './pref-option.component';
+import { ErrorManagerModule } from '../../util/error-manager/error-manager.module';
 
 @NgModule({
   imports: [

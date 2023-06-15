@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { Fail, Failable, FT } from 'picsur-shared/dist/types';
+import { Fail, Failable, FT } from 'picsur-shared/dist/types/failable';
 import { UserPassModel } from '../forms-dto/userpass.dto';
 import { Compare } from '../validators/compare.validator';
 import {

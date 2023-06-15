@@ -6,7 +6,7 @@ import {
   UpdatePreferenceRequest,
   UpdatePreferenceResponse,
 } from 'picsur-shared/dist/dto/api/pref.dto';
-import { ThrowIfFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { SysPreferenceDbService } from '../../../collections/preference-db/sys-preference-db.service';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';

@@ -1,6 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { SESSION_STORAGE } from '@ng-web-apis/common';
-import { AsyncFailable, Failable, HasFailed } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable,
+  Failable,
+  HasFailed,
+} from 'picsur-shared/dist/types/failable';
 import { Logger } from '../logger/logger.service';
 
 interface dataWrapper<T> {

@@ -3,15 +3,15 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { StaticInfoService } from 'src/app/services/api/static-info.service';
-import { UserAdminService } from 'src/app/services/api/user-manage.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { BootstrapService } from 'src/app/util/bootstrap.service';
-import { DialogService } from 'src/app/util/dialog-manager/dialog.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
-import { Throttle } from 'src/app/util/throttle';
+import { StaticInfoService } from '../../../services/api/static-info.service';
+import { UserAdminService } from '../../../services/api/user-manage.service';
+import { Logger } from '../../../services/logger/logger.service';
+import { BootstrapService } from '../../../util/bootstrap.service';
+import { DialogService } from '../../../util/dialog-manager/dialog.service';
+import { ErrorService } from '../../../util/error-manager/error.service';
+import { Throttle } from '../../../util/throttle';
 
 @Component({
   templateUrl: './settings-users.component.html',
@@ -29,7 +29,7 @@ export class SettingsUsersComponent implements OnInit {
 
   public dataSubject = new BehaviorSubject<EUser[]>([]);
   public updateSubject = new Subject<PageEvent>();
-  public totalUsers: number = 0;
+  public totalUsers = 0;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -100,7 +100,7 @@ export class SettingsUsersComponent implements OnInit {
     return this.updateSubject
       .pipe(Throttle(500))
       .subscribe(async (pageEvent: PageEvent) => {
-        let success = await this.fetchUsers(
+        const success = await this.fetchUsers(
           pageEvent.pageSize,
           pageEvent.pageIndex,
         );

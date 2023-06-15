@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
+
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
@@ -21,6 +22,6 @@
     "skipLibCheck": true,
     "removeComments": true,
     "isolatedModules": true,
-    "incremental": true
+    "incremental": false
   }
 }

@@ -1,6 +1,6 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { EarlyConfigModule } from '../../config/early/early-config.module';
 import { HostConfigService } from '../../config/early/host.config.service';
 import { ERoleBackend } from '../../database/entities/users/role.entity';

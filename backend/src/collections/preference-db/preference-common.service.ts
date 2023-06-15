@@ -10,7 +10,7 @@ import {
   Failable,
   FT,
   HasFailed,
-} from 'picsur-shared/dist/types';
+} from 'picsur-shared/dist/types/failable';
 
 type Enum = Record<string, string>;
 type EnumValue<E> = E[keyof E];

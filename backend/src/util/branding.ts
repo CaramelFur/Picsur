@@ -1,6 +1,6 @@
 import { readFile } from 'fs/promises';
 import { resolve } from 'path';
-import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types/failable';
 import { PackageRoot } from '../config/config.static';
 
 export const BrandingPath = resolve(PackageRoot, '../branding');

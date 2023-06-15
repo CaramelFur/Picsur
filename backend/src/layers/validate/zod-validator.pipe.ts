@@ -9,7 +9,7 @@ import {
   Optional,
   PipeTransform,
 } from '@nestjs/common';
-import { Fail, FT } from 'picsur-shared/dist/types';
+import { Fail, FT } from 'picsur-shared/dist/types/failable';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 
 export interface ZodValidationPipeOptions {
@@ -30,7 +30,7 @@ export class ZodValidationPipe implements PipeTransform {
   public transform(value: unknown, metadata: ArgumentMetadata): unknown {
     if (!this.validateCustom && metadata.type === 'custom') return value;
 
-    let zodSchema = (metadata?.metatype as ZodDtoStatic)?.zodSchema;
+    const zodSchema = (metadata?.metatype as ZodDtoStatic)?.zodSchema;
 
     if (zodSchema) {
       const parseResult = zodSchema.safeParse(value);

@@ -11,8 +11,5 @@
     "declaration": true,
     "sourceMap": true,
     "emitDecoratorMetadata": true
-  },
-  "ts-node": {
-    "experimentalSpecifierResolution": "node"
   }
 }

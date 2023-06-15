@@ -1,6 +1,6 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { AuthConfigService } from '../../config/early/auth.config.service';
 import { EarlyConfigModule } from '../../config/early/early-config.module';

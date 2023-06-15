@@ -6,19 +6,19 @@ import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
 import {
   BehaviorSubject,
+  Observable,
   filter,
   map,
   merge,
-  Observable,
   switchMap,
   timer,
 } from 'rxjs';
-import { ImageService } from 'src/app/services/api/image.service';
-import { UserService } from 'src/app/services/api/user.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { BootstrapService, BSScreenSize } from 'src/app/util/bootstrap.service';
-import { DialogService } from 'src/app/util/dialog-manager/dialog.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
+import { ImageService } from '../../services/api/image.service';
+import { UserService } from '../../services/api/user.service';
+import { Logger } from '../../services/logger/logger.service';
+import { BSScreenSize, BootstrapService } from '../../util/bootstrap.service';
+import { DialogService } from '../../util/dialog-manager/dialog.service';
+import { ErrorService } from '../../util/error-manager/error.service';
 
 @Component({
   templateUrl: './images.component.html',
@@ -39,8 +39,8 @@ export class ImagesComponent implements OnInit {
     );
   }
 
-  page: number = 1;
-  pages: number = 1;
+  page = 1;
+  pages = 1;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -110,7 +110,7 @@ export class ImagesComponent implements OnInit {
         merge(
           ...images
             .filter((i) => i.expires_at !== null)
-            .map((i) => timer(i.expires_at!).pipe(map(() => i))),
+            .map((i) => timer(i.expires_at ?? new Date(0)).pipe(map(() => i))),
         ),
       ),
     ) as Observable<EImage>;

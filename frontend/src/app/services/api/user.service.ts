@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import jwt_decode from 'jwt-decode';
+import { decodeToken } from '@leteu/jwt-decoder';
 import {
   UserCheckNameRequest,
   UserCheckNameResponse,
@@ -17,7 +17,7 @@ import {
   FT,
   HasFailed,
   Open,
-} from 'picsur-shared/dist/types';
+} from 'picsur-shared/dist/types/failable';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '../logger/logger.service';
 import { KeyStorageService } from '../storage/key-storage.service';
@@ -131,7 +131,7 @@ export class UserService {
   private async extractUserID(token: string): AsyncFailable<string> {
     let decoded: any;
     try {
-      decoded = jwt_decode(token);
+      decoded = decodeToken(token);
     } catch (e) {
       return Fail(FT.UsrValidation, 'Invalid token');
     }

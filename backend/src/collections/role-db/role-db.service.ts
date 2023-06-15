@@ -7,7 +7,7 @@ import {
   FT,
   HasFailed,
   HasSuccess,
-} from 'picsur-shared/dist/types';
+} from 'picsur-shared/dist/types/failable';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { In, Repository } from 'typeorm';
 import { ERoleBackend } from '../../database/entities/users/role.entity';
@@ -33,7 +33,7 @@ export class RoleDbService {
     if (await this.exists(name))
       return Fail(FT.Conflict, 'Role already exists');
 
-    let role = new ERoleBackend();
+    const role = new ERoleBackend();
     role.name = name;
     role.permissions = permissions;
 
@@ -105,7 +105,7 @@ export class RoleDbService {
     role: string | ERoleBackend,
     permissions: Permissions,
     // Extra bypass for internal use
-    allowImmutable: boolean = false,
+    allowImmutable = false,
   ): AsyncFailable<ERoleBackend> {
     const roleToModify = await this.resolve(role);
     if (HasFailed(roleToModify)) return roleToModify;
@@ -166,7 +166,7 @@ export class RoleDbService {
     return HasSuccess(await this.findOne(name));
   }
 
-  public async nukeSystemRoles(IAmSure: boolean = false): AsyncFailable<true> {
+  public async nukeSystemRoles(IAmSure = false): AsyncFailable<true> {
     if (!IAmSure)
       return Fail(
         FT.SysValidation,

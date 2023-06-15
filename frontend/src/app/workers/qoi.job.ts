@@ -1,4 +1,4 @@
-import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types';
+import { AsyncFailable, Fail, FT } from 'picsur-shared/dist/types/failable';
 import { QOIdecodeJS } from '../util/qoi/qoi-decode';
 import { QOIImage } from './qoi-worker.dto';
 

@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy as JwtPassportStrategy } from 'passport-jwt';
 import { JwtDataSchema } from 'picsur-shared/dist/dto/jwt.dto';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { ThrowIfFailed } from 'picsur-shared/dist/types';
+import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { UserDbService } from '../../../collections/user-db/user-db.service';
 import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
 

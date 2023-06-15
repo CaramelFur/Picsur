@@ -21,7 +21,12 @@ import {
   ImageUploadResponse,
 } from 'picsur-shared/dist/dto/api/image-manage.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
-import { Fail, FT, HasFailed, ThrowIfFailed } from 'picsur-shared/dist/types';
+import {
+  Fail,
+  FT,
+  HasFailed,
+  ThrowIfFailed,
+} from 'picsur-shared/dist/types/failable';
 import { PostFiles } from '../../decorators/multipart/multipart.decorator';
 import type { FileIterator } from '../../decorators/multipart/postfiles.pipe';
 import {

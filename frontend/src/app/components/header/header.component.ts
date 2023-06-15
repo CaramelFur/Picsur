@@ -11,11 +11,11 @@ import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { HasFailed } from 'picsur-shared/dist/types';
-import { PermissionService } from 'src/app/services/api/permission.service';
-import { UserService } from 'src/app/services/api/user.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
+import { UserService } from '../../services/api/user.service';
+import { PermissionService } from '../../services/api/permission.service';
+import { Logger } from '../../services/logger/logger.service';
+import { ErrorService } from '../../util/error-manager/error.service';
 
 @Component({
   selector: 'app-header',
@@ -38,17 +38,17 @@ export class HeaderComponent implements OnInit {
     this._enableHamburger = value;
     this.changeDetector.markForCheck();
   }
-  public _enableHamburger: boolean = true;
+  public _enableHamburger = true;
   @Output('onHamburgerClick') onHamburgerClick = new EventEmitter<void>();
 
-  @Input('loading') public loading: boolean = false;
+  @Input('loading') public loading = false;
 
   private currentUser: EUser | null = null;
 
-  public canLogIn: boolean = false;
-  public canAccessSettings: boolean = false;
-  public canUpload: boolean = false;
-  public canRegister: boolean = false;
+  public canLogIn = false;
+  public canAccessSettings = false;
+  public canUpload = false;
+  public canRegister = false;
 
   public get user() {
     return this.currentUser;

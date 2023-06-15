@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { HeaderAPIKeyStrategy } from 'passport-headerapikey';
 import { EUser, EUserSchema } from 'picsur-shared/dist/entities/user.entity';
-import { HasFailed } from 'picsur-shared/dist/types';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { IsApiKey } from 'picsur-shared/dist/validators/api-key.validator';
 import { ApiKeyDbService } from '../../../collections/apikey-db/apikey-db.service';
 import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
@@ -23,7 +23,7 @@ export class ApiKeyStrategy extends PassportStrategy(
       false,
       (
         apikey: string,
-        verified: (err: Error | null, user?: Object, info?: Object) => void,
+        verified: (err: Error | null, user?: object, info?: object) => void,
       ) => {
         this.validate(apikey)
           .then((user) => {

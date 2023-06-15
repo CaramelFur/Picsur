@@ -1,12 +1,12 @@
-import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
+import { Injectable, PipeTransform } from '@nestjs/common';
 import { Ext2FileType } from 'picsur-shared/dist/dto/mimes.dto';
-import { Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import { FT, Fail, HasFailed } from 'picsur-shared/dist/types/failable';
 import { UUIDRegex } from 'picsur-shared/dist/util/common-regex';
 import { ImageFullId } from '../../models/constants/image-full-id.const';
 
 @Injectable()
 export class ImageFullIdPipe implements PipeTransform<string, ImageFullId> {
-  transform(value: string, metadata: ArgumentMetadata): ImageFullId {
+  transform(value: string): ImageFullId {
     const split = value.split('.');
     if (split.length === 2) {
       const [id, ext] = split;

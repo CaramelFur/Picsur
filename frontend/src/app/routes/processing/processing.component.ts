@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Fail, FT, HasFailed } from 'picsur-shared/dist/types';
-import { ProcessingViewMeta } from 'src/app/models/dto/processing-view-meta.dto';
-import { ApiService } from 'src/app/services/api/api.service';
-import { ImageService } from 'src/app/services/api/image.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
+import { Fail, FT, HasFailed } from 'picsur-shared/dist/types/failable';
+import { ProcessingViewMeta } from '../../models/dto/processing-view-meta.dto';
+import { ApiService } from '../../services/api/api.service';
+import { ImageService } from '../../services/api/image.service';
+import { Logger } from '../../services/logger/logger.service';
+import { ErrorService } from '../../util/error-manager/error.service';
 
 @Component({
   templateUrl: './processing.component.html',

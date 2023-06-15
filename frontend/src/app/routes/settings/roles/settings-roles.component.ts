@@ -4,14 +4,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
-import { HasFailed } from 'picsur-shared/dist/types';
-import { UIFriendlyPermissions } from 'src/app/i18n/permissions.i18n';
-import { RolesService } from 'src/app/services/api/roles.service';
-import { StaticInfoService } from 'src/app/services/api/static-info.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { BootstrapService } from 'src/app/util/bootstrap.service';
-import { DialogService } from 'src/app/util/dialog-manager/dialog.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
+import { UIFriendlyPermissions } from '../../../i18n/permissions.i18n';
+import { RolesService } from '../../../services/api/roles.service';
+import { StaticInfoService } from '../../../services/api/static-info.service';
+import { Logger } from '../../../services/logger/logger.service';
+import { BootstrapService } from '../../../util/bootstrap.service';
+import { DialogService } from '../../../util/dialog-manager/dialog.service';
+import { ErrorService } from '../../../util/error-manager/error.service';
 
 @Component({
   templateUrl: './settings-roles.component.html',

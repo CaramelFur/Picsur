@@ -9,7 +9,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { FastifyReply } from 'fastify';
 import { ApiAnySuccessResponse } from 'picsur-shared/dist/dto/api/api.dto';
-import { Fail, FT } from 'picsur-shared/dist/types';
+import { Fail, FT } from 'picsur-shared/dist/types/failable';
 import { ZodDtoStatic } from 'picsur-shared/dist/util/create-zod-dto';
 import { map, Observable } from 'rxjs';
 
@@ -20,7 +20,7 @@ export interface ZodValidationInterceptorOptions {
 }
 
 @Injectable()
-export class SuccessInterceptor<T> implements NestInterceptor {
+export class SuccessInterceptor implements NestInterceptor {
   private readonly logger = new Logger();
 
   // TODO: make work
@@ -82,7 +82,7 @@ export class SuccessInterceptor<T> implements NestInterceptor {
       );
     }
 
-    let schema = schemaStatic.zodSchema;
+    const schema = schemaStatic.zodSchema;
 
     const parseResult = schema.safeParse(data);
     if (!parseResult.success) {
@@ -105,7 +105,7 @@ export class SuccessInterceptor<T> implements NestInterceptor {
     const response = context.switchToHttp().getResponse<FastifyReply>();
 
     const newResponse: ApiAnySuccessResponse = {
-      success: true as true, // really typescript
+      success: true as const, // really typescript
       statusCode: response.statusCode,
       timestamp: new Date().toISOString(),
       timeMs: Math.round(response.getResponseTime()),

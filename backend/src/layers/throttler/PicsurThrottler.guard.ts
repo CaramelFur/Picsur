@@ -1,10 +1,10 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ThrottlerGuard } from '@nestjs/throttler';
-import { Fail, FT } from 'picsur-shared/dist/types';
+import { FT, Fail } from 'picsur-shared/dist/types/failable';
 
 @Injectable()
 export class PicsurThrottlerGuard extends ThrottlerGuard {
-  protected override throwThrottlingException(context: ExecutionContext): void {
+  protected override throwThrottlingException(): void {
     throw Fail(FT.RateLimit);
   }
 }

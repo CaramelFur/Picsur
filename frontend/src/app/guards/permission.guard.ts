@@ -4,7 +4,6 @@ import {
   CanActivate,
   CanActivateChild,
   Router,
-  RouterStateSnapshot,
 } from '@angular/router';
 import { isPermissionsArray } from 'picsur-shared/dist/validators/permissions.validator';
 import { PRouteData } from '../models/dto/picsur-routes.dto';
@@ -24,18 +23,15 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
     private readonly router: Router,
   ) {}
 
-  async canActivateChild(
-    childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
-  ) {
-    return await this.can(childRoute, state);
+  async canActivateChild(childRoute: ActivatedRouteSnapshot) {
+    return await this.can(childRoute);
   }
 
-  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return await this.can(route, state);
+  async canActivate(route: ActivatedRouteSnapshot) {
+    return await this.can(route);
   }
 
-  private async can(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  private async can(route: ActivatedRouteSnapshot) {
     const requiredPermissions: string[] = this.nestedPermissions(route);
     const allPermissionsArray = await this.staticInfo.getAllPermissions();
 

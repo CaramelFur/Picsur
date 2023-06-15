@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { NgxDropzoneChangeEvent } from 'ngx-dropzone';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
-import { Fail, FT } from 'picsur-shared/dist/types';
+import { Fail, FT } from 'picsur-shared/dist/types/failable';
 import { debounceTime } from 'rxjs';
-import { PermissionService } from 'src/app/services/api/permission.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
 import { ProcessingViewMeta } from '../../models/dto/processing-view-meta.dto';
+import { PermissionService } from '../../services/api/permission.service';
+import { Logger } from '../../services/logger/logger.service';
+import { ErrorService } from '../../util/error-manager/error.service';
 
 @Component({
   templateUrl: './upload.component.html',

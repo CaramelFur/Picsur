@@ -1,4 +1,4 @@
-import { Fail, Failable, FT } from '../types';
+import { Fail, Failable, FT } from '../types/failable';
 
 // Config
 export enum ImageFileType {
@@ -57,7 +57,7 @@ const FileType2MimeMap: {
 
 export const Mime2FileType = (mime: string): Failable<string> => {
   const entries = Object.entries(FileType2MimeMap).filter(
-    ([k, v]) => v === mime,
+    ([, v]) => v === mime,
   );
   if (entries.length === 0)
     return Fail(FT.Internal, undefined, `Unsupported mime type: ${mime}`);
@@ -88,7 +88,7 @@ const FileType2ExtMap: {
 };
 
 export const Ext2FileType = (ext: string): Failable<string> => {
-  const entries = Object.entries(FileType2ExtMap).filter(([k, v]) => v === ext);
+  const entries = Object.entries(FileType2ExtMap).filter(([, v]) => v === ext);
   if (entries.length === 0)
     return Fail(FT.Internal, undefined, `Unsupported ext: ${ext}`);
   return entries[0][0];

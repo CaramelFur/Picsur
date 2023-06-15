@@ -9,7 +9,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
-    "build": "ng build",
+    "build": "ng build --verbose",
     "watch": "ng build --watch --configuration development",
     "purge": "rm -rf dist && rm -rf node_modules && rm -rf .angular"
   },
@@ -47,7 +47,6 @@
     "browserslist": "^4.21.7",
     "caniuse-lite": "^1.0.30001495",
     "fuse.js": "^6.6.2",
-    "jwt-decode": "^3.1.2",
     "material-icons": "^1.13.8",
     "moment": "^2.29.4",
     "ng-mat-select-infinite-scroll": "^4.0.0",
@@ -62,5 +61,8 @@
     "webpack-bundle-analyzer": "^4.9.0",
     "zod": "^3.21.4",
     "zone.js": "^0.13.0"
+  },
+  "dependencies": {
+    "@leteu/jwt-decoder": "^1.0.4"
   }
 }

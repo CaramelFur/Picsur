@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ImageService } from 'src/app/services/api/image.service';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ImageService } from '../../../services/api/image.service';
 
 export interface CustomizeDialogData {
   imageID: string;
@@ -16,7 +16,7 @@ export interface CustomizeDialogData {
   templateUrl: './customize-dialog.component.html',
   styleUrls: ['./customize-dialog.component.scss'],
 })
-export class CustomizeDialogComponent implements OnInit {
+export class CustomizeDialogComponent {
   public sizeTooltip = 'Leave empty to keep original aspect ratio';
 
   public rotationOptions = [0, 90, 180, 270];
@@ -47,8 +47,6 @@ export class CustomizeDialogComponent implements OnInit {
     this.selectedFormat = data.selectedFormat;
     this.imageID = data.imageID;
   }
-
-  ngOnInit(): void {}
 
   close() {
     this.dialogRef.close();

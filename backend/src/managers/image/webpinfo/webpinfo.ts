@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-function */
 // @ts-nocheck
 
 /*
@@ -310,8 +312,8 @@ export class WebPInfo extends StreamParserWritable {
     ['VP8', 'VP8L', 'ANMF'].map((t) => [t, true] as [ChunkType, true]),
   );
 
-  private offset: number = 0;
-  private maxSeekableOffset: number = -1; // same as file size - 1
+  private offset = 0;
+  private maxSeekableOffset = -1; // same as file size - 1
 
   private pending?: {
     size: number;

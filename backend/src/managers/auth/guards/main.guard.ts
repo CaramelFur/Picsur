@@ -9,7 +9,7 @@ import {
   FT,
   HasFailed,
   ThrowIfFailed,
-} from 'picsur-shared/dist/types';
+} from 'picsur-shared/dist/types/failable';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { UserDbService } from '../../../collections/user-db/user-db.service';
 import { Permissions } from '../../../models/constants/permissions.const';

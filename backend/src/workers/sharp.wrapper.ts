@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { ChildProcess, fork } from 'child_process';
 import pTimeout from 'p-timeout';
-import path from 'path';
+import { dirname, join as pathJoin } from 'path';
 import { FileType } from 'picsur-shared/dist/dto/mimes.dto';
 import {
   AsyncFailable,
@@ -9,7 +9,7 @@ import {
   Failable,
   FT,
   HasFailed,
-} from 'picsur-shared/dist/types';
+} from 'picsur-shared/dist/types/failable';
 import { Sharp, SharpOptions } from 'sharp';
 import {
   SharpWorkerFinishOptions,
@@ -22,13 +22,13 @@ import {
 import { SharpResult } from './sharp/universal-sharp';
 
 const moduleURL = new URL(import.meta.url);
-const __dirname = path.dirname(moduleURL.pathname);
+const __dirname = dirname(moduleURL.pathname);
 
 export class SharpWrapper {
   private readonly workerID: number = Math.floor(Math.random() * 100000);
   private readonly logger: Logger = new Logger('SharpWrapper' + this.workerID);
 
-  private static readonly WORKER_PATH = path.join(
+  private static readonly WORKER_PATH = pathJoin(
     __dirname,
     './sharp',
     'sharp.worker.js',

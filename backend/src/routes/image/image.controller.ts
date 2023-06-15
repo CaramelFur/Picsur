@@ -7,7 +7,11 @@ import {
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { FileType2Mime } from 'picsur-shared/dist/dto/mimes.dto';
-import { FT, IsFailure, ThrowIfFailed } from 'picsur-shared/dist/types';
+import {
+  FT,
+  IsFailure,
+  ThrowIfFailed,
+} from 'picsur-shared/dist/types/failable';
 import { UserDbService } from '../../collections/user-db/user-db.service';
 import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decorator';
 import { ImageIdParam } from '../../decorators/image-id/image-id.decorator';

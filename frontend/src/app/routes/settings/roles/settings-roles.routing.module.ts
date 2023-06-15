@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { PRoutes } from 'src/app/models/dto/picsur-routes.dto';
 import { SettingsRolesEditComponent } from './settings-roles-edit/settings-roles-edit.component';
 import { SettingsRolesComponent } from './settings-roles.component';
+import { PRoutes } from '../../../models/dto/picsur-routes.dto';
 
 const routes: PRoutes = [
   {

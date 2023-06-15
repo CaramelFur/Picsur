@@ -14,7 +14,7 @@ export const CombinePDecorators = (
   ...decorators: PropertyDecorator[]
 ): (() => PropertyDecorator) => {
   return () => {
-    return (target: Object, propertyKey: string | symbol): void => {
+    return (target: object, propertyKey: string | symbol): void => {
       decorators.forEach((decorator) => decorator(target, propertyKey));
     };
   };

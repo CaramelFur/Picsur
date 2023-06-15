@@ -30,7 +30,7 @@ const imageCorsConfig = cors({
 const imageCorsOverride = (
   req: IncomingMessage,
   res: ServerResponse,
-  next: Function,
+  next: () => void,
 ) => {
   res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
 

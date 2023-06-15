@@ -3453,6 +3453,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@leteu/jwt-decoder@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "@leteu/jwt-decoder@npm:1.0.4"
+  dependencies:
+    buffer: ^6.0.3
+  checksum: f3b4cfeacbefaef0a68efaba505fd60e9c319c80cb41e6eebcfd554433a33572c159e76527f25b11e52bd31a292e769f93597e68eac069553930c9d9caafbdde
+  languageName: node
+  linkType: hard
+
 "@lukeed/csprng@npm:^1.0.0":
   version: 1.0.1
   resolution: "@lukeed/csprng@npm:1.0.1"
@@ -5058,6 +5067,13 @@ __metadata:
   version: 20.2.5
   resolution: "@types/node@npm:20.2.5"
   checksum: 38ce7c7e9d76880dc632f71d71e0d5914fcda9d5e9a7095d6c339abda55ca4affb0f2a882aeb29398f8e09d2c5151f0b6586c81c8ccdfe529c34b1ea3337425e
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.3.1":
+  version: 20.3.1
+  resolution: "@types/node@npm:20.3.1"
+  checksum: 63a393ab6d947be17320817b35d7277ef03728e231558166ed07ee30b09fd7c08861be4d746f10fdc63ca7912e8cd023939d4eab887ff6580ff704ff24ed810c
   languageName: node
   linkType: hard
 
@@ -9379,13 +9395,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jwt-decode@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "jwt-decode@npm:3.1.2"
-  checksum: 20a4b072d44ce3479f42d0d2c8d3dabeb353081ba4982e40b83a779f2459a70be26441be6c160bfc8c3c6eadf9f6380a036fbb06ac5406b5674e35d8c4205eeb
-  languageName: node
-  linkType: hard
-
 "karma-source-map-support@npm:1.4.0":
   version: 1.4.0
   resolution: "karma-source-map-support@npm:1.4.0"
@@ -10079,6 +10088,27 @@ __metadata:
   version: 1.0.1
   resolution: "mrmime@npm:1.0.1"
   checksum: cc979da44bbbffebaa8eaf7a45117e851f2d4cb46a3ada6ceb78130466a04c15a0de9a9ce1c8b8ba6f6e1b8618866b1352992bf1757d241c0ddca558b9f28a77
+  languageName: node
+  linkType: hard
+
+"ms@npm:2.0.0":
+  version: 2.0.0
+  resolution: "ms@npm:2.0.0"
+  checksum: 0e6a22b8b746d2e0b65a430519934fefd41b6db0682e3477c10f60c76e947c4c0ad06f63ffdf1d78d335f83edee8c0aa928aa66a36c7cd95b69b26f468d527f4
+  languageName: node
+  linkType: hard
+
+"ms@npm:2.1.2":
+  version: 2.1.2
+  resolution: "ms@npm:2.1.2"
+  checksum: 673cdb2c3133eb050c745908d8ce632ed2c02d85640e2edb3ace856a2266a813b30c613569bf3354fdf4ea7d1a1494add3bfa95e2713baa27d0c2c71fc44f58f
+  languageName: node
+  linkType: hard
+
+"ms@npm:2.1.3, ms@npm:^2.0.0, ms@npm:^2.1.1":
+  version: 2.1.3
+  resolution: "ms@npm:2.1.3"
+  checksum: aa92de608021b242401676e35cfa5aa42dd70cbdc082b916da7fb925c542173e36bce97ea3e804923fe92c0ad991434e4a38327e15a1b5b5f945d66df615ae6d
   languageName: node
   linkType: hard
 
@@ -11139,18 +11169,12 @@ __metadata:
     "@types/passport-strategy": ^0.2.35
     "@types/sharp": ^0.32.0
     "@types/supertest": ^2.0.12
-    "@typescript-eslint/eslint-plugin": ^5.59.9
-    "@typescript-eslint/parser": ^5.59.9
     bcrypt: ^5.1.0
     bmp-img: ^1.2.1
     cors: ^2.8.5
-    eslint: ^8.42.0
-    eslint-config-prettier: ^8.8.0
-    eslint-plugin-prettier: ^4.2.1
-    eslint-plugin-require-extensions: ^0.1.3
     file-type: ^18.5.0
     is-docker: ^3.0.0
-    ms: ^2.1.3
+    ms: 3.0.0-canary.1
     node-fetch: ^3.3.1
     p-timeout: ^6.1.1
     passport: ^0.6.0
@@ -11201,6 +11225,7 @@ __metadata:
     "@babel/core": ^7.22.1
     "@babel/preset-env": ^7.22.4
     "@fontsource/roboto": ^5.0.2
+    "@leteu/jwt-decoder": ^1.0.4
     "@ng-web-apis/common": ^2.1.0
     "@ng-web-apis/resize-observer": ^2.0.0
     "@ngui/common": ^1.0.0
@@ -11216,7 +11241,6 @@ __metadata:
     browserslist: ^4.21.7
     caniuse-lite: ^1.0.30001495
     fuse.js: ^6.6.2
-    jwt-decode: ^3.1.2
     material-icons: ^1.13.8
     moment: ^2.29.4
     ng-mat-select-infinite-scroll: ^4.0.0
@@ -11238,7 +11262,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "picsur-shared@workspace:shared"
   dependencies:
-    "@types/node": ^20.2.5
+    "@types/node": ^20.3.1
+    ms: 3.0.0-canary.1
     tsc-watch: ^6.0.4
     typescript: ^5.1.3
     zod: ^3.21.4
@@ -12074,7 +12099,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@typescript-eslint/eslint-plugin": ^5.59.9
+    "@typescript-eslint/parser": ^5.59.9
     eslint: ^8.42.0
+    eslint-config-prettier: ^8.8.0
+    eslint-plugin-prettier: ^4.2.1
+    eslint-plugin-require-extensions: ^0.1.3
     prettier: ^2.8.8
     prettier-plugin-sh: ^0.12.8
   languageName: unknown

@@ -6,7 +6,12 @@ import {
   SupportedFileTypeCategory,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
-import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
+} from 'picsur-shared/dist/types/failable';
 import { SharpOptions } from 'sharp';
 import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
 import { SharpWrapper } from '../../workers/sharp.wrapper';

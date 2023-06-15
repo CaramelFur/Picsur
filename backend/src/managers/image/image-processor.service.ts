@@ -5,7 +5,12 @@ import {
   SupportedFileTypeCategory,
 } from 'picsur-shared/dist/dto/mimes.dto';
 
-import { AsyncFailable, Fail, FT, HasFailed } from 'picsur-shared/dist/types';
+import {
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
+} from 'picsur-shared/dist/types/failable';
 import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
 import { ImageConverterService } from './image-converter.service';
 import { ImageResult } from './imageresult';

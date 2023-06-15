@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
-import { HasFailed } from 'picsur-shared/dist/types';
-import { ImageService } from 'src/app/services/api/image.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
+import { HasFailed } from 'picsur-shared/dist/types/failable';
+import { ImageService } from '../../../services/api/image.service';
+import { Logger } from '../../../services/logger/logger.service';
+import { ErrorService } from '../../../util/error-manager/error.service';
 
 export interface EditDialogData {
   image: EImage;
@@ -15,7 +15,7 @@ export interface EditDialogData {
   templateUrl: './edit-dialog.component.html',
   styleUrls: ['./edit-dialog.component.scss'],
 })
-export class EditDialogComponent implements OnInit {
+export class EditDialogComponent {
   private readonly logger = new Logger(EditDialogComponent.name);
 
   public readonly ExpireOptions: Array<[string, number]> = [
@@ -46,8 +46,6 @@ export class EditDialogComponent implements OnInit {
 
     this.image = data.image;
   }
-
-  async ngOnInit() {}
 
   close() {
     this.dialogRef.close();

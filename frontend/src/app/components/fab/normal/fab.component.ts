@@ -5,11 +5,10 @@ import { Component, Input } from '@angular/core';
   templateUrl: './fab.component.html',
 })
 export class FabComponent {
-  @Input('aria-label') ariaLabel: string = 'Floating Action Button';
-  @Input() icon: string = 'add';
-  @Input() color: string = 'primary';
+  @Input('aria-label') ariaLabel = 'Floating Action Button';
+  @Input() icon = 'add';
+  @Input() color = 'primary';
   @Input('tooltip') tooltip: string;
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   @Input() onClick: () => void = () => {};
-
-  constructor() {}
 }

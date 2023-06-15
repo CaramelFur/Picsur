@@ -11,7 +11,7 @@ import {
   ApiKeyUpdateResponse,
 } from 'picsur-shared/dist/dto/api/apikeys.dto';
 import { EApiKey } from 'picsur-shared/dist/entities/apikey.entity';
-import { AsyncFailable } from 'picsur-shared/dist/types';
+import { AsyncFailable } from 'picsur-shared/dist/types/failable';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { ApiService } from './api.service';
 

@@ -1,7 +1,7 @@
 import { ComponentPortal, Portal } from '@angular/cdk/portal';
 import { Injectable, Injector } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { PRouteData } from 'src/app/models/dto/picsur-routes.dto';
+import { PRouteData } from '../../models/dto/picsur-routes.dto';
 
 // This service makes sure that any sidebar components are getting dependency injection
 // from their correct module. Instead of getting it from the module where it is being

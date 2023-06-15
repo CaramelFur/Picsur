@@ -2,16 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { EApiKey } from 'picsur-shared/dist/entities/apikey.entity';
-import { FT, Fail, HasFailed } from 'picsur-shared/dist/types';
+import { FT, Fail, HasFailed } from 'picsur-shared/dist/types/failable';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { ApiKeysService } from 'src/app/services/api/apikeys.service';
-import { UserService } from 'src/app/services/api/user.service';
-import { Logger } from 'src/app/services/logger/logger.service';
-import { BootstrapService } from 'src/app/util/bootstrap.service';
-import { ClipboardService } from 'src/app/util/clipboard.service';
-import { DialogService } from 'src/app/util/dialog-manager/dialog.service';
-import { ErrorService } from 'src/app/util/error-manager/error.service';
-import { Throttle } from 'src/app/util/throttle';
+import { ApiKeysService } from '../../../services/api/apikeys.service';
+import { UserService } from '../../../services/api/user.service';
+import { Logger } from '../../../services/logger/logger.service';
+import { BootstrapService } from '../../../util/bootstrap.service';
+import { ClipboardService } from '../../../util/clipboard.service';
+import { DialogService } from '../../../util/dialog-manager/dialog.service';
+import { ErrorService } from '../../../util/error-manager/error.service';
+import { Throttle } from '../../../util/throttle';
 
 @Component({
   templateUrl: './settings-apikeys.component.html',
@@ -31,7 +31,7 @@ export class SettingsApiKeysComponent implements OnInit {
 
   public dataSubject = new BehaviorSubject<EApiKey[]>([]);
   public updateSubject = new Subject<PageEvent>();
-  public totalApiKeys: number = 0;
+  public totalApiKeys = 0;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -136,7 +136,7 @@ export class SettingsApiKeysComponent implements OnInit {
     return this.updateSubject
       .pipe(Throttle(500))
       .subscribe(async (pageEvent: PageEvent) => {
-        let success = await this.fetchApiKeys(
+        const success = await this.fetchApiKeys(
           pageEvent.pageSize,
           pageEvent.pageIndex,
         );
