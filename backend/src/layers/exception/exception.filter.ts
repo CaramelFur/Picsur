@@ -23,7 +23,7 @@ import {
 
 @Catch()
 export class MainExceptionFilter implements ExceptionFilter {
-  private static readonly logger = new Logger(MainExceptionFilter.name);
+  private static readonly logger = new Logger('MainExceptionFilter');
 
   catch(exception: Failure, host: ArgumentsHost) {
     const ctx = host.switchToHttp();

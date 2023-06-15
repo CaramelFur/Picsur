@@ -3,7 +3,7 @@
 # Always fetch amd64 image
 FROM ghcr.io/caramelfur/picsur-alpha-stage1:latest AS BUILDER_STAGE1
 
-FROM node:18-alpine AS BUILDER_STAGE2
+FROM node:20-alpine AS BUILDER_STAGE2
 
 RUN apk add python3 build-base
 
@@ -12,7 +12,7 @@ COPY --from=BUILDER_STAGE1 /picsur ./
 
 RUN yarn workspaces focus -A --production
 
-FROM node:18-alpine
+FROM node:20-alpine
 
 ENV PICSUR_PRODUCTION=true
 

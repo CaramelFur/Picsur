@@ -7836,6 +7836,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"extensionless@npm:^1.4.5":
+  version: 1.4.5
+  resolution: "extensionless@npm:1.4.5"
+  checksum: bc36e2e1493378ca04131a5ba9089bf5d3f0809ed97e9c780625a006ded15b3e5e91f03ee5264683520e6cd3f97de2c1058dffec5be7e98c51ad8997828c68d0
+  languageName: node
+  linkType: hard
+
 "external-editor@npm:^3.0.3":
   version: 3.1.0
   resolution: "external-editor@npm:3.1.0"
@@ -11172,6 +11179,7 @@ __metadata:
     bcrypt: ^5.1.0
     bmp-img: ^1.2.1
     cors: ^2.8.5
+    extensionless: ^1.4.5
     file-type: ^18.5.0
     is-docker: ^3.0.0
     ms: 3.0.0-canary.1

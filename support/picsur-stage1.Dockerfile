@@ -1,6 +1,6 @@
 # This dockerfile only builds the javascript part of the project, so tsc and angular compilation
 
-FROM node:18 AS BUILDER_STAGE1
+FROM node:20 AS BUILDER_STAGE1
 
 SHELL ["/bin/bash", "-c"]
 
