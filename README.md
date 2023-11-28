@@ -164,8 +164,9 @@ volumes:
 
 ## Thanks
 
-- @chennin for monthly donating 4$
-- @awg13 for donating 5$
+- **@TheSameCat2 for monthly donating 5$**
+- **@chennin for monthly donating 4$**
+- @awg13 for once donating 5$
 
 ## Api
 
