@@ -55,7 +55,7 @@ const imageCorsOverride = (
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(mainCorsConfig).exclude('/i').forRoutes('/');
-    consumer.apply(imageCorsConfig, imageCorsOverride).forRoutes('/i');
+    consumer.apply(mainCorsConfig).exclude('i/(.*)').forRoutes('*');
+    consumer.apply(imageCorsConfig, imageCorsOverride).forRoutes('i/(.*)');
   }
 }
