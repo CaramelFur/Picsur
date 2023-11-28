@@ -19,12 +19,14 @@
     "lint": "eslint --fix ."
   },
   "resolutions": {
+    "typescript": "~5.2.0",
     "fastify": ">=4.8.1",
     "terser": ">=5.14.2",
     "typeorm": ">=0.3.9",
     "jsonwebtoken": ">=9.0.0",
-    "typescript": "~5.2.0",
     "webpack": ">=5.76.0",
+    "axios": ">=1.6.0",
+    "@babel/traverse": ">=7.23.2",
     "fastify-static": "npm:@fastify/static@*",
     "fastify-formbody": "npm:@fastify/formbody@*",
     "minimist": "npm:minimist-lite@*"

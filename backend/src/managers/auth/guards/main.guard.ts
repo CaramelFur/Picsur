@@ -4,9 +4,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { EUser, EUserSchema } from 'picsur-shared/dist/entities/user.entity';
 import {
   AsyncFailable,
+  FT,
   Fail,
   Failable,
-  FT,
   HasFailed,
   ThrowIfFailed,
 } from 'picsur-shared/dist/types/failable';
