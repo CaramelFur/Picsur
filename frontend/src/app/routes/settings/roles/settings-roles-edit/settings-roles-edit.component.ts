@@ -25,6 +25,7 @@ export class SettingsRolesEditComponent implements OnInit {
 
   model = new UpdateRoleControl();
   allPermissions: string[] = [];
+  lockedPermissions: string[] = [];
 
   get adding() {
     return this.mode === EditMode.add;
@@ -56,6 +57,10 @@ export class SettingsRolesEditComponent implements OnInit {
     }
     this.mode = EditMode.edit;
     this.model.putRoleName(rolename);
+
+    // Get special permissions
+    const SpecialRoles = await this.staticInfo.getSpecialRoles();
+    this.lockedPermissions = SpecialRoles.LockedPermissions[rolename];
 
     // Fetch data and populate form
     const role = await this.rolesService.getRole(rolename);

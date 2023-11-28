@@ -28,6 +28,7 @@ export class StaticInfoService {
         ImmutableRoles: [],
         SoulBoundRoles: [],
         UndeletableRoles: [],
+        LockedPermissions: {},
       },
       () => this.api.get(SpecialRolesResponse, '/api/roles/special').result,
     );

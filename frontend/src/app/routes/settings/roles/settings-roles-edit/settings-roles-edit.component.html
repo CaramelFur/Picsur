@@ -32,6 +32,7 @@
         name="permission"
         [value-mapper]="UIFriendlyPermission"
         [control]="model.permissions"
+        [disabled-list]="lockedPermissions"
         [selection-list]="allPermissions"
       ></values-picker>
     </div>

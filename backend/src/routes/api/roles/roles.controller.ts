@@ -21,6 +21,7 @@ import { Permission } from '../../../models/constants/permissions.const';
 import {
   DefaultRolesList,
   ImmutableRolesList,
+  RolePermissionsLocks,
   SoulBoundRolesList,
   UndeletableRolesList,
 } from '../../../models/constants/roles.const';
@@ -113,6 +114,7 @@ export class RolesController {
       ImmutableRoles: ImmutableRolesList,
       UndeletableRoles: UndeletableRolesList,
       DefaultRoles: DefaultRolesList,
+      LockedPermissions: RolePermissionsLocks,
     };
   }
 }

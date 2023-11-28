@@ -15,6 +15,15 @@ const UndeletableRolesTuple = tuple(
 // These roles will be applied by default to new users
 export const DefaultRolesList: string[] = ['user'];
 
+// These permissions will be locked for the specified roles
+export const RolePermissionsLocks: {
+  [key in string]: Permission[];
+} = {
+  guest: [Permission.UserLogin],
+  user: [],
+  admin: [],
+};
+
 // Derivatives
 export const SoulBoundRolesList: string[] = SoulBoundRolesTuple;
 export const ImmutableRolesList: string[] = ImmutableRolesTuple;
@@ -29,9 +38,9 @@ const SystemRoleDefaultsTyped: {
   [key in SystemRole]: Permissions;
 } = {
   guest: [
+    Permission.UserLogin,
     Permission.ImageView,
     Permission.ImageDeleteKey,
-    Permission.UserLogin,
   ],
   user: [
     Permission.ImageView,

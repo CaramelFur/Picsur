@@ -4,6 +4,7 @@ import { createZodDto } from '../../util/create-zod-dto';
 import { IsPosInt } from '../../validators/positive-int.validator';
 import { IsRoleName } from '../../validators/role.validators';
 import { IsStringList } from '../../validators/string-list.validator';
+import { Permission } from '../permissions.enum';
 
 // RoleInfo
 export const RoleInfoRequestSchema = z.object({
@@ -59,6 +60,7 @@ export const SpecialRolesResponseSchema = z.object({
   ImmutableRoles: IsStringList(),
   UndeletableRoles: IsStringList(),
   DefaultRoles: IsStringList(),
+  LockedPermissions: z.record(z.string(), z.array(z.nativeEnum(Permission))),
 });
 export class SpecialRolesResponse extends createZodDto(
   SpecialRolesResponseSchema,

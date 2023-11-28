@@ -14,6 +14,7 @@ import { ERoleBackend } from '../../database/entities/users/role.entity';
 import { Permissions } from '../../models/constants/permissions.const';
 import {
   ImmutableRolesList,
+  RolePermissionsLocks,
   UndeletableRolesList,
 } from '../../models/constants/roles.const';
 
@@ -112,6 +113,17 @@ export class RoleDbService {
 
     if (!allowImmutable && ImmutableRolesList.includes(roleToModify.name)) {
       return Fail(FT.Permission, 'Cannot modify immutable role');
+    }
+
+    // If the permission are missing a role specified in RolePermissionsLocks[roleToModify.name], fail
+    const missingPermissions = RolePermissionsLocks[roleToModify.name].filter(
+      (permission) => !permissions.includes(permission),
+    );
+    if (missingPermissions.length > 0) {
+      return Fail(
+        FT.Permission,
+        `Cannot remove permissions: ${missingPermissions.join(', ')}`,
+      );
     }
 
     roleToModify.permissions = makeUnique(permissions);
