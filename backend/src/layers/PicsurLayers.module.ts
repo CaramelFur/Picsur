@@ -8,8 +8,12 @@ import { ZodValidationPipe } from './validate/zod-validator.pipe';
 @Module({
   imports: [
     ThrottlerModule.forRoot({
-      ttl: 60,
-      limit: 60,
+      throttlers: [
+        {
+          limit: 60,
+          ttl: 60,
+        },
+      ],
     }),
   ],
   providers: [

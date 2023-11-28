@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
-import { Throttle } from '@nestjs/throttler';
 import {
   GetPreferenceResponse,
   MultiplePreferencesResponse,
@@ -8,6 +7,7 @@ import {
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { SysPreferenceDbService } from '../../../collections/preference-db/sys-preference-db.service';
+import { EasyThrottle } from '../../../decorators/easy-throttle.decorator';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
 import { Permission } from '../../../models/constants/permissions.const';
@@ -21,7 +21,7 @@ export class SysPrefController {
 
   @Get()
   @Returns(MultiplePreferencesResponse)
-  @Throttle(20)
+  @EasyThrottle(20)
   async getAllSysPrefs(): Promise<MultiplePreferencesResponse> {
     const prefs = ThrowIfFailed(await this.prefService.getAllPreferences());
 
@@ -41,7 +41,7 @@ export class SysPrefController {
 
   @Post(':key')
   @Returns(UpdatePreferenceResponse)
-  @Throttle(30)
+  @EasyThrottle(30)
   async setSysPref(
     @Param('key') key: string,
     @Body() body: UpdatePreferenceRequest,

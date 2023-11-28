@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
-import { Throttle } from '@nestjs/throttler';
 import {
   RoleCreateRequest,
   RoleCreateResponse,
@@ -12,9 +11,10 @@ import {
   RoleUpdateResponse,
   SpecialRolesResponse,
 } from 'picsur-shared/dist/dto/api/roles.dto';
-import { Fail, FT, ThrowIfFailed } from 'picsur-shared/dist/types/failable';
+import { FT, Fail, ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { RoleDbService } from '../../../collections/role-db/role-db.service';
 import { UserDbService } from '../../../collections/user-db/user-db.service';
+import { EasyThrottle } from '../../../decorators/easy-throttle.decorator';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
 import { Permission } from '../../../models/constants/permissions.const';
@@ -57,7 +57,7 @@ export class RolesController {
 
   @Post('update')
   @Returns(RoleUpdateResponse)
-  @Throttle(20)
+  @EasyThrottle(20)
   async updateRole(
     @Body() body: RoleUpdateRequest,
   ): Promise<RoleUpdateResponse> {
@@ -75,7 +75,7 @@ export class RolesController {
 
   @Post('create')
   @Returns(RoleCreateResponse)
-  @Throttle(10)
+  @EasyThrottle(10)
   async createRole(
     @Body() role: RoleCreateRequest,
   ): Promise<RoleCreateResponse> {

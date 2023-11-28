@@ -60,16 +60,16 @@ export class BootstrapService {
       const size = xxxl
         ? BSScreenSize.xxxl
         : xxl
-        ? BSScreenSize.xxl
-        : xl
-        ? BSScreenSize.xl
-        : lg
-        ? BSScreenSize.lg
-        : md
-        ? BSScreenSize.md
-        : sm
-        ? BSScreenSize.sm
-        : BSScreenSize.xs;
+          ? BSScreenSize.xxl
+          : xl
+            ? BSScreenSize.xl
+            : lg
+              ? BSScreenSize.lg
+              : md
+                ? BSScreenSize.md
+                : sm
+                  ? BSScreenSize.sm
+                  : BSScreenSize.xs;
 
       this.screenSizeSubject.next(size);
     });

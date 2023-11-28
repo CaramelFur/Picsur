@@ -21,9 +21,6 @@ export const HelmetOptions: FastifyHelmetOptions = {
   // Destroy reference to global object on new page
   crossOriginOpenerPolicy: true,
   crossOriginResourcePolicy: true,
-  // Dont fully understand the purpose of this
-  // But pretty sure we dont need it
-  expectCt: false,
   // Do not send referrer header
   referrerPolicy: true,
   // Ensure browser doesnt connect with HTTP

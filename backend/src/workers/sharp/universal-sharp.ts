@@ -124,7 +124,7 @@ async function bmpSharpOut(sharpImage: Sharp): Promise<SharpResult> {
   const encoded = BMPencode(raw.data, {
     width: raw.info.width,
     height: raw.info.height,
-    channels: raw.info.channels,
+    channels: raw.info.channels as 3 | 4,
   });
 
   return {
@@ -141,7 +141,7 @@ async function qoiSharpOut(sharpImage: Sharp): Promise<SharpResult> {
   const encoded = QOIencode(raw.data, {
     width: raw.info.width,
     height: raw.info.height,
-    channels: raw.info.channels,
+    channels: raw.info.channels as 3 | 4,
   });
 
   return {

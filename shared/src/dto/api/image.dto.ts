@@ -2,24 +2,24 @@ import { z } from 'zod';
 import { EImageSchema } from '../../entities/image.entity';
 import { EUserSchema } from '../../entities/user.entity';
 import { createZodDto } from '../../util/create-zod-dto';
-import { ParseBool, ParseInt } from '../../util/parse-simple';
+import { ParseBoolZ, ParseIntZ } from '../../util/parse-simple';
 import { ImageEntryVariant } from '../image-entry-variant.enum';
 
 export const ImageRequestParamsSchema = z
   .object({
-    height: z.preprocess(ParseInt, z.number().int().min(1).max(32767)),
-    width: z.preprocess(ParseInt, z.number().int().min(1).max(32767)),
+    height: z.preprocess(ParseIntZ, z.number().int().min(1).max(32767)),
+    width: z.preprocess(ParseIntZ, z.number().int().min(1).max(32767)),
     rotate: z.preprocess(
-      ParseInt,
+      ParseIntZ,
       z.number().int().multipleOf(90).min(0).max(360),
     ),
-    flipx: z.preprocess(ParseBool, z.boolean()),
-    flipy: z.preprocess(ParseBool, z.boolean()),
-    greyscale: z.preprocess(ParseBool, z.boolean()),
-    noalpha: z.preprocess(ParseBool, z.boolean()),
-    negative: z.preprocess(ParseBool, z.boolean()),
-    shrinkonly: z.preprocess(ParseBool, z.boolean()),
-    quality: z.preprocess(ParseInt, z.number().int().min(1).max(100)),
+    flipx: z.preprocess(ParseBoolZ, z.boolean()),
+    flipy: z.preprocess(ParseBoolZ, z.boolean()),
+    greyscale: z.preprocess(ParseBoolZ, z.boolean()),
+    noalpha: z.preprocess(ParseBoolZ, z.boolean()),
+    negative: z.preprocess(ParseBoolZ, z.boolean()),
+    shrinkonly: z.preprocess(ParseBoolZ, z.boolean()),
+    quality: z.preprocess(ParseIntZ, z.number().int().min(1).max(100)),
   })
   .partial();
 

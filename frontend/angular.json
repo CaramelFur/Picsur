@@ -43,7 +43,8 @@
               "ngx-auto-unsubscribe-decorator",
               "moment",
               "platform",
-              "form-data"
+              "form-data",
+              "ms"
             ],
             "optimization": true,
             "webWorkerTsConfig": "tsconfig.worker.json",

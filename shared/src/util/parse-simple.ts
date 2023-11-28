@@ -10,6 +10,10 @@ export const ParseBool = <T extends boolean | null = null>(
   return fallback === undefined ? (null as T) : fallback;
 };
 
+export const ParseBoolZ = (value: unknown): boolean | null => {
+  return ParseBool(value, null);
+};
+
 export const ParseInt = <T extends number | null = null>(
   value: unknown,
   fallback?: T,
@@ -23,8 +27,12 @@ export const ParseInt = <T extends number | null = null>(
   return fallback === undefined
     ? (null as T)
     : fallback === null
-    ? fallback
-    : Math.round(fallback);
+      ? fallback
+      : Math.round(fallback);
+};
+
+export const ParseIntZ = (value: unknown): number | null => {
+  return ParseInt(value, null);
 };
 
 export const ParseString = <T extends string | null = null>(
@@ -35,4 +43,8 @@ export const ParseString = <T extends string | null = null>(
   if (typeof value === 'boolean') return value ? 'true' : 'false';
   if (typeof value === 'number') return value.toString();
   return fallback === undefined ? (null as T) : fallback;
+};
+
+export const ParseStringZ = (value: unknown): string | null => {
+  return ParseString(value, null);
 };

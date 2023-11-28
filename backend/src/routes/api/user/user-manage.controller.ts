@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
-import { Throttle } from '@nestjs/throttler';
 import {
   GetSpecialUsersResponse,
   UserCreateRequest,
@@ -15,6 +14,7 @@ import {
 } from 'picsur-shared/dist/dto/api/user-manage.dto';
 import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { UserDbService } from '../../../collections/user-db/user-db.service';
+import { EasyThrottle } from '../../../decorators/easy-throttle.decorator';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
 import { Permission } from '../../../models/constants/permissions.const';
@@ -47,7 +47,7 @@ export class UserAdminController {
 
   @Post('create')
   @Returns(UserCreateResponse)
-  @Throttle(10)
+  @EasyThrottle(10)
   async register(
     @Body() create: UserCreateRequest,
   ): Promise<UserCreateResponse> {
@@ -80,7 +80,7 @@ export class UserAdminController {
 
   @Post('update')
   @Returns(UserUpdateResponse)
-  @Throttle(20)
+  @EasyThrottle(20)
   async setPermissions(
     @Body() body: UserUpdateRequest,
   ): Promise<UserUpdateResponse> {

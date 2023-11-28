@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
-import { Throttle } from '@nestjs/throttler';
 import {
   GetPreferenceResponse,
   MultiplePreferencesResponse,
@@ -8,6 +7,7 @@ import {
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { UsrPreferenceDbService } from '../../../collections/preference-db/usr-preference-db.service';
+import { EasyThrottle } from '../../../decorators/easy-throttle.decorator';
 import { RequiredPermissions } from '../../../decorators/permissions.decorator';
 import { ReqUserID } from '../../../decorators/request-user.decorator';
 import { Returns } from '../../../decorators/returns.decorator';
@@ -22,7 +22,7 @@ export class UsrPrefController {
 
   @Get()
   @Returns(MultiplePreferencesResponse)
-  @Throttle(20)
+  @EasyThrottle(20)
   async getAllUsrPrefs(
     @ReqUserID() userid: string,
   ): Promise<MultiplePreferencesResponse> {
@@ -51,7 +51,7 @@ export class UsrPrefController {
 
   @Post(':key')
   @Returns(UpdatePreferenceResponse)
-  @Throttle(30)
+  @EasyThrottle(30)
   async setUsrPref(
     @Param('key') key: string,
     @ReqUserID() userid: string,

@@ -242,9 +242,8 @@ export class ImageManagerService {
   // Util stuff ==================================================================
 
   private async getFileTypeFromBuffer(image: Buffer): AsyncFailable<FileType> {
-    const filetypeResult: FileTypeResult | undefined = await fileTypeFromBuffer(
-      image,
-    );
+    const filetypeResult: FileTypeResult | undefined =
+      await fileTypeFromBuffer(image);
 
     let mime: string | undefined;
     if (filetypeResult === undefined) {

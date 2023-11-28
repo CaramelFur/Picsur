@@ -49,7 +49,7 @@ export class ImageManagerModule implements OnModuleInit {
       return;
     }
 
-    let after_ms = ms(remove_derivatives_after as any);
+    let after_ms = ms(remove_derivatives_after as string);
     if (isNaN(after_ms) || after_ms === 0) {
       this.logger.log('remove_derivatives_after is 0, skipping cron');
       return;
@@ -59,6 +59,7 @@ export class ImageManagerModule implements OnModuleInit {
     const result = await this.imageFileDB.cleanupDerivatives(after_ms / 1000);
     if (HasFailed(result)) {
       result.print(this.logger);
+      return;
     }
 
     if (result > 0) this.logger.log(`Cleaned up ${result} derivatives`);

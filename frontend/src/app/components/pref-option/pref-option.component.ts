@@ -80,12 +80,12 @@ export class PrefOptionComponent implements OnInit {
         this.pref.type === 'string'
           ? `Updated ${this.name}`
           : this.pref.type === 'number'
-          ? `Updated ${this.name}`
-          : this.pref.type === 'boolean'
-          ? value
-            ? `Enabled ${this.name}`
-            : `Disabled ${this.name}`
-          : '';
+            ? `Updated ${this.name}`
+            : this.pref.type === 'boolean'
+              ? value
+                ? `Enabled ${this.name}`
+                : `Disabled ${this.name}`
+              : '';
       this.errorService.success(message);
     } else {
       this.errorService.showFailure(result, this.logger);

@@ -1,8 +1,8 @@
 import { Controller, Logger, Post, Req, Res } from '@nestjs/common';
-import { Throttle } from '@nestjs/throttler';
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { Fail, FT, ThrowIfFailed } from 'picsur-shared/dist/types/failable';
+import { FT, Fail, ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { UsageConfigService } from '../../../config/late/usage.config.service';
+import { EasyThrottle } from '../../../decorators/easy-throttle.decorator';
 import { NoPermissions } from '../../../decorators/permissions.decorator';
 import { ReturnsAnything } from '../../../decorators/returns.decorator';
 
@@ -15,7 +15,7 @@ export class UsageController {
 
   @Post(['report', 'report/*'])
   @ReturnsAnything()
-  @Throttle(120)
+  @EasyThrottle(120)
   async deleteRole(
     @Req() req: FastifyRequest,
     @Res({

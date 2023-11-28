@@ -29,17 +29,17 @@ export class InfoService {
     return this.infoSubject.value;
   }
 
+  private infoSubject: BehaviorSubject<ServerInfo>;
   constructor(
     @Inject(LOCATION) private readonly location: Location,
     private readonly api: ApiService,
     private readonly infoStorage: InfoStorageService,
   ) {
     this.updateInfo().catch((e) => this.logger.warn(e));
+    this.infoSubject = new BehaviorSubject<ServerInfo>(
+      this.infoStorage?.get() ?? new ServerInfo(),
+    );
   }
-
-  private infoSubject = new BehaviorSubject<ServerInfo>(
-    this.infoStorage?.get() ?? new ServerInfo(),
-  );
 
   public async getLoadedSnapshot(): Promise<ServerInfo> {
     if (this.isLoaded()) {

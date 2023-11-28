@@ -1,5 +1,4 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { Throttle } from '@nestjs/throttler';
 import {
   ApiKeyCreateResponse,
   ApiKeyDeleteRequest,
@@ -14,6 +13,7 @@ import {
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
 import { ApiKeyDbService } from '../../../collections/apikey-db/apikey-db.service';
+import { EasyThrottle } from '../../../decorators/easy-throttle.decorator';
 import {
   HasPermission,
   RequiredPermissions,
@@ -54,7 +54,7 @@ export class ApiKeysController {
 
   @Post('create')
   @Returns(ApiKeyCreateResponse)
-  @Throttle(10)
+  @EasyThrottle(10)
   async createApiKey(
     @ReqUserID() userID: string,
   ): Promise<ApiKeyCreateResponse> {
