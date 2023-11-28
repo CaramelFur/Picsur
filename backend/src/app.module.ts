@@ -37,6 +37,17 @@ const imageCorsOverride = (
   next();
 };
 
+const imageCacheSet = (
+  req: IncomingMessage,
+  res: ServerResponse,
+  next: () => void,
+) => {
+  // Set cache for a month
+  res.setHeader('Cache-Control', 'max-age=2592000');
+
+  next();
+};
+
 @Module({
   imports: [
     PicsurLoggerModule,
@@ -56,6 +67,8 @@ const imageCorsOverride = (
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(mainCorsConfig).exclude('i/(.*)').forRoutes('*');
-    consumer.apply(imageCorsConfig, imageCorsOverride).forRoutes('i/(.*)');
+    consumer
+      .apply(imageCorsConfig, imageCorsOverride, imageCacheSet)
+      .forRoutes('i/(.*)');
   }
 }
