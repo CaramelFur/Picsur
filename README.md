@@ -111,6 +111,10 @@ You can [read more about QOI here](https://qoiformat.org/).
 
 The default username is `admin`, and the default password is set from the `PICSUR_ADMIN_PASSWORD` environment variable.
 
+### I get "Copying to clipboard failed"
+
+It is only possible to use the clipboard functionality on HTTPS websites or localhost. Please ensure you are running Picsur with HTTPS.
+
 ## Running your own instance
 
 You easily run this service yourself via Docker. Here is an example docker-compose file:
