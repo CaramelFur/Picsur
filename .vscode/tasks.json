@@ -16,7 +16,7 @@
     {
       "type": "shell",
       "label": "Start shared",
-      "command": "yarn start",
+      "command": "pnpm start",
       "options": {
         "cwd": "${cwd}/shared",
         "shell": {
@@ -29,7 +29,7 @@
     {
       "type": "shell",
       "label": "Start backend",
-      "command": "yarn start:dev",
+      "command": "pnpm start:dev",
       "options": {
         "cwd": "${cwd}/backend",
         "shell": {
@@ -42,7 +42,7 @@
     {
       "type": "shell",
       "label": "Start frontend",
-      "command": "yarn watch",
+      "command": "pnpm watch",
       "options": {
         "cwd": "${cwd}/frontend",
         "shell": {
@@ -55,7 +55,7 @@
     {
       "type": "shell",
       "label": "Start postgres",
-      "command": "yarn devdb:start",
+      "command": "pnpm devdb:start",
       "options": {
         "cwd": "${cwd}",
         "shell": {

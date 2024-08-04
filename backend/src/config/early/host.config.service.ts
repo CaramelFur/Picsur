@@ -14,8 +14,7 @@ export class HostConfigService {
   constructor(private readonly configService: ConfigService) {
     this.logger.log('Production: ' + this.isProduction());
     this.logger.log('Verbose: ' + this.isVerbose());
-    this.logger.log('Host: ' + this.getHost());
-    this.logger.log('Port: ' + this.getPort());
+    this.logger.log('Location: http://' + this.getHost() + ":" + this.getPort());
 
     if (this.isDemo()) {
       this.logger.log('Running in demo mode');

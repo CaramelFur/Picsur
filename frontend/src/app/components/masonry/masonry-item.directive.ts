@@ -1,8 +1,7 @@
 import { Directive, ElementRef, Inject } from '@angular/core';
 import {
-  RESIZE_OPTION_BOX,
   ResizeObserverService,
-  boxExtractor,
+  WA_RESIZE_OPTION_BOX
 } from '@ng-web-apis/resize-observer';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Observable, map } from 'rxjs';
@@ -12,9 +11,9 @@ import { Observable, map } from 'rxjs';
   providers: [
     ResizeObserverService,
     {
-      provide: RESIZE_OPTION_BOX,
+      provide: WA_RESIZE_OPTION_BOX,
       deps: [ElementRef],
-      useFactory: boxExtractor,
+      useValue: "border-box",
     },
   ],
 })

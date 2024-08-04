@@ -9,13 +9,13 @@
   $foreground: map.get($theme, foreground);
 
   &.mat-primary {
-    #{$property}: mat.get-color-from-palette($primary, $hue);
+    #{$property}: mat.m2-get-color-from-palette($primary, $hue);
   }
   &.mat-accent {
-    #{$property}: mat.get-color-from-palette($accent, $hue);
+    #{$property}: mat.m2-get-color-from-palette($accent, $hue);
   }
   &.mat-warn {
-    #{$property}: mat.get-color-from-palette($warn, $hue);
+    #{$property}: mat.m2-get-color-from-palette($warn, $hue);
   }
 
   &.mat-primary,
@@ -24,7 +24,7 @@
   &.mat-button-disabled {
     &.mat-button-disabled {
       $palette: if($property == 'color', $foreground, $background);
-      #{$property}: mat.get-color-from-palette($palette, disabled-button);
+      #{$property}: mat.m2-get-color-from-palette($palette, disabled-button);
     }
   }
 }
@@ -41,7 +41,7 @@
 }
 
 @mixin custom-material($theme) {
-  $color: mat.get-color-config($theme);
+  $color: mat.m2-get-color-config($theme);
 
   @include custom-buttons($color);
 }
