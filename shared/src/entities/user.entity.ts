@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { IsEntityID } from '../validators/entity-id.validator';
-import { IsStringList } from '../validators/string-list.validator';
-import { IsPlainTextPwd, IsUsername } from '../validators/user.validators';
+import { IsEntityID } from '../validators/entity-id.validator.js';
+import { IsStringList } from '../validators/string-list.validator.js';
+import { IsPlainTextPwd, IsUsername } from '../validators/user.validators.js';
 
 export const SimpleUserSchema = z.object({
   username: IsUsername(),

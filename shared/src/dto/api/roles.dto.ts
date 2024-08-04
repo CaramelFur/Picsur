@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { ERoleSchema, SimpleRoleSchema } from '../../entities/role.entity';
-import { createZodDto } from '../../util/create-zod-dto';
-import { IsPosInt } from '../../validators/positive-int.validator';
-import { IsRoleName } from '../../validators/role.validators';
-import { IsStringList } from '../../validators/string-list.validator';
-import { Permission } from '../permissions.enum';
+import { ERoleSchema, SimpleRoleSchema } from '../../entities/role.entity.js';
+import { createZodDto } from '../../util/create-zod-dto.js';
+import { IsPosInt } from '../../validators/positive-int.validator.js';
+import { IsRoleName } from '../../validators/role.validators.js';
+import { IsStringList } from '../../validators/string-list.validator.js';
+import { Permission } from '../permissions.enum.js';
 
 // RoleInfo
 export const RoleInfoRequestSchema = z.object({

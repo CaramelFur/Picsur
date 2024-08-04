@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import tuple from '../types/tuple';
-import { IsEntityID } from '../validators/entity-id.validator';
-import { IsPrefValue } from '../validators/pref-value.validator';
+import tuple from '../types/tuple.js';
+import { IsEntityID } from '../validators/entity-id.validator.js';
+import { IsPrefValue } from '../validators/pref-value.validator.js';
 
 // Variable value type
 export type PrefValueType = string | number | boolean;

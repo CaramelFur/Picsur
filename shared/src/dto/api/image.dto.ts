@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { EImageSchema } from '../../entities/image.entity';
-import { EUserSchema } from '../../entities/user.entity';
-import { createZodDto } from '../../util/create-zod-dto';
-import { ParseBoolZ, ParseIntZ } from '../../util/parse-simple';
-import { ImageEntryVariant } from '../image-entry-variant.enum';
+import { EImageSchema } from '../../entities/image.entity.js';
+import { EUserSchema } from '../../entities/user.entity.js';
+import { createZodDto } from '../../util/create-zod-dto.js';
+import { ParseBoolZ, ParseIntZ } from '../../util/parse-simple.js';
+import { ImageEntryVariant } from '../image-entry-variant.enum.js';
 
 export const ImageRequestParamsSchema = z
   .object({

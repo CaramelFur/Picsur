@@ -1,4 +1,4 @@
-import { Fail, Failable, FT } from '../types/failable';
+import { Fail, Failable, FT } from '../types/failable.js';
 
 // Config
 export enum ImageFileType {

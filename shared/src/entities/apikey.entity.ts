@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { IsApiKey } from '../validators/api-key.validator';
-import { IsEntityID } from '../validators/entity-id.validator';
+import { IsApiKey } from '../validators/api-key.validator.js';
+import { IsEntityID } from '../validators/entity-id.validator.js';
 
 export const EApiKeySchema = z.object({
   id: IsEntityID(),

@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { EUserSchema, SimpleUserSchema } from '../../entities/user.entity';
-import { createZodDto } from '../../util/create-zod-dto';
-import { IsPosInt } from '../../validators/positive-int.validator';
-import { IsStringList } from '../../validators/string-list.validator';
-import { EntityIDObjectSchema } from '../id-object.dto';
+import { EUserSchema, SimpleUserSchema } from '../../entities/user.entity.js';
+import { createZodDto } from '../../util/create-zod-dto.js';
+import { IsPosInt } from '../../validators/positive-int.validator.js';
+import { IsStringList } from '../../validators/string-list.validator.js';
+import { EntityIDObjectSchema } from '../id-object.dto.js';
 
 // UserList
 export const UserListRequestSchema = z.object({

@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { EImageSchema } from '../../entities/image.entity';
-import { createZodDto } from '../../util/create-zod-dto';
-import { IsApiKey } from '../../validators/api-key.validator';
-import { IsEntityID } from '../../validators/entity-id.validator';
-import { IsPosInt } from '../../validators/positive-int.validator';
+import { EImageSchema } from '../../entities/image.entity.js';
+import { createZodDto } from '../../util/create-zod-dto.js';
+import { IsApiKey } from '../../validators/api-key.validator.js';
+import { IsEntityID } from '../../validators/entity-id.validator.js';
+import { IsPosInt } from '../../validators/positive-int.validator.js';
 
 // Image upload
 export const ImageUploadResponseSchema = EImageSchema.extend({

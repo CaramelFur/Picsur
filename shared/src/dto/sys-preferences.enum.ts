@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { URLRegex } from '../util/common-regex';
-import { IsEntityID } from '../validators/entity-id.validator';
-import { IsValidMS } from '../validators/ms.validator';
-import { IsPosInt } from '../validators/positive-int.validator';
-import { PrefValueTypeStrings } from './preferences.dto';
+import { URLRegex } from '../util/common-regex.js';
+import { IsEntityID } from '../validators/entity-id.validator.js';
+import { IsValidMS } from '../validators/ms.validator.js';
+import { IsPosInt } from '../validators/positive-int.validator.js';
+import { PrefValueTypeStrings } from './preferences.dto.js';
 
 // This enum is only here to make accessing the values easier, and type checking in the backend
 export enum SysPreference {

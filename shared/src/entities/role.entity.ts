@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { IsEntityID } from '../validators/entity-id.validator';
-import { IsRoleName } from '../validators/role.validators';
-import { IsStringList } from '../validators/string-list.validator';
+import { IsEntityID } from '../validators/entity-id.validator.js';
+import { IsRoleName } from '../validators/role.validators.js';
+import { IsStringList } from '../validators/string-list.validator.js';
 
 export const SimpleRoleSchema = z.object({
   name: IsRoleName(),

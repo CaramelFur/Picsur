@@ -5,8 +5,8 @@ import {
   SupportedAnimFileTypes,
   SupportedFileTypeCategory,
   SupportedImageFileTypes,
-} from '../dto/mimes.dto';
-import { Fail, Failable, FT, HasFailed } from '../types/failable';
+} from '../dto/mimes.dto.js';
+import { Fail, Failable, FT, HasFailed } from '../types/failable.js';
 
 export function ParseFileType(filetype: string): Failable<FileType> {
   if (SupportedImageFileTypes.includes(filetype))

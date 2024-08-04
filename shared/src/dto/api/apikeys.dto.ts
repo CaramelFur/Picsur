@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { EApiKeySchema } from '../../entities/apikey.entity';
-import { createZodDto } from '../../util/create-zod-dto';
-import { IsEntityID } from '../../validators/entity-id.validator';
-import { IsPosInt } from '../../validators/positive-int.validator';
+import { EApiKeySchema } from '../../entities/apikey.entity.js';
+import { createZodDto } from '../../util/create-zod-dto.js';
+import { IsEntityID } from '../../validators/entity-id.validator.js';
+import { IsPosInt } from '../../validators/positive-int.validator.js';
 
 // ApiKeyInfo
 export const ApiKeyInfoRequestSchema = z.object({

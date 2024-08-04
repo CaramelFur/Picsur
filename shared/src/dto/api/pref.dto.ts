@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { createZodDto } from '../../util/create-zod-dto';
-import { IsPosInt } from '../../validators/positive-int.validator';
-import { IsPrefValue } from '../../validators/pref-value.validator';
-import { DecodedPrefSchema } from '../preferences.dto';
+import { createZodDto } from '../../util/create-zod-dto.js';
+import { IsPosInt } from '../../validators/positive-int.validator.js';
+import { IsPrefValue } from '../../validators/pref-value.validator.js';
+import { DecodedPrefSchema } from '../preferences.dto.js';
 
 // Get preference
 // Request is done via url parameters

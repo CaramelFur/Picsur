@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AlphaNumericRegex } from '../util/common-regex';
+import { AlphaNumericRegex } from '../util/common-regex.js';
 
 // Match this with user validators in frontend
 // (Frontend is not security focused, but it tells the user what is wrong)
