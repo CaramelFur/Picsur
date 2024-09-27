@@ -6,9 +6,9 @@ $theme-ignore-duplication-warnings: true;
 
 @include mat.core();
 
-$picsur-primary: mat.define-palette(mat.$green-palette, 600, 100, 900);
-$picsur-accent: mat.define-palette(mat.$blue-grey-palette, 600, 200, 800);
-$picsur-warn: mat.define-palette(mat.$red-palette);
+$picsur-primary: mat.m2-define-palette(mat.$m2-green-palette, 600, 100, 900);
+$picsur-accent: mat.m2-define-palette(mat.$m2-blue-grey-palette, 600, 200, 800);
+$picsur-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
 // Light Theme Text
 $dark-text: #000000;
