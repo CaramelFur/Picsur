@@ -18,15 +18,13 @@
   },
   "devDependencies": {
     "@types/ms": "^0.7.34",
-    "@types/node": "^22.1.0",
-    "rimraf": "^6.0.1",
-    "tsc-watch": "^6.2.0",
+    "@types/node": "^22.8.4",
     "typescript": "~5.5.4"
   },
   "scripts": {
-    "clean": "rimraf ./dist",
-    "start": "pnpm clean && tsc-watch",
+    "clean": "rm -rf ./dist",
+    "start": "pnpm clean && tsc --watch",
     "build": "pnpm clean && tsc",
-    "purge": "rimraf ./dist && rimraf ./node_modules"
+    "purge": "rm -rf ./dist && rm -rf ./node_modules"
   }
 }

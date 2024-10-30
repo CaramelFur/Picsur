@@ -53,7 +53,7 @@ export class SuccessInterceptor implements NestInterceptor {
 
         this.logger.verbose(
           `Handled ${traceString} with ${response.statusCode} in ${Math.ceil(
-            response.getResponseTime(),
+            response.elapsedTime,
           )}ms`,
           SuccessInterceptor.name,
         );
@@ -108,7 +108,7 @@ export class SuccessInterceptor implements NestInterceptor {
       success: true as const, // really typescript
       statusCode: response.statusCode,
       timestamp: new Date().toISOString(),
-      timeMs: Math.round(response.getResponseTime()),
+      timeMs: Math.round(response.elapsedTime),
 
       data,
     };

@@ -45,7 +45,7 @@ export class MainExceptionFilter implements ExceptionFilter {
       success: false,
       statusCode: status,
       timestamp: new Date().toISOString(),
-      timeMs: Math.round(response.getResponseTime()),
+      timeMs: Math.round(response.elapsedTime),
 
       data: {
         type,

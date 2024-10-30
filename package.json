@@ -13,28 +13,21 @@
     "format": "prettier --write .",
     "lint": "eslint --fix ."
   },
-  "resolutions": {
-    "typescript": "~5.5.4",
-    "fastify": ">=4.8.1",
-    "terser": ">=5.14.2",
-    "typeorm": ">=0.3.9",
-    "jsonwebtoken": ">=9.0.0",
-    "webpack": ">=5.76.0",
-    "axios": ">=1.6.0",
-    "@babel/traverse": ">=7.23.2",
-    "fastify-static": "npm:@fastify/static@*",
-    "fastify-formbody": "npm:@fastify/formbody@*",
-    "minimist": "npm:minimist-lite@*"
+  "pnpm": {
+    "overrides": {
+      "typescript": "~5.5.4"
+    }
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
-    "eslint": "^9.8.0",
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/parser": "^8.12.2",
+    "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-require-extensions": "^0.1.3",
     "prettier": "^3.3.3",
-    "prettier-plugin-sh": "^0.14.0"
+    "prettier-plugin-sh": "^0.14.0",
+    "typescript": "~5.5.4"
   },
   "packageManager": "pnpm@9.6.0"
 }
