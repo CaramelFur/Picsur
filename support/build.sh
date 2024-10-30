@@ -24,7 +24,12 @@ VERSION=$(cat ../package.json | grep version | head -1 | awk -F: '{ print $2 }' 
 echo "Building version $VERSION"
 
 # Allow host networking for buildx
-docker buildx create --append --name picsur --driver-opt network=host
+# First check if builder exists
+if docker buildx ls | grep -q picsur; then
+  docker buildx create --name picsur --append --driver-opt network=host
+else
+  docker buildx create --name picsur --driver-opt network=host
+fi
 
 docker build \
   --push \
