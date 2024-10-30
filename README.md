@@ -137,7 +137,7 @@ services:
       # PICSUR_DB_PASSWORD: picsur
       # PICSUR_DB_DATABASE: picsur
 
-      ## The default username is admin, this is not modifyable
+      ## The default username is admin, this is not modifiable
       # PICSUR_ADMIN_PASSWORD: picsur
 
       ## Optional, random secret will be generated if not set
