@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { PreferenceDbModule } from '../../../collections/preference-db/preference-db.module';
-import { SysPrefController } from './sys-pref.controller';
-import { UsrPrefController } from './usr-pref.controller';
+import { PreferenceDbModule } from '../../../collections/preference-db/preference-db.module.js';
+import { SysPrefController } from './sys-pref.controller.js';
+import { UsrPrefController } from './usr-pref.controller.js';
 
 @Module({
   imports: [PreferenceDbModule],

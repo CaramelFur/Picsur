@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { MainExceptionFilter } from './exception/exception.filter';
-import { SuccessInterceptor } from './success/success.interceptor';
-import { PicsurThrottlerGuard } from './throttler/PicsurThrottler.guard';
-import { ZodValidationPipe } from './validate/zod-validator.pipe';
+import { MainExceptionFilter } from './exception/exception.filter.js';
+import { SuccessInterceptor } from './success/success.interceptor.js';
+import { PicsurThrottlerGuard } from './throttler/PicsurThrottler.guard.js';
+import { ZodValidationPipe } from './validate/zod-validator.pipe.js';
 
 @Module({
   imports: [

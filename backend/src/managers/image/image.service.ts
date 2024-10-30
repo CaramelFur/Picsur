@@ -4,33 +4,33 @@ import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import {
-  AnimFileType,
-  FileType,
-  ImageFileType,
-  Mime2FileType,
+    AnimFileType,
+    FileType,
+    ImageFileType,
+    Mime2FileType,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import {
-  AsyncFailable,
-  Fail,
-  FT,
-  HasFailed,
+    AsyncFailable,
+    Fail,
+    FT,
+    HasFailed,
 } from 'picsur-shared/dist/types/failable';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
 import { IsQOI } from 'qoi-img';
-import { ImageDBService } from '../../collections/image-db/image-db.service';
-import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
-import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
-import { UsrPreferenceDbService } from '../../collections/preference-db/usr-preference-db.service';
-import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
-import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
-import { EImageBackend } from '../../database/entities/images/image.entity';
-import { MutexFallBack } from '../../util/mutex-fallback';
-import { ImageConverterService } from './image-converter.service';
-import { ImageProcessorService } from './image-processor.service';
-import { WebPInfo } from './webpinfo/webpinfo';
+import { ImageDBService } from '../../collections/image-db/image-db.service.js';
+import { ImageFileDBService } from '../../collections/image-db/image-file-db.service.js';
+import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service.js';
+import { UsrPreferenceDbService } from '../../collections/preference-db/usr-preference-db.service.js';
+import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity.js';
+import { EImageFileBackend } from '../../database/entities/images/image-file.entity.js';
+import { EImageBackend } from '../../database/entities/images/image.entity.js';
+import { MutexFallBack } from '../../util/mutex-fallback.js';
+import { ImageConverterService } from './image-converter.service.js';
+import { ImageProcessorService } from './image-processor.service.js';
+import { WebPInfo } from './webpinfo/webpinfo.js';
 
 @Injectable()
 export class ImageManagerService {

@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
-  ServeStaticModuleOptions,
-  ServeStaticModuleOptionsFactory,
+    ServeStaticModuleOptions,
+    ServeStaticModuleOptionsFactory,
 } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ParseString } from 'picsur-shared/dist/util/parse-simple';
-import { EnvPrefix, PackageRoot } from '../config.static';
+import { EnvPrefix, PackageRoot } from '../config.static.js';
 
 @Injectable()
 export class ServeStaticConfigService

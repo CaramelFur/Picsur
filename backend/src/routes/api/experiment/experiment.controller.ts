@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { NoPermissions } from '../../../decorators/permissions.decorator';
+import { NoPermissions } from '../../../decorators/permissions.decorator.js';
 @Controller('api/experiment')
 @NoPermissions()
 export class ExperimentController {

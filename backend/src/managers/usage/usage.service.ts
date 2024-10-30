@@ -4,11 +4,11 @@ import fetch from 'node-fetch';
 import * as os from 'os';
 import { FallbackIfFailed, HasFailed } from 'picsur-shared/dist/types/failable';
 import { UUIDRegex } from 'picsur-shared/dist/util/common-regex';
-import { ImageDBService } from '../../collections/image-db/image-db.service';
-import { SystemStateDbService } from '../../collections/system-state-db/system-state-db.service';
-import { UserDbService } from '../../collections/user-db/user-db.service';
-import { HostConfigService } from '../../config/early/host.config.service';
-import { UsageConfigService } from '../../config/late/usage.config.service';
+import { ImageDBService } from '../../collections/image-db/image-db.service.js';
+import { SystemStateDbService } from '../../collections/system-state-db/system-state-db.service.js';
+import { UserDbService } from '../../collections/user-db/user-db.service.js';
+import { HostConfigService } from '../../config/early/host.config.service.js';
+import { UsageConfigService } from '../../config/late/usage.config.service.js';
 
 interface UsageData {
   id?: string;

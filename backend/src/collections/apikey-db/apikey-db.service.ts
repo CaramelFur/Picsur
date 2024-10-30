@@ -1,16 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  AsyncFailable,
-  Fail,
-  FT,
-  HasFailed,
+    AsyncFailable,
+    Fail,
+    FT,
+    HasFailed,
 } from 'picsur-shared/dist/types/failable';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
 import { Repository } from 'typeorm';
-import { EApiKeyBackend } from '../../database/entities/apikey.entity';
-import { EUserBackend } from '../../database/entities/users/user.entity';
+import { EApiKeyBackend } from '../../database/entities/apikey.entity.js';
+import { EUserBackend } from '../../database/entities/users/user.entity.js';
 
 @Injectable()
 export class ApiKeyDbService {

@@ -1,11 +1,11 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
-import { PreferenceDbModule } from '../../collections/preference-db/preference-db.module';
-import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
-import { EarlyConfigModule } from '../early/early-config.module';
-import { EarlyJwtConfigService } from '../early/early-jwt.config.service';
-import { InfoConfigService } from './info.config.service';
-import { JwtConfigService } from './jwt.config.service';
-import { UsageConfigService } from './usage.config.service';
+import { PreferenceDbModule } from '../../collections/preference-db/preference-db.module.js';
+import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service.js';
+import { EarlyConfigModule } from '../early/early-config.module.js';
+import { EarlyJwtConfigService } from '../early/early-jwt.config.service.js';
+import { InfoConfigService } from './info.config.service.js';
+import { JwtConfigService } from './jwt.config.service.js';
+import { UsageConfigService } from './usage.config.service.js';
 
 // This module contains all configservices that depend on the syspref module
 // The syspref module can only be used when connected to the database

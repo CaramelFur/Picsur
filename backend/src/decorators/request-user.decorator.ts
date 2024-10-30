@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Fail, FT } from 'picsur-shared/dist/types/failable';
-import AuthFastifyRequest from '../models/interfaces/authrequest.dto';
+import AuthFastifyRequest from '../models/interfaces/authrequest.dto.js';
 
 export const ReqUser = createParamDecorator(
   (input: any, ctx: ExecutionContext) => {

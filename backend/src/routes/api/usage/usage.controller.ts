@@ -1,10 +1,10 @@
 import { Controller, Logger, Post, Req, Res } from '@nestjs/common';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { FT, Fail, ThrowIfFailed } from 'picsur-shared/dist/types/failable';
-import { UsageConfigService } from '../../../config/late/usage.config.service';
-import { EasyThrottle } from '../../../decorators/easy-throttle.decorator';
-import { NoPermissions } from '../../../decorators/permissions.decorator';
-import { ReturnsAnything } from '../../../decorators/returns.decorator';
+import { UsageConfigService } from '../../../config/late/usage.config.service.js';
+import { EasyThrottle } from '../../../decorators/easy-throttle.decorator.js';
+import { NoPermissions } from '../../../decorators/permissions.decorator.js';
+import { ReturnsAnything } from '../../../decorators/returns.decorator.js';
 
 @Controller('api/usage')
 @NoPermissions()

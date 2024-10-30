@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
-import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
-import { EImageBackend } from '../../database/entities/images/image.entity';
-import { ImageDBService } from './image-db.service';
-import { ImageFileDBService } from './image-file-db.service';
+import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity.js';
+import { EImageFileBackend } from '../../database/entities/images/image-file.entity.js';
+import { EImageBackend } from '../../database/entities/images/image.entity.js';
+import { ImageDBService } from './image-db.service.js';
+import { ImageFileDBService } from './image-file-db.service.js';
 
 @Module({
   imports: [

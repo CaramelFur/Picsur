@@ -1,11 +1,11 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
-import { ImageDBModule } from '../../collections/image-db/image-db.module';
-import { SystemStateDbModule } from '../../collections/system-state-db/system-state-db.module';
-import { UserDbModule } from '../../collections/user-db/user-db.module';
-import { LateConfigModule } from '../../config/late/late-config.module';
-import { UsageConfigService } from '../../config/late/usage.config.service';
-import { UsageService } from './usage.service';
+import { ImageDBModule } from '../../collections/image-db/image-db.module.js';
+import { SystemStateDbModule } from '../../collections/system-state-db/system-state-db.module.js';
+import { UserDbModule } from '../../collections/user-db/user-db.module.js';
+import { LateConfigModule } from '../../config/late/late-config.module.js';
+import { UsageConfigService } from '../../config/late/usage.config.service.js';
+import { UsageService } from './usage.service.js';
 
 @Module({
   imports: [LateConfigModule, SystemStateDbModule, ImageDBModule, UserDbModule],

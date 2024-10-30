@@ -1,13 +1,13 @@
 import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Unique,
+    Column,
+    Entity,
+    Index,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    Unique,
 } from 'typeorm';
-import { EImageBackend } from './image.entity';
+import { EImageBackend } from './image.entity.js';
 
 @Entity()
 @Unique(['image_id', 'key'])

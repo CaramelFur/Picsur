@@ -2,7 +2,7 @@ import { Multipart, MultipartFile } from '@fastify/multipart';
 import { Injectable, Logger, PipeTransform, Scope } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { Fail, FT } from 'picsur-shared/dist/types/failable';
-import { MultipartConfigService } from '../../config/early/multipart.config.service';
+import { MultipartConfigService } from '../../config/early/multipart.config.service.js';
 
 @Injectable({ scope: Scope.REQUEST })
 export class PostFilePipe implements PipeTransform {

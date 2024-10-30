@@ -1,7 +1,7 @@
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { EImageDerivativeBackend } from './image-derivative.entity';
-import { EImageFileBackend } from './image-file.entity';
+import { EImageDerivativeBackend } from './image-derivative.entity.js';
+import { EImageFileBackend } from './image-file.entity.js';
 
 @Entity()
 export class EImageBackend implements EImage {

@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import {
-  FastifyAdapter,
-  NestFastifyApplication,
+    FastifyAdapter,
+    NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DataSource } from 'typeorm';
-import { TypeOrmConfigService } from './config/early/type-orm.config.service';
-import { DatabaseModule } from './database/database.module';
+import { TypeOrmConfigService } from './config/early/type-orm.config.service.js';
+import { DatabaseModule } from './database/database.module.js';
 
 async function createDataSource() {
   // Create nest app

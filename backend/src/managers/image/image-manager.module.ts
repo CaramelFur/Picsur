@@ -3,14 +3,14 @@ import { Interval } from '@nestjs/schedule';
 import ms from 'ms';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
-import { ImageDBModule } from '../../collections/image-db/image-db.module';
-import { ImageDBService } from '../../collections/image-db/image-db.service';
-import { ImageFileDBService } from '../../collections/image-db/image-file-db.service';
-import { PreferenceDbModule } from '../../collections/preference-db/preference-db.module';
-import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
-import { ImageConverterService } from './image-converter.service';
-import { ImageProcessorService } from './image-processor.service';
-import { ImageManagerService } from './image.service';
+import { ImageDBModule } from '../../collections/image-db/image-db.module.js';
+import { ImageDBService } from '../../collections/image-db/image-db.service.js';
+import { ImageFileDBService } from '../../collections/image-db/image-file-db.service.js';
+import { PreferenceDbModule } from '../../collections/preference-db/preference-db.module.js';
+import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service.js';
+import { ImageConverterService } from './image-converter.service.js';
+import { ImageProcessorService } from './image-processor.service.js';
+import { ImageManagerService } from './image.service.js';
 
 @Module({
   imports: [ImageDBModule, PreferenceDbModule],

@@ -1,6 +1,6 @@
-import { InjectRequest } from './inject-request.decorator';
-import { PostFilePipe } from './postfile.pipe';
-import { MultiPartPipe } from './postfiles.pipe';
+import { InjectRequest } from './inject-request.decorator.js';
+import { PostFilePipe } from './postfile.pipe.js';
+import { MultiPartPipe } from './postfiles.pipe.js';
 
 export const PostFile = () => InjectRequest(PostFilePipe);
 

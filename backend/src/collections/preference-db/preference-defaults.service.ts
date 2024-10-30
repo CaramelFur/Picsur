@@ -3,7 +3,7 @@ import { PrefValueType } from 'picsur-shared/dist/dto/preferences.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
-import { EarlyJwtConfigService } from '../../config/early/early-jwt.config.service';
+import { EarlyJwtConfigService } from '../../config/early/early-jwt.config.service.js';
 
 // This specific service holds the default values for system and user preferences
 // It needs to be in a service because the values depend on the environment

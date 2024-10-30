@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ImageDBService } from '../../collections/image-db/image-db.service';
-import { RoleDbService } from '../../collections/role-db/role-db.service';
-import { Permission } from '../../models/constants/permissions.const';
+import { ImageDBService } from '../../collections/image-db/image-db.service.js';
+import { RoleDbService } from '../../collections/role-db/role-db.service.js';
+import { Permission } from '../../models/constants/permissions.const.js';
 
 @Injectable()
 export class DemoManagerService {

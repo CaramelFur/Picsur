@@ -3,18 +3,18 @@ import multipart from '@fastify/multipart';
 import fastifyReplyFrom from '@fastify/reply-from';
 import { NestFactory } from '@nestjs/core';
 import {
-  FastifyAdapter,
-  NestFastifyApplication,
+    FastifyAdapter,
+    NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { AppModule } from './app.module';
-import { HostConfigService } from './config/early/host.config.service';
-import { MainExceptionFilter } from './layers/exception/exception.filter';
-import { SuccessInterceptor } from './layers/success/success.interceptor';
-import { PicsurThrottlerGuard } from './layers/throttler/PicsurThrottler.guard';
-import { ZodValidationPipe } from './layers/validate/zod-validator.pipe';
-import { PicsurLoggerService } from './logger/logger.service';
-import { MainAuthGuard } from './managers/auth/guards/main.guard';
-import { HelmetOptions } from './security';
+import { AppModule } from './app.module.js';
+import { HostConfigService } from './config/early/host.config.service.js';
+import { MainExceptionFilter } from './layers/exception/exception.filter.js';
+import { SuccessInterceptor } from './layers/success/success.interceptor.js';
+import { PicsurThrottlerGuard } from './layers/throttler/PicsurThrottler.guard.js';
+import { ZodValidationPipe } from './layers/validate/zod-validator.pipe.js';
+import { PicsurLoggerService } from './logger/logger.service.js';
+import { MainAuthGuard } from './managers/auth/guards/main.guard.js';
+import { HelmetOptions } from './security.js';
 
 async function bootstrap() {
   const isProduction = process.env['PICSUR_PRODUCTION'] !== undefined;

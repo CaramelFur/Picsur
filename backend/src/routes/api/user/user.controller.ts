@@ -1,27 +1,27 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import {
-  UserCheckNameRequest,
-  UserCheckNameResponse,
-  UserLoginResponse,
-  UserMePermissionsResponse,
-  UserMeResponse,
-  UserRegisterRequest,
-  UserRegisterResponse,
+    UserCheckNameRequest,
+    UserCheckNameResponse,
+    UserLoginResponse,
+    UserMePermissionsResponse,
+    UserMeResponse,
+    UserRegisterRequest,
+    UserRegisterResponse,
 } from 'picsur-shared/dist/dto/api/user.dto';
 import type { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
-import { UserDbService } from '../../../collections/user-db/user-db.service';
-import { EasyThrottle } from '../../../decorators/easy-throttle.decorator';
+import { UserDbService } from '../../../collections/user-db/user-db.service.js';
+import { EasyThrottle } from '../../../decorators/easy-throttle.decorator.js';
 import {
-  NoPermissions,
-  RequiredPermissions,
-  UseLocalAuth,
-} from '../../../decorators/permissions.decorator';
-import { ReqUser, ReqUserID } from '../../../decorators/request-user.decorator';
-import { Returns } from '../../../decorators/returns.decorator';
-import { AuthManagerService } from '../../../managers/auth/auth.service';
-import { Permission } from '../../../models/constants/permissions.const';
-import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
+    NoPermissions,
+    RequiredPermissions,
+    UseLocalAuth,
+} from '../../../decorators/permissions.decorator.js';
+import { ReqUser, ReqUserID } from '../../../decorators/request-user.decorator.js';
+import { Returns } from '../../../decorators/returns.decorator.js';
+import { AuthManagerService } from '../../../managers/auth/auth.service.js';
+import { Permission } from '../../../models/constants/permissions.const.js';
+import { EUserBackend2EUser } from '../../../models/transformers/user.transformer.js';
 
 @Controller('api/user')
 export class UserController {

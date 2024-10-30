@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import {
-  FileType,
-  ImageFileType,
-  SupportedFileTypeCategory,
+    FileType,
+    ImageFileType,
+    SupportedFileTypeCategory,
 } from 'picsur-shared/dist/dto/mimes.dto';
 
 import {
-  AsyncFailable,
-  Fail,
-  FT,
-  HasFailed,
+    AsyncFailable,
+    Fail,
+    FT,
+    HasFailed,
 } from 'picsur-shared/dist/types/failable';
 import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
-import { ImageConverterService } from './image-converter.service';
-import { ImageResult } from './imageresult';
+import { ImageConverterService } from './image-converter.service.js';
+import { ImageResult } from './imageresult.js';
 
 @Injectable()
 export class ImageProcessorService {

@@ -18,8 +18,8 @@ import {
   SharpWorkerResultMessage,
   SharpWorkerSendMessage,
   SupportedSharpWorkerFunctions,
-} from './sharp/sharp.message';
-import { SharpResult } from './sharp/universal-sharp';
+} from './sharp/sharp.message.js';
+import { SharpResult } from './sharp/universal-sharp.js';
 
 const moduleURL = new URL(import.meta.url);
 const __dirname = dirname(moduleURL.pathname);

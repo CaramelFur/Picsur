@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import {
-  AsyncFailable,
-  Fail,
-  FT,
-  HasFailed,
+    AsyncFailable,
+    Fail,
+    FT,
+    HasFailed,
 } from 'picsur-shared/dist/types/failable';
 import { LessThan, Repository } from 'typeorm';
-import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity';
-import { EImageFileBackend } from '../../database/entities/images/image-file.entity';
+import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity.js';
+import { EImageFileBackend } from '../../database/entities/images/image-file.entity.js';
 
 const A_DAY_IN_SECONDS = 24 * 60 * 60;
 

@@ -1,25 +1,25 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import {
-  ApiKeyCreateResponse,
-  ApiKeyDeleteRequest,
-  ApiKeyDeleteResponse,
-  ApiKeyInfoRequest,
-  ApiKeyInfoResponse,
-  ApiKeyListRequest,
-  ApiKeyListResponse,
-  ApiKeyUpdateRequest,
-  ApiKeyUpdateResponse,
+    ApiKeyCreateResponse,
+    ApiKeyDeleteRequest,
+    ApiKeyDeleteResponse,
+    ApiKeyInfoRequest,
+    ApiKeyInfoResponse,
+    ApiKeyListRequest,
+    ApiKeyListResponse,
+    ApiKeyUpdateRequest,
+    ApiKeyUpdateResponse,
 } from 'picsur-shared/dist/dto/api/apikeys.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
-import { ApiKeyDbService } from '../../../collections/apikey-db/apikey-db.service';
-import { EasyThrottle } from '../../../decorators/easy-throttle.decorator';
+import { ApiKeyDbService } from '../../../collections/apikey-db/apikey-db.service.js';
+import { EasyThrottle } from '../../../decorators/easy-throttle.decorator.js';
 import {
-  HasPermission,
-  RequiredPermissions,
-} from '../../../decorators/permissions.decorator';
-import { ReqUserID } from '../../../decorators/request-user.decorator';
-import { Returns } from '../../../decorators/returns.decorator';
+    HasPermission,
+    RequiredPermissions,
+} from '../../../decorators/permissions.decorator.js';
+import { ReqUserID } from '../../../decorators/request-user.decorator.js';
+import { Returns } from '../../../decorators/returns.decorator.js';
 
 @Controller('api/apikeys')
 @RequiredPermissions(Permission.ApiKey)

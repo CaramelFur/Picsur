@@ -3,8 +3,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { FastifyRequest } from 'fastify';
 import { Strategy } from 'passport-strategy';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
-import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
-import { GuestService } from '../guest.service';
+import { EUserBackend2EUser } from '../../../models/transformers/user.transformer.js';
+import { GuestService } from '../guest.service.js';
 
 class GuestPassportStrategy extends Strategy {
   // Will be overridden by the nest implementation

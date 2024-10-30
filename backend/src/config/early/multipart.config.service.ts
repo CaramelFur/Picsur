@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ParseInt } from 'picsur-shared/dist/util/parse-simple';
-import { EnvPrefix } from '../config.static';
+import { EnvPrefix } from '../config.static.js';
 
 @Injectable()
 export class MultipartConfigService {

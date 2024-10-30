@@ -2,21 +2,21 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ERoleSchema } from 'picsur-shared/dist/entities/role.entity';
 import {
-  AsyncFailable,
-  Fail,
-  FT,
-  HasFailed,
-  HasSuccess,
+    AsyncFailable,
+    Fail,
+    FT,
+    HasFailed,
+    HasSuccess,
 } from 'picsur-shared/dist/types/failable';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
 import { In, Repository } from 'typeorm';
-import { ERoleBackend } from '../../database/entities/users/role.entity';
-import { Permissions } from '../../models/constants/permissions.const';
+import { ERoleBackend } from '../../database/entities/users/role.entity.js';
+import { Permissions } from '../../models/constants/permissions.const.js';
 import {
-  ImmutableRolesList,
-  RolePermissionsLocks,
-  UndeletableRolesList,
-} from '../../models/constants/roles.const';
+    ImmutableRolesList,
+    RolePermissionsLocks,
+    UndeletableRolesList,
+} from '../../models/constants/roles.const.js';
 
 @Injectable()
 export class RoleDbService {

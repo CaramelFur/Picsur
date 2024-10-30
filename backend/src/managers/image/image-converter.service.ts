@@ -2,20 +2,20 @@ import { Injectable } from '@nestjs/common';
 import ms from 'ms';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import {
-  FileType,
-  SupportedFileTypeCategory,
+    FileType,
+    SupportedFileTypeCategory,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import {
-  AsyncFailable,
-  Fail,
-  FT,
-  HasFailed,
+    AsyncFailable,
+    Fail,
+    FT,
+    HasFailed,
 } from 'picsur-shared/dist/types/failable';
 import { SharpOptions } from 'sharp';
-import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
-import { SharpWrapper } from '../../workers/sharp.wrapper';
-import { ImageResult } from './imageresult';
+import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service.js';
+import { SharpWrapper } from '../../workers/sharp.wrapper.js';
+import { ImageResult } from './imageresult.js';
 
 @Injectable()
 export class ImageConverterService {

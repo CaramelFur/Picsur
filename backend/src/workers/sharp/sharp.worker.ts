@@ -7,8 +7,8 @@ import {
   SharpWorkerOperationMessage,
   SharpWorkerRecieveMessage,
   SharpWorkerSendMessage,
-} from './sharp.message';
-import { UniversalSharpIn, UniversalSharpOut } from './universal-sharp';
+} from './sharp.message.js';
+import { UniversalSharpIn, UniversalSharpOut } from './universal-sharp.js';
 
 export class SharpWorker {
   private startTime = 0;

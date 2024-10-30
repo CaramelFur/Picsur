@@ -1,31 +1,31 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import {
-  RoleCreateRequest,
-  RoleCreateResponse,
-  RoleDeleteRequest,
-  RoleDeleteResponse,
-  RoleInfoRequest,
-  RoleInfoResponse,
-  RoleListResponse,
-  RoleUpdateRequest,
-  RoleUpdateResponse,
-  SpecialRolesResponse,
+    RoleCreateRequest,
+    RoleCreateResponse,
+    RoleDeleteRequest,
+    RoleDeleteResponse,
+    RoleInfoRequest,
+    RoleInfoResponse,
+    RoleListResponse,
+    RoleUpdateRequest,
+    RoleUpdateResponse,
+    SpecialRolesResponse,
 } from 'picsur-shared/dist/dto/api/roles.dto';
 import { FT, Fail, ThrowIfFailed } from 'picsur-shared/dist/types/failable';
-import { RoleDbService } from '../../../collections/role-db/role-db.service';
-import { UserDbService } from '../../../collections/user-db/user-db.service';
-import { EasyThrottle } from '../../../decorators/easy-throttle.decorator';
-import { RequiredPermissions } from '../../../decorators/permissions.decorator';
-import { Returns } from '../../../decorators/returns.decorator';
-import { Permission } from '../../../models/constants/permissions.const';
+import { RoleDbService } from '../../../collections/role-db/role-db.service.js';
+import { UserDbService } from '../../../collections/user-db/user-db.service.js';
+import { EasyThrottle } from '../../../decorators/easy-throttle.decorator.js';
+import { RequiredPermissions } from '../../../decorators/permissions.decorator.js';
+import { Returns } from '../../../decorators/returns.decorator.js';
+import { Permission } from '../../../models/constants/permissions.const.js';
 import {
-  DefaultRolesList,
-  ImmutableRolesList,
-  RolePermissionsLocks,
-  SoulBoundRolesList,
-  UndeletableRolesList,
-} from '../../../models/constants/roles.const';
-import { isPermissionsArray } from '../../../models/validators/permissions.validator';
+    DefaultRolesList,
+    ImmutableRolesList,
+    RolePermissionsLocks,
+    SoulBoundRolesList,
+    UndeletableRolesList,
+} from '../../../models/constants/roles.const.js';
+import { isPermissionsArray } from '../../../models/validators/permissions.validator.js';
 
 @Controller('api/roles')
 @RequiredPermissions(Permission.RoleAdmin)

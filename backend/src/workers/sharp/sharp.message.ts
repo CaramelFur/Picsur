@@ -1,6 +1,6 @@
 import { FileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { Sharp, SharpOptions } from 'sharp';
-import { SharpResult } from './universal-sharp';
+import { SharpResult } from './universal-sharp.js';
 
 type MapSharpFunctions<T extends keyof Sharp> = T extends any
   ? Sharp[T] extends (...args: any) => any

@@ -3,17 +3,17 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { EUser, EUserSchema } from 'picsur-shared/dist/entities/user.entity';
 import {
-  AsyncFailable,
-  FT,
-  Fail,
-  Failable,
-  HasFailed,
-  ThrowIfFailed,
+    AsyncFailable,
+    FT,
+    Fail,
+    Failable,
+    HasFailed,
+    ThrowIfFailed,
 } from 'picsur-shared/dist/types/failable';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
-import { UserDbService } from '../../../collections/user-db/user-db.service';
-import { Permissions } from '../../../models/constants/permissions.const';
-import { isPermissionsArray } from '../../../models/validators/permissions.validator';
+import { UserDbService } from '../../../collections/user-db/user-db.service.js';
+import { Permissions } from '../../../models/constants/permissions.const.js';
+import { isPermissionsArray } from '../../../models/validators/permissions.validator.js';
 
 // This guard extends both the jwt authenticator and the guest authenticator
 // The order matters here, because this results in the guest authenticator being used as a fallback

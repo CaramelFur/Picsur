@@ -2,10 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ParseInt, ParseString } from 'picsur-shared/dist/util/parse-simple';
-import { EntityList } from '../../database/entities/index';
-import { MigrationList } from '../../database/migrations/index';
-import { DefaultName, EnvPrefix } from '../config.static';
-import { HostConfigService } from './host.config.service';
+import { EntityList } from '../../database/entities/index.js';
+import { MigrationList } from '../../database/migrations/index.js';
+import { DefaultName, EnvPrefix } from '../config.static.js';
+import { HostConfigService } from './host.config.service.js';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {

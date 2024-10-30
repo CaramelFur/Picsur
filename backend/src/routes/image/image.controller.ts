@@ -2,26 +2,26 @@ import { Controller, Get, Head, Logger, Query, Res } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
 import type { FastifyReply } from 'fastify';
 import {
-  ImageMetaResponse,
-  ImageRequestParams,
+    ImageMetaResponse,
+    ImageRequestParams,
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { FileType2Mime } from 'picsur-shared/dist/dto/mimes.dto';
 import {
-  FT,
-  IsFailure,
-  ThrowIfFailed,
+    FT,
+    IsFailure,
+    ThrowIfFailed,
 } from 'picsur-shared/dist/types/failable';
-import { UserDbService } from '../../collections/user-db/user-db.service';
-import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decorator';
-import { ImageIdParam } from '../../decorators/image-id/image-id.decorator';
-import { RequiredPermissions } from '../../decorators/permissions.decorator';
-import { Returns } from '../../decorators/returns.decorator';
-import { ImageManagerService } from '../../managers/image/image.service';
-import type { ImageFullId } from '../../models/constants/image-full-id.const';
-import { Permission } from '../../models/constants/permissions.const';
-import { EUserBackend2EUser } from '../../models/transformers/user.transformer';
-import { BrandMessageType, GetBrandMessage } from '../../util/branding';
+import { UserDbService } from '../../collections/user-db/user-db.service.js';
+import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decorator.js';
+import { ImageIdParam } from '../../decorators/image-id/image-id.decorator.js';
+import { RequiredPermissions } from '../../decorators/permissions.decorator.js';
+import { Returns } from '../../decorators/returns.decorator.js';
+import { ImageManagerService } from '../../managers/image/image.service.js';
+import type { ImageFullId } from '../../models/constants/image-full-id.const.js';
+import { Permission } from '../../models/constants/permissions.const.js';
+import { EUserBackend2EUser } from '../../models/transformers/user.transformer.js';
+import { BrandMessageType, GetBrandMessage } from '../../util/branding.js';
 
 // This is the only controller with CORS enabled
 @Controller('i')

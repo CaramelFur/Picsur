@@ -1,17 +1,17 @@
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import {
-  GetPreferenceResponse,
-  MultiplePreferencesResponse,
-  UpdatePreferenceRequest,
-  UpdatePreferenceResponse,
+    GetPreferenceResponse,
+    MultiplePreferencesResponse,
+    UpdatePreferenceRequest,
+    UpdatePreferenceResponse,
 } from 'picsur-shared/dist/dto/api/pref.dto';
 import { ThrowIfFailed } from 'picsur-shared/dist/types/failable';
-import { UsrPreferenceDbService } from '../../../collections/preference-db/usr-preference-db.service';
-import { EasyThrottle } from '../../../decorators/easy-throttle.decorator';
-import { RequiredPermissions } from '../../../decorators/permissions.decorator';
-import { ReqUserID } from '../../../decorators/request-user.decorator';
-import { Returns } from '../../../decorators/returns.decorator';
-import { Permission } from '../../../models/constants/permissions.const';
+import { UsrPreferenceDbService } from '../../../collections/preference-db/usr-preference-db.service.js';
+import { EasyThrottle } from '../../../decorators/easy-throttle.decorator.js';
+import { RequiredPermissions } from '../../../decorators/permissions.decorator.js';
+import { ReqUserID } from '../../../decorators/request-user.decorator.js';
+import { Returns } from '../../../decorators/returns.decorator.js';
+import { Permission } from '../../../models/constants/permissions.const.js';
 
 @Controller('api/pref/usr')
 @RequiredPermissions(Permission.Settings)

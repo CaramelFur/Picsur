@@ -4,8 +4,8 @@ import { HeaderAPIKeyStrategy } from 'passport-headerapikey';
 import { EUser, EUserSchema } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { IsApiKey } from 'picsur-shared/dist/validators/api-key.validator';
-import { ApiKeyDbService } from '../../../collections/apikey-db/apikey-db.service';
-import { EUserBackend2EUser } from '../../../models/transformers/user.transformer';
+import { ApiKeyDbService } from '../../../collections/apikey-db/apikey-db.service.js';
+import { EUserBackend2EUser } from '../../../models/transformers/user.transformer.js';
 
 @Injectable()
 export class ApiKeyStrategy extends PassportStrategy(

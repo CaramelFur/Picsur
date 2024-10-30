@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
-import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service';
+import { SysPreferenceDbService } from '../../collections/preference-db/sys-preference-db.service.js';
 
 @Injectable()
 export class InfoConfigService {

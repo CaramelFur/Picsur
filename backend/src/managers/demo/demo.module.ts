@@ -1,10 +1,10 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
-import { ImageDBModule } from '../../collections/image-db/image-db.module';
-import { RoleDbModule } from '../../collections/role-db/role-db.module';
-import { EarlyConfigModule } from '../../config/early/early-config.module';
-import { HostConfigService } from '../../config/early/host.config.service';
-import { DemoManagerService } from './demo.service';
+import { ImageDBModule } from '../../collections/image-db/image-db.module.js';
+import { RoleDbModule } from '../../collections/role-db/role-db.module.js';
+import { EarlyConfigModule } from '../../config/early/early-config.module.js';
+import { HostConfigService } from '../../config/early/host.config.service.js';
+import { DemoManagerService } from './demo.service.js';
 
 @Module({
   imports: [ImageDBModule, EarlyConfigModule, RoleDbModule],

@@ -1,15 +1,15 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
-import { EarlyConfigModule } from '../../config/early/early-config.module';
-import { HostConfigService } from '../../config/early/host.config.service';
-import { ERoleBackend } from '../../database/entities/users/role.entity';
+import { EarlyConfigModule } from '../../config/early/early-config.module.js';
+import { HostConfigService } from '../../config/early/host.config.service.js';
+import { ERoleBackend } from '../../database/entities/users/role.entity.js';
 import {
-  ImmutableRolesList,
-  SystemRoleDefaults,
-  SystemRolesList,
-} from '../../models/constants/roles.const';
-import { RoleDbService } from './role-db.service';
+    ImmutableRolesList,
+    SystemRoleDefaults,
+    SystemRolesList,
+} from '../../models/constants/roles.const.js';
+import { RoleDbService } from './role-db.service.js';
 
 @Module({
   imports: [EarlyConfigModule, TypeOrmModule.forFeature([ERoleBackend])],

@@ -2,7 +2,7 @@ import { MultipartFile } from '@fastify/multipart';
 import { Injectable, Logger, PipeTransform, Scope } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { FT, Fail } from 'picsur-shared/dist/types/failable';
-import { MultipartConfigService } from '../../config/early/multipart.config.service';
+import { MultipartConfigService } from '../../config/early/multipart.config.service.js';
 
 export type FileIterator = AsyncIterableIterator<MultipartFile>;
 

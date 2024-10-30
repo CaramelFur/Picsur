@@ -1,14 +1,14 @@
 import {
-  createParamDecorator,
-  ExecutionContext,
-  SetMetadata,
-  UseGuards,
+    createParamDecorator,
+    ExecutionContext,
+    SetMetadata,
+    UseGuards,
 } from '@nestjs/common';
 import { Fail, FT } from 'picsur-shared/dist/types/failable';
 import { CombineFCDecorators } from 'picsur-shared/dist/util/decorator';
-import { LocalAuthGuard } from '../managers/auth/guards/local-auth.guard';
-import { Permission, Permissions } from '../models/constants/permissions.const';
-import AuthFastifyRequest from '../models/interfaces/authrequest.dto';
+import { LocalAuthGuard } from '../managers/auth/guards/local-auth.guard.js';
+import { Permission, Permissions } from '../models/constants/permissions.const.js';
+import AuthFastifyRequest from '../models/interfaces/authrequest.dto.js';
 
 export const RequiredPermissions = (...permissions: Permissions) => {
   return SetMetadata('permissions', permissions);

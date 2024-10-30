@@ -32,7 +32,7 @@ THE SOFTWARE.
 
 import thunks from 'thunks';
 
-import { StreamParserWritable } from './stream-parser';
+import { StreamParserWritable } from './stream-parser.js';
 
 const { thunk } = thunks;
 

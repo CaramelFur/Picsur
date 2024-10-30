@@ -2,12 +2,12 @@ import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { generateRandomString } from 'picsur-shared/dist/util/random';
-import { AuthConfigService } from '../../config/early/auth.config.service';
-import { EarlyConfigModule } from '../../config/early/early-config.module';
-import { EUserBackend } from '../../database/entities/users/user.entity';
-import { PreferenceDbModule } from '../preference-db/preference-db.module';
-import { RoleDbModule } from '../role-db/role-db.module';
-import { UserDbService } from './user-db.service';
+import { AuthConfigService } from '../../config/early/auth.config.service.js';
+import { EarlyConfigModule } from '../../config/early/early-config.module.js';
+import { EUserBackend } from '../../database/entities/users/user.entity.js';
+import { PreferenceDbModule } from '../preference-db/preference-db.module.js';
+import { RoleDbModule } from '../role-db/role-db.module.js';
+import { UserDbService } from './user-db.service.js';
 
 @Module({
   imports: [
