@@ -1,13 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt-ts';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import {
-    AsyncFailable,
-    Fail,
-    FT,
-    HasFailed,
-    HasSuccess,
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
+  HasSuccess,
 } from 'picsur-shared/dist/types/failable';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { makeUnique } from 'picsur-shared/dist/util/unique';
@@ -15,13 +15,13 @@ import { Repository } from 'typeorm';
 import { EUserBackend } from '../../database/entities/users/user.entity.js';
 import { Permissions } from '../../models/constants/permissions.const.js';
 import {
-    DefaultRolesList,
-    SoulBoundRolesList,
+  DefaultRolesList,
+  SoulBoundRolesList,
 } from '../../models/constants/roles.const.js';
 import {
-    ImmutableUsersList,
-    LockedLoginUsersList,
-    UndeletableUsersList,
+  ImmutableUsersList,
+  LockedLoginUsersList,
+  UndeletableUsersList,
 } from '../../models/constants/special-users.const.js';
 import { GetCols } from '../../util/collection.js';
 import { SysPreferenceDbService } from '../preference-db/sys-preference-db.service.js';
