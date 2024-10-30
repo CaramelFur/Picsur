@@ -215,6 +215,10 @@ importers:
         version: 5.5.4
 
   frontend:
+    dependencies:
+      '@ngx-dropzone/cdk':
+        specifier: ^18.1.1
+        version: 18.1.1(@angular/common@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(@angular/forms@18.2.9(@angular/common@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@18.2.9(@angular/animations@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10)))(rxjs@7.8.1))(rxjs@7.8.1)
     devDependencies:
       '@angular-builders/custom-webpack':
         specifier: ^18.0.0
@@ -330,9 +334,6 @@ importers:
       ngx-auto-unsubscribe-decorator:
         specifier: ^1.1.0
         version: 1.1.0
-      ngx-dropzone:
-        specifier: ^3.1.0
-        version: 3.1.0
       ngx-moment:
         specifier: ^6.0.2
         version: 6.0.2(moment@2.30.1)
@@ -2110,6 +2111,14 @@ packages:
     peerDependencies:
       '@angular/common': '>=12.0.0'
       '@angular/core': '>=12.0.0'
+
+  '@ngx-dropzone/cdk@18.1.1':
+    resolution: {integrity: sha512-h6MXBn6MWo+53xpQXMpPSTWOMQGNA3rvrVmet5uIYfFR4P9G8JxXExxpmYKDOXxZB3nHEGWt10ZCyKBmkQPEfQ==}
+    peerDependencies:
+      '@angular/common': ^18.0.0
+      '@angular/core': ^18.0.0
+      '@angular/forms': ^18.0.0
+      rxjs: ^7.4.0
 
   '@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3':
     resolution: {integrity: sha512-s88O1aVtXftvp5bCPB7WnmXc5IwOZZ7YPuwNPt+GtOOXpPvad1LfbmjYv+qII7zP6RU2QGnqve27dnLycEnyEQ==}
@@ -4530,10 +4539,6 @@ packages:
 
   ngx-auto-unsubscribe-decorator@1.1.0:
     resolution: {integrity: sha512-aNlkAaO5SvbKBXvbDHhOpYkcMsUkhZbLRzS8K5GT6ZjJ5HAkiSPHiEclvGn/a8MYkOIwFvNdmp3PyjcoS2eYMw==}
-
-  ngx-dropzone@3.1.0:
-    resolution: {integrity: sha512-5RBaEl07QUcY6sv/BBPyIxN6nbWY/KqTGheEKgbuGS0N1QPFY7NJUo8+X3fYUwQgLS+wjJeqPiR37dd0YNDtWA==}
-    deprecated: This package is deprecated and will no longer receive any updates. Please take a look at the official successor repo at hackingharold/ngx-dropzone
 
   ngx-moment@6.0.2:
     resolution: {integrity: sha512-HUvDyoJPZKLA3tc+GMQqDpVyCVT2SPfEiV7/CGj2Dwwsn//JhhQ8eTr+RzKqBzLysrXkCwlzulVVJaJ5A0FJEA==}
@@ -8596,6 +8601,14 @@ snapshots:
       '@angular/core': 18.2.9(rxjs@7.8.1)(zone.js@0.14.10)
       tslib: 2.8.0
 
+  '@ngx-dropzone/cdk@18.1.1(@angular/common@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(@angular/forms@18.2.9(@angular/common@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@18.2.9(@angular/animations@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10)))(rxjs@7.8.1))(rxjs@7.8.1)':
+    dependencies:
+      '@angular/common': 18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
+      '@angular/core': 18.2.9(rxjs@7.8.1)(zone.js@0.14.10)
+      '@angular/forms': 18.2.9(@angular/common@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@18.2.9(@angular/animations@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10)))(rxjs@7.8.1)
+      rxjs: 7.8.1
+      tslib: 2.8.0
+
   '@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3':
     optional: true
 
@@ -11215,10 +11228,6 @@ snapshots:
       tslib: 2.8.0
 
   ngx-auto-unsubscribe-decorator@1.1.0:
-    dependencies:
-      tslib: 2.8.0
-
-  ngx-dropzone@3.1.0:
     dependencies:
       tslib: 2.8.0
 

@@ -53,7 +53,6 @@
     "moment": "^2.30.1",
     "ng-mat-select-infinite-scroll": "^4.0.0",
     "ngx-auto-unsubscribe-decorator": "^1.1.0",
-    "ngx-dropzone": "^3.1.0",
     "ngx-moment": "^6.0.2",
     "picsur-shared": "workspace:^",
     "reflect-metadata": "^0.2.2",
@@ -64,5 +63,8 @@
     "webpack-bundle-analyzer": "^4.10.2",
     "zod": "^3.23.8",
     "zone.js": "~0.14.0"
+  },
+  "dependencies": {
+    "@ngx-dropzone/cdk": "^18.1.1"
   }
 }

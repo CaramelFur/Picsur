@@ -1,7 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { FileInputValue } from '@ngx-dropzone/cdk';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { NgxDropzoneChangeEvent } from 'ngx-dropzone';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { Fail, FT } from 'picsur-shared/dist/types/failable';
 import { debounceTime } from 'rxjs';
@@ -19,6 +20,8 @@ export class UploadComponent implements OnInit {
 
   canUpload = true;
 
+  fileControl = new FormControl<FileInputValue>(null);
+
   constructor(
     private readonly router: Router,
     private readonly permissionService: PermissionService,
@@ -27,6 +30,17 @@ export class UploadComponent implements OnInit {
 
   ngOnInit(): void {
     this.onPermission();
+    this.onFileChange();
+  }
+
+  @AutoUnsubscribe()
+  onFileChange() {
+    return this.fileControl.valueChanges.subscribe((file) => {
+      if (!file) return;
+      let files = Array.isArray(file) ? file : [file];
+      const metadata: ProcessingViewMeta = new ProcessingViewMeta(files);
+      this.router.navigate(['/processing'], { state: metadata });
+    });
   }
 
   @AutoUnsubscribe()
@@ -37,14 +51,7 @@ export class UploadComponent implements OnInit {
         this.canUpload = permissions.includes(Permission.ImageUpload);
       });
   }
-
-  onSelect(event: NgxDropzoneChangeEvent) {
-    const metadata: ProcessingViewMeta = new ProcessingViewMeta(
-      event.addedFiles,
-    );
-    this.router.navigate(['/processing'], { state: metadata });
-  }
-
+  
   @HostListener('document:paste', ['$event'])
   onPaste(event: ClipboardEvent) {
     const items = event.clipboardData?.items;

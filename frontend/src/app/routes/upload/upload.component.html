@@ -1,10 +1,11 @@
 <div class="content-border">
-  <ngx-dropzone *ngIf="canUpload" (change)="onSelect($event)">
+  <my-dropzone *ngIf="canUpload">
+    <input type="file" fileInput [formControl]="fileControl" />
     <div class="centered">
       <h1>Upload Image</h1>
       <p>Drag and drop / paste an image here, or click to select an image</p>
     </div>
-  </ngx-dropzone>
+  </my-dropzone>
 
   <div class="centered" *ngIf="!canUpload">
     <h1><a routerLink="/user/login">Please log in</a></h1>
