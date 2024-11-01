@@ -6,7 +6,7 @@ import {
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { QOIdecode, QOIencode } from 'qoi-img';
 import sharp, { Sharp, SharpOptions } from 'sharp';
-import { SharpWorkerFinishOptions } from './sharp.message';
+import { SharpWorkerFinishOptions } from './sharp.message.js';
 
 export interface SharpResult {
   data: Buffer;

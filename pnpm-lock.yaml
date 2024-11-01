@@ -143,6 +143,9 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
+      semver:
+        specifier: ^7.6.3
+        version: 7.6.3
       sharp:
         specifier: ^0.33.5
         version: 0.33.5
@@ -189,6 +192,9 @@ importers:
       '@types/passport-strategy':
         specifier: ^0.2.38
         version: 0.2.38
+      '@types/semver':
+        specifier: ^7.5.8
+        version: 7.5.8
       '@types/supertest':
         specifier: ^6.0.2
         version: 6.0.2
@@ -2045,7 +2051,7 @@ packages:
     peerDependencies:
       '@angular/compiler-cli': ^18.0.0
       typescript: ~5.5.4
-      webpack: ^5.54.0
+      webpack: '>=5.76.0'
 
   '@ngui/common@1.0.0':
     resolution: {integrity: sha512-T0vX6jFLR+19iUVqM0J6lQkcDo6Iaq8pptzMJDEjLG3HkpgeM9SYxiTFV3+yHuP4QzQQ6/VP8gJ+1f4M7iZv5Q==}
@@ -2464,6 +2470,9 @@ packages:
 
   '@types/retry@0.12.2':
     resolution: {integrity: sha512-XISRgDJ2Tc5q4TRqvgJtzsRkFYNJzZrhTdtMoGVBttwzzQJkPnS3WWTFc7kuDRoPtPakl+T+OfdEUjYJj7Jbow==}
+
+  '@types/semver@7.5.8':
+    resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
 
   '@types/send@0.17.4':
     resolution: {integrity: sha512-x2EM6TJOybec7c52BX0ZspPodMsQUd5L6PRwOunVyVUhXiBSKf3AezDL8Dgvgt5o0UfKNfuA0eMLr2wLT4AiBA==}
@@ -8267,6 +8276,8 @@ snapshots:
   '@types/resize-observer-browser@0.1.11': {}
 
   '@types/retry@0.12.2': {}
+
+  '@types/semver@7.5.8': {}
 
   '@types/send@0.17.4':
     dependencies:

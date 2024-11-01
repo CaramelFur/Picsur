@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  AnimFileType,
   FileType,
   ImageFileType,
   SupportedFileTypeCategory,
