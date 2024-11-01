@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { HISTORY } from '@ng-web-apis/common';
+import { WA_HISTORY } from '@ng-web-apis/common';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { InfoService } from '../../services/api/info.service';
 import { Logger } from '../../services/logger/logger.service';
@@ -16,9 +16,10 @@ export class CompatibilityService {
     private readonly infoService: InfoService,
     private readonly errorService: ErrorService,
     private readonly dialogService: DialogService,
-    @Inject(HISTORY) private readonly history: History,
+    @Inject(WA_HISTORY) private readonly history: History,
   ) {
-    this.checkCompatibility().catch(this.logger.error);
+    // TODO: Better compatibility check
+    //this.checkCompatibility().catch(this.logger.error);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
