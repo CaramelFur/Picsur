@@ -6,35 +6,36 @@
 
 <ng-container *ngIf="images !== null && images.length > 0">
   <h1>Your Images</h1>
-
   <masonry [columns]="columns">
-    <div *ngFor="let image of images" class="m-2" masonry-item>
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>{{ image.file_name | truncate }}</mat-card-title>
-          <mat-card-subtitle>
-            Uploaded {{ image.created | amTimeAgo }}
-            {{
-              image.expires_at === null
-                ? ''
-                : '| Expires ' + (image.expires_at | amTimeAgo)
-            }}
-          </mat-card-subtitle>
-        </mat-card-header>
-        <picsur-img
-          mat-card-image
-          [src]="getThumbnailUrl(image)"
-          alt="Image uploaded by you"
-        >
-        </picsur-img>
-        <mat-card-actions>
-          <button mat-stroked-button (click)="viewImage(image)">VIEW</button>
-          <button mat-button color="warn" (click)="deleteImage(image)">
-            DELETE
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
+    <ng-template *ngFor="let image of images" masonry-item>
+      <div class="m-2">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{ image.file_name | truncate }}</mat-card-title>
+            <mat-card-subtitle>
+              Uploaded {{ image.created | amTimeAgo }}
+              {{
+                image.expires_at === null
+                  ? ''
+                  : '| Expires ' + (image.expires_at | amTimeAgo)
+              }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <picsur-img
+            mat-card-image
+            [src]="getThumbnailUrl(image)"
+            alt="Image uploaded by you"
+          >
+          </picsur-img>
+          <mat-card-actions>
+            <button mat-stroked-button (click)="viewImage(image)">VIEW</button>
+            <button mat-button color="warn" (click)="deleteImage(image)">
+              DELETE
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </ng-template>
   </masonry>
 
   <paginator

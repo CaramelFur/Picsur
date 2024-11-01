@@ -11,7 +11,7 @@ fi
 
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-UPDATE_VERSION="yarn version"
+UPDATE_VERSION="pnpm version --f"
 
 cd $SCRIPT_PATH/..
 $UPDATE_VERSION $VERSION

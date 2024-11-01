@@ -5,12 +5,14 @@
   width="0"
   #targetcanvas
 ></canvas>
+
 <img
   *ngIf="state === 'image' || state === 'loading'"
   [style.display]="state === 'loading' ? 'none' : 'block'"
   loading="lazy"
   #targetimg
 />
+
 <mat-icon *ngIf="state === 'error'">broken_image</mat-icon>
 
 <mat-spinner

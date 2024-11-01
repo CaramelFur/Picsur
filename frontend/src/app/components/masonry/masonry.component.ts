@@ -4,17 +4,16 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  ElementRef,
   Input,
   OnDestroy,
   QueryList,
   ViewChildren,
+  ViewContainerRef
 } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { combineLatest, Subscription } from 'rxjs';
-import { MasonryItemDirective } from './masonry-item.directive';
-import { RemoveChildren } from '../../util/remove-children';
 import { Throttle } from '../../util/throttle';
+import { MasonryItemDirective } from './masonry-item.directive';
 
 @Component({
   selector: 'masonry',
@@ -27,31 +26,43 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
 
   @Input('columns') public set column_count(value: number) {
     this._column_count = value;
+    this.cleanAllColumns();
     this.changeDetector.markForCheck();
   }
   public _column_count = 1;
   @Input('update-speed') update_speed = 200;
 
   @ContentChildren(MasonryItemDirective)
-  private content: QueryList<MasonryItemDirective>;
+  private items: QueryList<MasonryItemDirective>;
 
-  @ViewChildren('column')
-  private columns: QueryList<ElementRef<HTMLDivElement>>;
+  @ViewChildren('column', { read: ViewContainerRef })
+  private columns: QueryList<ViewContainerRef>;
 
   private sizesSubscription: Subscription | null = null;
 
   ngAfterViewInit(): void {
     this.subscribeContent();
+    this.subscribeColumns();
+  }
+
+  @AutoUnsubscribe()
+  private subscribeColumns() {
+    return this.columns.changes.subscribe(this.handleColumnsChange.bind(this));
+  }
+
+  private handleColumnsChange() {
+    this.resortItems();
+    this.changeDetector.markForCheck();
   }
 
   @AutoUnsubscribe()
   private subscribeContent() {
-    this.handleContentChange(this.content);
-    return this.content.changes.subscribe(this.handleContentChange.bind(this));
+    this.handleContentChange();
+    return this.items.changes.subscribe(this.handleContentChange.bind(this));
   }
 
-  private handleContentChange(items: QueryList<MasonryItemDirective>) {
-    const sizes = items.map((i) => i.getSize());
+  private handleContentChange() {
+    const sizes = this.items.map((i) => i.getSizeObservable());
 
     if (this.sizesSubscription) {
       this.sizesSubscription.unsubscribe();
@@ -60,22 +71,20 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
     this.sizesSubscription = combineLatest(sizes)
       .pipe(Throttle(this.update_speed))
       .subscribe(() => {
-        this.resortItems(items);
+        this.resortItems();
       });
 
-    this.resortItems(items);
+    this.resortItems();
 
     this.changeDetector.markForCheck();
   }
 
-  private resortItems(items: QueryList<MasonryItemDirective>) {
-    const itemsArray = items.toArray();
-    const columnsArray = this.columns.map((c) => c.nativeElement);
+  private resortItems() {
+    const itemsArray = this.items.toArray();
 
-    for (let i = 0; i < columnsArray.length; i++) {
-      RemoveChildren(columnsArray[i]);
-    }
+    this.cleanAllColumns();
 
+    const columnsArray = this.columns.map((c) => c);
     const columnSizes = columnsArray.map(() => 0);
 
     for (let i = 0; i < itemsArray.length; i++) {
@@ -92,9 +101,21 @@ export class MasonryComponent implements AfterViewInit, OnDestroy {
         }
       }
 
-      columnsArray[smallestColumn].appendChild(item.getElement());
+      columnsArray[smallestColumn].insert(item.getViewRef())
       columnSizes[smallestColumn] +=
-        item.getLastSize()?.contentRect.height ?? 0;
+        item.getCurrentSize()?.height ?? 0;
+    }
+  }
+
+  private cleanAllColumns() {
+    this.columns?.forEach((column) => {
+      this.removeChildren(column);
+    });
+  }
+
+  private removeChildren(parent: ViewContainerRef) {
+    while (parent.length) {
+      parent.detach(0);
     }
   }
 

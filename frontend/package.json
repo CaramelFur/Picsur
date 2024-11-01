@@ -1,6 +1,6 @@
 {
   "name": "picsur-frontend",
-  "version": "0.5.3",
+  "version": "0.5.5",
   "description": "Frontend for Picsur",
   "license": "GPL-3.0",
   "repository": "https://github.com/caramelfur/Picsur",
@@ -57,10 +57,8 @@
     "typescript": "~5.5.4",
     "webpack": "^5.95.0",
     "webpack-bundle-analyzer": "^4.10.2",
+    "@ngx-dropzone/cdk": "^18.1.1",
     "zod": "^3.23.8",
     "zone.js": "~0.14.10"
-  },
-  "dependencies": {
-    "@ngx-dropzone/cdk": "^18.1.1"
   }
 }

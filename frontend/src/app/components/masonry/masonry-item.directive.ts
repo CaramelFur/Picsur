@@ -1,52 +1,53 @@
-import { Directive, ElementRef, Inject } from '@angular/core';
-import {
-  ResizeObserverService,
-  WA_RESIZE_OPTION_BOX
-} from '@ng-web-apis/resize-observer';
-import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
-import { Observable, map } from 'rxjs';
+import { Directive, TemplateRef, ViewRef } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Directive({
-  selector: '[masonry-item]',
-  providers: [
-    ResizeObserverService,
-    {
-      provide: WA_RESIZE_OPTION_BOX,
-      deps: [ElementRef],
-      useValue: "border-box",
-    },
-  ],
+  selector: 'ng-template[masonry-item]',
 })
 export class MasonryItemDirective {
-  private lastEntry: ResizeObserverEntry | null = null;
+  private viewRef: ViewRef | null = null;
+  private resizeObserver: ResizeObserver | null = null;
+  private sizeSubject: BehaviorSubject<{ width: number; height: number }> =
+    new BehaviorSubject({ width: 0, height: 0 });
 
-  private resizeObserver: Observable<ResizeObserverEntry>;
+  constructor(private template: TemplateRef<HTMLElement>) {}
 
-  constructor(
-    private element: ElementRef<HTMLElement>,
-    @Inject(ResizeObserverService)
-    resize: Observable<ResizeObserverEntry[]>,
-  ) {
-    this.resizeObserver = resize.pipe(map((entries) => entries[0]));
-    this.subscribeResize();
+  public getTemplate(): TemplateRef<HTMLElement> {
+    return this.template;
   }
 
-  @AutoUnsubscribe()
-  private subscribeResize() {
-    return this.resizeObserver.subscribe((value) => {
-      this.lastEntry = value;
-    });
+  public getViewRef(): ViewRef {
+    if (!this.viewRef || this.viewRef.destroyed) {
+      this.viewRef = this.template.createEmbeddedView(null as any);
+      this.resubscribeResizeObserver();
+    }
+    return this.viewRef;
   }
 
-  public getElement() {
-    return this.element.nativeElement;
+  public getElement(): HTMLElement | null {
+    const anyRef = this.getViewRef() as any;
+    return anyRef.rootNodes.length > 0 ? anyRef.rootNodes[0] : null;
   }
 
-  public getSize() {
-    return this.resizeObserver;
+  public getSizeObservable() {
+    return this.sizeSubject.asObservable();
   }
 
-  public getLastSize() {
-    return this.lastEntry;
+  public getCurrentSize() {
+    return this.sizeSubject.value;
+  }
+
+  public resubscribeResizeObserver() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+    const element = this.getElement();
+    if (element) {
+      this.resizeObserver = new ResizeObserver((items) => {
+        const { width, height } = items[0].contentRect;
+        this.sizeSubject.next({ width, height });
+      });
+      this.resizeObserver.observe(element);
+    }
   }
 }
