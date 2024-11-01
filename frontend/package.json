@@ -34,10 +34,12 @@
     "@ng-web-apis/common": "^4.11.1",
     "@ng-web-apis/resize-observer": "^4.11.1",
     "@ngui/common": "^1.0.0",
+    "@ngx-dropzone/cdk": "^18.1.1",
     "@popperjs/core": "^2.11.8",
     "@types/ackee-tracker": "^5.0.4",
     "@types/node": "^22.8.4",
     "@types/resize-observer-browser": "^0.1.11",
+    "@types/uuid": "^10.0.0",
     "@types/validator": "^13.12.2",
     "ackee-tracker": "^5.1.0",
     "axios": "^1.7.7",
@@ -55,9 +57,9 @@
     "rxjs": "^7.8.1",
     "tslib": "^2.8.0",
     "typescript": "~5.5.4",
+    "uuid": "^11.0.2",
     "webpack": "^5.95.0",
     "webpack-bundle-analyzer": "^4.10.2",
-    "@ngx-dropzone/cdk": "^18.1.1",
     "zod": "^3.23.8",
     "zone.js": "~0.14.10"
   }
