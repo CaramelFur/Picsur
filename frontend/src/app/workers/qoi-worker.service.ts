@@ -4,6 +4,7 @@ import {
   Failure,
   HasFailed,
 } from 'picsur-shared/dist/types/failable';
+import { v4 as uuidv4 } from 'uuid';
 import { KeyStorageService } from '../services/storage/key-storage.service';
 import { QOIImage, QOIJob, QOIWorkerOut } from './qoi-worker.dto';
 
@@ -27,7 +28,7 @@ export class QoiWorkerService {
 
     if (this.worker && !this.job) {
       return new Promise((resolve) => {
-        const id = Date.now();
+        const id = uuidv4().toString();
         const listener = ({ data }: { data: QOIWorkerOut }) => {
           if (data.id !== id) return;
           this.worker?.removeEventListener('message', listener);

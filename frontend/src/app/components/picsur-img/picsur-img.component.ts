@@ -5,7 +5,7 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FileType, ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { AsyncFailable, HasFailed } from 'picsur-shared/dist/types/failable';
@@ -115,6 +115,8 @@ export class PicsurImgComponent implements OnChanges {
 
     if (this.state === PicsurImgState.Init) {
       this.state = PicsurImgState.Loading;
+      this.changeDetector.markForCheck();
+
       this.reload();
     }
   }

@@ -7,13 +7,13 @@ export interface QOIImage {
 }
 
 export interface QOIWorkerIn {
-  id: number;
+  id: string;
   url: string;
   authorization: string;
 }
 
 export interface QOIWorkerOut {
-  id: number;
+  id: string;
   result: Failable<QOIImage>;
 }
 
