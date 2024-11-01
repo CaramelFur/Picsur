@@ -168,9 +168,13 @@ volumes:
 
 ## Thanks
 
-- **@TheSameCat2 for monthly donating 5$**
-- **@chennin for monthly donating 4$**
-- @awg13 for once donating 5$
+- @aldumil for once donating $5
+- @mcmastererp for monthly donating $2 from March 2024 to Oktober 2024
+- @gander for monthly donating $5 from March 2024 to November 2024
+- @TheSameCat2 for monthly donating $5 from November 2023 to May 2024
+- @LordCrashWire for once donating $20
+- @chennin for monthly donating $4 from June 2023 to September 2024
+- @awg13 for once donating $10
 
 ## Api
 
