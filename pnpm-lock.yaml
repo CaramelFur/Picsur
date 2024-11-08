@@ -104,6 +104,9 @@ importers:
       ms:
         specifier: 2.1.3
         version: 2.1.3
+      node-addon-api:
+        specifier: ^8.2.2
+        version: 8.2.2
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
@@ -2057,7 +2060,7 @@ packages:
     peerDependencies:
       '@angular/compiler-cli': ^18.0.0
       typescript: ~5.5.4
-      webpack: '>=5.76.0'
+      webpack: ^5.54.0
 
   '@ngui/common@1.0.0':
     resolution: {integrity: sha512-T0vX6jFLR+19iUVqM0J6lQkcDo6Iaq8pptzMJDEjLG3HkpgeM9SYxiTFV3+yHuP4QzQQ6/VP8gJ+1f4M7iZv5Q==}
@@ -3113,6 +3116,7 @@ packages:
 
   critters@0.0.24:
     resolution: {integrity: sha512-Oyqew0FGM0wYUSNqR0L6AteO5MpMoUU0rhKRieXeiKs+PmRTxiJMyaunYB2KF6fQ3dzChXKCpbFOEJx3OQ1v/Q==}
+    deprecated: Ownership of Critters has moved to the Nuxt team, who will be maintaining the project going forward. If you'd like to keep using Critters, please switch to the actively-maintained fork at https://github.com/danielroe/beasties
 
   cron@3.1.7:
     resolution: {integrity: sha512-tlBg7ARsAMQLzgwqVxy8AZl/qlTc5nibqYwtNGoCrd+cV+ugI+tvZC1oT/8dFH8W455YrywGykx/KMmAqOr7Jw==}
@@ -4448,6 +4452,10 @@ packages:
 
   node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
+
+  node-addon-api@8.2.2:
+    resolution: {integrity: sha512-9emqXAKhVoNrQ792nLI/wpzPpJ/bj/YXxW0CvAau1+RdGBcCRF1Dmz7719zgVsQNrzHl9Tzn3ImZ4qWFarWL0A==}
+    engines: {node: ^18 || ^20 || >= 21}
 
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
@@ -10436,6 +10444,8 @@ snapshots:
   node-addon-api@6.1.0: {}
 
   node-addon-api@7.1.1: {}
+
+  node-addon-api@8.2.2: {}
 
   node-domexception@1.0.0: {}
 

@@ -7,6 +7,10 @@ export enum ImageFileType {
   PNG = 'image:png',
   WEBP = 'image:webp',
   TIFF = 'image:tiff',
+  AVIF = 'image:avif',
+  HEIF = 'image:heif',
+  JXL = 'image:jxl',
+  JP2 = 'image:jp2',
   BMP = 'image:bmp',
   // ICO = 'image:ico',
 }
@@ -51,6 +55,10 @@ const FileType2MimeMap: {
   [ImageFileType.PNG]: 'image/png',
   [ImageFileType.WEBP]: 'image/webp', // Image webp comes later, so will be default
   [ImageFileType.TIFF]: 'image/tiff',
+  [ImageFileType.AVIF]: 'image/avif',
+  [ImageFileType.HEIF]: 'image/heic',
+  [ImageFileType.JXL]: 'image/jxl',
+  [ImageFileType.JP2]: 'image/jp2',
   [ImageFileType.BMP]: 'image/bmp',
   // [ImageFileType.ICO]: 'image/x-icon',
 };
@@ -83,6 +91,10 @@ const FileType2ExtMap: {
   [ImageFileType.PNG]: 'png',
   [ImageFileType.WEBP]: 'webp',
   [ImageFileType.TIFF]: 'tiff',
+  [ImageFileType.AVIF]: 'avif',
+  [ImageFileType.HEIF]: 'heif',
+  [ImageFileType.JXL]: 'jxl',
+  [ImageFileType.JP2]: 'jp2',
   [ImageFileType.BMP]: 'bmp',
   // [ImageFileType.ICO]: 'ico',
 };

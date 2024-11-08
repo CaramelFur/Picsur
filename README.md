@@ -153,7 +153,7 @@ services:
       # PICSUR_VERBOSE: "true"
     restart: unless-stopped
   picsur_postgres:
-    image: postgres:14-alpine
+    image: postgres:17-alpine
     container_name: picsur_postgres
     environment:
       POSTGRES_DB: picsur

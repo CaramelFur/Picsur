@@ -29,10 +29,14 @@ export class SharpWorker {
       return this.purge('MEMORY_LIMIT_MB environment variable is not set');
     }
 
-    setrlimit('data', {
-      soft: 1000 * 1000 * memoryLimit,
-      hard: 1000 * 1000 * memoryLimit,
-    });
+    try {
+      setrlimit('data', {
+        soft: 1000 * 1000 * memoryLimit,
+        hard: 1000 * 1000 * memoryLimit,
+      });
+    } catch (e) {
+      console.warn('Failed to set memory limit');
+    }
 
     process.on('message', this.messageHandler.bind(this));
 

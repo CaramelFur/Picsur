@@ -1,7 +1,7 @@
 version: '3'
 services:
   picsur:
-    image: ghcr.io/caramelfur/picsur:latest
+    image: ghcr.io/caramelfur/picsur-alpha:latest
     container_name: picsur
     ports:
       - '8080:8080'
@@ -30,7 +30,7 @@ services:
       # PICSUR_VERBOSE: "true"
     restart: unless-stopped
   picsur_postgres:
-    image: postgres:14-alpine
+    image: postgres:17-alpine
     container_name: picsur_postgres
     environment:
       POSTGRES_DB: picsur

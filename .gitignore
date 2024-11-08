@@ -11,3 +11,5 @@ yarn-error.log
 .pnp.*
 
 temp
+
+**/.DS_Store

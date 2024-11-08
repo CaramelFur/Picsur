@@ -93,6 +93,26 @@ export async function UniversalSharpOut(
         .tiff({ quality: options?.quality })
         .toBuffer({ resolveWithObject: true });
       break;
+    case ImageFileType.AVIF:
+      result = await image
+        .avif({ quality: options?.quality })
+        .toBuffer({ resolveWithObject: true });
+      break;
+    case ImageFileType.HEIF:
+      result = await image
+        .heif({ quality: options?.quality, compression: 'av1' })
+        .toBuffer({ resolveWithObject: true });
+      break;
+    case ImageFileType.JXL:
+      result = await image
+        .jxl({ quality: options?.quality })
+        .toBuffer({ resolveWithObject: true });
+      break;
+    case ImageFileType.JP2:
+      result = await image
+        .jp2({ quality: options?.quality })
+        .toBuffer({ resolveWithObject: true });
+      break;
     case ImageFileType.BMP:
       result = await bmpSharpOut(image);
       break;
