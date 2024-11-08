@@ -22,7 +22,7 @@ RUN tar -xf vips.tar.xz && \
 FROM node:20-alpine AS vips_clean
 COPY --from=vips_builder /usr/local /usr/local
 RUN apk add pkgconfig glib expat libexif jpeg libjxl openjpeg libpng tiff \
-    libheif libwebp cgif imagemagick librsvg pango cfitsio poppler \
+    libheif libwebp cgif imagemagick librsvg pango cfitsio poppler poppler-glib \
     libspng lcms2 fftw libimagequant
 # === END VIPS ===
 
