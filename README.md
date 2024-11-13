@@ -43,8 +43,11 @@ Every featured marked here should work in the latest release.
   - PNG
   - WEBP (animated supported)
   - TIFF
+  - HEIF
   - BMP
   - GIF (animated supported)
+  - JPG-XL
+  - JPG-2000
 - [x] Convert images
 - [x] Edit images
   - Resize
