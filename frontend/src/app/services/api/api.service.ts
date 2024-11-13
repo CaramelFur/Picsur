@@ -3,7 +3,7 @@ import { WINDOW } from '@ng-web-apis/common';
 import axios, {
   AxiosRequestConfig,
   AxiosResponse,
-  AxiosResponseHeaders,
+  AxiosResponseHeaders
 } from 'axios';
 import { ApiResponseSchema } from 'picsur-shared/dist/dto/api/api.dto';
 import { FileType2Ext } from 'picsur-shared/dist/dto/mimes.dto';
@@ -244,15 +244,13 @@ export class ApiService {
             uploadProgress.next((e.loaded / (e.total ?? 1000000)) * 100);
           },
           signal: abortController.signal,
+          validateStatus: () => true,
           ...options,
         });
 
         uploadProgress.complete();
         downloadProgress.complete();
 
-        if (result.status < 200 || result.status >= 300) {
-          return Fail(FT.Network, 'Recieved a non-ok response');
-        }
         return result;
       } catch (e) {
         return Fail(FT.Network, e);

@@ -3,13 +3,15 @@ import {
   MiddlewareConsumer,
   Module,
   NestModule,
-  OnModuleInit,
+  OnApplicationBootstrap,
+  OnApplicationShutdown
 } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import cors from 'cors';
 import { IncomingMessage, ServerResponse } from 'http';
 import semver from 'semver';
+import { FileDBModule } from './collections/file-db/file-db.module.js';
 import { EarlyConfigModule } from './config/early/early-config.module.js';
 import { ServeStaticConfigService } from './config/early/serve-static.config.service.js';
 import { DatabaseModule } from './database/database.module.js';
@@ -66,6 +68,7 @@ const imageCacheSet = (
     }),
     ScheduleModule.forRoot(),
     DatabaseModule,
+    FileDBModule,
     AuthManagerModule,
     UsageManagerModule,
     DemoManagerModule,
@@ -73,7 +76,7 @@ const imageCacheSet = (
     PicsurLayersModule,
   ],
 })
-export class AppModule implements NestModule, OnModuleInit {
+export class AppModule implements NestModule, OnApplicationBootstrap, OnApplicationShutdown {
   private readonly logger = new Logger(AppModule.name);
 
   configure(consumer: MiddlewareConsumer) {
@@ -83,7 +86,7 @@ export class AppModule implements NestModule, OnModuleInit {
       .forRoutes('i/(.*)');
   }
 
-  onModuleInit() {
+  onApplicationBootstrap() {
     const nodeVersion = process.version;
     if (!supportedNodeVersions.some((v) => semver.satisfies(nodeVersion, v))) {
       this.logger.error(
@@ -94,5 +97,9 @@ export class AppModule implements NestModule, OnModuleInit {
         `Supported Node versions: ${supportedNodeVersions.join(', ')}`,
       );
     }
+  }
+
+  onApplicationShutdown() {
+    this.logger.warn(`Shutting down`);
   }
 }

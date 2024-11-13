@@ -4,7 +4,6 @@ import { AuthConfigService } from './auth.config.service.js';
 import { EarlyJwtConfigService } from './early-jwt.config.service.js';
 import { HostConfigService } from './host.config.service.js';
 import { MultipartConfigService } from './multipart.config.service.js';
-import { RedisConfigService } from './redis.config.service.js';
 import { S3ConfigService } from './s3.config.service.js';
 import { ServeStaticConfigService } from './serve-static.config.service.js';
 import { TypeOrmConfigService } from './type-orm.config.service.js';
@@ -23,7 +22,6 @@ import { TypeOrmConfigService } from './type-orm.config.service.js';
     HostConfigService,
     AuthConfigService,
     MultipartConfigService,
-    RedisConfigService,
     S3ConfigService,
   ],
   exports: [
@@ -34,7 +32,6 @@ import { TypeOrmConfigService } from './type-orm.config.service.js';
     HostConfigService,
     AuthConfigService,
     MultipartConfigService,
-    RedisConfigService,
     S3ConfigService,
   ],
 })

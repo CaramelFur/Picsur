@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity.js';
 import { EImageFileBackend } from '../../database/entities/images/image-file.entity.js';
 import { EImageBackend } from '../../database/entities/images/image.entity.js';
+import { FileDBModule } from '../file-db/file-db.module.js';
 import { ImageDBService } from './image-db.service.js';
 import { ImageFileDBService } from './image-file-db.service.js';
 
@@ -13,6 +14,7 @@ import { ImageFileDBService } from './image-file-db.service.js';
       EImageFileBackend,
       EImageDerivativeBackend,
     ]),
+    FileDBModule
   ],
   providers: [ImageDBService, ImageFileDBService],
   exports: [ImageDBService, ImageFileDBService],

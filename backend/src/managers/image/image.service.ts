@@ -4,18 +4,18 @@ import { fileTypeFromBuffer, FileTypeResult } from 'file-type';
 import { ImageRequestParams } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import {
-    AnimFileType,
-    FileType,
-    ImageFileType,
-    Mime2FileType,
+  AnimFileType,
+  FileType,
+  ImageFileType,
+  Mime2FileType,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { SysPreference } from 'picsur-shared/dist/dto/sys-preferences.enum';
 import { UsrPreference } from 'picsur-shared/dist/dto/usr-preferences.enum';
 import {
-    AsyncFailable,
-    Fail,
-    FT,
-    HasFailed,
+  AsyncFailable,
+  Fail,
+  FT,
+  HasFailed,
 } from 'picsur-shared/dist/types/failable';
 import { FindResult } from 'picsur-shared/dist/types/find-result';
 import { ParseFileType } from 'picsur-shared/dist/util/parse-mime';
@@ -62,11 +62,13 @@ export class ImageManagerService {
     userid: string | undefined,
     options: Partial<Pick<EImageBackend, 'file_name' | 'expires_at'>>,
   ): AsyncFailable<EImageBackend> {
-    if (options.expires_at !== undefined && options.expires_at !== null) {
-      if (options.expires_at < new Date()) {
-        return Fail(FT.UsrValidation, 'Expiration date must be in the future');
-      }
-    }
+    if (
+      options.expires_at !== undefined &&
+      options.expires_at !== null &&
+      options.expires_at < new Date()
+    )
+      return Fail(FT.UsrValidation, 'Expiration date must be in the future');
+
     return await this.imagesService.update(id, userid, options);
   }
 
@@ -119,13 +121,24 @@ export class ImageManagerService {
     );
     if (HasFailed(imageEntity)) return imageEntity;
 
+    const onFail = async () => {
+      const result = await this.imagesService.delete(
+        [imageEntity.id],
+        undefined,
+      );
+      if (HasFailed(result)) result.print(this.logger);
+    };
+
     const imageFileEntity = await this.imageFilesService.setFile(
       imageEntity.id,
       ImageEntryVariant.MASTER,
       processResult.image,
       processResult.filetype,
     );
-    if (HasFailed(imageFileEntity)) return imageFileEntity;
+    if (HasFailed(imageFileEntity)) {
+      await onFail();
+      return imageFileEntity;
+    }
 
     if (keepOriginal) {
       const originalFileEntity = await this.imageFilesService.setFile(
@@ -134,7 +147,10 @@ export class ImageManagerService {
         image,
         fileType.identifier,
       );
-      if (HasFailed(originalFileEntity)) return originalFileEntity;
+      if (HasFailed(originalFileEntity)) {
+        await onFail();
+        return originalFileEntity;
+      }
     }
 
     return imageEntity;
@@ -167,9 +183,12 @@ export class ImageManagerService {
         const sourceFileType = ParseFileType(masterImage.filetype);
         if (HasFailed(sourceFileType)) return sourceFileType;
 
+        const data = await this.imageFilesService.getFileData(masterImage);
+        if (HasFailed(data)) return data;
+
         const startTime = Date.now();
         const convertResult = await this.convertService.convert(
-          masterImage.data,
+          data,
           sourceFileType,
           targetFileType,
           allow_editing ? options : {},
@@ -237,6 +256,12 @@ export class ImageManagerService {
       [ImageEntryVariant.MASTER]: result[ImageEntryVariant.MASTER],
       [ImageEntryVariant.ORIGINAL]: result[ImageEntryVariant.ORIGINAL],
     };
+  }
+
+  public async getFileData(
+    file: EImageFileBackend | EImageDerivativeBackend,
+  ): AsyncFailable<Buffer> {
+    return this.imageFilesService.getFileData(file);
   }
 
   // Util stuff ==================================================================

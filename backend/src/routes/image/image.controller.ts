@@ -2,17 +2,19 @@ import { Controller, Get, Head, Logger, Query, Res } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
 import type { FastifyReply } from 'fastify';
 import {
-    ImageMetaResponse,
-    ImageRequestParams,
+  ImageMetaResponse,
+  ImageRequestParams,
 } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageEntryVariant } from 'picsur-shared/dist/dto/image-entry-variant.enum';
 import { FileType2Mime } from 'picsur-shared/dist/dto/mimes.dto';
 import {
-    FT,
-    IsFailure,
-    ThrowIfFailed,
+  FT,
+  IsFailure,
+  ThrowIfFailed,
 } from 'picsur-shared/dist/types/failable';
 import { UserDbService } from '../../collections/user-db/user-db.service.js';
+import { EImageDerivativeBackend } from '../../database/entities/images/image-derivative.entity.js';
+import { EImageFileBackend } from '../../database/entities/images/image-file.entity.js';
 import { ImageFullIdParam } from '../../decorators/image-id/image-full-id.decorator.js';
 import { ImageIdParam } from '../../decorators/image-id/image-id.decorator.js';
 import { RequiredPermissions } from '../../decorators/permissions.decorator.js';
@@ -61,25 +63,23 @@ export class ImageController {
     @Query() params: ImageRequestParams,
   ): Promise<Buffer> {
     try {
+      let image: EImageFileBackend | EImageDerivativeBackend;
       if (fullid.variant === ImageEntryVariant.ORIGINAL) {
-        const image = ThrowIfFailed(
-          await this.imagesService.getOriginal(fullid.id),
+        image = ThrowIfFailed(await this.imagesService.getOriginal(fullid.id));
+      } else {
+        image = ThrowIfFailed(
+          await this.imagesService.getConverted(
+            fullid.id,
+            fullid.filetype,
+            params,
+          ),
         );
-
-        res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
-        return image.data;
       }
 
-      const image = ThrowIfFailed(
-        await this.imagesService.getConverted(
-          fullid.id,
-          fullid.filetype,
-          params,
-        ),
-      );
+      const data = ThrowIfFailed(await this.imagesService.getFileData(image));
 
       res.type(ThrowIfFailed(FileType2Mime(image.filetype)));
-      return image.data;
+      return data;
     } catch (e) {
       if (!IsFailure(e) || e.getType() !== FT.NotFound) throw e;
 

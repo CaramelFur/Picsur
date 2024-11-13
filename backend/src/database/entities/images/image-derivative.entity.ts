@@ -1,41 +1,46 @@
 import {
-    Column,
-    Entity,
-    Index,
-    JoinColumn,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-    Unique,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  Unique
 } from 'typeorm';
 import { EImageBackend } from './image.entity.js';
 
 @Entity()
 @Unique(['image_id', 'key'])
 export class EImageDerivativeBackend {
-  @PrimaryGeneratedColumn('uuid')
-  private _id?: string;
+  @PrimaryColumn({ type: 'uuid', nullable: false, name: '_id' })
+  @Index()
+  fileKey: string;
 
-  // We do a little trickery
+  // == Reference to parent image
   @Index()
   @ManyToOne(() => EImageBackend, (image) => image.derivatives, {
-    nullable: false,
-    onDelete: 'CASCADE',
+    nullable: true,
+    onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'image_id' })
   private _image?: any;
 
   @Column({
     name: 'image_id',
+    nullable: true,
   })
-  image_id: string;
+  image_id: string | null;
 
+  // == Derivative options hash
   @Index()
   @Column({ nullable: false })
   key: string;
 
+  // == Filetype of the derivative
   @Column({ nullable: false })
   filetype: string;
 
+  // == Last time the derivative was read
   @Column({
     type: 'timestamptz',
     name: 'last_read',
@@ -43,7 +48,7 @@ export class EImageDerivativeBackend {
   })
   last_read: Date;
 
-  // Binary data
-  @Column({ type: 'bytea', nullable: false })
-  data: Buffer;
+  // == Binary data
+  @Column({ type: 'bytea', nullable: true })
+  data: Buffer | null;
 }

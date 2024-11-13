@@ -3,12 +3,16 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ParseString } from 'picsur-shared/dist/util/parse-simple';
 import { EnvPrefix } from '../config.static.js';
+import { StorageConfigService } from './storage.config.service.js';
 
 @Injectable()
 export class S3ConfigService {
   private readonly logger = new Logger(S3ConfigService.name);
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly storageConfigService: StorageConfigService,
+  ) {
     if (this.getS3Endpoint())
       this.logger.log('Custom S3 Endpoint: ' + this.getS3Endpoint());
 
