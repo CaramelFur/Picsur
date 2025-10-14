@@ -83,6 +83,28 @@ export class ImageDBService {
     }
   }
 
+  public async findAll(
+    userid: string | undefined,
+  ): AsyncFailable<{ results: EImageBackend[]; total: number }> {
+    try {
+      const [found, amount] = await this.imageRepo.findAndCount({
+        order: { created: 'DESC' },
+        where: {
+          user_id: userid,
+        },
+      });
+
+      if (found === undefined) return Fail(FT.NotFound, 'Images not found');
+
+      return {
+        results: found,
+        total: amount,
+      };
+    } catch (e) {
+      return Fail(FT.Database, e);
+    }
+  }
+
   public async count(): AsyncFailable<number> {
     try {
       return await this.imageRepo.count();

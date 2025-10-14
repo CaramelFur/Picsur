@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Logger } from '../../logger';
 import {
   ImageDeleteRequest,
   ImageDeleteResponse,
+  ImageDeleteWithKeyRequest,
+  ImageDeleteWithKeyResponse,
+  ImageListAllRequest,
+  ImageListAllResponse,
   ImageListRequest,
   ImageListResponse,
   ImageUpdateRequest,
@@ -27,6 +32,7 @@ import { ImageUploadRequest } from '../../models/dto/image-upload-request.dto';
 import { ApiService } from './api.service';
 import { InfoService } from './info.service';
 import { UserService } from './user.service';
+import { AutoUnsubscribe } from '../../decorators/autounsub.decorator';
 
 @Injectable({
   providedIn: 'root',
@@ -84,6 +90,19 @@ export class ImageService {
     ).result;
   }
 
+  public async ListAllImagesUnpaged(
+    userID?: string,
+  ): AsyncFailable<ImageListAllResponse> {
+    return await this.api.post(
+      ImageListAllRequest,
+      ImageListAllResponse,
+      '/api/image/list/all',
+      {
+        user_id: userID,
+      },
+    ).result;
+  }
+
   public async ListMyImages(
     count: number,
     page: number,
@@ -94,6 +113,15 @@ export class ImageService {
     }
 
     return await this.ListAllImages(count, page, userID);
+  }
+
+  public async ListAllMyImagesUnpaged(): AsyncFailable<ImageListAllResponse> {
+    const userID = await this.userService.snapshot?.id;
+    if (userID === undefined) {
+      return Fail(FT.Authentication, 'User not logged in');
+    }
+
+    return await this.ListAllImagesUnpaged(userID);
   }
 
   public async UpdateImage(

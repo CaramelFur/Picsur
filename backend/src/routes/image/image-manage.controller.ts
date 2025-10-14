@@ -13,6 +13,8 @@ import {
     ImageDeleteResponse,
     ImageDeleteWithKeyRequest,
     ImageDeleteWithKeyResponse,
+    ImageListAllRequest,
+    ImageListAllResponse,
     ImageListRequest,
     ImageListResponse,
     ImageUpdateRequest,
@@ -88,6 +90,25 @@ export class ImageManageController {
 
     const found = ThrowIfFailed(
       await this.imagesService.findMany(body.count, body.page, body.user_id),
+    );
+
+    return found;
+  }
+
+  @Post('list/all')
+  @RequiredPermissions(Permission.ImageManage)
+  @Returns(ImageListAllResponse)
+  async listAllMyImages(
+    @Body() body: ImageListAllRequest,
+    @ReqUserID() userid: string,
+    @HasPermission(Permission.ImageAdmin) isImageAdmin: boolean,
+  ): Promise<ImageListAllResponse> {
+    if (!isImageAdmin) {
+      body.user_id = userid;
+    }
+
+    const found = ThrowIfFailed(
+      await this.imagesService.findAll(body.user_id),
     );
 
     return found;

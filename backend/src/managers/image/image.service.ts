@@ -57,6 +57,12 @@ export class ImageManagerService {
     return await this.imagesService.findMany(count, page, userid);
   }
 
+  public async findAll(
+    userid: string | undefined,
+  ): AsyncFailable<{ results: EImageBackend[]; total: number }> {
+    return await this.imagesService.findAll(userid);
+  }
+
   public async update(
     id: string,
     userid: string | undefined,
