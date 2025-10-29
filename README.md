@@ -124,6 +124,8 @@ It is only possible to use the clipboard functionality on HTTPS websites or loca
 
 ## Running your own instance
 
+[![Deploy on Zeabur](https://zeabur.com/button.svg)](https://zeabur.com/templates/LWO8I0?referralCode=LokiSalmonNeko)
+
 You easily run this service yourself via Docker. Here is an example docker-compose file:
 
 ```yaml
