@@ -37,6 +37,13 @@ export class ImageProcessorService {
     image: Buffer,
     filetype: FileType,
   ): AsyncFailable<ImageResult> {
+    if (filetype.identifier === ImageFileType.SVG) {
+      return {
+        image,
+        filetype: filetype.identifier,
+      };
+    }
+
     const outputFileType = ParseFileType(ImageFileType.QOI);
     if (HasFailed(outputFileType)) return outputFileType;
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   FileType2Ext,
+  ImageFileType,
   SupportedFileTypes,
 } from 'picsur-shared/dist/dto/mimes.dto';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
@@ -29,11 +30,18 @@ export class UtilService {
       value: string;
       key: string;
     }[] = [];
+    const seenExtensions = new Set<string>();
 
     newOptions.push(
-      ...SupportedFileTypes.map((mime) => {
+      ...SupportedFileTypes.flatMap((mime) => {
+        if (mime === ImageFileType.SVG) return [];
+
         let ext = FileType2Ext(mime);
         if (HasFailed(ext)) ext = 'Error';
+
+        if (seenExtensions.has(ext)) return [];
+        seenExtensions.add(ext);
+
         return {
           value: ext.toUpperCase(),
           key: mime,

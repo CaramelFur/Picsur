@@ -42,7 +42,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     private readonly errorService: ErrorService,
     private readonly utilService: UtilService,
     private readonly changeDetector: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   private id = '';
   public metadata: ImageMetaResponse | null = null;
@@ -70,7 +70,10 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   public get hasOriginal(): boolean {
     if (this.metadata === null) return false;
-    return this.metadata.fileTypes.original !== undefined;
+    return (
+      this.metadata.fileTypes.original !== undefined ||
+      this.metadata.fileTypes.master === ImageFileType.SVG
+    );
   }
 
   public get previewLink(): string {
@@ -79,8 +82,13 @@ export class ViewComponent implements OnInit, OnDestroy {
     // Get width of screen in pixels
     const width = window.innerWidth * window.devicePixelRatio;
 
+    const previewFiletype =
+      this.metadata.fileTypes.master === ImageFileType.SVG
+        ? ImageFileType.JPEG
+        : this.metadata.fileTypes.master;
+
     return (
-      this.imageService.GetImageURL(this.id, this.metadata.fileTypes.master) +
+      this.imageService.GetImageURL(this.id, previewFiletype) +
       (width > 1 ? `?width=${width}&shrinkonly=yes` : '')
     );
   }
@@ -93,7 +101,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     const format = this.selectedFormat;
     const links = this.imageService.CreateImageLinksFromID(
       this.id,
-      format === 'original' ? null : format,
+      this.getImageLinkFiletype(format),
       this.image?.file_name,
     );
 
@@ -171,7 +179,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
     if (this.hasOriginal) {
       newOptions.push({
-        value: 'Original',
+        value: this.getOriginalFormatLabel(),
         key: 'original',
       });
     }
@@ -179,6 +187,25 @@ export class ViewComponent implements OnInit, OnDestroy {
     newOptions = newOptions.concat(this.utilService.getBaseFormatOptions());
 
     this.formatOptions = newOptions;
+  }
+
+  private getImageLinkFiletype(format: string): string | null {
+    if (format !== 'original') return format;
+    if (this.metadata === null) return null;
+
+    const originalFiletype =
+      this.metadata.fileTypes.original ?? this.metadata.fileTypes.master;
+
+    return originalFiletype === ImageFileType.SVG ? ImageFileType.SVG : null;
+  }
+
+  private getOriginalFormatLabel(): string {
+    if (this.metadata === null) return 'Original';
+
+    const originalFiletype =
+      this.metadata.fileTypes.original ?? this.metadata.fileTypes.master;
+
+    return originalFiletype === ImageFileType.SVG ? 'SVG' : 'Original';
   }
 
   private subscribeTimeout(expires_at: Date | null) {

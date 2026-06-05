@@ -49,7 +49,7 @@
             "optimization": true,
             "webWorkerTsConfig": "tsconfig.worker.json",
             "customWebpackConfig": {
-              "path": "./custom-webpack.config.js"
+              "path": "./custom-webpack.config.mjs"
             }
           },
           "configurations": {

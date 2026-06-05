@@ -6,6 +6,7 @@ export enum ImageFileType {
   JPEG = 'image:jpeg',
   PNG = 'image:png',
   WEBP = 'image:webp',
+  SVG = 'image:svg',
   TIFF = 'image:tiff',
   AVIF = 'image:avif',
   HEIF = 'image:heif',
@@ -54,6 +55,7 @@ const FileType2MimeMap: {
   [ImageFileType.JPEG]: 'image/jpeg',
   [ImageFileType.PNG]: 'image/png',
   [ImageFileType.WEBP]: 'image/webp', // Image webp comes later, so will be default
+  [ImageFileType.SVG]: 'image/svg+xml',
   [ImageFileType.TIFF]: 'image/tiff',
   [ImageFileType.AVIF]: 'image/avif',
   [ImageFileType.HEIF]: 'image/heic',
@@ -90,6 +92,7 @@ const FileType2ExtMap: {
   [ImageFileType.JPEG]: 'jpg',
   [ImageFileType.PNG]: 'png',
   [ImageFileType.WEBP]: 'webp',
+  [ImageFileType.SVG]: 'svg',
   [ImageFileType.TIFF]: 'tiff',
   [ImageFileType.AVIF]: 'avif',
   [ImageFileType.HEIF]: 'heif',

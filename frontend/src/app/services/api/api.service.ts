@@ -181,8 +181,11 @@ export class ApiService {
     });
 
     return MapRunningRequest(response, async (r) => {
-      const mimeType = r.headers['Content-Type']?.toString() ?? 'other/unknown';
-      let name = r.headers['Content-Disposition'];
+      const mimeType =
+        (r.headers['content-type'] ?? r.headers['Content-Type'])?.toString() ??
+        'other/unknown';
+      let name =
+        r.headers['content-disposition'] ?? r.headers['Content-Disposition'];
       if (!name) {
         name = url.split('/').pop() ?? 'unnamed';
       }
