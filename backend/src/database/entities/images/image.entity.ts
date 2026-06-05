@@ -27,6 +27,12 @@ export class EImageBackend implements EImage {
   file_name: string;
 
   @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  source_filetype: string | null;
+
+  @Column({
     type: 'timestamptz',
     nullable: true,
   })

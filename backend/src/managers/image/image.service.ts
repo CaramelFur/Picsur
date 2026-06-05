@@ -115,6 +115,7 @@ export class ImageManagerService {
     const imageEntity = await this.imagesService.create(
       userid,
       name,
+      fileType.identifier,
       withDeleteKey,
     );
     if (HasFailed(imageEntity)) return imageEntity;

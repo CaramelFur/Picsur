@@ -16,12 +16,14 @@ export class ImageDBService {
   public async create(
     userid: string,
     filename: string,
+    sourceFiletype: string,
     withDeleteKey: boolean,
   ): AsyncFailable<EImageBackend> {
     let imageEntity = new EImageBackend();
     imageEntity.user_id = userid;
     imageEntity.created = new Date();
     imageEntity.file_name = filename;
+    imageEntity.source_filetype = sourceFiletype;
     if (withDeleteKey) imageEntity.delete_key = generateRandomString(32);
 
     try {
