@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UserRoutingModule } from './user.routing.module';
+import { I18nModule } from '../../i18n/i18n.module';
 import { ErrorManagerModule } from '../../util/error-manager/error-manager.module';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { ErrorManagerModule } from '../../util/error-manager/error-manager.modul
   imports: [
     CommonModule,
     ErrorManagerModule,
+    I18nModule,
 
     UserRoutingModule,
     FormsModule,

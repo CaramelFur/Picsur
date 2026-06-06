@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { WA_HISTORY } from '@ng-web-apis/common';
+import { TranslateService } from '@ngx-translate/core';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
 import { InfoService } from '../../services/api/info.service';
 import { Logger } from '../../services/logger/logger.service';
@@ -16,6 +17,7 @@ export class CompatibilityService {
     private readonly infoService: InfoService,
     private readonly errorService: ErrorService,
     private readonly dialogService: DialogService,
+    private readonly translateService: TranslateService,
     @Inject(WA_HISTORY) private readonly history: History,
   ) {
     // TODO: Better compatibility check
@@ -35,17 +37,18 @@ export class CompatibilityService {
     if (!isCompatible) {
       this.dialogService
         .showDialog({
-          title: 'Server is not compatible',
-          description:
-            'The server is not compatible with this version of the client. You can ignore this, but expect things to not work.',
+          title: this.translateService.instant('compatibility.title'),
+          description: this.translateService.instant(
+            'compatibility.description',
+          ),
           buttons: [
             {
-              text: 'Back',
+              text: this.translateService.instant('compatibility.back'),
               name: 'back',
               color: 'accent',
             },
             {
-              text: 'Ignore',
+              text: this.translateService.instant('compatibility.ignore'),
               name: 'ignore',
               color: 'warn',
             },

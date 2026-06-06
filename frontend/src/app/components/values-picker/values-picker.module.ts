@@ -6,12 +6,14 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { I18nModule } from '../../i18n/i18n.module';
 import { ValuesPickerComponent } from './values-picker.component';
 
 @NgModule({
   declarations: [ValuesPickerComponent],
   imports: [
     CommonModule,
+    I18nModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,

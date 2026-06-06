@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     private readonly permissionService: PermissionService,
     private readonly router: Router,
     private readonly errorService: ErrorService,
+    private readonly translateService: TranslateService,
   ) {}
 
   ngOnInit(): void {
@@ -59,7 +61,9 @@ export class LoginComponent implements OnInit {
     if (HasFailed(user))
       return this.errorService.showFailure(user, this.logger);
 
-    this.errorService.success('Login successful');
+    this.errorService.success(
+      this.translateService.instant('auth.loginSuccess'),
+    );
     this.router.navigate(['/']);
   }
 

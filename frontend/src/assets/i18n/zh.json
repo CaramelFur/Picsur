@@ -1,0 +1,358 @@
+{
+  "common": {
+    "actions": {
+      "add": "添加",
+      "cancel": "取消",
+      "close": "关闭",
+      "delete": "删除",
+      "edit": "编辑",
+      "login": "登录",
+      "register": "注册",
+      "save": "保存",
+      "update": "更新",
+      "view": "查看"
+    },
+    "loading": "加载中...",
+    "empty": "空",
+    "yes": "是",
+    "no": "否",
+    "never": "从未",
+    "invalidValue": "无效值",
+    "actionCannotBeUndone": "此操作无法撤销。",
+    "copy": "复制",
+    "hide": "隐藏"
+  },
+  "header": {
+    "uploadImage": "上传图片",
+    "loginOrRegister": "登录或注册",
+    "loginAccount": "登录您的账户",
+    "yourAccount": "您的账户",
+    "language": "语言",
+    "myImages": "我的图片",
+    "settings": "设置",
+    "logout": "注销",
+    "logoutSuccess": "注销成功"
+  },
+  "languages": {
+    "en": "English",
+    "zh": "中文"
+  },
+  "auth": {
+    "loginTitle": "登录您的账户",
+    "registerTitle": "注册新账户",
+    "username": "用户名",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "loginSuccess": "登录成功",
+    "registerSuccess": "注册成功",
+    "registerSuccessNoLogin": "注册成功，但未登录",
+    "invalidUsernameOrPassword": "用户名或密码无效",
+    "notLoggedIn": "未登录",
+    "invalidToken": "无效令牌",
+    "invalidTokenData": "无效令牌数据",
+    "usernameErrors": {
+      "required": "用户名为必填项",
+      "minLength": "用户名太短",
+      "maxLength": "用户名太长",
+      "pattern": "用户名只能包含字母和数字",
+      "unavailable": "用户名已被占用",
+      "invalid": "无效用户名"
+    },
+    "passwordErrors": {
+      "required": "密码为必填项",
+      "minLength": "密码太短",
+      "maxLength": "密码太长",
+      "compare": "密码不匹配",
+      "invalid": "无效密码"
+    }
+  },
+  "upload": {
+    "title": "上传图片",
+    "dropHint": "将图片拖放到此处 / 粘贴到此处，或者点击选择一张图片",
+    "loginRequired": "请登录",
+    "permissionRequired": "您还没有上传权限",
+    "clipboardEmpty": "剪贴板为空",
+    "clipboardNoImages": "剪贴板中没有图片",
+    "clipboardImageError": "从剪贴板获取图片时出错"
+  },
+  "images": {
+    "empty": "没有可显示的图片",
+    "title": "您的图片",
+    "uploaded": "上传于",
+    "expires": "过期时间",
+    "uploadedByYouAlt": "由您上传的图片",
+    "deleteConfirmTitle": "您确定要删除这张图片吗？",
+    "deleteConfirmDescription": "此操作无法撤销。",
+    "deleted": "图片已删除",
+    "downloaded": "图片已下载",
+    "invalidLink": "无效的图片链接",
+    "notFound": "未找到图片",
+    "expired": "图片已过期",
+    "updated": "图片已成功更新",
+    "deleteFailedPermission": "图片未被删除，可能是权限不足",
+    "defaultAlt": "图片"
+  },
+  "workers": {
+    "couldNotFetchImage": "无法获取图片"
+  },
+  "copyField": {
+    "copied": "已复制 {{ label }}！",
+    "copyFailed": "复制到剪贴板失败"
+  },
+  "valuesPicker": {
+    "addPlaceholder": "添加 {{ name }}..."
+  },
+  "view": {
+    "imageFallbackName": "图片",
+    "uploadedBy": "{{ user }} 上传于 {{ date }}",
+    "imageUrl": "图片 URL",
+    "imageFormat": "图片格式",
+    "markdown": "Markdown",
+    "html": "HTML",
+    "bbcode": "BBCode",
+    "rst": "Rst",
+    "original": "原始文件",
+    "downloadTooltip": "下载图片",
+    "shareTooltip": "分享图片",
+    "customizeTooltip": "自定义图片",
+    "editTooltip": "编辑图片",
+    "deleteTooltip": "删除图片",
+    "customize": {
+      "title": "自定义图片",
+      "format": "格式",
+      "height": "高度",
+      "width": "宽度",
+      "rotation": "旋转",
+      "quality": "质量 %",
+      "flipHorizontal": "水平翻转图片",
+      "flipVertical": "垂直翻转图片",
+      "shrinkOnly": "仅缩小",
+      "greyscale": "灰度",
+      "disableTransparency": "禁用透明度",
+      "negative": "负片",
+      "customUrl": "自定义图片 URL",
+      "sizeTooltip": "留空以保持原始宽高比"
+    },
+    "edit": {
+      "title": "编辑图片",
+      "fileTitle": "标题",
+      "expiresAfter": "过期时间",
+      "never": "从不",
+      "fiveMinutes": "5 分钟",
+      "tenMinutes": "10 分钟",
+      "thirtyMinutes": "30 分钟",
+      "oneHour": "1 小时",
+      "sixHours": "6 小时",
+      "twelveHours": "12 小时",
+      "oneDay": "1 天",
+      "oneWeek": "1 周",
+      "oneMonth": "1 个月"
+    }
+  },
+  "download": {
+    "downloading": "正在下载 {{ name }}...",
+    "shareUnsupported": "您的设备不支持分享",
+    "shareFailed": "分享失败！"
+  },
+  "api": {
+    "networkError": "网络错误",
+    "somethingWentWrong": "出现了一些问题",
+    "nonOkResponse": "收到非正常响应"
+  },
+  "compatibility": {
+    "title": "服务器不兼容",
+    "description": "服务器与此客户端版本不兼容。您可以忽略此提示，但可能会有功能无法正常工作。",
+    "back": "返回",
+    "ignore": "忽略"
+  },
+  "preferences": {
+    "noUserPermission": "您没有编辑用户偏好设置的权限",
+    "noSystemPermission": "您没有编辑系统偏好设置的权限"
+  },
+  "processing": {
+    "title": "处理中",
+    "noState": "未提供状态"
+  },
+  "settings": {
+    "title": "设置",
+    "systemTitle": "系统设置",
+    "sidebar": {
+      "personal": "个人",
+      "system": "系统"
+    },
+    "pages": {
+      "general": "常规",
+      "apiKeys": "API 密钥",
+      "shareX": "ShareX",
+      "users": "用户",
+      "roles": "角色",
+      "system": "系统设置"
+    },
+    "preferences": {
+      "updated": "已更新 {{ name }}",
+      "enabled": "已启用 {{ name }}",
+      "disabled": "已禁用 {{ name }}"
+    },
+    "roles": {
+      "title": "角色",
+      "name": "名称",
+      "permissions": "权限",
+      "system": "系统",
+      "actions": "操作",
+      "edit": "编辑",
+      "selectPage": "选择角色页面",
+      "add": "添加角色",
+      "update": "更新",
+      "createTooltip": "创建一个新角色",
+      "deleteConfirmTitle": "您确定要删除 {{ name }} 吗？",
+      "deleted": "角色已删除",
+      "created": "角色已创建",
+      "updated": "角色已更新",
+      "editTitle": "编辑角色 \"{{ name }}\"",
+      "addTitle": "添加新角色",
+      "roleName": "角色名称",
+      "permission": "权限",
+      "permissionsMultiple": "权限",
+      "errors": {
+        "required": "角色名称为必填项",
+        "minLength": "角色名称太短",
+        "maxLength": "角色名称太长",
+        "pattern": "角色名称只能包含字母和数字",
+        "invalid": "无效角色名称"
+      }
+    },
+    "apiKeys": {
+      "title": "API 密钥",
+      "name": "名称",
+      "created": "创建时间",
+      "lastUsed": "最后使用",
+      "actions": "操作",
+      "copy": "复制密钥",
+      "selectPage": "选择 API 密钥页面",
+      "add": "添加 API 密钥",
+      "createTooltip": "创建一个新的 API 密钥",
+      "deleteConfirmTitle": "您确定要删除这个 API 密钥吗？",
+      "copyFailed": "无法将 API 密钥复制到剪贴板",
+      "createdCopied": "API 密钥已创建并复制到剪贴板",
+      "copied": "API 密钥已复制到剪贴板",
+      "deleted": "API 密钥已删除",
+      "nameUpdated": "API 密钥名称已更新",
+      "errors": {
+        "required": "您必须输入一个值",
+        "minLength": "最小长度为 3",
+        "maxLength": "最大长度为 255",
+        "unknown": "未知错误"
+      }
+    },
+    "shareX": {
+      "title": "创建 ShareX 目标配置",
+      "description": "请选择要与 ShareX 目标关联的 API 密钥，然后选择分享时偏好的文件格式。",
+      "apiKey": "API 密钥",
+      "imageFormat": "图片格式",
+      "exportConfig": "导出配置",
+      "emptyTitle": "没有可用的 API 密钥",
+      "emptyDescription": "您至少需要一个 API 密钥才能创建 ShareX 目标配置。",
+      "createApiKey": "在此创建 API 密钥",
+      "exported": "ShareX 配置已导出"
+    },
+    "users": {
+      "title": "用户",
+      "username": "用户名",
+      "roles": "角色",
+      "system": "系统",
+      "actions": "操作",
+      "selectPage": "选择用户页面",
+      "add": "添加用户",
+      "createTooltip": "创建一个新用户",
+      "deleteConfirmTitle": "您确定要删除 {{ name }} 吗？",
+      "deleted": "用户已删除",
+      "created": "用户已创建",
+      "updated": "用户已更新",
+      "editTitle": "编辑用户 \"{{ name }}\"",
+      "addTitle": "添加新用户",
+      "newPassword": "新密码",
+      "role": "角色",
+      "rolesMultiple": "角色",
+      "effectivePermissions": "有效权限",
+      "update": "更新"
+    }
+  },
+  "permissions": {
+    "imageView": "查看图片",
+    "imageUpload": "上传图片",
+    "imageManage": "管理自己的图片",
+    "imageDeleteKey": "使用删除密钥",
+    "userLogin": "登录",
+    "userKeepLogin": "保持登录状态",
+    "userRegister": "注册",
+    "settings": "查看设置",
+    "apiKey": "使用 API 密钥",
+    "imageAdmin": "图片管理员",
+    "userAdmin": "用户管理员",
+    "roleAdmin": "角色管理员",
+    "apiKeyAdmin": "API 密钥管理员",
+    "sysPrefAdmin": "系统管理员"
+  },
+  "userPreferences": {
+    "keepOriginal": {
+      "name": "保留原始文件",
+      "helpText": "存储您上传到服务的原始文件，这样不会丢失任何数据。这也会存储 EXIF 数据。"
+    }
+  },
+  "systemPreferences": {
+    "categories": {
+      "general": "常规",
+      "imageProcessing": "图像处理",
+      "authentication": "身份验证",
+      "usage": "使用情况"
+    },
+    "hostOverride": {
+      "name": "主机覆盖",
+      "helpText": "覆盖服务器的主机名，当您从不同域访问服务器时非常有用。"
+    },
+    "removeDerivativesAfter": {
+      "name": "缓存图片过期时间",
+      "helpText": "缓存转换后的图片被删除前的时间。这不影响原始图片。较短的缓存时间可节省磁盘空间但会消耗更多 CPU。设置为 0 则禁用。"
+    },
+    "allowEditing": {
+      "name": "允许编辑图片",
+      "helpText": "允许编辑图片（例如缩放、翻转）。使用这些功能将消耗更多 CPU 能力。"
+    },
+    "conversionTimeLimit": {
+      "name": "转换/编辑时间限制",
+      "helpText": "转换/编辑图片的时间限制。在低性能设备上您可能需要增加此值。"
+    },
+    "conversionMemoryLimit": {
+      "name": "转换/编辑内存限制 MB",
+      "helpText": "转换/编辑图片的内存限制。只有在存储大尺寸图片时才需要增加此值。"
+    },
+    "jwtSecret": {
+      "name": "JWT 密钥",
+      "helpText": "用于签署 JWT 身份验证令牌的密钥。"
+    },
+    "jwtExpiresIn": {
+      "name": "JWT 过期时间",
+      "helpText": "JWT 身份验证令牌过期前的时间。"
+    },
+    "bcryptStrength": {
+      "name": "BCrypt 强度",
+      "helpText": "BCrypt 哈希算法的强度，建议为 10。如果在低性能设备上运行，请降低此值。"
+    },
+    "enableTracking": {
+      "name": "启用 Ackee 网络跟踪",
+      "helpText": "使用 Ackee 启用网站使用情况跟踪。您需要设置跟踪 URL 和 ID。"
+    },
+    "trackingUrl": {
+      "name": "Ackee 跟踪 URL",
+      "helpText": "Ackee 跟踪服务器的 URL。请求被代理，因此请确保处理了 X-Forwarded-For 标头。"
+    },
+    "trackingId": {
+      "name": "Ackee 跟踪网站 ID",
+      "helpText": "要跟踪的网站 ID。"
+    },
+    "enableTelemetry": {
+      "name": "启用系统遥测",
+      "helpText": "启用系统遥测，这将向开发者发送匿名的使用数据。"
+    }
+  }
+}

@@ -35,6 +35,8 @@
     "@ng-web-apis/resize-observer": "^4.11.1",
     "@ngui/common": "^1.0.0",
     "@ngx-dropzone/cdk": "^18.1.1",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
     "@popperjs/core": "^2.11.8",
     "@types/ackee-tracker": "^5.0.4",
     "@types/node": "^22.8.4",

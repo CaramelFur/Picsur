@@ -1,14 +1,13 @@
 <div *ngIf="available > 0">
-  <h1>Create a ShareX target config</h1>
+  <h1>{{ 'settings.shareX.title' | translate }}</h1>
 
   <p>
-    Please select an api key to associate with the ShareX target, and then the
-    preferred file format you'd like when sharing.
+    {{ 'settings.shareX.description' | translate }}
   </p>
 
   <div class="row">
     <mat-form-field class="col-12 col-md-6 col-xl-4" appearance="outline">
-      <mat-label>Api Key</mat-label>
+      <mat-label>{{ 'settings.shareX.apiKey' | translate }}</mat-label>
       <mat-select
         msInfiniteScroll
         (selectionChange)="onSelectionChange($event)"
@@ -22,7 +21,7 @@
     </mat-form-field>
 
     <mat-form-field class="col-12 col-md-3 col-xl-2" appearance="outline">
-      <mat-label>Image Format</mat-label>
+      <mat-label>{{ 'settings.shareX.imageFormat' | translate }}</mat-label>
       <mat-select [(value)]="selectedFormat">
         <mat-option *ngFor="let format of formatOptions" [value]="format.key">
           {{ format.value }}
@@ -39,22 +38,22 @@
         [disabled]="key === null"
         (click)="onExport()"
       >
-        Export Config
+        {{ 'settings.shareX.exportConfig' | translate }}
       </button>
     </div>
   </div>
 </div>
 
 <div *ngIf="available === 0">
-  <h1>No API keys available</h1>
-  <p>You need to have at least one API key to create a ShareX target config.</p>
+  <h1>{{ 'settings.shareX.emptyTitle' | translate }}</h1>
+  <p>{{ 'settings.shareX.emptyDescription' | translate }}</p>
 
   <button color="primary" mat-raised-button routerLink="/settings/apikeys">
-    Create an API key here
+    {{ 'settings.shareX.createApiKey' | translate }}
   </button>
 </div>
 
 <div *ngIf="available < 0">
-  <h1>Loading</h1>
+  <h1>{{ 'common.loading' | translate }}</h1>
   <mat-spinner></mat-spinner>
 </div>

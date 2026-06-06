@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import {
   ImageDeleteRequest,
   ImageDeleteResponse,
@@ -36,6 +37,7 @@ export class ImageService {
     private readonly api: ApiService,
     private readonly infoService: InfoService,
     private readonly userService: UserService,
+    private readonly translateService: TranslateService,
   ) {}
 
   public async UploadImage(image: File): AsyncFailable<string> {
@@ -90,7 +92,7 @@ export class ImageService {
   ): AsyncFailable<ImageListResponse> {
     const userID = await this.userService.snapshot?.id;
     if (userID === undefined) {
-      return Fail(FT.Authentication, 'User not logged in');
+      return Fail(FT.Authentication, 'auth.notLoggedIn');
     }
 
     return await this.ListAllImages(count, page, userID);
@@ -129,10 +131,7 @@ export class ImageService {
     if (HasFailed(result)) return result;
 
     if (result.images.length !== 1) {
-      return Fail(
-        FT.Unknown,
-        `Image ${image} was not deleted, probably lacking permissions`,
-      );
+      return Fail(FT.Unknown, 'images.deleteFailedPermission');
     }
 
     return result.images[0];
@@ -156,10 +155,13 @@ export class ImageService {
 
   // Use for user facing urls
   public CreateImageLinks(imageURL: string, name?: string): ImageLinks {
+    const fallbackName = this.translateService.instant('images.defaultAlt');
+    const alt = name ?? fallbackName;
+
     return {
       source: imageURL,
-      markdown: `![image](${imageURL})`,
-      html: `<img src="${imageURL}" alt="${name ?? 'image'}">`,
+      markdown: `![${alt}](${imageURL})`,
+      html: `<img src="${imageURL}" alt="${alt}">`,
       rst: `.. image:: ${imageURL}`,
       bbcode: `[img]${imageURL}[/img]`,
     };

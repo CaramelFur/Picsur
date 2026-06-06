@@ -4,17 +4,17 @@
       <div class="col-12 py-2">
         <img
           src="/assets/branding/text/picsur_light.svg"
-          alt="Picsur Text Logo"
+          [alt]="'app.logoTextAlt' | translate"
         />
       </div>
 
       <div class="col-12 py-2">
-        <h1>Register your new account</h1>
+        <h1>{{ 'auth.registerTitle' | translate }}</h1>
       </div>
 
       <div class="col-12 py-2">
         <mat-form-field appearance="outline">
-          <mat-label>Username</mat-label>
+          <mat-label>{{ 'auth.username' | translate }}</mat-label>
           <input
             matInput
             type="text"
@@ -25,14 +25,14 @@
             required
           />
           <mat-error *ngIf="model.username.errors">
-            {{ model.usernameError }}
+            {{ model.usernameError | translate }}
           </mat-error>
         </mat-form-field>
       </div>
 
       <div class="col-12 py-2">
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label>{{ 'auth.password' | translate }}</mat-label>
           <input
             matInput
             type="password"
@@ -41,14 +41,14 @@
             required
           />
           <mat-error *ngIf="model.password.errors">
-            {{ model.passwordError }}
+            {{ model.passwordError | translate }}
           </mat-error>
         </mat-form-field>
       </div>
 
       <div class="col-12 py-2">
         <mat-form-field appearance="outline">
-          <mat-label>Confirm Password</mat-label>
+          <mat-label>{{ 'auth.confirmPassword' | translate }}</mat-label>
           <input
             matInput
             type="password"
@@ -57,7 +57,7 @@
             required
           />
           <mat-error *ngIf="model.passwordConfirm.errors">
-            {{ model.passwordConfirmError }}
+            {{ model.passwordConfirmError | translate }}
           </mat-error>
         </mat-form-field>
       </div>
@@ -71,7 +71,7 @@
           (click)="onLogin()"
           type="button"
         >
-          LOGIN
+          {{ 'common.actions.login' | translate }}
         </button>
         <button
           mat-flat-button
@@ -80,7 +80,9 @@
           type="submit"
           [disabled]="loading"
         >
-          {{ loading ? 'LOADING...' : 'REGISTER' }}
+          {{
+            (loading ? 'common.loading' : 'common.actions.register') | translate
+          }}
         </button>
       </div>
     </form>

@@ -2,10 +2,11 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { ERole } from 'picsur-shared/dist/entities/role.entity';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
-import { UIFriendlyPermissions } from '../../../i18n/permissions.i18n';
+import { UIPermissionTranslationKeys } from '../../../i18n/permissions.i18n';
 import { RolesService } from '../../../services/api/roles.service';
 import { StaticInfoService } from '../../../services/api/static-info.service';
 import { Logger } from '../../../services/logger/logger.service';
@@ -42,6 +43,7 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
     private readonly router: Router,
     private readonly errorService: ErrorService,
     private readonly dialogService: DialogService,
+    private readonly translateService: TranslateService,
     // Public because used in template
     public readonly bootstrapService: BootstrapService,
   ) {}
@@ -64,17 +66,24 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
 
   async deleteRole(role: ERole) {
     const pressedButton = await this.dialogService.showDialog({
-      title: `Are you sure you want to delete ${role.name}?`,
-      description: 'This action cannot be undone.',
+      title: this.translateService.instant(
+        'settings.roles.deleteConfirmTitle',
+        {
+          name: role.name,
+        },
+      ),
+      description: this.translateService.instant(
+        'images.deleteConfirmDescription',
+      ),
       buttons: [
         {
           name: 'cancel',
-          text: 'Cancel',
+          text: this.translateService.instant('common.actions.cancel'),
         },
         {
           color: 'warn',
           name: 'delete',
-          text: 'Delete',
+          text: this.translateService.instant('common.actions.delete'),
         },
       ],
     });
@@ -84,7 +93,9 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
       if (HasFailed(result)) {
         this.errorService.showFailure(result, this.logger);
       } else {
-        this.errorService.success('Role deleted');
+        this.errorService.success(
+          this.translateService.instant('settings.roles.deleted'),
+        );
       }
     }
 
@@ -92,7 +103,7 @@ export class SettingsRolesComponent implements OnInit, AfterViewInit {
   }
 
   uiFriendlyPermission(permission: string) {
-    return UIFriendlyPermissions[permission as Permission] ?? permission;
+    return UIPermissionTranslationKeys[permission as Permission] ?? permission;
   }
 
   isSystem(role: ERole) {

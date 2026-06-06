@@ -1,4 +1,4 @@
-<h1>Settings</h1>
+<h1>{{ 'settings.title' | translate }}</h1>
 
 <div class="row">
   <ng-container *ngFor="let pref of preferences | async">
@@ -6,8 +6,8 @@
       class="col-md-6 col-12"
       [pref]="pref"
       [update]="usrPrefService.setPreference.bind(usrPrefService)"
-      [name]="getName(pref.key)"
-      [helpText]="getHelpText(pref.key)"
+      [name]="getName(pref.key) | translate"
+      [helpText]="getHelpText(pref.key) | translate"
     ></pref-option>
   </ng-container>
 </div>

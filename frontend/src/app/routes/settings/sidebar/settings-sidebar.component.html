@@ -1,6 +1,6 @@
 <mat-nav-list>
   <ng-container *ngIf="personalRoutes.length > 0">
-    <div mat-subheader>Personal</div>
+    <div mat-subheader>{{ 'settings.sidebar.personal' | translate }}</div>
     <a
       *ngFor="let route of personalRoutes"
       mat-list-item
@@ -10,7 +10,7 @@
       <mat-icon fontSet="material-icons-outlined" matListItemIcon>
         {{ route.data?.page?.icon }}
       </mat-icon>
-      <span matListItemTitle>{{ route.data?.page?.title }}</span>
+      <span matListItemTitle>{{ route.data?.page?.title | translate }}</span>
     </a>
   </ng-container>
 
@@ -18,7 +18,7 @@
   </mat-divider>
 
   <ng-container *ngIf="systemRoutes.length > 0">
-    <div mat-subheader>System</div>
+    <div mat-subheader>{{ 'settings.sidebar.system' | translate }}</div>
     <a
       *ngFor="let route of systemRoutes"
       mat-list-item
@@ -28,7 +28,7 @@
       <mat-icon fontSet="material-icons-outlined" matListItemIcon>
         {{ route.data?.page?.icon }}
       </mat-icon>
-      <span matListItemTitle>{{ route.data?.page?.title }}</span>
+      <span matListItemTitle>{{ route.data?.page?.title | translate }}</span>
     </a>
   </ng-container>
 </mat-nav-list>

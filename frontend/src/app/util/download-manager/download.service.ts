@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { Fail, FT, HasFailed } from 'picsur-shared/dist/types/failable';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../services/api/api.service';
@@ -19,6 +20,7 @@ export class DownloadService {
     private readonly api: ApiService,
     private readonly util: UtilService,
     private readonly errorService: ErrorService,
+    private readonly translateService: TranslateService,
   ) {}
 
   public showDownloadDialog(
@@ -52,7 +54,7 @@ export class DownloadService {
 
     closeDialog();
 
-    this.errorService.info('Image downloaded');
+    this.errorService.info(this.translateService.instant('images.downloaded'));
   }
 
   public canShare(): boolean {
@@ -80,7 +82,7 @@ export class DownloadService {
   public async shareFile(url: string) {
     if (!this.canShare())
       return this.errorService.warn(
-        'Sharing is not supported on your device',
+        this.translateService.instant('download.shareUnsupported'),
         this.logger,
       );
 
@@ -109,7 +111,7 @@ export class DownloadService {
     const canShare = navigator.canShare(shareObject);
     if (!canShare)
       return this.errorService.warn(
-        'Sharing is not supported on your device',
+        this.translateService.instant('download.shareUnsupported'),
         this.logger,
       );
 
@@ -119,7 +121,11 @@ export class DownloadService {
       if (e instanceof DOMException && e.message === 'Share canceled') {
       } else {
         this.errorService.showFailure(
-          Fail(FT.Internal, 'Sharing failed!', e),
+          Fail(
+            FT.Internal,
+            this.translateService.instant('download.shareFailed'),
+            e,
+          ),
           this.logger,
         );
       }

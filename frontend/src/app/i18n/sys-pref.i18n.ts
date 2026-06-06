@@ -8,77 +8,68 @@ export const SysPreferenceUI: {
   };
 } = {
   [SysPreference.HostOverride]: {
-    name: 'Host Override',
-    helpText:
-      'Override the hostname for the server, useful for when you are accessing the server from a different domain.',
-    category: 'General',
+    name: 'systemPreferences.hostOverride.name',
+    helpText: 'systemPreferences.hostOverride.helpText',
+    category: 'systemPreferences.categories.general',
   },
 
   [SysPreference.RemoveDerivativesAfter]: {
-    name: 'Cached Images Expiry Time',
-    helpText:
-      'Time before cached converted images are deleted. This does not affect the original image. A lower cache time will save on disk space but cost more cpu. Set to 0 to disable.',
-    category: 'Image Processing',
+    name: 'systemPreferences.removeDerivativesAfter.name',
+    helpText: 'systemPreferences.removeDerivativesAfter.helpText',
+    category: 'systemPreferences.categories.imageProcessing',
   },
   [SysPreference.AllowEditing]: {
-    name: 'Allow images to be edited',
-    helpText:
-      'Allow images to be edited (e.g. resize, flip). Using these features will use more CPU power.',
+    name: 'systemPreferences.allowEditing.name',
+    helpText: 'systemPreferences.allowEditing.helpText',
 
-    category: 'Image Processing',
+    category: 'systemPreferences.categories.imageProcessing',
   },
   [SysPreference.ConversionTimeLimit]: {
-    name: 'Convert/Edit Time Limit',
-    helpText:
-      'Time limit for converting/editing images. You may need to increase this on low powered devices.',
-    category: 'Image Processing',
+    name: 'systemPreferences.conversionTimeLimit.name',
+    helpText: 'systemPreferences.conversionTimeLimit.helpText',
+    category: 'systemPreferences.categories.imageProcessing',
   },
   [SysPreference.ConversionMemoryLimit]: {
-    name: 'Convert/Edit Memory Limit MB',
-    helpText:
-      'Memory limit for converting/editing images. You only need to increase this if you are storing massive images.',
-    category: 'Image Processing',
+    name: 'systemPreferences.conversionMemoryLimit.name',
+    helpText: 'systemPreferences.conversionMemoryLimit.helpText',
+    category: 'systemPreferences.categories.imageProcessing',
   },
 
   [SysPreference.JwtSecret]: {
-    name: 'JWT Secret',
-    helpText: 'Secret used to sign JWT authentication tokens.',
-    category: 'Authentication',
+    name: 'systemPreferences.jwtSecret.name',
+    helpText: 'systemPreferences.jwtSecret.helpText',
+    category: 'systemPreferences.categories.authentication',
   },
   [SysPreference.JwtExpiresIn]: {
-    name: 'JWT Expiry Time',
-    helpText: 'Time before JWT authentication tokens expire.',
-    category: 'Authentication',
+    name: 'systemPreferences.jwtExpiresIn.name',
+    helpText: 'systemPreferences.jwtExpiresIn.helpText',
+    category: 'systemPreferences.categories.authentication',
   },
   [SysPreference.BCryptStrength]: {
-    name: 'BCrypt Strength',
-    helpText:
-      'Strength of BCrypt hashing algorithm, 10 is recommended. Reduce this if running on a low powered device.',
-    category: 'Authentication',
+    name: 'systemPreferences.bcryptStrength.name',
+    helpText: 'systemPreferences.bcryptStrength.helpText',
+    category: 'systemPreferences.categories.authentication',
   },
 
   [SysPreference.EnableTracking]: {
-    name: 'Enable Ackee Web Tracking',
-    helpText:
-      'Enable tracking of the website usage using Ackee. You will need to set the tracking URL and ID.',
-    category: 'Usage',
+    name: 'systemPreferences.enableTracking.name',
+    helpText: 'systemPreferences.enableTracking.helpText',
+    category: 'systemPreferences.categories.usage',
   },
   [SysPreference.TrackingUrl]: {
-    name: 'Ackee tracking URL',
-    helpText:
-      'URL of the Ackee tracking server. Requests are proxied, so ensure the X-Forwarded-For header is handled.',
-    category: 'Usage',
+    name: 'systemPreferences.trackingUrl.name',
+    helpText: 'systemPreferences.trackingUrl.helpText',
+    category: 'systemPreferences.categories.usage',
   },
   [SysPreference.TrackingId]: {
-    name: 'Ackee trackign website ID',
-    helpText: 'ID of the website to track.',
-    category: 'Usage',
+    name: 'systemPreferences.trackingId.name',
+    helpText: 'systemPreferences.trackingId.helpText',
+    category: 'systemPreferences.categories.usage',
   },
 
   [SysPreference.EnableTelemetry]: {
-    name: 'Enable System Telemetry',
-    helpText:
-      'Enable system telemetry, this will send anonymous usage data to the developers.',
-    category: 'Usage',
+    name: 'systemPreferences.enableTelemetry.name',
+    helpText: 'systemPreferences.enableTelemetry.helpText',
+    category: 'systemPreferences.categories.usage',
   },
 };

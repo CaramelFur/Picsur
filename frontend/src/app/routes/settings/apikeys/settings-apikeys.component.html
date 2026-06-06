@@ -1,8 +1,10 @@
-<h1>Api Keys</h1>
+<h1>{{ 'settings.apiKeys.title' | translate }}</h1>
 
 <mat-table [dataSource]="dataSubject" class="mat-elevation-z2">
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>
+      {{ 'settings.apiKeys.name' | translate }}
+    </mat-header-cell>
     <mat-cell *matCellDef="let apikey">
       <app-settings-apikey-editor
         [value]="apikey.name"
@@ -13,7 +15,7 @@
 
   <ng-container matColumnDef="created">
     <mat-header-cell class="d-none d-lg-flex" *matHeaderCellDef>
-      Created
+      {{ 'settings.apiKeys.created' | translate }}
     </mat-header-cell>
     <mat-cell class="d-none d-lg-flex" *matCellDef="let apikey">
       {{ apikey.created | amTimeAgo }}
@@ -22,18 +24,27 @@
 
   <ng-container matColumnDef="last_used">
     <mat-header-cell class="d-none d-sm-flex" *matHeaderCellDef>
-      Last Used
+      {{ 'settings.apiKeys.lastUsed' | translate }}
     </mat-header-cell>
     <mat-cell class="d-none d-sm-flex" *matCellDef="let apikey">
-      {{ apikey.last_used === null ? 'Never' : (apikey.last_used | amTimeAgo) }}
+      {{
+        apikey.last_used === null
+          ? ('common.never' | translate)
+          : (apikey.last_used | amTimeAgo)
+      }}
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="actions">
-    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>
+      {{ 'settings.apiKeys.actions' | translate }}
+    </mat-header-cell>
     <mat-cell *matCellDef="let apikey">
       <button mat-icon-button (click)="copyKey(apikey.key)">
-        <mat-icon fontSet="material-icons-outlined" aria-label="Copy Key">
+        <mat-icon
+          fontSet="material-icons-outlined"
+          [attr.aria-label]="'settings.apiKeys.copy' | translate"
+        >
           content_copy
         </mat-icon>
       </button>
@@ -41,7 +52,7 @@
         <mat-icon
           fontSet="material-icons-outlined"
           class="icon-red"
-          aria-label="Delete"
+          [attr.aria-label]="'common.actions.delete' | translate"
         >
           delete
         </mat-icon>
@@ -60,14 +71,14 @@
   [showFirstLastButtons]="bootstrapService.isNotMobile() | async"
   [hidePageSize]="bootstrapService.isMobile() | async"
   [length]="totalApiKeys"
-  aria-label="Select page of apikeys"
+  [attr.aria-label]="'settings.apiKeys.selectPage' | translate"
   (page)="updateSubject.next($event)"
 >
 </mat-paginator>
 
 <fab
-  aria-label="Add Api Key"
+  [attr.aria-label]="'settings.apiKeys.add' | translate"
   (click)="addApiKey()"
   icon="add"
-  tooltip="Create a new api key"
+  [tooltip]="'settings.apiKeys.createTooltip' | translate"
 ></fab>

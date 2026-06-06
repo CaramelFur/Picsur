@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import {
   DecodedPref,
@@ -44,7 +45,10 @@ export class PrefOptionComponent implements OnInit {
   @Input() helpText = '';
   @Input() validator?: ZodTypeAny = undefined;
 
-  constructor(private readonly errorService: ErrorService) {}
+  constructor(
+    private readonly errorService: ErrorService,
+    private readonly translateService: TranslateService,
+  ) {}
 
   ngOnInit(): void {
     this.subscribeUpdate();
@@ -56,7 +60,7 @@ export class PrefOptionComponent implements OnInit {
       if (errors['error']) {
         return errors['error'];
       }
-      return 'Invalid value';
+      return this.translateService.instant('common.invalidValue');
     }
     return '';
   }
@@ -67,7 +71,11 @@ export class PrefOptionComponent implements OnInit {
     const result = this.validator.safeParse(control.value);
 
     if (!result.success) {
-      return { error: result.error.issues[0]?.message ?? 'Invalid value' };
+      return {
+        error:
+          result.error.issues[0]?.message ??
+          this.translateService.instant('common.invalidValue'),
+      };
     }
 
     return null;
@@ -78,13 +86,27 @@ export class PrefOptionComponent implements OnInit {
     if (!HasFailed(result)) {
       const message =
         this.pref.type === 'string'
-          ? `Updated ${this.name}`
+          ? this.translateService.instant('settings.preferences.updated', {
+              name: this.name,
+            })
           : this.pref.type === 'number'
-            ? `Updated ${this.name}`
+            ? this.translateService.instant('settings.preferences.updated', {
+                name: this.name,
+              })
             : this.pref.type === 'boolean'
               ? value
-                ? `Enabled ${this.name}`
-                : `Disabled ${this.name}`
+                ? this.translateService.instant(
+                    'settings.preferences.enabled',
+                    {
+                      name: this.name,
+                    },
+                  )
+                : this.translateService.instant(
+                    'settings.preferences.disabled',
+                    {
+                      name: this.name,
+                    },
+                  )
               : '';
       this.errorService.success(message);
     } else {

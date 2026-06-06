@@ -3,10 +3,10 @@
   [color]="color"
   [subscriptSizing]="subscriptSizing"
 >
-  <mat-label>{{ label }}</mat-label>
+  <mat-label>{{ label | translate }}</mat-label>
   <input
     matInput
-    [value]="value"
+    [value]="value | translate"
     readonly="readonly"
     [type]="hidden ? 'password' : 'text'"
   />
@@ -14,12 +14,17 @@
     *ngIf="showHideButton"
     mat-icon-button
     matSuffix
-    [attr.aria-label]="'Hide'"
+    [attr.aria-label]="'common.hide' | translate"
     (click)="toggleHide()"
   >
     <mat-icon>{{ hidden ? 'visibility_off' : 'visibility' }}</mat-icon>
   </button>
-  <button mat-icon-button matSuffix [attr.aria-label]="'Copy'" (click)="copy()">
+  <button
+    mat-icon-button
+    matSuffix
+    [attr.aria-label]="'common.copy' | translate"
+    (click)="copy()"
+  >
     <mat-icon>content_copy</mat-icon>
   </button>
 </mat-form-field>

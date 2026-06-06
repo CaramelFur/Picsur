@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../../../services/logger/logger.service';
 
 @Component({
@@ -9,6 +10,8 @@ import { Logger } from '../../../../services/logger/logger.service';
 })
 export class SettingsApiKeyEditorComponent {
   private readonly logger = new Logger(SettingsApiKeyEditorComponent.name);
+
+  constructor(private readonly translateService: TranslateService) {}
 
   @Input() set value(value: string) {
     this.field.setValue(value);
@@ -35,17 +38,17 @@ export class SettingsApiKeyEditorComponent {
 
   getErrorMessage() {
     if (this.field.hasError('required')) {
-      return 'You must enter a value';
+      return this.translateService.instant('settings.apiKeys.errors.required');
     }
 
     if (this.field.hasError('minlength')) {
-      return 'Minimum length is 3';
+      return this.translateService.instant('settings.apiKeys.errors.minLength');
     }
 
     if (this.field.hasError('maxlength')) {
-      return 'Maximum length is 255';
+      return this.translateService.instant('settings.apiKeys.errors.maxLength');
     }
 
-    return 'Unknown error';
+    return this.translateService.instant('settings.apiKeys.errors.unknown');
   }
 }

@@ -104,7 +104,7 @@ export class ApiService {
     const validateResult = sendSchema.safeParse(data);
     if (!validateResult.success) {
       return CreateFailedRunningRequest(
-        Fail(FT.SysValidation, 'Something went wrong', validateResult.error),
+        Fail(FT.SysValidation, 'api.somethingWentWrong', validateResult.error),
       );
     }
 
@@ -147,7 +147,7 @@ export class ApiService {
       if (!validateResult.success) {
         return Fail(
           FT.SysValidation,
-          'Something went wrong',
+          'api.somethingWentWrong',
           validateResult.error,
         );
       }
@@ -251,7 +251,7 @@ export class ApiService {
         downloadProgress.complete();
 
         if (result.status < 200 || result.status >= 300) {
-          return Fail(FT.Network, 'Recieved a non-ok response');
+          return Fail(FT.Network, 'api.nonOkResponse');
         }
         return result;
       } catch (e) {

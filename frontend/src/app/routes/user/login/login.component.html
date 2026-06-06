@@ -4,17 +4,17 @@
       <div class="col-12 py-2">
         <img
           src="/assets/branding/text/picsur_light.svg"
-          alt="Picsur Text Logo"
+          [alt]="'app.logoTextAlt' | translate"
         />
       </div>
 
       <div class="col-12 py-2">
-        <h1>Login to your account</h1>
+        <h1>{{ 'auth.loginTitle' | translate }}</h1>
       </div>
 
       <div class="col-12 py-2">
         <mat-form-field appearance="outline">
-          <mat-label>Username</mat-label>
+          <mat-label>{{ 'auth.username' | translate }}</mat-label>
           <input
             matInput
             type="text"
@@ -25,14 +25,14 @@
             required
           />
           <mat-error *ngIf="model.username.errors">
-            {{ model.usernameError }}
+            {{ model.usernameError | translate }}
           </mat-error>
         </mat-form-field>
       </div>
 
       <div class="col-12 py-2">
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label>{{ 'auth.password' | translate }}</mat-label>
           <input
             matInput
             type="password"
@@ -41,7 +41,7 @@
             required
           />
           <mat-error *ngIf="model.password.errors">
-            {{ model.passwordError }}
+            {{ model.passwordError | translate }}
           </mat-error>
         </mat-form-field>
       </div>
@@ -54,7 +54,9 @@
           type="submit"
           [disabled]="loading"
         >
-          {{ loading ? 'LOADING...' : 'LOGIN' }}
+          {{
+            (loading ? 'common.loading' : 'common.actions.login') | translate
+          }}
         </button>
         <button
           *ngIf="showRegister"
@@ -64,7 +66,7 @@
           (click)="onRegister()"
           type="button"
         >
-          REGISTER
+          {{ 'common.actions.register' | translate }}
         </button>
       </div>
     </form>

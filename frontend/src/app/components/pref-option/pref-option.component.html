@@ -6,7 +6,7 @@
         matInput
         autocorrect="off"
         autocapitalize="none"
-        placeholder="Empty"
+        [placeholder]="'common.empty' | translate"
         [formControl]="formControl"
       />
       <!-- show tooltip on press -->
@@ -41,7 +41,7 @@
       <input
         matInput
         type="number"
-        placeholder="Empty"
+        [placeholder]="'common.empty' | translate"
         [formControl]="formControl"
       />
       <button
@@ -72,9 +72,12 @@
   <div class="y-center">
     <mat-form-field appearance="outline" color="accent">
       <mat-label>{{ name }}</mat-label>
-      <mat-select [formControl]="formControl" placeholder="Empty">
-        <mat-option [value]="false">No</mat-option>
-        <mat-option [value]="true">Yes</mat-option>
+      <mat-select
+        [formControl]="formControl"
+        [placeholder]="'common.empty' | translate"
+      >
+        <mat-option [value]="false">{{ 'common.no' | translate }}</mat-option>
+        <mat-option [value]="true">{{ 'common.yes' | translate }}</mat-option>
       </mat-select>
       <button
         mat-icon-button

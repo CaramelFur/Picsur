@@ -1,11 +1,11 @@
 <mat-progress-spinner *ngIf="images === null"></mat-progress-spinner>
 
 <h2 class="text-center" *ngIf="images !== null && images.length <= 0">
-  There are no images to display
+  {{ 'images.empty' | translate }}
 </h2>
 
 <ng-container *ngIf="images !== null && images.length > 0">
-  <h1>Your Images</h1>
+  <h1>{{ 'images.title' | translate }}</h1>
   <masonry [columns]="columns">
     <ng-template *ngFor="let image of images" masonry-item>
       <div class="m-2">
@@ -13,24 +13,30 @@
           <mat-card-header>
             <mat-card-title>{{ image.file_name | truncate }}</mat-card-title>
             <mat-card-subtitle>
-              Uploaded {{ image.created | amTimeAgo }}
+              {{ 'images.uploaded' | translate }}
+              {{ image.created | amTimeAgo }}
               {{
                 image.expires_at === null
                   ? ''
-                  : '| Expires ' + (image.expires_at | amTimeAgo)
+                  : '| ' +
+                    ('images.expires' | translate) +
+                    ' ' +
+                    (image.expires_at | amTimeAgo)
               }}
             </mat-card-subtitle>
           </mat-card-header>
           <picsur-img
             mat-card-image
             [src]="getThumbnailUrl(image)"
-            alt="Image uploaded by you"
+            [attr.alt]="'images.uploadedByYouAlt' | translate"
           >
           </picsur-img>
           <mat-card-actions>
-            <button mat-stroked-button (click)="viewImage(image)">VIEW</button>
+            <button mat-stroked-button (click)="viewImage(image)">
+              {{ 'common.actions.view' | translate }}
+            </button>
             <button mat-button color="warn" (click)="deleteImage(image)">
-              DELETE
+              {{ 'common.actions.delete' | translate }}
             </button>
           </mat-card-actions>
         </mat-card>

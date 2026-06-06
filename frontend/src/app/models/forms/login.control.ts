@@ -23,7 +23,7 @@ export class LoginControl {
   // This getter firstly verifies the form, RawData does not
   public getData(): Failable<UserPassModel> {
     if (this.username.errors || this.password.errors)
-      return Fail(FT.Authentication, 'Invalid username or password');
+      return Fail(FT.Authentication, 'auth.invalidUsernameOrPassword');
     else return this.getRawData();
   }
 

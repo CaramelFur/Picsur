@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { I18nModule } from '../../i18n/i18n.module';
 import { PrefOptionComponent } from './pref-option.component';
 import { ErrorManagerModule } from '../../util/error-manager/error-manager.module';
 
@@ -14,6 +15,7 @@ import { ErrorManagerModule } from '../../util/error-manager/error-manager.modul
   imports: [
     CommonModule,
     ErrorManagerModule,
+    I18nModule,
 
     MatIconModule,
     MatTooltipModule,

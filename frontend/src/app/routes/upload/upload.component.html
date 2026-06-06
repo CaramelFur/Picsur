@@ -2,13 +2,15 @@
   <my-dropzone *ngIf="canUpload">
     <input type="file" fileInput [formControl]="fileControl" />
     <div class="centered">
-      <h1>Upload Image</h1>
-      <p>Drag and drop / paste an image here, or click to select an image</p>
+      <h1>{{ 'upload.title' | translate }}</h1>
+      <p>{{ 'upload.dropHint' | translate }}</p>
     </div>
   </my-dropzone>
 
   <div class="centered" *ngIf="!canUpload">
-    <h1><a routerLink="/user/login">Please log in</a></h1>
-    <p>You do not yet have permission to upload</p>
+    <h1>
+      <a routerLink="/user/login">{{ 'upload.loginRequired' | translate }}</a>
+    </h1>
+    <p>{{ 'upload.permissionRequired' | translate }}</p>
   </div>
 </div>

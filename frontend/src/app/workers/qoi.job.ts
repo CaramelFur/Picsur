@@ -13,7 +13,7 @@ export default async function qoiDecodeJob(
       },
     });
     if (!response.ok) {
-      return Fail(FT.Network, 'Could not fetch image');
+      return Fail(FT.Network, 'workers.couldNotFetchImage');
     }
 
     const buffer = await response.arrayBuffer();

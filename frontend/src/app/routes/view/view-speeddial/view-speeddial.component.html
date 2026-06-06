@@ -1,20 +1,28 @@
 <speed-dial
   icon="menu"
   icon-hover="download"
-  tooltip="Download the image"
+  [tooltip]="'view.downloadTooltip' | translate"
   [open-on-hover]="true"
   (main-click)="download()"
 >
-  <button mat-mini-fab matTooltip="Share image" (click)="share()">
+  <button
+    mat-mini-fab
+    [matTooltip]="'view.shareTooltip' | translate"
+    (click)="share()"
+  >
     <mat-icon fontSet="material-icons-outlined"> share </mat-icon>
   </button>
-  <button mat-mini-fab matTooltip="Customize Image" (click)="customize()">
+  <button
+    mat-mini-fab
+    [matTooltip]="'view.customizeTooltip' | translate"
+    (click)="customize()"
+  >
     <mat-icon fontSet="material-icons-outlined"> tune </mat-icon>
   </button>
   <button
     *ngIf="canManage"
     mat-mini-fab
-    matTooltip="Edit image"
+    [matTooltip]="'view.editTooltip' | translate"
     (click)="editImage()"
   >
     <mat-icon fontSet="material-icons-outlined"> edit </mat-icon>
@@ -22,7 +30,7 @@
   <button
     *ngIf="canManage"
     mat-mini-fab
-    matTooltip="Delete image"
+    [matTooltip]="'view.deleteTooltip' | translate"
     (click)="deleteImage()"
   >
     <mat-icon fontSet="material-icons-outlined"> delete </mat-icon>

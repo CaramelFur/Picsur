@@ -17,6 +17,7 @@ import { ViewComponent } from './view.component';
 import { ViewRoutingModule } from './view.routing.module';
 import { CopyFieldModule } from '../../components/copy-field/copy-field.module';
 import { FabModule } from '../../components/fab/fab.module';
+import { I18nModule } from '../../i18n/i18n.module';
 import { PicsurImgModule } from '../../components/picsur-img/picsur-img.module';
 import { PipesModule } from '../../pipes/pipes.module';
 import { DownloadManagerModule } from '../../util/download-manager/dialog-manager.module';
@@ -34,6 +35,7 @@ import { ErrorManagerModule } from '../../util/error-manager/error-manager.modul
     ErrorManagerModule,
     DownloadManagerModule,
     DialogModule,
+    I18nModule,
 
     CopyFieldModule,
     ViewRoutingModule,

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { TranslateService } from '@ngx-translate/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { EApiKey } from 'picsur-shared/dist/entities/apikey.entity';
 import { FT, Fail, HasFailed } from 'picsur-shared/dist/types/failable';
@@ -41,6 +42,7 @@ export class SettingsApiKeysComponent implements OnInit {
     private readonly clipboard: ClipboardService,
     private readonly errorService: ErrorService,
     private readonly dialogService: DialogService,
+    private readonly translateService: TranslateService,
     // Public because used in template
     public readonly bootstrapService: BootstrapService,
   ) {}
@@ -67,39 +69,51 @@ export class SettingsApiKeysComponent implements OnInit {
     const clipboardResult = await this.clipboard.copy(result.key);
     if (!clipboardResult) {
       return this.errorService.showFailure(
-        Fail(FT.Internal, 'Failed to copy api key to clipboard'),
+        Fail(
+          FT.Internal,
+          this.translateService.instant('settings.apiKeys.copyFailed'),
+        ),
         this.logger,
       );
     }
 
-    this.errorService.success('Api key created and copied to clipboard');
+    this.errorService.success(
+      this.translateService.instant('settings.apiKeys.createdCopied'),
+    );
   }
 
   public async copyKey(apikey: string) {
     const result = await this.clipboard.copy(apikey);
     if (!result) {
       return this.errorService.showFailure(
-        Fail(FT.Internal, 'Failed to copy api key to clipboard'),
+        Fail(
+          FT.Internal,
+          this.translateService.instant('settings.apiKeys.copyFailed'),
+        ),
         this.logger,
       );
     }
 
-    this.errorService.success('Api key copied to clipboard');
+    this.errorService.success(
+      this.translateService.instant('settings.apiKeys.copied'),
+    );
   }
 
   public async deleteApiKey(apikeyId: string) {
     const pressedButton = await this.dialogService.showDialog({
-      title: `Are you sure you want to delete this api key?`,
-      description: 'This action cannot be undone.',
+      title: this.translateService.instant(
+        'settings.apiKeys.deleteConfirmTitle',
+      ),
+      description: this.translateService.instant('common.actionCannotBeUndone'),
       buttons: [
         {
           name: 'cancel',
-          text: 'Cancel',
+          text: this.translateService.instant('common.actions.cancel'),
         },
         {
           color: 'warn',
           name: 'delete',
-          text: 'Delete',
+          text: this.translateService.instant('common.actions.delete'),
         },
       ],
     });
@@ -109,7 +123,9 @@ export class SettingsApiKeysComponent implements OnInit {
       if (HasFailed(result)) {
         this.errorService.showFailure(result, this.logger);
       } else {
-        this.errorService.success('Api key deleted');
+        this.errorService.success(
+          this.translateService.instant('settings.apiKeys.deleted'),
+        );
       }
     }
 
@@ -128,7 +144,9 @@ export class SettingsApiKeysComponent implements OnInit {
     if (HasFailed(result))
       return this.errorService.showFailure(result, this.logger);
 
-    this.errorService.success('Api key name updated');
+    this.errorService.success(
+      this.translateService.instant('settings.apiKeys.nameUpdated'),
+    );
   }
 
   @AutoUnsubscribe()

@@ -61,10 +61,7 @@ export class SysPrefService {
 
   public async getPreferences(): AsyncFailable<DecodedPref[]> {
     if (!this.hasPermission)
-      return Fail(
-        FT.Permission,
-        'You do not have permission to edit system preferences',
-      );
+      return Fail(FT.Permission, 'preferences.noSystemPermission');
 
     const response = await this.api.get(
       MultiplePreferencesResponse,
@@ -81,10 +78,7 @@ export class SysPrefService {
     key: string,
   ): AsyncFailable<GetPreferenceResponse> {
     if (!this.hasPermission)
-      return Fail(
-        FT.Permission,
-        'You do not have permission to edit system preferences',
-      );
+      return Fail(FT.Permission, 'preferences.noSystemPermission');
 
     const response = await this.api.get(
       GetPreferenceResponse,
@@ -100,10 +94,7 @@ export class SysPrefService {
     value: PrefValueType,
   ): AsyncFailable<UpdatePreferenceResponse> {
     if (!this.hasPermission)
-      return Fail(
-        FT.Permission,
-        'You do not have permission to edit system preferences',
-      );
+      return Fail(FT.Permission, 'preferences.noSystemPermission');
 
     const response = await this.api.post(
       UpdatePreferenceRequest,

@@ -51,25 +51,23 @@ export class UploadComponent implements OnInit {
         this.canUpload = permissions.includes(Permission.ImageUpload);
       });
   }
-  
+
   @HostListener('document:paste', ['$event'])
   onPaste(event: ClipboardEvent) {
     const items = event.clipboardData?.items;
-    if (!items) return this.errorService.info('Your clipboard is empty');
+    if (!items) return this.errorService.info('upload.clipboardEmpty');
 
     const filteredItems = Array.from(items).filter(
       (item) => item.kind === 'file',
     );
 
     if (filteredItems.length === 0)
-      return this.errorService.info(
-        'Your clipboard does not contain any images',
-      );
+      return this.errorService.info('upload.clipboardNoImages');
 
     const blobs = filteredItems.map((item) => item.getAsFile());
     if (blobs.some((blob) => blob === null))
       return this.errorService.showFailure(
-        Fail(FT.Internal, 'Error getting image from clipboard'),
+        Fail(FT.Internal, 'upload.clipboardImageError'),
         this.logger,
       );
 

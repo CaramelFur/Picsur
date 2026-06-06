@@ -7,6 +7,7 @@ import { MomentModule } from 'ngx-moment';
 import { MasonryModule } from '../../components/masonry/masonry.module';
 import { PaginatorModule } from '../../components/paginator/paginator.module';
 import { PicsurImgModule } from '../../components/picsur-img/picsur-img.module';
+import { I18nModule } from '../../i18n/i18n.module';
 import { PipesModule } from '../../pipes/pipes.module';
 import { DialogManagerModule } from '../../util/dialog-manager/dialog-manager.module';
 import { ErrorManagerModule } from '../../util/error-manager/error-manager.module';
@@ -19,6 +20,7 @@ import { ImagesRoutingModule } from './images.routing.module';
     CommonModule,
     ErrorManagerModule,
     DialogManagerModule,
+    I18nModule,
 
     ImagesRoutingModule,
     MatCardModule,

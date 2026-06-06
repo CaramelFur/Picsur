@@ -282,6 +282,12 @@ importers:
       '@ngx-dropzone/cdk':
         specifier: ^18.1.1
         version: 18.1.1(@angular/common@18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(@angular/forms@18.2.10(@angular/common@18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@18.2.10(@angular/animations@18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10)))(rxjs@7.8.1))(rxjs@7.8.1)
+      '@ngx-translate/core':
+        specifier: ^17.0.0
+        version: 17.0.0(@angular/common@18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))
+      '@ngx-translate/http-loader':
+        specifier: ^17.0.0
+        version: 17.0.0(@angular/common@18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))
       '@popperjs/core':
         specifier: ^2.11.8
         version: 2.11.8
@@ -2075,6 +2081,18 @@ packages:
       '@angular/core': ^18.0.0
       '@angular/forms': ^18.0.0
       rxjs: ^7.4.0
+
+  '@ngx-translate/core@17.0.0':
+    resolution: {integrity: sha512-Rft2D5ns2pq4orLZjEtx1uhNuEBerUdpFUG1IcqtGuipj6SavgB8SkxtNQALNDA+EVlvsNCCjC2ewZVtUeN6rg==}
+    peerDependencies:
+      '@angular/common': '>=16'
+      '@angular/core': '>=16'
+
+  '@ngx-translate/http-loader@17.0.0':
+    resolution: {integrity: sha512-hgS8sa0ARjH9ll3PhkLTufeVXNI2DNR2uFKDhBgq13siUXzzVr/a31M6zgecrtwbA34iaBV01hsTMbMS8V7iIw==}
+    peerDependencies:
+      '@angular/common': '>=16'
+      '@angular/core': '>=16'
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -7905,6 +7923,18 @@ snapshots:
       '@angular/core': 18.2.10(rxjs@7.8.1)(zone.js@0.14.10)
       '@angular/forms': 18.2.10(@angular/common@18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@18.2.10(@angular/animations@18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10)))(rxjs@7.8.1)
       rxjs: 7.8.1
+      tslib: 2.8.0
+
+  '@ngx-translate/core@17.0.0(@angular/common@18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))':
+    dependencies:
+      '@angular/common': 18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
+      '@angular/core': 18.2.10(rxjs@7.8.1)(zone.js@0.14.10)
+      tslib: 2.8.0
+
+  '@ngx-translate/http-loader@17.0.0(@angular/common@18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))':
+    dependencies:
+      '@angular/common': 18.2.10(@angular/core@18.2.10(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
+      '@angular/core': 18.2.10(rxjs@7.8.1)(zone.js@0.14.10)
       tslib: 2.8.0
 
   '@nodelib/fs.scandir@2.1.5':

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
-import { UIFriendlyPermissions } from '../../../../i18n/permissions.i18n';
+import { UIPermissionTranslationKeys } from '../../../../i18n/permissions.i18n';
 import { UpdateRoleControl } from '../../../../models/forms/update-role.control';
 import { RolesService } from '../../../../services/api/roles.service';
 import { StaticInfoService } from '../../../../services/api/static-info.service';
@@ -40,6 +41,7 @@ export class SettingsRolesEditComponent implements OnInit {
     private readonly rolesService: RolesService,
     private readonly staticInfo: StaticInfoService,
     private readonly errorService: ErrorService,
+    private readonly translateService: TranslateService,
   ) {}
 
   ngOnInit() {
@@ -83,13 +85,17 @@ export class SettingsRolesEditComponent implements OnInit {
       if (HasFailed(resultRole))
         return this.errorService.showFailure(resultRole, this.logger);
 
-      this.errorService.success('Role created');
+      this.errorService.success(
+        this.translateService.instant('settings.roles.created'),
+      );
     } else {
       const resultRole = await this.rolesService.updateRole(data);
       if (HasFailed(resultRole))
         return this.errorService.showFailure(resultRole, this.logger);
 
-      this.errorService.success('Role updated');
+      this.errorService.success(
+        this.translateService.instant('settings.roles.updated'),
+      );
     }
 
     this.router.navigate(['/settings/roles']);
@@ -99,7 +105,9 @@ export class SettingsRolesEditComponent implements OnInit {
     this.router.navigate(['/settings/roles']);
   }
 
-  public UIFriendlyPermission(name: string) {
-    return UIFriendlyPermissions[name as Permission] ?? name;
-  }
+  public UIFriendlyPermission = (name: string) => {
+    return this.translateService.instant(
+      UIPermissionTranslationKeys[name as Permission] ?? name,
+    );
+  };
 }

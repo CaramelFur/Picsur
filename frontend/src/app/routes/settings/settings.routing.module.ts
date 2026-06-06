@@ -22,7 +22,7 @@ const SettingsRoutes: PRoutes = [
         data: {
           permissions: [Permission.Settings],
           page: {
-            title: 'General',
+            title: 'settings.pages.general',
             icon: 'settings',
             category: 'personal',
           },
@@ -35,7 +35,7 @@ const SettingsRoutes: PRoutes = [
         data: {
           permissions: [Permission.ApiKey],
           page: {
-            title: 'Api Keys',
+            title: 'settings.pages.apiKeys',
             icon: 'key',
             category: 'personal',
           },
@@ -48,7 +48,7 @@ const SettingsRoutes: PRoutes = [
         data: {
           permissions: [Permission.ApiKey],
           page: {
-            title: 'ShareX',
+            title: 'settings.pages.shareX',
             icon: 'install_desktop',
             category: 'personal',
           },
@@ -61,7 +61,7 @@ const SettingsRoutes: PRoutes = [
         data: {
           permissions: [Permission.UserAdmin],
           page: {
-            title: 'Users',
+            title: 'settings.pages.users',
             icon: 'people_outline',
             category: 'system',
           },
@@ -74,7 +74,7 @@ const SettingsRoutes: PRoutes = [
         data: {
           permissions: [Permission.RoleAdmin],
           page: {
-            title: 'Roles',
+            title: 'settings.pages.roles',
             icon: 'admin_panel_settings',
             category: 'system',
           },
@@ -87,7 +87,7 @@ const SettingsRoutes: PRoutes = [
         data: {
           permissions: [Permission.SysPrefAdmin],
           page: {
-            title: 'System Settings',
+            title: 'settings.pages.system',
             icon: 'tune',
             category: 'system',
           },

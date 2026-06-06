@@ -1,7 +1,9 @@
 import { FormControl } from '@angular/forms';
 import { RoleModel } from '../forms-dto/role.dto';
-import { RoleNameValidators } from '../validators/role.validator';
-import { CreateUsernameError } from '../validators/user.validator';
+import {
+  CreateRoleNameError,
+  RoleNameValidators,
+} from '../validators/role.validator';
 
 export class UpdateRoleControl {
   public rolename = new FormControl('', RoleNameValidators);
@@ -12,7 +14,7 @@ export class UpdateRoleControl {
   }
 
   public get rolenameError() {
-    return CreateUsernameError(this.rolename.errors);
+    return CreateRoleNameError(this.rolename.errors);
   }
 
   public get selectedPermissions() {

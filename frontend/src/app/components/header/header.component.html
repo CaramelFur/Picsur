@@ -1,17 +1,7 @@
 <mat-toolbar>
-  <mat-progress-bar
-    *ngIf="loading"
-    class="loading-bar"
-    mode="indeterminate"
-    color="accent"
-  ></mat-progress-bar>
+  <mat-progress-bar *ngIf="loading" class="loading-bar" mode="indeterminate" color="accent"></mat-progress-bar>
 
-  <button
-    *ngIf="_enableHamburger"
-    class="me-3"
-    mat-icon-button
-    (click)="onHamburgerClick.emit()"
-  >
+  <button *ngIf="_enableHamburger" class="me-3" mat-icon-button (click)="onHamburgerClick.emit()">
     <mat-icon>menu</mat-icon>
   </button>
 
@@ -20,44 +10,41 @@
       <img src="/assets/branding/logo/picsur.svg" alt="Picsur Icon Logo" />
     </div>
     <div class="svg-logo-text">
-      <img
-        src="/assets/branding/text/picsur_light.svg"
-        class="ms-3 d-none d-sm-block"
-        alt="Picsur Text Logo"
-      />
+      <img src="/assets/branding/text/picsur_light.svg" class="ms-3 d-none d-sm-block" alt="Picsur Text Logo" />
     </div>
   </a>
 
   <span class="spacer"></span>
 
-  <button
-    matTooltip="Upload an image"
-    *ngIf="canUpload"
-    mat-icon-button
-    class="me-3"
-    (click)="doUpload()"
-  >
+  <button [matTooltip]="'header.language' | translate" mat-icon-button class="me-3" [matMenuTriggerFor]="languageMenu">
+    <mat-icon fontSet="material-icons-outlined">language</mat-icon>
+  </button>
+
+  <mat-menu #languageMenu="matMenu" xPosition="before">
+    <button *ngFor="let language of availableLanguages" mat-menu-item (click)="setLanguage(language)">
+      <mat-icon fontSet="material-icons-outlined">
+        {{ currentLanguage === language ? 'check' : '' }}
+      </mat-icon>
+      <span>{{ 'languages.' + language | translate }}</span>
+    </button>
+  </mat-menu>
+
+  <button [matTooltip]="'header.uploadImage' | translate" *ngIf="canUpload" mat-icon-button class="me-3"
+    (click)="doUpload()">
     <mat-icon fontSet="material-icons-outlined">upload</mat-icon>
   </button>
 
-  <button
-    [matTooltip]="canRegister ? 'Login or Register' : 'Login to your account'"
-    *ngIf="!isLoggedIn && canLogIn"
-    mat-stroked-button
-    (click)="doLogin()"
-  >
-    LOGIN
+  <button [matTooltip]="
+      (canRegister ? 'header.loginOrRegister' : 'header.loginAccount')
+        | translate
+    " *ngIf="!isLoggedIn && canLogIn" mat-stroked-button (click)="doLogin()">
+    {{ 'common.actions.login' | translate }}
   </button>
 
   <!-- <span *ngIf="isLoggedIn" class="me-3 d-none d-sm-block">
     {{ user?.username }}
   </span> -->
-  <button
-    matTooltip="Your account"
-    *ngIf="isLoggedIn"
-    mat-icon-button
-    [matMenuTriggerFor]="menu"
-  >
+  <button [matTooltip]="'header.yourAccount' | translate" *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon fontSet="material-icons-outlined">account_circle</mat-icon>
   </button>
 
@@ -70,15 +57,15 @@
       </span>
       <button *ngIf="canUpload" mat-menu-item (click)="doImages()">
         <mat-icon fontSet="material-icons-outlined">image</mat-icon>
-        <span>My Images</span>
+        <span>{{ 'header.myImages' | translate }}</span>
       </button>
       <button *ngIf="canAccessSettings" mat-menu-item (click)="doSettings()">
         <mat-icon fontSet="material-icons-outlined">settings</mat-icon>
-        <span>Settings</span>
+        <span>{{ 'header.settings' | translate }}</span>
       </button>
       <button mat-menu-item (click)="doLogout()">
         <mat-icon fontSet="material-icons-outlined">logout</mat-icon>
-        <span>Logout</span>
+        <span>{{ 'header.logout' | translate }}</span>
       </button>
     </ng-template>
   </mat-menu>

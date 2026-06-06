@@ -121,7 +121,7 @@ export class UserService {
     this.userSubject.next(null);
 
     if (value === null) {
-      return Fail(FT.Impossible, 'Not logged in');
+      return Fail(FT.Impossible, 'auth.notLoggedIn');
     } else {
       return value;
     }
@@ -133,13 +133,13 @@ export class UserService {
     try {
       decoded = decodeToken(token);
     } catch (e) {
-      return Fail(FT.UsrValidation, 'Invalid token');
+      return Fail(FT.UsrValidation, 'auth.invalidToken');
     }
 
     const result = JwtDataSchema.safeParse(decoded);
     if (!result.success) {
       this.logger.error(result.error);
-      return Fail(FT.UsrValidation, 'Invalid token data');
+      return Fail(FT.UsrValidation, 'auth.invalidTokenData');
     }
 
     return result.data.uid;

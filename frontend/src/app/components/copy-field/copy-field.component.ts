@@ -3,6 +3,7 @@ import {
   MatFormFieldAppearance,
   SubscriptSizing,
 } from '@angular/material/form-field';
+import { TranslateService } from '@ngx-translate/core';
 import { FT, Fail } from 'picsur-shared/dist/types/failable';
 import { Logger } from '../../services/logger/logger.service';
 import { ClipboardService } from '../../util/clipboard.service';
@@ -17,8 +18,8 @@ export class CopyFieldComponent {
   private readonly logger = new Logger(CopyFieldComponent.name);
 
   // Two parameters: name, value
-  @Input() label = 'Loading...';
-  @Input() value = 'Loading...';
+  @Input() label = 'common.loading';
+  @Input() value = 'common.loading';
 
   @Input() showHideButton = false;
   @Input() hidden = false;
@@ -33,17 +34,22 @@ export class CopyFieldComponent {
   constructor(
     private readonly clipboard: ClipboardService,
     private readonly errorService: ErrorService,
+    private readonly translateService: TranslateService,
   ) {}
 
   public async copy() {
     if (await this.clipboard.copy(this.value)) {
-      this.errorService.info(`Copied ${this.label}!`);
+      this.errorService.info(
+        this.translateService.instant('copyField.copied', {
+          label: this.translateService.instant(this.label),
+        }),
+      );
       this.onCopy.emit(this.value);
       return;
     }
 
     return this.errorService.showFailure(
-      Fail(FT.Internal, 'Copying to clipboard failed'),
+      Fail(FT.Internal, this.translateService.instant('copyField.copyFailed')),
       this.logger,
     );
   }

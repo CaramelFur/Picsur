@@ -1,5 +1,5 @@
 <mat-form-field class="value-picker" appearance="outline">
-  <mat-label>{{ nameCapMul }}</mat-label>
+  <mat-label>{{ nameMultiple }}</mat-label>
   <mat-chip-grid #chipList>
     <mat-chip-row
       *ngFor="let item of this.myControl.value"
@@ -13,7 +13,7 @@
       </button>
     </mat-chip-row>
     <input
-      placeholder="Add {{ name }}..."
+      [placeholder]="'valuesPicker.addPlaceholder' | translate: { name: name }"
       [formControl]="inputControl"
       [value]="inputControl.value"
       [matAutocomplete]="auto"

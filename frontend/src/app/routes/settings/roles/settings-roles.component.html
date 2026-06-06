@@ -1,23 +1,27 @@
-<h1>Roles</h1>
+<h1>{{ 'settings.roles.title' | translate }}</h1>
 
 <mat-table [dataSource]="dataSource" class="mat-elevation-z2">
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>
+      {{ 'settings.roles.name' | translate }}
+    </mat-header-cell>
     <mat-cell *matCellDef="let role">{{ role.name }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="permissions">
     <mat-header-cell class="d-none d-md-flex" *matHeaderCellDef>
-      Permissions
+      {{ 'settings.roles.permissions' | translate }}
     </mat-header-cell>
     <mat-cell class="d-none d-md-flex" *matCellDef="let role">
-      <mat-chip-listbox aria-label="Role Permissions">
+      <mat-chip-listbox
+        [attr.aria-label]="'settings.roles.permissions' | translate"
+      >
         <mat-chip
           [disableRipple]="true"
           [disabled]="true"
           *ngIf="isSystem(role)"
         >
-          System
+          {{ 'settings.roles.system' | translate }}
         </mat-chip>
         <mat-chip
           [disableRipple]="true"
@@ -25,7 +29,7 @@
             let permission of role.permissions.slice(0, permissionsTruncate)
           "
         >
-          {{ uiFriendlyPermission(permission) }}
+          {{ uiFriendlyPermission(permission) | translate }}
         </mat-chip>
         <mat-chip
           [disableRipple]="true"
@@ -38,14 +42,19 @@
   </ng-container>
 
   <ng-container matColumnDef="actions">
-    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>
+      {{ 'settings.roles.actions' | translate }}
+    </mat-header-cell>
     <mat-cell *matCellDef="let role">
       <button
         *ngIf="!isImmutable(role)"
         mat-icon-button
         (click)="editRole(role)"
       >
-        <mat-icon fontSet="material-icons-outlined" aria-label="Edit">
+        <mat-icon
+          fontSet="material-icons-outlined"
+          [attr.aria-label]="'settings.roles.edit' | translate"
+        >
           edit
         </mat-icon>
       </button>
@@ -57,7 +66,7 @@
         <mat-icon
           fontSet="material-icons-outlined"
           class="icon-red"
-          aria-label="Delete"
+          [attr.aria-label]="'common.actions.delete' | translate"
         >
           delete
         </mat-icon>
@@ -75,12 +84,12 @@
   [pageSize]="startingPageSize"
   [showFirstLastButtons]="bootstrapService.isNotMobile() | async"
   [hidePageSize]="bootstrapService.isMobile() | async"
-  aria-label="Select page of roles"
+  [attr.aria-label]="'settings.roles.selectPage' | translate"
 >
 </mat-paginator>
 
 <fab
-  aria-label="Add Role"
+  [attr.aria-label]="'settings.roles.add' | translate"
   (click)="addRole()"
-  tooltip="Create a new role"
+  [tooltip]="'settings.roles.createTooltip' | translate"
 ></fab>

@@ -13,6 +13,7 @@ import {
   ImageFileType,
   SupportedFileTypeCategory,
 } from 'picsur-shared/dist/dto/mimes.dto';
+import { TranslateService } from '@ngx-translate/core';
 import { EImage } from 'picsur-shared/dist/entities/image.entity';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 
@@ -42,6 +43,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     private readonly errorService: ErrorService,
     private readonly utilService: UtilService,
     private readonly changeDetector: ChangeDetectorRef,
+    private readonly translateService: TranslateService,
   ) {}
 
   private id = '';
@@ -108,7 +110,10 @@ export class ViewComponent implements OnInit, OnDestroy {
 
       this.id = params.get('id') ?? '';
       if (!UUIDRegex.test(this.id)) {
-        return this.errorService.quitError('Invalid image link', this.logger);
+        return this.errorService.quitError(
+          this.translateService.instant('images.invalidLink'),
+          this.logger,
+        );
       }
     }
 
@@ -120,7 +125,10 @@ export class ViewComponent implements OnInit, OnDestroy {
 
       if (metadata.image.expires_at !== null) {
         if (metadata.image.expires_at <= new Date())
-          return this.errorService.quitWarn('Image not found', this.logger);
+          return this.errorService.quitWarn(
+            this.translateService.instant('images.notFound'),
+            this.logger,
+          );
 
         this.subscribeTimeout(metadata.image.expires_at);
       }
@@ -171,7 +179,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
     if (this.hasOriginal) {
       newOptions.push({
-        value: 'Original',
+        value: this.translateService.instant('view.original'),
         key: 'original',
       });
     }
@@ -187,7 +195,10 @@ export class ViewComponent implements OnInit, OnDestroy {
     if (expires_at === null) return;
 
     this.expires_timeout = timer(expires_at).subscribe(() => {
-      this.errorService.quitWarn('Image expired', this.logger);
+      this.errorService.quitWarn(
+        this.translateService.instant('images.expired'),
+        this.logger,
+      );
     });
   }
 }

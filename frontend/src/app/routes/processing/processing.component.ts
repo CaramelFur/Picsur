@@ -24,7 +24,7 @@ export class ProcessingComponent implements OnInit {
     const state = history.state as ProcessingViewMeta;
     if (!ProcessingViewMeta.is(state)) {
       return this.errorService.quitFailure(
-        Fail(FT.UsrValidation, 'No state provided'),
+        Fail(FT.UsrValidation, 'processing.noState'),
         this.logger,
       );
     }

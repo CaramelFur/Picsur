@@ -36,7 +36,7 @@ export class RegisterControl {
       this.password.errors ||
       this.passwordConfirm.errors
     )
-      return Fail(FT.Authentication, 'Invalid username or password');
+      return Fail(FT.Authentication, 'auth.invalidUsernameOrPassword');
     else return this.getRawData();
   }
 

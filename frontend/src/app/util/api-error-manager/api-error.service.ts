@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { SnackBarType } from '../../models/dto/snack-bar-type.dto';
 import { ApiService } from '../../services/api/api.service';
@@ -14,6 +15,7 @@ export class ApiErrorService {
   constructor(
     private readonly apiSerivce: ApiService,
     private readonly snackbarService: SnackBarService,
+    private readonly translateService: TranslateService,
   ) {
     this.subscribeErrors();
   }
@@ -29,7 +31,10 @@ export class ApiErrorService {
       else url = error.url.url;
 
       if (url.startsWith('/api')) {
-        this.snackbarService.showSnackBar('Network Error', SnackBarType.Error);
+        this.snackbarService.showSnackBar(
+          this.translateService.instant('api.networkError'),
+          SnackBarType.Error,
+        );
       }
 
       this.logger.error(error.error);

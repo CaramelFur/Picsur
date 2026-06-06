@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { I18nModule } from '../../i18n/i18n.module';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DialogService } from './dialog.service';
 import { DownloadDialogComponent } from './download-dialog/download-dialog.component';
@@ -10,6 +11,7 @@ import { DownloadDialogComponent } from './download-dialog/download-dialog.compo
 @NgModule({
   imports: [
     CommonModule,
+    I18nModule,
     MatDialogModule,
     MatButtonModule,
     MatProgressBarModule,

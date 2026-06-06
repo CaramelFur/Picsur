@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProcessingComponent } from './processing.component';
 import { ProcessingRoutingModule } from './processing.routing.module';
+import { I18nModule } from '../../i18n/i18n.module';
 import { ErrorManagerModule } from '../../util/error-manager/error-manager.module';
 
 @NgModule({
@@ -10,6 +11,7 @@ import { ErrorManagerModule } from '../../util/error-manager/error-manager.modul
   imports: [
     CommonModule,
     ErrorManagerModule,
+    I18nModule,
     ProcessingRoutingModule,
     MatProgressSpinnerModule,
   ],

@@ -12,6 +12,7 @@ import { SettingsUsersEditComponent } from './settings-users-edit/settings-users
 import { SettingsUsersComponent } from './settings-users.component';
 import { SettingsUsersRoutingModule } from './settings-users.routing.module';
 import { FabModule } from '../../../components/fab/fab.module';
+import { I18nModule } from '../../../i18n/i18n.module';
 import { ValuesPickerModule } from '../../../components/values-picker/values-picker.module';
 import { DialogManagerModule } from '../../../util/dialog-manager/dialog-manager.module';
 import { ErrorManagerModule } from '../../../util/error-manager/error-manager.module';
@@ -22,6 +23,7 @@ import { ErrorManagerModule } from '../../../util/error-manager/error-manager.mo
     CommonModule,
     ErrorManagerModule,
     DialogManagerModule,
+    I18nModule,
 
     SettingsUsersRoutingModule,
     MatButtonModule,

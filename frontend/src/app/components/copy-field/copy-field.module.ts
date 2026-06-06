@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { I18nModule } from '../../i18n/i18n.module';
 import { CopyFieldComponent } from './copy-field.component';
 import { ErrorManagerModule } from '../../util/error-manager/error-manager.module';
 
@@ -11,6 +12,7 @@ import { ErrorManagerModule } from '../../util/error-manager/error-manager.modul
   imports: [
     CommonModule,
     ErrorManagerModule,
+    I18nModule,
 
     MatInputModule,
     MatIconModule,

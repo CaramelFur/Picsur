@@ -3,9 +3,15 @@ import { NgModule } from '@angular/core';
 import { SettingsGeneralComponent } from './settings-general.component';
 import { SettingsGeneralRoutingModule } from './settings-general.routing.module';
 import { PrefOptionModule } from '../../../components/pref-option/pref-option.module';
+import { I18nModule } from '../../../i18n/i18n.module';
 
 @NgModule({
   declarations: [SettingsGeneralComponent],
-  imports: [CommonModule, SettingsGeneralRoutingModule, PrefOptionModule],
+  imports: [
+    CommonModule,
+    I18nModule,
+    SettingsGeneralRoutingModule,
+    PrefOptionModule,
+  ],
 })
 export default class SettingsGeneralRouteModule {}

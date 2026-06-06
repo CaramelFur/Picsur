@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { ImageMetaResponse } from 'picsur-shared/dist/dto/api/image.dto';
 import { ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
@@ -56,6 +57,7 @@ export class ViewSpeeddialComponent implements OnInit {
     private readonly utilService: UtilService,
     private readonly userService: UserService,
     private readonly router: Router,
+    private readonly translateService: TranslateService,
   ) {}
 
   ngOnInit(): void {
@@ -109,17 +111,17 @@ export class ViewSpeeddialComponent implements OnInit {
     if (this.image === null) return;
 
     const pressedButton = await this.dialogService.showDialog({
-      title: `Are you sure you want to delete the image?`,
-      description: 'This action cannot be undone.',
+      title: this.translateService.instant('images.deleteConfirmTitle'),
+      description: this.translateService.instant('common.actionCannotBeUndone'),
       buttons: [
         {
           name: 'cancel',
-          text: 'Cancel',
+          text: this.translateService.instant('common.actions.cancel'),
         },
         {
           color: 'warn',
           name: 'delete',
-          text: 'Delete',
+          text: this.translateService.instant('common.actions.delete'),
         },
       ],
     });
@@ -129,7 +131,9 @@ export class ViewSpeeddialComponent implements OnInit {
       if (HasFailed(result))
         return this.errorService.showFailure(result, this.logger);
 
-      this.errorService.success('Image deleted');
+      this.errorService.success(
+        this.translateService.instant('images.deleted'),
+      );
 
       this.router.navigate(['/']);
     }

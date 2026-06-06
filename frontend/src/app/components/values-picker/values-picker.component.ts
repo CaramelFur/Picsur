@@ -25,6 +25,7 @@ export class ValuesPickerComponent implements OnInit, OnChanges {
   public get nameCapMul(): string {
     return `${this.nameCap}s`;
   }
+  @Input('name-multiple') nameMultiple = '';
 
   // Inputs/oututs
   @Input('selection-list') @Required fullSelection: string[] = [];
@@ -43,6 +44,10 @@ export class ValuesPickerComponent implements OnInit, OnChanges {
   public inputControl = new FormControl('');
 
   public ngOnInit(): void {
+    if (this.nameMultiple === '') {
+      this.nameMultiple = this.nameCapMul;
+    }
+
     this.subscribeInputValue();
     this.subscribeMyValue();
   }

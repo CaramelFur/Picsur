@@ -7,6 +7,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
+import { I18nModule } from '../../i18n/i18n.module';
 import { HeaderComponent } from './header.component';
 import { ErrorManagerModule } from '../../util/error-manager/error-manager.module';
 
@@ -14,6 +15,7 @@ import { ErrorManagerModule } from '../../util/error-manager/error-manager.modul
   imports: [
     CommonModule,
     ErrorManagerModule,
+    I18nModule,
 
     MatToolbarModule,
     MatButtonModule,

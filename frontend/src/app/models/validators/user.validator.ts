@@ -16,17 +16,17 @@ export const CreateUsernameError = (
   const error = errorsToError(errors);
   switch (error) {
     case 'required':
-      return 'Username is required';
+      return 'auth.usernameErrors.required';
     case 'minlength':
-      return 'Username is too short';
+      return 'auth.usernameErrors.minLength';
     case 'maxlength':
-      return 'Username is too long';
+      return 'auth.usernameErrors.maxLength';
     case 'pattern':
-      return 'Username can only contain letters and numbers';
+      return 'auth.usernameErrors.pattern';
     case 'unavailable':
-      return 'Username is already taken';
+      return 'auth.usernameErrors.unavailable';
     default:
-      return 'Invalid username';
+      return 'auth.usernameErrors.invalid';
   }
 };
 
@@ -41,14 +41,14 @@ export const CreatePasswordError = (
   const error = errorsToError(errors);
   switch (error) {
     case 'required':
-      return 'Password is required';
+      return 'auth.passwordErrors.required';
     case 'minlength':
-      return 'Password is too short';
+      return 'auth.passwordErrors.minLength';
     case 'maxlength':
-      return 'Password is too long';
+      return 'auth.passwordErrors.maxLength';
     case 'compare':
-      return 'Password does not match';
+      return 'auth.passwordErrors.compare';
     default:
-      return 'Invalid password';
+      return 'auth.passwordErrors.invalid';
   }
 };

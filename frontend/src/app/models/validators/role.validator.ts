@@ -13,14 +13,14 @@ export const CreateRoleNameError = (
   const error = errorsToError(errors);
   switch (error) {
     case 'required':
-      return 'Role name is required';
+      return 'settings.roles.errors.required';
     case 'minlength':
-      return 'Role name is too short';
+      return 'settings.roles.errors.minLength';
     case 'maxlength':
-      return 'Role name is too long';
+      return 'settings.roles.errors.maxLength';
     case 'pattern':
-      return 'Role name can only contain letters and numbers';
+      return 'settings.roles.errors.pattern';
     default:
-      return 'Invalid role name';
+      return 'settings.roles.errors.invalid';
   }
 };

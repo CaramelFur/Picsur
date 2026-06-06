@@ -1,0 +1,358 @@
+{
+  "common": {
+    "actions": {
+      "add": "ADD",
+      "cancel": "Cancel",
+      "close": "CLOSE",
+      "delete": "Delete",
+      "edit": "Edit",
+      "login": "LOGIN",
+      "register": "REGISTER",
+      "save": "SAVE",
+      "update": "UPDATE",
+      "view": "VIEW"
+    },
+    "loading": "LOADING...",
+    "empty": "Empty",
+    "yes": "Yes",
+    "no": "No",
+    "never": "Never",
+    "invalidValue": "Invalid value",
+    "actionCannotBeUndone": "This action cannot be undone.",
+    "copy": "Copy",
+    "hide": "Hide"
+  },
+  "header": {
+    "uploadImage": "Upload an image",
+    "loginOrRegister": "Login or Register",
+    "loginAccount": "Login to your account",
+    "yourAccount": "Your account",
+    "language": "Language",
+    "myImages": "My Images",
+    "settings": "Settings",
+    "logout": "Logout",
+    "logoutSuccess": "Logout successful"
+  },
+  "languages": {
+    "en": "English",
+    "zh": "Chinese"
+  },
+  "auth": {
+    "loginTitle": "Login to your account",
+    "registerTitle": "Register your new account",
+    "username": "Username",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "loginSuccess": "Login successful",
+    "registerSuccess": "Register successful",
+    "registerSuccessNoLogin": "Register successful, did not log in",
+    "invalidUsernameOrPassword": "Invalid username or password",
+    "notLoggedIn": "Not logged in",
+    "invalidToken": "Invalid token",
+    "invalidTokenData": "Invalid token data",
+    "usernameErrors": {
+      "required": "Username is required",
+      "minLength": "Username is too short",
+      "maxLength": "Username is too long",
+      "pattern": "Username can only contain letters and numbers",
+      "unavailable": "Username is already taken",
+      "invalid": "Invalid username"
+    },
+    "passwordErrors": {
+      "required": "Password is required",
+      "minLength": "Password is too short",
+      "maxLength": "Password is too long",
+      "compare": "Password does not match",
+      "invalid": "Invalid password"
+    }
+  },
+  "upload": {
+    "title": "Upload Image",
+    "dropHint": "Drag and drop / paste an image here, or click to select an image",
+    "loginRequired": "Please log in",
+    "permissionRequired": "You do not yet have permission to upload",
+    "clipboardEmpty": "Your clipboard is empty",
+    "clipboardNoImages": "Your clipboard does not contain any images",
+    "clipboardImageError": "Error getting image from clipboard"
+  },
+  "images": {
+    "empty": "There are no images to display",
+    "title": "Your Images",
+    "uploaded": "Uploaded",
+    "expires": "Expires",
+    "uploadedByYouAlt": "Image uploaded by you",
+    "deleteConfirmTitle": "Are you sure you want to delete the image?",
+    "deleteConfirmDescription": "This action cannot be undone.",
+    "deleted": "Image deleted",
+    "downloaded": "Image downloaded",
+    "invalidLink": "Invalid image link",
+    "notFound": "Image not found",
+    "expired": "Image expired",
+    "updated": "Image successfully updated",
+    "deleteFailedPermission": "Image was not deleted, probably lacking permissions",
+    "defaultAlt": "image"
+  },
+  "workers": {
+    "couldNotFetchImage": "Could not fetch image"
+  },
+  "copyField": {
+    "copied": "Copied {{ label }}!",
+    "copyFailed": "Copying to clipboard failed"
+  },
+  "valuesPicker": {
+    "addPlaceholder": "Add {{ name }}..."
+  },
+  "view": {
+    "imageFallbackName": "image",
+    "uploadedBy": "Uploaded {{ date }} by {{ user }}",
+    "imageUrl": "Image URL",
+    "imageFormat": "Image Format",
+    "markdown": "Markdown",
+    "html": "HTML",
+    "bbcode": "BBCode",
+    "rst": "Rst",
+    "original": "Original",
+    "downloadTooltip": "Download the image",
+    "shareTooltip": "Share image",
+    "customizeTooltip": "Customize Image",
+    "editTooltip": "Edit image",
+    "deleteTooltip": "Delete image",
+    "customize": {
+      "title": "Customize Image",
+      "format": "Format",
+      "height": "Height",
+      "width": "Width",
+      "rotation": "Rotation",
+      "quality": "Quality %",
+      "flipHorizontal": "Flip image horizontally",
+      "flipVertical": "Flip image vertically",
+      "shrinkOnly": "Shrink only",
+      "greyscale": "Greyscale",
+      "disableTransparency": "Disable transparancy",
+      "negative": "Negative",
+      "customUrl": "Custom Image URL",
+      "sizeTooltip": "Leave empty to keep original aspect ratio"
+    },
+    "edit": {
+      "title": "Edit Image",
+      "fileTitle": "Title",
+      "expiresAfter": "Expires After",
+      "never": "Never",
+      "fiveMinutes": "5 Minutes",
+      "tenMinutes": "10 Minutes",
+      "thirtyMinutes": "30 Minutes",
+      "oneHour": "1 Hour",
+      "sixHours": "6 Hours",
+      "twelveHours": "12 Hours",
+      "oneDay": "1 Day",
+      "oneWeek": "1 Week",
+      "oneMonth": "1 Month"
+    }
+  },
+  "download": {
+    "downloading": "Downloading {{ name }}...",
+    "shareUnsupported": "Sharing is not supported on your device",
+    "shareFailed": "Sharing failed!"
+  },
+  "api": {
+    "networkError": "Network Error",
+    "somethingWentWrong": "Something went wrong",
+    "nonOkResponse": "Recieved a non-ok response"
+  },
+  "compatibility": {
+    "title": "Server is not compatible",
+    "description": "The server is not compatible with this version of the client. You can ignore this, but expect things to not work.",
+    "back": "Back",
+    "ignore": "Ignore"
+  },
+  "preferences": {
+    "noUserPermission": "You do not have permission to edit user preferences",
+    "noSystemPermission": "You do not have permission to edit system preferences"
+  },
+  "processing": {
+    "title": "Processing",
+    "noState": "No state provided"
+  },
+  "settings": {
+    "title": "Settings",
+    "systemTitle": "System Settings",
+    "sidebar": {
+      "personal": "Personal",
+      "system": "System"
+    },
+    "pages": {
+      "general": "General",
+      "apiKeys": "Api Keys",
+      "shareX": "ShareX",
+      "users": "Users",
+      "roles": "Roles",
+      "system": "System Settings"
+    },
+    "preferences": {
+      "updated": "Updated {{ name }}",
+      "enabled": "Enabled {{ name }}",
+      "disabled": "Disabled {{ name }}"
+    },
+    "roles": {
+      "title": "Roles",
+      "name": "Name",
+      "permissions": "Permissions",
+      "system": "System",
+      "actions": "Actions",
+      "edit": "Edit",
+      "selectPage": "Select page of roles",
+      "add": "Add Role",
+      "update": "UPDATE",
+      "createTooltip": "Create a new role",
+      "deleteConfirmTitle": "Are you sure you want to delete {{ name }}?",
+      "deleted": "Role deleted",
+      "created": "Role created",
+      "updated": "Role updated",
+      "editTitle": "Editing role \"{{ name }}\"",
+      "addTitle": "Add new role",
+      "roleName": "Role name",
+      "permission": "permission",
+      "permissionsMultiple": "Permissions",
+      "errors": {
+        "required": "Role name is required",
+        "minLength": "Role name is too short",
+        "maxLength": "Role name is too long",
+        "pattern": "Role name can only contain letters and numbers",
+        "invalid": "Invalid role name"
+      }
+    },
+    "apiKeys": {
+      "title": "Api Keys",
+      "name": "Name",
+      "created": "Created",
+      "lastUsed": "Last Used",
+      "actions": "Actions",
+      "copy": "Copy Key",
+      "selectPage": "Select page of apikeys",
+      "add": "Add Api Key",
+      "createTooltip": "Create a new api key",
+      "deleteConfirmTitle": "Are you sure you want to delete this api key?",
+      "copyFailed": "Failed to copy api key to clipboard",
+      "createdCopied": "Api key created and copied to clipboard",
+      "copied": "Api key copied to clipboard",
+      "deleted": "Api key deleted",
+      "nameUpdated": "Api key name updated",
+      "errors": {
+        "required": "You must enter a value",
+        "minLength": "Minimum length is 3",
+        "maxLength": "Maximum length is 255",
+        "unknown": "Unknown error"
+      }
+    },
+    "shareX": {
+      "title": "Create a ShareX target config",
+      "description": "Please select an api key to associate with the ShareX target, and then the preferred file format you'd like when sharing.",
+      "apiKey": "Api Key",
+      "imageFormat": "Image Format",
+      "exportConfig": "Export Config",
+      "emptyTitle": "No API keys available",
+      "emptyDescription": "You need to have at least one API key to create a ShareX target config.",
+      "createApiKey": "Create an API key here",
+      "exported": "Exported ShareX config"
+    },
+    "users": {
+      "title": "Users",
+      "username": "Username",
+      "roles": "Roles",
+      "system": "System",
+      "actions": "Actions",
+      "selectPage": "Select page of users",
+      "add": "Add User",
+      "createTooltip": "Create a new user",
+      "deleteConfirmTitle": "Are you sure you want to delete {{ name }}?",
+      "deleted": "User deleted",
+      "created": "User created",
+      "updated": "User updated",
+      "editTitle": "Editing user \"{{ name }}\"",
+      "addTitle": "Add new user",
+      "newPassword": "New Password",
+      "role": "role",
+      "rolesMultiple": "Roles",
+      "effectivePermissions": "Effective Permissions",
+      "update": "UPDATE"
+    }
+  },
+  "permissions": {
+    "imageView": "View Images",
+    "imageUpload": "Upload Images",
+    "imageManage": "Manage Own Images",
+    "imageDeleteKey": "Use Deletekey",
+    "userLogin": "Login",
+    "userKeepLogin": "Stay Logged In",
+    "userRegister": "Register",
+    "settings": "View settings",
+    "apiKey": "Use API keys",
+    "imageAdmin": "Image Admin",
+    "userAdmin": "User Admin",
+    "roleAdmin": "Role Admin",
+    "apiKeyAdmin": "API Key Admin",
+    "sysPrefAdmin": "System Admin"
+  },
+  "userPreferences": {
+    "keepOriginal": {
+      "name": "Keep original file",
+      "helpText": "Store the original files you upload to the service, this way no data will be lost. This will also store exif data."
+    }
+  },
+  "systemPreferences": {
+    "categories": {
+      "general": "General",
+      "imageProcessing": "Image Processing",
+      "authentication": "Authentication",
+      "usage": "Usage"
+    },
+    "hostOverride": {
+      "name": "Host Override",
+      "helpText": "Override the hostname for the server, useful for when you are accessing the server from a different domain."
+    },
+    "removeDerivativesAfter": {
+      "name": "Cached Images Expiry Time",
+      "helpText": "Time before cached converted images are deleted. This does not affect the original image. A lower cache time will save on disk space but cost more cpu. Set to 0 to disable."
+    },
+    "allowEditing": {
+      "name": "Allow images to be edited",
+      "helpText": "Allow images to be edited (e.g. resize, flip). Using these features will use more CPU power."
+    },
+    "conversionTimeLimit": {
+      "name": "Convert/Edit Time Limit",
+      "helpText": "Time limit for converting/editing images. You may need to increase this on low powered devices."
+    },
+    "conversionMemoryLimit": {
+      "name": "Convert/Edit Memory Limit MB",
+      "helpText": "Memory limit for converting/editing images. You only need to increase this if you are storing massive images."
+    },
+    "jwtSecret": {
+      "name": "JWT Secret",
+      "helpText": "Secret used to sign JWT authentication tokens."
+    },
+    "jwtExpiresIn": {
+      "name": "JWT Expiry Time",
+      "helpText": "Time before JWT authentication tokens expire."
+    },
+    "bcryptStrength": {
+      "name": "BCrypt Strength",
+      "helpText": "Strength of BCrypt hashing algorithm, 10 is recommended. Reduce this if running on a low powered device."
+    },
+    "enableTracking": {
+      "name": "Enable Ackee Web Tracking",
+      "helpText": "Enable tracking of the website usage using Ackee. You will need to set the tracking URL and ID."
+    },
+    "trackingUrl": {
+      "name": "Ackee tracking URL",
+      "helpText": "URL of the Ackee tracking server. Requests are proxied, so ensure the X-Forwarded-For header is handled."
+    },
+    "trackingId": {
+      "name": "Ackee trackign website ID",
+      "helpText": "ID of the website to track."
+    },
+    "enableTelemetry": {
+      "name": "Enable System Telemetry",
+      "helpText": "Enable system telemetry, this will send anonymous usage data to the developers."
+    }
+  }
+}

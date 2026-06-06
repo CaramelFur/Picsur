@@ -2,17 +2,29 @@
   <div class="row">
     <div class="col-12">
       <h1>
-        {{ image?.file_name ?? 'image' | truncate }}
+        {{
+          image?.file_name ?? ('view.imageFallbackName' | translate) | truncate
+        }}
       </h1>
     </div>
 
     <div class="col-12" *ngIf="image !== null">
       <h3>
-        Uploaded {{ image.created | amTimeAgo }} by {{ user?.username }}
+        {{
+          'view.uploadedBy'
+            | translate
+              : {
+                  date: image.created | amTimeAgo,
+                  user: user?.username,
+                }
+        }}
         {{
           image.expires_at === null
             ? ''
-            : '| Expires ' + (image.expires_at | amTimeAgo)
+            : '| ' +
+              ('images.expires' | translate) +
+              ' ' +
+              (image.expires_at | amTimeAgo)
         }}
       </h3>
     </div>
@@ -22,12 +34,15 @@
     </div>
 
     <div class="col-md-6 col-12">
-      <copy-field label="Image URL" [value]="imageLinks.source"></copy-field>
+      <copy-field
+        label="view.imageUrl"
+        [value]="imageLinks.source"
+      ></copy-field>
     </div>
 
     <div class="col-md-6 col-12">
       <mat-form-field appearance="outline" color="primary">
-        <mat-label>Image Format</mat-label>
+        <mat-label>{{ 'view.imageFormat' | translate }}</mat-label>
         <mat-select [(value)]="selectedFormat">
           <mat-option *ngFor="let format of formatOptions" [value]="format.key">
             {{ format.value }}
@@ -41,16 +56,19 @@
     </div>
 
     <div class="col-md-6 col-12">
-      <copy-field label="Markdown" [value]="imageLinks.markdown"></copy-field>
+      <copy-field
+        label="view.markdown"
+        [value]="imageLinks.markdown"
+      ></copy-field>
     </div>
     <div class="col-md-6 col-12">
-      <copy-field label="HTML" [value]="imageLinks.html"></copy-field>
+      <copy-field label="view.html" [value]="imageLinks.html"></copy-field>
     </div>
     <div class="col-md-6 col-12">
-      <copy-field label="BBCode" [value]="imageLinks.bbcode"></copy-field>
+      <copy-field label="view.bbcode" [value]="imageLinks.bbcode"></copy-field>
     </div>
     <div class="col-md-6 col-12">
-      <copy-field label="Rst" [value]="imageLinks.rst"></copy-field>
+      <copy-field label="view.rst" [value]="imageLinks.rst"></copy-field>
     </div>
   </div>
 </div>

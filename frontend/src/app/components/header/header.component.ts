@@ -12,6 +12,12 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe-decorator';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { EUser } from 'picsur-shared/dist/entities/user.entity';
 import { HasFailed } from 'picsur-shared/dist/types/failable';
+import {
+  AvailableLanguage,
+  availableLanguages,
+  I18nService,
+} from '../../i18n/i18n.service';
+import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../services/api/user.service';
 import { PermissionService } from '../../services/api/permission.service';
 import { Logger } from '../../services/logger/logger.service';
@@ -32,6 +38,8 @@ export class HeaderComponent implements OnInit {
     private readonly permissionService: PermissionService,
     private readonly changeDetector: ChangeDetectorRef,
     private readonly errorService: ErrorService,
+    private readonly i18nService: I18nService,
+    private readonly translateService: TranslateService,
   ) {}
 
   @Input('enableHamburger') public set enableHamburger(value: boolean) {
@@ -49,6 +57,8 @@ export class HeaderComponent implements OnInit {
   public canAccessSettings = false;
   public canUpload = false;
   public canRegister = false;
+  public readonly availableLanguages = [...availableLanguages];
+  public currentLanguage: AvailableLanguage = 'en';
 
   public get user() {
     return this.currentUser;
@@ -59,8 +69,15 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentLanguage = this.i18nService.getCurrentLanguage();
     this.subscribeUser();
     this.subscribePermissions();
+  }
+
+  setLanguage(language: AvailableLanguage) {
+    this.i18nService.setLanguage(language);
+    this.currentLanguage = language;
+    this.changeDetector.markForCheck();
   }
 
   @AutoUnsubscribe()
@@ -97,7 +114,9 @@ export class HeaderComponent implements OnInit {
     if (HasFailed(user))
       return this.errorService.showFailure(user, this.logger);
 
-    this.errorService.success('Logout successful');
+    this.errorService.success(
+      this.translateService.instant('header.logoutSuccess'),
+    );
   }
 
   doSettings() {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
+import { TranslateService } from '@ngx-translate/core';
 import { FileType2Ext, ImageFileType } from 'picsur-shared/dist/dto/mimes.dto';
 import { Permission } from 'picsur-shared/dist/dto/permissions.enum';
 import { EApiKey } from 'picsur-shared/dist/entities/apikey.entity';
@@ -45,6 +46,7 @@ export class SettingsShareXComponent implements OnInit {
     private readonly infoService: InfoService,
     private readonly utilService: UtilService,
     private readonly errorService: ErrorService,
+    private readonly translateService: TranslateService,
   ) {}
 
   ngOnInit(): void {
@@ -80,7 +82,9 @@ export class SettingsShareXComponent implements OnInit {
       'application/json',
     );
 
-    this.errorService.success('Exported ShareX config');
+    this.errorService.success(
+      this.translateService.instant('settings.shareX.exported'),
+    );
   }
 
   async getNextBatch() {
